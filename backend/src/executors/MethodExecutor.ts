@@ -2,7 +2,7 @@
 import { MethodDecoratorTarget } from 'src/utils/decorators';
 
 export abstract class MethodExecutor {
-  before<T, S>(target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]): T | void {}
+  before<S>(target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]): any {}
   after<T, S, R>(
     berforeResult: T,
     result: R,

@@ -1,13 +1,22 @@
 import { ExcecutionLogger } from 'src/loggers/ExecutionLogger';
-import { createClassDecorator, methodExecutorDecorator } from 'src/utils/decorators';
+import {
+  createClassExecutorDecorator,
+  DescriptorMethodDecorator,
+  methodExecutorDecorator,
+  TargetClassDecorator,
+} from 'src/utils/decorators';
 import { Class, InstanciableArray } from 'src/utils/types';
 
-export function UseLoggers(...loggers: Array<ExcecutionLogger>);
-export function UseLoggers(...loggers: Array<Class<ExcecutionLogger>>);
-export function UseLoggers(...loggers: InstanciableArray<ExcecutionLogger>) {
-  return createClassDecorator(MethodUseLoggers, ...loggers);
+export function UseLoggers(...loggers: Array<ExcecutionLogger>): TargetClassDecorator;
+export function UseLoggers(...loggers: Array<Class<ExcecutionLogger>>): TargetClassDecorator;
+export function UseLoggers(...loggers: InstanciableArray<ExcecutionLogger>): TargetClassDecorator {
+  return createClassExecutorDecorator(MethodUseLoggers, ...loggers);
 }
 
-export const MethodUseLoggers = (...loggers: InstanciableArray<ExcecutionLogger>) => {
+export function MethodUseLoggers(...loggers: Array<ExcecutionLogger>): DescriptorMethodDecorator;
+export function MethodUseLoggers(...loggers: Array<Class<ExcecutionLogger>>): DescriptorMethodDecorator;
+export function MethodUseLoggers(
+  ...loggers: InstanciableArray<ExcecutionLogger>
+): DescriptorMethodDecorator {
   return methodExecutorDecorator(...loggers);
-};
+}
