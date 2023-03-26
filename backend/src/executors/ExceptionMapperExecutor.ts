@@ -1,5 +1,5 @@
 import { Mapper } from 'src/mappers/Mapper';
-import { MethodDecoratorTarget } from 'src/utils/decorators';
+import { MethodDecoratorTarget } from 'src/utils/types';
 import { MethodExecutor } from './MethodExecutor';
 
 export class ExceptionMapperExecutor<

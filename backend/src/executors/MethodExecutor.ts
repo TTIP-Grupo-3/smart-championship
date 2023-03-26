@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { MethodDecoratorTarget } from 'src/utils/decorators';
+import { MethodDecoratorTarget } from 'src/utils/types';
 
 export abstract class MethodExecutor {
   before<S>(target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]): any {}

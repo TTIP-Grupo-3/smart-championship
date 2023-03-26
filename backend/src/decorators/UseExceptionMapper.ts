@@ -1,11 +1,12 @@
 import { ExceptionMapperExecutor } from 'src/executors/ExceptionMapperExecutor';
-import { Class, Instanciable, InstanciableArray } from 'src/utils/types';
 import {
-  createClassExecutorDecorator,
+  Class,
   DescriptorMethodDecorator,
-  methodExecutorDecorator,
+  Instanciable,
+  InstanciableArray,
   TargetClassDecorator,
-} from '../utils/decorators';
+} from 'src/utils/types';
+import { ExecutorDecoratorFactory } from './ExecutorDecoratorFactory';
 
 export function UseExceptionMapper<Source extends Error, Target extends Error>(
   mapper: ExceptionMapperExecutor<Source, Target>,
@@ -17,7 +18,7 @@ export function UseExceptionMapper<Source extends Error, Target extends Error>(
   mapper: Instanciable<ExceptionMapperExecutor<Source, Target>>,
 ): TargetClassDecorator {
   const mappers = [mapper] as InstanciableArray<ExceptionMapperExecutor<Source, Target>>;
-  return createClassExecutorDecorator(MethodUseExceptionMapper, ...mappers);
+  return ExecutorDecoratorFactory.classDecorator(MethodUseExceptionMapper, ...mappers);
 }
 
 export function MethodUseExceptionMapper<Source extends Error, Target extends Error>(
@@ -29,5 +30,5 @@ export function MethodUseExceptionMapper<Source extends Error, Target extends Er
 export function MethodUseExceptionMapper<Source extends Error, Target extends Error>(
   ...mappers: InstanciableArray<ExceptionMapperExecutor<Source, Target>>
 ): DescriptorMethodDecorator {
-  return methodExecutorDecorator(...mappers);
+  return ExecutorDecoratorFactory.methodDecorator(...mappers);
 }
