@@ -2,9 +2,9 @@ name: Smart Championship full
 
 on:
   push:
-    branches: [ "development-actions" ]
+    branches: [ "development","main" ]
   pull_request:
-    branches: [ "development-actions" ]
+    branches: [ "development","main" ]
 
 jobs:
   build:
