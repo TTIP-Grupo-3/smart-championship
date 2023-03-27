@@ -2,9 +2,9 @@ name: Run Frontend App
 
 on:
   push:
-    branches: [ "development-actions","main" ]
+    branches: [ "development","main" ]
   pull_request:
-    branches: [ "development-actions","main" ]
+    branches: [ "development","main" ]
 
 defaults:
  run:
