@@ -1,4 +1,4 @@
-name: Smart Championship Backend
+name: Run Backend App
  
 on:
   push:
