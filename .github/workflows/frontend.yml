@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "development","main" ]
 
+defaults:
+ run:
+  working-directory: ./app
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,26 +28,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
 
-      - name: FE Install dependencies
-        working-directory: ./frontend
+      - name: Install dependencies
         run: npm install --silent
 
-      - name: FE Build
-        working-directory: ./frontend
+      - name: Build
         run: npm run build
 
-      - name: FE Run the tests
-        working-directory: ./frontend
-        run: npm run test
-
-      - name: BE Install dependencies
-        working-directory: ./backend
-        run: npm install --silent
-
-      - name: BE Build
-        working-directory: ./backend
-        run: npm run build
-
-      - name: BE Run the tests
-        working-directory: ./backend
+      - name: Run the tests
         run: npm run test
