@@ -4,11 +4,11 @@ on:
   push:
     branches: [ "development","main" ]
     paths:
-      -"frontend.yml"
+      -"frontend/**"
   pull_request:
     branches: [ "development","main" ]
     paths:
-      -"frontend.yml"
+      -"frontend/**"
 
 defaults:
  run:
