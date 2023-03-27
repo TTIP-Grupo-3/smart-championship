@@ -3,8 +3,12 @@ name: Run Frontend App
 on:
   push:
     branches: [ "development","main" ]
+    paths:
+      -"frontend.yml"
   pull_request:
     branches: [ "development","main" ]
+    paths:
+      -"frontend.yml"
 
 defaults:
  run:
