@@ -1,5 +1,5 @@
 name: Smart Championship Backend
-
+ 
 on:
   push:
     branches: [ "development-actions","main" ]
