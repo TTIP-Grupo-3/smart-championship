@@ -2,13 +2,17 @@ name: Run Backend App
  
 on:
   push:
-    branches: [ "development","main" ]
+    branches:
+     - 'development-fixGithubActions'
+     - 'main'
     paths:
-     -"backend/**"
+     - 'backend/*'
   pull_request:
-    branches: [ "development","main" ]
+    branches: 
+     - 'development'
+     - 'main'
     paths:
-     -"backend/**"
+     - 'backend/**'
 
 defaults:
  run:
