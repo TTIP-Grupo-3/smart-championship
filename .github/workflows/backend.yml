@@ -3,7 +3,7 @@ name: Run Backend App
 on:
   push:
     branches:
-     - 'development-fixGithubActions'
+     - 'development'
      - 'main'
     paths:
      - 'backend/*'
