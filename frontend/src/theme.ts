@@ -1,5 +1,3 @@
-import { createTheme, Theme } from "@mui/material/styles";
+import { createTheme, Theme } from '@mui/material/styles';
 
-export const theme:Theme = createTheme({
-  })
-  
+export const theme: Theme = createTheme({});
