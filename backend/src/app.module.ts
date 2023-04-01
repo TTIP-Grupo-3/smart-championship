@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { sqlClient } from './clients/sql.client';
 import configuration from './config/configuration';
 import { ChampionshipController } from './controllers/championship.controller';
+import { EntityToDTOMapper } from './mappers/EntityToDTOMapper';
 import { ChampionshipService } from './services/championship.service';
 import { DataService } from './services/data.service';
 import { entities } from './utils/entities';
@@ -15,7 +16,7 @@ import { entities } from './utils/entities';
     TypeOrmModule.forFeature(entities),
   ],
   controllers: [ChampionshipController],
-  providers: [ChampionshipService, DataService],
+  providers: [ChampionshipService, DataService, EntityToDTOMapper],
 })
 export class AppModule {
   constructor(private dataService: DataService) {}

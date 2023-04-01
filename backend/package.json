@@ -24,6 +24,7 @@
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^6.3.0",
     "@nestjs/typeorm": "^9.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
@@ -59,7 +60,9 @@
     "typescript": "^4.7.4"
   },
   "jest": {
-    "setupFilesAfterEnv": ["<rootDir>/test/setup/mockSqlClient.ts"],
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/setup/mockSqlClient.ts"
+    ],
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/src/$1",
       "^test/(.*)$": "<rootDir>/test/$1"
