@@ -1,0 +1,54 @@
+version: "3"
+services:
+    frontend:
+      build: 
+        context: "./frontend"
+        args:
+          REACT_APP_API_SERVER_URL: "http://localhost:3001"
+      container_name: "frontend"
+      ports:
+        - "80:80"
+      environment:
+        REACT_APP_API_SERVER_URL: "http://localhost:3001"
+      restart: unless-stopped
+      depends_on:
+        - backend
+      networks:
+        - smartchampionship
+
+    backend:
+      build: "./backend"
+      container_name: "backend"
+      ports:
+        - "3001:3001"
+      environment:
+        APP_PORT: 3001
+        SQL_HOST: "mysql"
+        SQL_USERNAME: "smartchampionship"
+        SQL_PASSWORD: "myPassword1234"
+        SQL_DB_NAME: "smartchampionship"
+        SQL_SYNCHRONIZE: 'true'
+      restart: unless-stopped
+      depends_on:
+        - mysql
+      networks:
+        - smartchampionship
+
+    mysql:
+      image: mysql
+      ports:
+        - "3306:3306"
+      # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+      # (this is just an example, not intended to be a production configuration)
+      command: --default-authentication-plugin=mysql_native_password
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: "myPassword1234"
+        MYSQL_USER: "smartchampionship"
+        MYSQL_PASSWORD: "myPassword1234"
+        MYSQL_DATABASE: "smartchampionship"
+      networks:
+        - smartchampionship
+
+networks:
+  smartchampionship:
