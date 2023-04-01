@@ -1,7 +1,7 @@
 import { Param, UseFilters, UsePipes } from '@nestjs/common';
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiTags, ApiResponse, ApiNotFoundResponse } from '@nestjs/swagger';
-import { ChampionshipResponseDTO } from 'src/dtos/responses/championship.response.dto';
+import { EliminationChampionshipResponseDTO } from 'src/dtos/responses/eliminationChampionship.response.dto';
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
 import { SmartChampionshipExceptionFilter } from 'src/filters/smartChampionship.exception.filter';
 import { validationPipe } from 'src/pipes/validation.pipe';
@@ -15,10 +15,10 @@ export class ChampionshipController {
   constructor(private readonly championshipService: ChampionshipService) {}
 
   @ApiOperation({ summary: 'Get championship' })
-  @ApiResponse({ type: ChampionshipResponseDTO, status: 200 })
+  @ApiResponse({ type: EliminationChampionshipResponseDTO, status: 200 })
   @ApiNotFoundResponse({ type: ErrorResponseDTO })
   @Get()
-  async getChampionship(@Param('id') id = 1): Promise<ChampionshipResponseDTO> {
+  async getChampionship(@Param('id') id = 1): Promise<EliminationChampionshipResponseDTO> {
     return await this.championshipService.getChampionship(id);
   }
 }
