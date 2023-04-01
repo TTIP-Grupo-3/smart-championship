@@ -14,6 +14,7 @@ RUN npm install -g npm@8.19.2
 
 RUN npm install --silent
 COPY . ./
+RUN npm run lint
 RUN CI=true npm test
 RUN REACT_APP_API_SERVER_URL=$REACT_APP_API_SERVER_URL npm run build
 

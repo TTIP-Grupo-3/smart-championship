@@ -5,6 +5,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 RUN npm install --silent
 COPY . ./
+RUN npm run lint
 RUN npm run test
 RUN npm run test:e2e
 RUN npm run build
