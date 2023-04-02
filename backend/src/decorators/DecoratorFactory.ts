@@ -22,7 +22,7 @@ export class DecoratorFactory {
   static methodDecorator<T = any, R = any>(func: MethodComposer<T>): DescriptorMethodDecorator<T, R> {
     return (target, propertyKey, descriptor) => {
       const entries = this.getMetadata(descriptor.value);
-      descriptor.value = this.generateNamedFunction(func, target, propertyKey, descriptor) as any;
+      descriptor.value = this.generateNamedFunction(func, target, propertyKey, descriptor);
       this.defineMetadata(descriptor.value, entries);
       return descriptor;
     };
@@ -71,17 +71,18 @@ export class DecoratorFactory {
     target: MethodDecoratorTarget<R> | undefined,
     propertyKey: string,
     descriptor: TypedPropertyDescriptor<GenericFunction<T>>,
-  ) {
+  ): GenericFunction<T> {
     return isAsyncFunction(descriptor.value)
       ? this.generateAsyncNamedFunction(func, target, propertyKey, descriptor)
       : this.generateSyncNamedFunction(func, target, propertyKey, descriptor);
   }
+
   static generateSyncNamedFunction<T, R>(
     func: MethodComposer<T>,
     target: MethodDecoratorTarget<R>,
     propertyKey: string,
     descriptor: TypedPropertyDescriptor<GenericFunction<T>>,
-  ) {
+  ): GenericFunction<T> {
     const fn = descriptor.value;
     return {
       [fn.name]: function <T>(this: T, ...args: any[]) {
@@ -95,13 +96,13 @@ export class DecoratorFactory {
     target: MethodDecoratorTarget<R>,
     propertyKey: string,
     descriptor: TypedPropertyDescriptor<GenericFunction<T>>,
-  ) {
+  ): GenericFunction<T> {
     const fn = descriptor.value;
     return {
       [fn.name]: async function <T>(this: T, ...args: any[]) {
         return await func(fn, this, target, propertyKey, ...args);
       },
-    }[fn.name];
+    }[fn.name] as GenericFunction<T>;
   }
 
   private static getMetadata<T>(target: T): Array<MetadataEntry> {
