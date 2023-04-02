@@ -1,0 +1,52 @@
+{
+  "championship": {
+    "id": 1,
+    "name": "Smart Championship",
+    "matches": [
+      {
+        "id": 1,
+        "local": { "name": "Team-1", "goals": 2, "cards": { "red": 0, "yellow": 2 } },
+        "visiting": { "name": "Team-2", "goals": 0, "cards": { "red": 2, "yellow": 0 } }
+      },
+      {
+        "id": 2,
+        "local": { "name": "Team-3", "goals": 0, "cards": { "red": 0, "yellow": 5 } },
+        "visiting": { "name": "Team-4", "goals": 3, "cards": { "red": 0, "yellow": 2 } }
+      },
+      {
+        "id": 3,
+        "local": { "name": "Team-5", "goals": 0, "cards": { "red": 0, "yellow": 0 } },
+        "visiting": { "name": "Team-6", "goals": 1, "cards": { "red": 1, "yellow": 0 } }
+      },
+      {
+        "id": 4,
+        "local": { "name": "Team-7", "goals": 5, "cards": { "red": 0, "yellow": 0 } },
+        "visiting": { "name": "Team-8", "goals": 0, "cards": { "red": 1, "yellow": 0 } }
+      }
+    ],
+    "next": {
+      "matches": [
+        {
+          "id": 5,
+          "local": { "name": "Team-1", "goals": 0, "cards": { "red": 2, "yellow": 0 } },
+          "visiting": { "name": "Team-4", "goals": 4, "cards": { "red": 0, "yellow": 0 } }
+        },
+        {
+          "id": 6,
+          "local": { "name": "Team-6", "goals": 3, "cards": { "red": 0, "yellow": 0 } },
+          "visiting": { "name": "Team-7", "goals": 0, "cards": { "red": 2, "yellow": 0 } }
+        }
+      ],
+      "next": {
+        "matches": [
+          {
+            "id": 7,
+            "local": { "name": "Team-4", "goals": 1, "cards": { "red": 0, "yellow": 0 } },
+            "visiting": { "name": "Team-6", "goals": 0, "cards": { "red": 1, "yellow": 0 } }
+          }
+        ],
+        "next": null
+      }
+    }
+  }
+}

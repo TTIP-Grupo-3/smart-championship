@@ -1,3 +1,5 @@
+export type NoPromise = Diff<any, Promise<any>>;
+export type Methods<T> = jest.FunctionPropertyNames<Required<T>>;
 export type Class<T> = { new (...args: any[]): T };
 export type AbstractClass<T> = (abstract new () => T) & { prototype: T };
 export type SuperClass<T> = AbstractClass<T> | Class<T>;
@@ -20,3 +22,16 @@ export type DescriptorMethodDecorator<T = any, R = any> = (
 ) => TypedPropertyDescriptor<GenericFunction<T>>;
 export type TargetClassDecorator<T extends Class<T> = Class<any>> = (target: T) => T;
 export type MetadataEntry = { key: any; value: any };
+export type DeepPartial<T> =
+  | T
+  | (T extends Array<infer U>
+      ? DeepPartial<U>[]
+      : T extends Map<infer K, infer V>
+      ? Map<DeepPartial<K>, DeepPartial<V>>
+      : T extends Set<infer M>
+      ? Set<DeepPartial<M>>
+      : T extends object
+      ? {
+          [K in keyof T]?: DeepPartial<T[K]>;
+        }
+      : T);

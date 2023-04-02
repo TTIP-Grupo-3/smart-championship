@@ -1,0 +1,13 @@
+service:
+  errors:
+    notFoundChampionship: "Championship not found"
+    unknown: "Unknown error"
+    invalidArgument: "Invalid argument"
+
+model:
+  errors:
+    invalidArgument: "Invalid argument"
+    
+controller:
+  errors:
+    badRequest: "Bad request"

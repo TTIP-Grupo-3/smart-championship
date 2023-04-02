@@ -31,9 +31,9 @@ export class DecoratorFactory {
     return DecoratorFactory.methodDecorator(function (fn, thisArg, target, propertyKey, ...args) {
       try {
         before(target, propertyKey, ...args);
-        let result = fn.call(thisArg, ...args);
+        const result = fn.call(thisArg, ...args);
         if (result instanceof Promise) {
-          result = ThisClass.composePromise(result, after, onError, target, propertyKey, ...args);
+          return ThisClass.composePromise(result, after, onError, target, propertyKey, ...args);
         }
         after(result, target, propertyKey, ...args);
         return result;
@@ -45,22 +45,18 @@ export class DecoratorFactory {
 
   private static composePromise<T, S>(
     result: Promise<T>,
-    thenCallback: (value: T, target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]) => T,
-    catchCallback: (
-      reason: any,
-      target: MethodDecoratorTarget<S>,
-      propertyKey: string,
-      ...args: any[]
-    ) => T,
+    after: (value: T, target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]) => void,
+    onError: (reason: any, target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]) => void,
     target: MethodDecoratorTarget<S>,
     propertyKey: string,
     ...args: any[]
   ): Promise<T> {
     return Promise.allSettled([result]).then(([asyncResult]: [PromiseSettledResult<T>]) => {
       if (asyncResult.status === 'rejected') {
-        return catchCallback(asyncResult.reason, target, propertyKey, ...args);
+        onError(asyncResult.reason, target, propertyKey, ...args);
       } else {
-        return thenCallback(asyncResult.value, target, propertyKey, ...args);
+        after(asyncResult.value, target, propertyKey, ...args);
+        return asyncResult.value;
       }
     });
   }
