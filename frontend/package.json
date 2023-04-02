@@ -5,7 +5,9 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@mui/material": "^5.11.14",
+    "@g-loot/react-tournament-brackets": "^1.0.28",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.15",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -47,9 +49,9 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.36.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.3.2"
