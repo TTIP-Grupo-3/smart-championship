@@ -1,11 +1,20 @@
 import { Grid } from '@mui/material';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { API } from '../../services/Championship';
 import CompositionTournament from '../CompositionTournament';
 
-export const ComposeDashboard: FC<any> = ({ dataSet }) => {
+export const ComposeDashboard: FC = () => {
+  const [matches, setMatches] = useState({ matches: [], next: null });
+
+  useEffect(() => {
+    API.getChampionship().then((r) => {
+      setMatches(r.data);
+    });
+  }, []);
+
   return (
     <Grid sx={{ display: 'flex' }}>
-      <CompositionTournament dataSet={dataSet} />
+      <CompositionTournament dataSet={matches} />
     </Grid>
   );
 };

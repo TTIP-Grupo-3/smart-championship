@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import { FC } from 'react';
-import { BoxTeam } from '../BoxTeam';
+import { BoxTeams } from '../BoxTeams';
 import { Bracket } from '../Bracket';
 import { useStyles } from './style';
 
@@ -17,18 +17,15 @@ const CompositionTournament: FC<any> = ({ dataSet, round = 0 }) => {
                   <Bracket />
                 </Grid>
               )}
+
               <Grid className={classes.alineationMatch} alignItems="center" justifyContent="center">
-                <BoxTeam name={match.name} />
+                <BoxTeams local={match.local} visiting={match.visiting} />
               </Grid>
             </Grid>
           </Grid>
         ))}
       </Grid>
-      {dataSet.children.map((matches: any) => (
-        <>
-          <CompositionTournament dataSet={matches} round={round + 1} />
-        </>
-      ))}
+      <>{dataSet.next && <CompositionTournament dataSet={dataSet.next} round={round + 1} />}</>
     </>
   );
 };

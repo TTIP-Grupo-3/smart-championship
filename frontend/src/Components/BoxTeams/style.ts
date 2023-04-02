@@ -18,11 +18,17 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     justifyContent: 'flex-end',
   },
   gridTeam: {
+    flexDirection: 'column',
     flexGrow: 1,
     border: '2px solid black',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  dividerTeam: {
+    border: '1px solid black',
+    display: 'flex',
+    width: '100%',
   },
 }));
 
