@@ -5,15 +5,25 @@ import {
   MethodComposer,
   MethodDecoratorTarget,
 } from 'src/utils/types';
+import { isAsyncFunction } from 'util/types';
+
+export type ExecutionArgs<T, S> = {
+  before: (target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]) => void;
+  after: (value: T, target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]) => void;
+  onError: (reason: any, target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]) => void;
+  fn: GenericFunction<T>;
+  thisArg: any;
+  target: MethodDecoratorTarget<S>;
+  propertyKey: string;
+  args: any[];
+};
 
 export class DecoratorFactory {
   static methodDecorator<T = any, R = any>(func: MethodComposer<T>): DescriptorMethodDecorator<T, R> {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const ThisClass = this;
     return (target, propertyKey, descriptor) => {
-      const entries = ThisClass.getMetadata(descriptor.value);
-      descriptor.value = ThisClass.generateNamedFunction(func, target, propertyKey, descriptor);
-      ThisClass.defineMetadata(descriptor.value, entries);
+      const entries = this.getMetadata(descriptor.value);
+      descriptor.value = this.generateNamedFunction(func, target, propertyKey, descriptor) as any;
+      this.defineMetadata(descriptor.value, entries);
       return descriptor;
     };
   }
@@ -26,39 +36,34 @@ export class DecoratorFactory {
       throw error;
     },
   ): DescriptorMethodDecorator<T, S> {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const ThisClass = this;
-    return DecoratorFactory.methodDecorator(function (fn, thisArg, target, propertyKey, ...args) {
-      try {
-        before(target, propertyKey, ...args);
-        const result = fn.call(thisArg, ...args);
-        if (result instanceof Promise) {
-          return ThisClass.composePromise(result, after, onError, target, propertyKey, ...args);
-        }
-        after(result, target, propertyKey, ...args);
-        return result;
-      } catch (error) {
-        onError(error, target, propertyKey, ...args);
-      }
+    return DecoratorFactory.methodDecorator((fn, thisArg, target, propertyKey, ...args) => {
+      const executionArgs = { before, after, onError, fn, thisArg, target, propertyKey, args };
+      return isAsyncFunction(fn) ? this.asyncExecution(executionArgs) : this.syncExecution(executionArgs);
     });
   }
 
-  private static composePromise<T, S>(
-    result: Promise<T>,
-    after: (value: T, target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]) => void,
-    onError: (reason: any, target: MethodDecoratorTarget<S>, propertyKey: string, ...args: any[]) => void,
-    target: MethodDecoratorTarget<S>,
-    propertyKey: string,
-    ...args: any[]
-  ): Promise<T> {
-    return Promise.allSettled([result]).then(([asyncResult]: [PromiseSettledResult<T>]) => {
-      if (asyncResult.status === 'rejected') {
-        onError(asyncResult.reason, target, propertyKey, ...args);
-      } else {
-        after(asyncResult.value, target, propertyKey, ...args);
-        return asyncResult.value;
-      }
-    });
+  private static async asyncExecution<T, S>(executionArgs: ExecutionArgs<T, S>) {
+    const { before, after, onError, fn, thisArg, target, propertyKey, args } = executionArgs;
+    try {
+      before(target, propertyKey, ...args);
+      const result = await fn.call(thisArg, ...args);
+      after(result, target, propertyKey, ...args);
+      return result;
+    } catch (error) {
+      onError(error, target, propertyKey, ...args);
+    }
+  }
+
+  private static syncExecution<T, S>(executionArgs: ExecutionArgs<T, S>) {
+    const { before, after, onError, fn, thisArg, target, propertyKey, args } = executionArgs;
+    try {
+      before(target, propertyKey, ...args);
+      const result = fn.call(thisArg, ...args);
+      after(result, target, propertyKey, ...args);
+      return result;
+    } catch (error) {
+      onError(error, target, propertyKey, ...args);
+    }
   }
 
   private static generateNamedFunction<T, R = any>(
@@ -67,12 +72,36 @@ export class DecoratorFactory {
     propertyKey: string,
     descriptor: TypedPropertyDescriptor<GenericFunction<T>>,
   ) {
+    return isAsyncFunction(descriptor.value)
+      ? this.generateAsyncNamedFunction(func, target, propertyKey, descriptor)
+      : this.generateSyncNamedFunction(func, target, propertyKey, descriptor);
+  }
+  static generateSyncNamedFunction<T, R>(
+    func: MethodComposer<T>,
+    target: MethodDecoratorTarget<R>,
+    propertyKey: string,
+    descriptor: TypedPropertyDescriptor<GenericFunction<T>>,
+  ) {
     const fn = descriptor.value;
     return {
       [fn.name]: function <T>(this: T, ...args: any[]) {
         return func(fn, this, target, propertyKey, ...args);
       },
-    }[descriptor.value.name];
+    }[fn.name];
+  }
+
+  static generateAsyncNamedFunction<T, R>(
+    func: MethodComposer<T>,
+    target: MethodDecoratorTarget<R>,
+    propertyKey: string,
+    descriptor: TypedPropertyDescriptor<GenericFunction<T>>,
+  ) {
+    const fn = descriptor.value;
+    return {
+      [fn.name]: async function <T>(this: T, ...args: any[]) {
+        return await func(fn, this, target, propertyKey, ...args);
+      },
+    }[fn.name];
   }
 
   private static getMetadata<T>(target: T): Array<MetadataEntry> {
