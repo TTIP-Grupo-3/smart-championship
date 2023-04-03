@@ -11,6 +11,12 @@ interface BoxTeamProps {
 export interface TeamStatus {
   name: string;
   goals: number;
+  cards: TypeCards;
+}
+
+interface TypeCards {
+  yellow: number;
+  red: number;
 }
 
 export const BoxTeams: FC<BoxTeamProps> = ({ local, visiting }) => {

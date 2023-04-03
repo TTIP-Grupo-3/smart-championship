@@ -12,7 +12,7 @@ export const Navbar: FC<any> = ({ children }) => {
         <Toolbar>
           <CenteredSpacer>
             <div></div>
-            <Typography color="white">SMART.CHAMPIONSHIP</Typography>
+            <Typography className={classes.title}>SMART.CHAMPIONSHIP</Typography>
           </CenteredSpacer>
         </Toolbar>
       </AppBar>

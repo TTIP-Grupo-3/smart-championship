@@ -1,6 +1,7 @@
-import { Grid, Typography } from '@mui/material';
+import { Divider, Grid, Typography } from '@mui/material';
 import { FC } from 'react';
 import { TeamStatus } from '../BoxTeams';
+import { CardRefereeIcon } from '../CardRefereeIcon';
 import { useStyles } from './style';
 
 interface TeamProps {
@@ -10,11 +11,23 @@ interface TeamProps {
 export const Team: FC<TeamProps> = ({ dataTeam }) => {
   const { classes } = useStyles();
   return (
-    <Grid container direction="row" justifyContent="center" className={classes.backgroundTeamCard}>
-      <Typography color="black" width={'80%'}>
+    <Grid container direction="row" justifyContent="flex-start" className={classes.backgroundTeamCard}>
+      <CardRefereeIcon color="red" />
+      <Typography color="black" paddingRight={0.5}>
+        {dataTeam.cards.red}
+      </Typography>
+      <Divider orientation="vertical" flexItem className={classes.diVertical} />
+      <CardRefereeIcon color="yellow" />
+      <Typography color="black" paddingRight={0.5}>
+        {dataTeam.cards.yellow}
+      </Typography>
+      <Divider orientation="vertical" flexItem className={classes.diVertical} />
+      <Typography className={classes.nameTypo} noWrap>
         {dataTeam.name}
       </Typography>
-      <Typography textAlign="end">{dataTeam.goals}</Typography>
+      <Grid className={classes.containerScore} direction="row">
+        <Typography className={classes.goalsTypo}>{dataTeam.goals}</Typography>
+      </Grid>
     </Grid>
   );
 };

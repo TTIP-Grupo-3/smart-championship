@@ -16,6 +16,15 @@ const useStyles = makeStyles()((theme: Theme) => ({
     overflow: 'hidden',
     backgroundColor: '#3F5865',
   },
+  title: {
+    fontFamily: 'sans-serif',
+    fontWeight: 500,
+    fontSize: 18,
+    fontStyle: 'normal',
+    letterSpacing: '1.50px',
+    lineHeight: '24px',
+    color: theme.palette.common.white,
+  },
 }));
 
 export default useStyles;
