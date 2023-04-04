@@ -10,7 +10,7 @@ const CompositionTournament: FC<any> = ({ dataSet, round = 0 }) => {
     <>
       <Grid className={classes.round}>
         {dataSet.matches.map((match: any) => (
-          <Grid className={classes.matchesRound}>
+          <Grid key={match.id} className={classes.matchesRound}>
             <Grid className={classes.alineationTeamsColumn}>
               {round > 0 && (
                 <Grid className={classes.gridLeft}>

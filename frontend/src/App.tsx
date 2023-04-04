@@ -1,13 +1,14 @@
+import { FC } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Navbar } from './components/NavBar';
-import { ComposeDashboard } from './components/ComposerDashboard';
+import { DashBoard } from './pages/Dashboard';
 
-function App() {
-  return (
-    <Navbar>
-      <ComposeDashboard />
-    </Navbar>
-  );
-}
+const App: FC = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<DashBoard />} />
+    </Routes>
+  </BrowserRouter>
+);
 
 export default App;

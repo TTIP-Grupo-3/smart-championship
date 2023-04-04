@@ -25,7 +25,7 @@ export const Team: FC<TeamProps> = ({ dataTeam }) => {
       <Typography className={classes.nameTypo} noWrap>
         {dataTeam.name}
       </Typography>
-      <Grid className={classes.containerScore} direction="row">
+      <Grid className={classes.containerScore}>
         <Typography className={classes.goalsTypo}>{dataTeam.goals}</Typography>
       </Grid>
     </Grid>

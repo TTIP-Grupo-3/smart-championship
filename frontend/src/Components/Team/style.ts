@@ -19,7 +19,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     textAlign: 'center',
   },
   nameTypo: {
-    paddingLeft:5,
+    paddingLeft: 5,
     flexGrow: 5,
     color: 'black',
   },
