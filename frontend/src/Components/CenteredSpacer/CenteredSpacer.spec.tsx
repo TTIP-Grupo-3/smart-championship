@@ -43,7 +43,7 @@ const defaultProps: ComponentProps<typeof CenteredSpacer> = {
   children: [firstChild, secondChild, thirdChild] as ReactNode,
 };
 
-const mountComponent = componentMounter(CenteredSpacer, defaultProps, theme);
+const { mountComponent } = componentMounter(CenteredSpacer, defaultProps, theme);
 
 describe('CenteredSpacer', () => {
   const getCenteredSpacer = (): Cypress.Chainable<JQuery<HTMLElement>> =>

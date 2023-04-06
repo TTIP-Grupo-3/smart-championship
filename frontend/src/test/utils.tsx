@@ -4,7 +4,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undef */
-import { mount, MountReturn, unmount } from 'cypress/react';
+import { mount, MountReturn } from 'cypress/react';
 import { createTheme, Theme, ThemeProvider, TypographyVariant } from '@mui/material/styles';
 
 import {
@@ -20,6 +20,7 @@ import {
 } from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { TypographyStyleOptions } from '@mui/material/styles/createTypography';
+import { FunctionTypeNode } from 'typescript';
 
 const withTheme = (jsx: ReactNode, theme: Theme): ReactElement => (
   <ThemeProvider {...{ theme }}>{jsx}</ThemeProvider>
@@ -38,6 +39,10 @@ interface ComponentHistoryContext {
   component: ReactNode;
 }
 
+interface FunctionMounter<T extends IPropsType> {
+  mountComponent: ComponentMounter<T>;
+}
+
 type ComponentMounter<PropsType extends IPropsType> = (
   customProps?: PropsType,
   withoutTheme?: boolean,
@@ -52,7 +57,7 @@ const withRoute = (
   },
 ): { component: ReactNode } => {
   const routes = [{ path: routeMatch.path, element: jsx }];
-  const router = createMemoryRouter(routes, { initialEntries: [routeMatch.route] });
+  const router = createMemoryRouter(routes, { initialEntries: [routeMatch.route], initialIndex: 1 });
   return {
     component: <RouterProvider router={router} />,
   };
@@ -70,15 +75,18 @@ const getComponent = <PropsType extends IPropsType>(
   return context;
 };
 
-const componentMounter =
-  <PropsType extends IPropsType>(
-    Component: FC<PropsType>,
-    defaultProps: React.ComponentProps<typeof Component>,
-    theme: Theme = createTheme({}),
-    defaultRouteMatch?: RouteMatch,
-  ): ComponentMounter<React.ComponentProps<typeof Component>> =>
-  (customProps, withoutTheme = false, routeMatch): Cypress.Chainable<MountReturn> => {
-    if (customProps || routeMatch) unmount();
+const componentMounter = <PropsType extends IPropsType>(
+  Component: FC<PropsType>,
+  defaultProps: React.ComponentProps<typeof Component>,
+  theme: Theme = createTheme({}),
+  defaultRouteMatch?: RouteMatch,
+): FunctionMounter<React.ComponentProps<typeof Component>> => ({
+  mountComponent: (
+    customProps: any,
+    withoutTheme = false,
+    routeMatch: any,
+  ): Cypress.Chainable<MountReturn> => {
+    //if (customProps || routeMatch) unmount();
     const { component } = getComponent(
       Component,
       customProps ?? defaultProps,
@@ -88,7 +96,8 @@ const componentMounter =
     );
     cy.wrap(history).as('history');
     return mount(component);
-  };
+  },
+});
 
 export type MountReloadableHookResult<T = any> = RefObject<{ getHook: () => T; reload: () => void }>;
 
@@ -115,7 +124,7 @@ const mountReloadableHook = <T extends any>(
     return forceReload ? <></> : <></>;
   });
   const ref = createRef<{ getHook: () => T; reload: () => void }>();
-  const mountComponent = componentMounter(Aux, { ref });
+  const { mountComponent } = componentMounter(Aux, { ref });
   return mountComponent().then(() => cy.wrap(ref));
 };
 
