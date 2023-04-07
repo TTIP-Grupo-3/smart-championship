@@ -15,6 +15,14 @@ export function getMethods<T>(Target: Class<T>): Array<Methods<T>> {
   ) as Array<Methods<T>>;
 }
 
+export function executeTotal<T>(func: () => T): T | any {
+  try {
+    return func();
+  } catch (reason) {
+    return reason;
+  }
+}
+
 export function without<T>(originalObject: T, ...attrs: Array<keyof T>) {
   let objectWithoutAttrs: any = { ...originalObject };
   for (const attr of attrs) {

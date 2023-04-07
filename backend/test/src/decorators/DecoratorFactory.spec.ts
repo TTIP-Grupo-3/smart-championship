@@ -203,7 +203,7 @@ describe('DecoratorFactory', () => {
 
         it('should execute in order with error', async () => {
           try {
-            await decoratedInstance.errorMethod();
+            await decoratedInstance[errorMethod]();
           } catch {}
           expect(executedOrder).toEqual(errorExecutionOrder);
         });
