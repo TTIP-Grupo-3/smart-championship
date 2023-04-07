@@ -5,8 +5,8 @@ export const Bracket = () => {
   const { classes } = useStyles();
   return (
     <>
-      <Box className={classes.bracketTeamsConnection} />
-      <Box className={classes.bracketTeamConnect} />
+      <Box data-testid="Bracket-connection-round" className={classes.bracketTeamsConnection} />
+      <Box data-testid="Bracket-connection-team" className={classes.bracketTeamConnect} />
     </>
   );
 };

@@ -13,12 +13,12 @@ export const Team: FC<TeamProps> = ({ dataTeam }) => {
   return (
     <Grid container direction="row" justifyContent="flex-start" className={classes.backgroundTeamCard}>
       <CardRefereeIcon color="red" />
-      <Typography color="black" paddingRight={0.5}>
+      <Typography paddingRight={0.5} className={classes.redCard}>
         {dataTeam.cards.red}
       </Typography>
       <Divider orientation="vertical" flexItem className={classes.diVertical} />
       <CardRefereeIcon color="yellow" />
-      <Typography color="black" paddingRight={0.5}>
+      <Typography paddingRight={0.5} className={classes.yellowCard}>
         {dataTeam.cards.yellow}
       </Typography>
       <Divider orientation="vertical" flexItem className={classes.diVertical} />
