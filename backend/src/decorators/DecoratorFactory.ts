@@ -36,7 +36,7 @@ export class DecoratorFactory {
       throw error;
     },
   ): DescriptorMethodDecorator<T, S> {
-    return DecoratorFactory.methodDecorator((fn, thisArg, target, propertyKey, ...args) => {
+    return this.methodDecorator((fn, thisArg, target, propertyKey, ...args) => {
       const executionArgs = { before, after, onError, fn, thisArg, target, propertyKey, args };
       return isAsyncFunction(fn) ? this.asyncExecution(executionArgs) : this.syncExecution(executionArgs);
     });
@@ -77,7 +77,7 @@ export class DecoratorFactory {
       : this.generateSyncNamedFunction(func, target, propertyKey, descriptor);
   }
 
-  static generateSyncNamedFunction<T, R>(
+  private static generateSyncNamedFunction<T, R>(
     func: MethodComposer<T>,
     target: MethodDecoratorTarget<R>,
     propertyKey: string,
@@ -91,7 +91,7 @@ export class DecoratorFactory {
     }[fn.name];
   }
 
-  static generateAsyncNamedFunction<T, R>(
+  private static generateAsyncNamedFunction<T, R>(
     func: MethodComposer<T>,
     target: MethodDecoratorTarget<R>,
     propertyKey: string,

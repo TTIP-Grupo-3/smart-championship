@@ -1,0 +1,10 @@
+{
+  "errorMessage": "Error",
+  "metadata": [
+    { "key": "key-1", "value": "metadata-1" },
+    { "key": "key-2", "value": "metadata-2" },
+    { "key": "key-3", "value": "metadata-3" },
+    { "key": "key-4", "value": "metadata-4" },
+    { "key": "key-5", "value": "metadata-5" }
+  ]
+}
