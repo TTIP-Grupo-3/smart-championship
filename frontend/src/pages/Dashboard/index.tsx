@@ -33,7 +33,7 @@ export const DashBoard: FC = () => {
 
   return (
     <Navbar>
-      <Grid container className={classes.gridContainer} sx={{ display: 'flex' }}>
+      <Grid container className={classes.gridContainer}>
         <CompositionTournament dataSet={matches} />
       </Grid>
     </Navbar>

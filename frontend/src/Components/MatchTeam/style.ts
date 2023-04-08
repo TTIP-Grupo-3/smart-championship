@@ -28,19 +28,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     color: 'white',
     fontWeight: 600,
   },
-  nameTypo: {
-    paddingLeft: 5,
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    maxWidth: 100,
-    flexGrow: 5,
-    color: 'white',
-    fontWeight: 600,
-    fontSize: '16px',
-    fontFamily: 'sans-serif',
-    lineHeight: '24px',
-    letterSpacing: '0.18px',
-  },
+
   gridIconTeam: {
     display: 'flex',
     paddingLeft: '4%',

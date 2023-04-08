@@ -4,7 +4,6 @@ import { makeStyles } from 'tss-react/mui';
 export const useStyles = makeStyles()((theme: Theme) => ({
   grid: { maxWidth: '100px' },
   typography: {
-    paddingLeft: 5,
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     maxWidth: 100,

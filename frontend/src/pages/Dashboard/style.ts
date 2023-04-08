@@ -6,5 +6,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     width: 'auto',
     display: 'flex',
     paddingTop: '2%',
+    flexWrap: 'nowrap',
   },
 }));
