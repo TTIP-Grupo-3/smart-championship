@@ -1,11 +1,29 @@
 import { Grid } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { TeamStatus } from '../../components/BoxTeams';
 import CompositionTournament from '../../components/CompositionTournament';
 import { Navbar } from '../../components/NavBar';
 import { API } from '../../services/Championship';
+import { useStyles } from './style';
 
-export const DashBoard = () => {
-  const [matches, setMatches] = useState({ matches: [], next: null });
+export interface SmartChampionship extends EliminationTournament {
+  id: number;
+  name: string;
+}
+export interface EliminationTournament {
+  matches: MatchTournament[];
+  next: EliminationTournament | null;
+}
+
+export interface MatchTournament {
+  id: number;
+  local: TeamStatus;
+  visiting: TeamStatus;
+}
+
+export const DashBoard: FC = () => {
+  const [matches, setMatches] = useState<EliminationTournament>({ matches: [], next: null });
+  const { classes } = useStyles();
 
   useEffect(() => {
     API.getChampionship().then((r) => {
@@ -15,7 +33,7 @@ export const DashBoard = () => {
 
   return (
     <Navbar>
-      <Grid sx={{ display: 'flex' }}>
+      <Grid container className={classes.gridContainer} sx={{ display: 'flex' }}>
         <CompositionTournament dataSet={matches} />
       </Grid>
     </Navbar>

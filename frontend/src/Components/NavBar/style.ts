@@ -14,7 +14,8 @@ const useStyles = makeStyles()((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
-    backgroundColor: '#3F5865',
+    backgroundColor: '#282c34',
+    paddingInline: theme.spacing(2),
   },
   title: {
     fontFamily: 'sans-serif',

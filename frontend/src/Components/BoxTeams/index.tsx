@@ -1,6 +1,6 @@
-import { Divider, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { FC } from 'react';
-import { Team } from '../Team';
+import { Match } from '../Match';
 import { useStyles } from './style';
 
 interface BoxTeamProps {
@@ -25,9 +25,7 @@ export const BoxTeams: FC<BoxTeamProps> = ({ local, visiting }) => {
   return (
     <Grid container className={classes.gridContainer}>
       <Grid className={classes.gridTeam}>
-        <Team dataTeam={local} />
-        <Divider className={classes.dividerTeam} />
-        <Team dataTeam={visiting} />
+        <Match local={local} visiting={visiting} />
       </Grid>
     </Grid>
   );

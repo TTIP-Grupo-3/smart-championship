@@ -1,15 +1,21 @@
 import { Grid } from '@mui/material';
 import { FC } from 'react';
+import { EliminationTournament, MatchTournament } from '../../pages/Dashboard';
 import { BoxTeams } from '../BoxTeams';
 import { Bracket } from '../Bracket';
 import { useStyles } from './style';
 
-const CompositionTournament: FC<any> = ({ dataSet, round = 0 }) => {
+interface CompositionTournamentProps {
+  dataSet: EliminationTournament;
+  round?: number;
+}
+
+const CompositionTournament: FC<CompositionTournamentProps> = ({ dataSet, round = 0 }) => {
   const { classes } = useStyles();
   return (
     <>
       <Grid className={classes.round}>
-        {dataSet.matches.map((match: any) => (
+        {dataSet.matches.map((match: MatchTournament) => (
           <Grid key={match.id} className={classes.matchesRound}>
             <Grid className={classes.alineationTeamsColumn}>
               {round > 0 && (
