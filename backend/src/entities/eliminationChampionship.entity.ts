@@ -20,8 +20,6 @@ export class EliminationChampionship extends Championship {
     createForeignKeyConstraints: false,
   })
   players: Array<ChampionshipPlayer>;
-  @OneToMany(() => EliminationMatch, (match) => match.championship)
-  matches: Array<EliminationMatch>;
   @OneToOne(() => EliminationMatch, { cascade: true })
   @JoinColumn()
   final: EliminationMatch;

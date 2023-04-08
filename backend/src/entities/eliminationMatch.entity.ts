@@ -1,14 +1,6 @@
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { configService } from 'src/services/config.service';
-import {
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Tree,
-  TreeChildren,
-  TreeParent,
-} from 'typeorm';
+import { Entity, JoinColumn, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from 'typeorm';
 import { OneToOne } from 'typeorm';
 import { Match } from './match.entity';
 import { MatchStatus } from './matchStatus.entity';
@@ -31,11 +23,6 @@ export class EliminationMatch extends Match {
     orphanedRowAction: 'delete',
   })
   championshipFinal: EliminationChampionship;
-  @ManyToOne(() => EliminationChampionship, (championship) => championship.matches, {
-    onDelete: 'CASCADE',
-    orphanedRowAction: 'delete',
-  })
-  championship: EliminationChampionship;
   @TreeParent()
   parent: EliminationMatch | null;
   @TreeChildren({ cascade: true })
