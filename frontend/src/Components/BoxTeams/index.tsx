@@ -23,8 +23,8 @@ export const BoxTeams: FC<BoxTeamProps> = ({ local, visiting }) => {
   const { classes } = useStyles();
 
   return (
-    <Grid container className={classes.gridContainer}>
-      <Grid className={classes.gridTeam}>
+    <Grid container data-testid="BoxTeams" className={classes.gridContainer}>
+      <Grid data-testid="BoxTeams-grid-teams" className={classes.gridTeam}>
         <Match local={local} visiting={visiting} />
       </Grid>
     </Grid>

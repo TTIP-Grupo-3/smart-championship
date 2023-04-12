@@ -20,7 +20,6 @@ import {
 } from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { TypographyStyleOptions } from '@mui/material/styles/createTypography';
-import { FunctionTypeNode } from 'typescript';
 
 const withTheme = (jsx: ReactNode, theme: Theme): ReactElement => (
   <ThemeProvider {...{ theme }}>{jsx}</ThemeProvider>

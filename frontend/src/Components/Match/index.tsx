@@ -16,7 +16,7 @@ interface TeamProps {
 export const Match: FC<TeamProps> = ({ local, visiting }) => {
   const { classes } = useStyles();
   return (
-    <Grid container className={classes.backgroundTeamCard}>
+    <Grid container data-testid="Match" className={classes.backgroundTeamCard}>
       <MatchTeam logo={smartLogoLocal} team={local} />
       <ScoreMatch localGoals={local.goals} visitingGoals={visiting.goals} />
       <MatchTeam logo={smartLogoVisiting} team={visiting} />
