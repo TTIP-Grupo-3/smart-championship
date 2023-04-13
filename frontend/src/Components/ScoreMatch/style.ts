@@ -3,11 +3,11 @@ import { makeStyles } from 'tss-react/mui';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
   result: {
-    color: 'white',
+    color: theme.palette.common.white,
     fontSize: '40px',
     fontFamily: 'sans-serif',
     fontWeight: 600,
-    lineWeight: '24px',
+    lineHeight: '60px',
     letterSpacing: '0.24px',
   },
   resultGrid: {

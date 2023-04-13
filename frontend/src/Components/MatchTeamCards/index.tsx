@@ -4,13 +4,13 @@ import { TeamStatus } from '../BoxTeams';
 import { MatchTeamCard } from '../MatchTeamCard';
 import { useStyles } from './style';
 
-type MatchTeamCardsProps = TeamStatus;
+type MatchTeamCardsProps = Omit<TeamStatus, 'name' | 'goals'>;
 
 export const MatchTeamCards: FC<MatchTeamCardsProps> = ({ cards }) => {
   const { classes } = useStyles();
 
   return (
-    <Grid className={classes.cardsGrid}>
+    <Grid data-testid="MatchTeamCards" className={classes.cardsGrid}>
       <MatchTeamCard color="red" amount={cards.red} />
       <MatchTeamCard color="yellow" amount={cards.yellow} />
     </Grid>

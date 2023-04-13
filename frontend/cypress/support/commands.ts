@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 /// <reference types="Cypress"/>
-import { getContainerEl } from 'cypress/react';
+import { getContainerEl } from 'cypress/react18';
 import { RouteHandler } from 'cypress/types/net-stubbing';
 import ReactDOM from 'react-dom';
 

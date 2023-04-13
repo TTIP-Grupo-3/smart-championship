@@ -4,7 +4,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-undef */
-import { mount, MountReturn } from 'cypress/react';
+import { mount, MountReturn } from 'cypress/react18';
 import { createTheme, Theme, ThemeProvider, TypographyVariant } from '@mui/material/styles';
 
 import {
@@ -145,4 +145,9 @@ const testTypography = (
     .and('have.css', 'letter-spacing', letterSpacing === '0px' ? '0' : letterSpacing);
 };
 
-export { componentMounter, testTypography, mountReloadableHook };
+const percentaje = (percent: number, size: 'Height' | 'Width') => {
+  const sizeW: 'innerWidth' | 'innerHeight' = `inner${size}`;
+  const sizeWin: number = (window[sizeW] * percent) / 100;
+  return `${sizeWin.toString()}px`;
+};
+export { componentMounter, testTypography, mountReloadableHook, percentaje };

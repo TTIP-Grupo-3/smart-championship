@@ -13,8 +13,8 @@ interface MatchTeamProps {
 export const MatchTeam: FC<MatchTeamProps> = ({ logo, team }) => {
   const { classes } = useStyles();
   return (
-    <Grid className={classes.gridIconTeam}>
-      <img src={logo} width="60" height="60" />
+    <Grid data-testid="MatchTeam" className={classes.gridIconTeam}>
+      <img src={logo} data-testid="img-team" width="60" height="60" />
       <TooltipText text={team.name} />
       <MatchTeamCards {...team} />
     </Grid>

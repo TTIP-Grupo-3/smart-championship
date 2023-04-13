@@ -67,7 +67,7 @@ describe('CenteredSpacer', () => {
           });
       });
 
-      const itRendersInlineGridWithCustomStyle = (inlinePosition: 'left' | 'right'): Test =>
+      const itRendersInlineGridWithCustomStyle = (inlinePosition: 'left' | 'right'): void =>
         it(`renders ${inlinePosition} grid with custom style`, () => {
           getPositionGrid(inlinePosition)
             .should('have.css', 'display', 'flex')

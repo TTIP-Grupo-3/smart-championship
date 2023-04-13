@@ -9,6 +9,7 @@ interface MatchTeamCardProps {
 export const MatchTeamCard: FC<MatchTeamCardProps> = ({ color, amount }) => (
   <>
     <Grid
+      data-testid="MatchTeamCard"
       style={{
         display: amount > 0 ? 'flex' : 'none',
         width: 12,

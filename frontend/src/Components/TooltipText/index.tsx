@@ -9,7 +9,7 @@ interface TooltipTextProps {
 }
 
 export const TooltipText: FC<TooltipTextProps> = (props) => {
-  const { text, disabled = false, 'data-testid': dataTestId = 'tooltipRef' } = props;
+  const { text, disabled = false, 'data-testid': dataTestId = 'TooltipText' } = props;
   const [showTooltip, setShowTooltiop] = useState<boolean>(true);
   const ref = useRef<HTMLElement>(document.createElement('div'));
   const { classes } = useStyles();
@@ -25,7 +25,7 @@ export const TooltipText: FC<TooltipTextProps> = (props) => {
     >
       <Grid className={classes.grid}>
         <Typography
-          data-testid="tooltipRef-text"
+          data-testid="tooltipText-typography"
           variant="body2"
           className={disabled ? classes.disabled : classes.typography}
           noWrap

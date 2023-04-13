@@ -11,8 +11,8 @@ export const ScoreMatch: FC<ScoreMatchProps> = ({ localGoals, visitingGoals }) =
   const { classes } = useStyles();
 
   return (
-    <Grid className={classes.resultGrid}>
-      <Typography className={classes.result} noWrap>
+    <Grid data-testid="ScoreMatch" className={classes.resultGrid}>
+      <Typography data-testid="ScoreMatch-score-result" className={classes.result} noWrap>
         {localGoals} - {visitingGoals}
       </Typography>
     </Grid>

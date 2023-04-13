@@ -8,7 +8,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     overflow: 'hidden',
     maxWidth: 100,
     flexGrow: 1,
-    color: 'white',
+    color: theme.palette.common.white,
     fontWeight: 600,
     fontSize: '16px',
     fontFamily: 'sans-serif',
