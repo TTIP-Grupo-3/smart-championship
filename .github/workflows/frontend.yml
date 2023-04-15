@@ -19,20 +19,34 @@ defaults:
   working-directory: ./frontend
 
 jobs:
-  cypress-run:
-    runs-on: ubuntu-22.04
-    container: cypress/browsers:node18.12.0-chrome107
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+     
+      - uses: cypress-io/github-action@v5
+      
+      - name: Use Node.js ${{ matrix.node-version }}
+         
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+
       - name: Install dependencies
         run: npm install --silent
-      
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        with:
-          working-directory: ./frontend
-          test: npm run cypress-test
-          build: npm run build
-          start: npm start
-          browser: chrome
+
+      - name: Run Cypress Test
+       uses: cypress-io/github-action@v5
+       with:
+         working-directory: ./frontend
+         command: npx cypress run
+         browser: chrome
+
+      - name: Build
+        run: npm run build
