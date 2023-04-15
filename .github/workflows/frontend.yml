@@ -16,7 +16,7 @@ on:
 
 defaults:
  run:
-  working-directory: ../frontend
+  working-directory: ./frontend
 
 jobs:
   build:
@@ -28,12 +28,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          working-directory: ../frontend
      
       - uses: cypress-io/github-action@v5
         with:
-          working-directory: ../frontend
+          command: npx run cypress
           component: true
 
       
