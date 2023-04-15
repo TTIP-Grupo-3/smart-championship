@@ -15,7 +15,7 @@ export default defineConfig({
     },
     screenshotOnRunFailure: false,
     video: false,
-    specPattern: ['src/components/**/*.spec.tsx', 'src/pages/***.spec.tsx'],
+    specPattern: ['src/components/**/*.spec.tsx', 'src/pages/**/*.spec.tsx'],
     devServer: {
       framework: 'create-react-app',
       bundler: 'webpack',
