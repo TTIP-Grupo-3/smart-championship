@@ -48,6 +48,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
-          build: npm run build
-          start: npm start
+          command: npx cypress run --component
           browser: chrome
