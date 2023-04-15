@@ -5,12 +5,12 @@ import { BoxTeams } from '../BoxTeams';
 import { Bracket } from '../Bracket';
 import { useStyles } from './style';
 
-interface CompositionTournamentProps {
+interface TournamentProps {
   dataSet: EliminationTournament;
   round?: number;
 }
 
-const Tournament: FC<CompositionTournamentProps> = ({ dataSet, round = 0 }) => {
+export const Tournament: FC<TournamentProps> = ({ dataSet, round = 0 }) => {
   const { classes } = useStyles();
   return (
     <div data-testid="Tournament">
@@ -40,5 +40,3 @@ const Tournament: FC<CompositionTournamentProps> = ({ dataSet, round = 0 }) => {
     </div>
   );
 };
-
-export default Tournament;

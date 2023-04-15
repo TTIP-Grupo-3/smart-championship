@@ -1,4 +1,4 @@
-import Tournament from '.';
+import { Tournament } from '.';
 import { fakeTheme } from '../../test/fake_theme';
 import { componentMounter } from '../../test/utils';
 
