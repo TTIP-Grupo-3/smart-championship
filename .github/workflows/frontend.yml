@@ -48,5 +48,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
+          working-directory: ./frontend
           command: npx cypress run --component
           browser: chrome
