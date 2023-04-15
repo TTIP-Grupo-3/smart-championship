@@ -31,6 +31,8 @@ jobs:
      
       - uses: cypress-io/github-action@v5
         with:
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
           command: npx run cypress
           component: true
 
