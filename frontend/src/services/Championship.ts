@@ -1,7 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import { httpClient } from './httpClient';
 
-class Championship {
+class ChampionshipService {
   httpClient: AxiosInstance;
 
   constructor() {
@@ -13,6 +13,6 @@ class Championship {
   }
 }
 
-const API = new Championship();
+const API = new ChampionshipService();
 
 export { API };

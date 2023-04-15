@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { TeamStatus } from '../../components/BoxTeams';
-import CompositionTournament from '../../components/CompositionTournament';
+import Tournament from '../../components/Tournament';
 import { Navbar } from '../../components/NavBar';
 import { API } from '../../services/Championship';
 import { useStyles } from './style';
@@ -21,7 +21,7 @@ export interface MatchTournament {
   visiting: TeamStatus;
 }
 
-export const DashBoard: FC = () => {
+export const Dashboard: FC = () => {
   const [matches, setMatches] = useState<EliminationTournament>({ matches: [], next: null });
   const { classes } = useStyles();
 
@@ -34,7 +34,7 @@ export const DashBoard: FC = () => {
   return (
     <Navbar>
       <Grid container className={classes.gridContainer}>
-        <CompositionTournament dataSet={matches} />
+        <Tournament dataSet={matches} />
       </Grid>
     </Navbar>
   );
