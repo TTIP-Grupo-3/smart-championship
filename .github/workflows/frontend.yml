@@ -14,6 +14,9 @@ on:
     paths:
       - 'frontend/**'
 
+defaults:
+ run:
+  working-directory: ../frontend
 
 jobs:
   build:
@@ -25,27 +28,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+     
+      - uses: cypress-io/github-action@v5
       
       - name: Use Node.js ${{ matrix.node-version }}
          
         uses: actions/setup-node@v3
         with:
-          working-directory: ./frontend
           node-version: ${{ matrix.node-version }}
 
 
       - name: Install dependencies
         run: npm install --silent
 
-  cypress-run:
-    runs-on: ubuntu-latest
-    container: cypress/browsers:node18.12.0-chrome107
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
-        with:
-          working-directory: ./frontend
-          command: npx cypress run --component
-          browser: chrome
+      - name: Run the tests
+        run: npm run cypress-test
+
+      - name: Build
+        run: npm run build
