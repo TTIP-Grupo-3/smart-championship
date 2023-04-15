@@ -19,36 +19,17 @@ defaults:
   working-directory: ./frontend
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
-
+  cypress-run:
+    runs-on: ubuntu-22.04
+    container: cypress/browsers:node18.12.0-chrome107
     steps:
-      - uses: actions/checkout@v3
-     
-      - uses: cypress-io/github-action@v5
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
         with:
           cache: 'npm'
           cache-dependency-path: './frontend/package-lock.json'
-          command: npx run cypress
-          component: true
-
-      
-      - name: Use Node.js ${{ matrix.node-version }}
-         
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-
-
-      - name: Install dependencies
-        run: npm install --silent
-
-      - name: Run the tests
-        run: npm run cypress-test
-
-      - name: Build
-        run: npm run build
+          build: npm run build
+          start: npm start
+          browser: chrome
