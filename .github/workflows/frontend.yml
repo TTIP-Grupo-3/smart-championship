@@ -40,8 +40,7 @@ jobs:
         run: npm install --silent
 
       - name: Run the tests
-        run: npm run cypress-test
-
-      - name: Build
-        run: npm run build
-
+        uses: cypress-io/github-action@v5
+        with:
+          build: npm run build
+          start: npm start
