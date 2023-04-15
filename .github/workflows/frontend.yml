@@ -25,10 +25,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install --silent
+      
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
           working-directory: ./frontend
+          test: npm run cypress-test
           build: npm run build
           start: npm start
           browser: chrome
