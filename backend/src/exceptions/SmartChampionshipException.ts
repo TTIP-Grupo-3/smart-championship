@@ -1,5 +1,3 @@
-export abstract class SmartChampionshipException extends Error {
-  public get name(): string {
-    return Object.getPrototypeOf(this).constructor.name;
-  }
-}
+import { HttpException } from '@nestjs/common';
+
+export abstract class SmartChampionshipException extends HttpException {}

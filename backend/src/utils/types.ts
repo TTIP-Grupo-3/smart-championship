@@ -1,4 +1,5 @@
 export type NoPromise = Diff<any, Promise<any>>;
+export type MaybeArray<T> = T | Array<T>;
 export type Methods<T> = jest.FunctionPropertyNames<Required<T>>;
 export type Class<T> = { new (...args: any[]): T };
 export type AbstractClass<T> = (abstract new () => T) & { prototype: T };
