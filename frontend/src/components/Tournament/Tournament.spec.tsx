@@ -20,7 +20,7 @@ describe('Tournament', () => {
     cy.get('[data-testid=Tournament-round]').should('exist');
   });
   it('tournament round test display and flex', () => {
-    cy.get('[data-testid=tournament-round]')
+    cy.get('[data-testid=Tournament-round]')
       .should('have.css', 'display', 'flex')
       .and('have.css', 'flex-direction', 'column')
       .and('have.css', 'flex-grow', '1');

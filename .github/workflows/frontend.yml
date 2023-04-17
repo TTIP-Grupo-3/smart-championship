@@ -5,6 +5,7 @@ on:
     branches: 
      - 'development'
      - 'main' 
+     - 'development-dashboard'
     paths:
       - 'frontend/**'
   pull_request:
@@ -42,7 +43,6 @@ jobs:
       - name: Run Cypress Test
         uses: cypress-io/github-action@v5
         with:
-          working-directory: ./frontend
           command: npx cypress run --component
           browser: chrome
 
