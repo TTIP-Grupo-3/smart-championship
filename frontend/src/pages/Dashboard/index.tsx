@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { TeamStatus } from '../../components/BoxTeams';
 import { Navbar } from '../../components/NavBar';
 import { Tournament } from '../../components/Tournament';
+
 import { API } from '../../services/Championship';
 import { useStyles } from './style';
 
