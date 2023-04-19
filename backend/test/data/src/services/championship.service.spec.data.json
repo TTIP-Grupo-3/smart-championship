@@ -3,52 +3,144 @@
   "championship": {
     "id": 1,
     "name": "Smart Championship",
-    "matches": [
+    "teams": [
       {
         "id": 1,
-        "local": { "name": "Team-1", "goals": 2, "cards": { "red": 0, "yellow": 2 } },
-        "visiting": { "name": "Team-2", "goals": 0, "cards": { "red": 2, "yellow": 0 } }
+        "name": "Team-1",
+        "players": [
+          { "id": 1, "name": "player-1", "number": 1 },
+          { "id": 10, "name": "player-10", "number": 10 },
+          { "id": 11, "name": "player-11", "number": 11 },
+          { "id": 2, "name": "player-2", "number": 2 },
+          { "id": 3, "name": "player-3", "number": 3 },
+          { "id": 4, "name": "player-4", "number": 4 },
+          { "id": 5, "name": "player-5", "number": 5 },
+          { "id": 6, "name": "player-6", "number": 6 },
+          { "id": 7, "name": "player-7", "number": 7 },
+          { "id": 8, "name": "player-8", "number": 8 },
+          { "id": 9, "name": "player-9", "number": 9 }
+        ]
       },
       {
         "id": 2,
-        "local": { "name": "Team-3", "goals": 0, "cards": { "red": 0, "yellow": 5 } },
-        "visiting": { "name": "Team-4", "goals": 3, "cards": { "red": 0, "yellow": 2 } }
+        "name": "Team-2",
+        "players": [
+          { "id": 12, "name": "player-12", "number": 12 },
+          { "id": 13, "name": "player-13", "number": 13 },
+          { "id": 14, "name": "player-14", "number": 14 },
+          { "id": 15, "name": "player-15", "number": 15 },
+          { "id": 16, "name": "player-16", "number": 16 },
+          { "id": 17, "name": "player-17", "number": 17 },
+          { "id": 18, "name": "player-18", "number": 18 },
+          { "id": 19, "name": "player-19", "number": 19 },
+          { "id": 20, "name": "player-20", "number": 20 },
+          { "id": 21, "name": "player-21", "number": 21 },
+          { "id": 22, "name": "player-22", "number": 22 }
+        ]
       },
       {
         "id": 3,
-        "local": { "name": "Team-5", "goals": 0, "cards": { "red": 0, "yellow": 0 } },
-        "visiting": { "name": "Team-6", "goals": 1, "cards": { "red": 1, "yellow": 0 } }
+        "name": "Team-3",
+        "players": [
+          { "id": 23, "name": "player-23", "number": 23 },
+          { "id": 24, "name": "player-24", "number": 24 },
+          { "id": 25, "name": "player-25", "number": 25 },
+          { "id": 26, "name": "player-26", "number": 26 },
+          { "id": 27, "name": "player-27", "number": 27 },
+          { "id": 28, "name": "player-28", "number": 28 },
+          { "id": 29, "name": "player-29", "number": 29 },
+          { "id": 30, "name": "player-30", "number": 30 },
+          { "id": 31, "name": "player-31", "number": 31 },
+          { "id": 32, "name": "player-32", "number": 32 },
+          { "id": 33, "name": "player-33", "number": 33 }
+        ]
       },
       {
         "id": 4,
-        "local": { "name": "Team-7", "goals": 5, "cards": { "red": 0, "yellow": 0 } },
-        "visiting": { "name": "Team-8", "goals": 0, "cards": { "red": 1, "yellow": 0 } }
+        "name": "Team-4",
+        "players": [
+          { "id": 34, "name": "player-34", "number": 34 },
+          { "id": 35, "name": "player-35", "number": 35 },
+          { "id": 36, "name": "player-36", "number": 36 },
+          { "id": 37, "name": "player-37", "number": 37 },
+          { "id": 38, "name": "player-38", "number": 38 },
+          { "id": 39, "name": "player-39", "number": 39 },
+          { "id": 40, "name": "player-40", "number": 40 },
+          { "id": 41, "name": "player-41", "number": 41 },
+          { "id": 42, "name": "player-42", "number": 42 },
+          { "id": 43, "name": "player-43", "number": 43 },
+          { "id": 44, "name": "player-44", "number": 44 }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Team-5",
+        "players": [
+          { "id": 45, "name": "player-45", "number": 45 },
+          { "id": 46, "name": "player-46", "number": 46 },
+          { "id": 47, "name": "player-47", "number": 47 },
+          { "id": 48, "name": "player-48", "number": 48 },
+          { "id": 49, "name": "player-49", "number": 49 },
+          { "id": 50, "name": "player-50", "number": 50 },
+          { "id": 51, "name": "player-51", "number": 51 },
+          { "id": 52, "name": "player-52", "number": 52 },
+          { "id": 53, "name": "player-53", "number": 53 },
+          { "id": 54, "name": "player-54", "number": 54 },
+          { "id": 55, "name": "player-55", "number": 55 }
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Team-6",
+        "players": [
+          { "id": 56, "name": "player-56", "number": 56 },
+          { "id": 57, "name": "player-57", "number": 57 },
+          { "id": 58, "name": "player-58", "number": 58 },
+          { "id": 59, "name": "player-59", "number": 59 },
+          { "id": 60, "name": "player-60", "number": 60 },
+          { "id": 61, "name": "player-61", "number": 61 },
+          { "id": 62, "name": "player-62", "number": 62 },
+          { "id": 63, "name": "player-63", "number": 63 },
+          { "id": 64, "name": "player-64", "number": 64 },
+          { "id": 65, "name": "player-65", "number": 65 },
+          { "id": 66, "name": "player-66", "number": 66 }
+        ]
+      },
+      {
+        "id": 7,
+        "name": "Team-7",
+        "players": [
+          { "id": 67, "name": "player-67", "number": 67 },
+          { "id": 68, "name": "player-68", "number": 68 },
+          { "id": 69, "name": "player-69", "number": 69 },
+          { "id": 70, "name": "player-70", "number": 70 },
+          { "id": 71, "name": "player-71", "number": 71 },
+          { "id": 72, "name": "player-72", "number": 72 },
+          { "id": 73, "name": "player-73", "number": 73 },
+          { "id": 74, "name": "player-74", "number": 74 },
+          { "id": 75, "name": "player-75", "number": 75 },
+          { "id": 76, "name": "player-76", "number": 76 },
+          { "id": 77, "name": "player-77", "number": 77 }
+        ]
+      },
+      {
+        "id": 8,
+        "name": "Team-8",
+        "players": [
+          { "id": 78, "name": "player-78", "number": 78 },
+          { "id": 79, "name": "player-79", "number": 79 },
+          { "id": 80, "name": "player-80", "number": 80 },
+          { "id": 81, "name": "player-81", "number": 81 },
+          { "id": 82, "name": "player-82", "number": 82 },
+          { "id": 83, "name": "player-83", "number": 83 },
+          { "id": 84, "name": "player-84", "number": 84 },
+          { "id": 85, "name": "player-85", "number": 85 },
+          { "id": 86, "name": "player-86", "number": 86 },
+          { "id": 87, "name": "player-87", "number": 87 },
+          { "id": 88, "name": "player-88", "number": 88 }
+        ]
       }
-    ],
-    "next": {
-      "matches": [
-        {
-          "id": 5,
-          "local": { "name": "Team-1", "goals": 0, "cards": { "red": 2, "yellow": 0 } },
-          "visiting": { "name": "Team-4", "goals": 4, "cards": { "red": 0, "yellow": 0 } }
-        },
-        {
-          "id": 6,
-          "local": { "name": "Team-6", "goals": 3, "cards": { "red": 0, "yellow": 0 } },
-          "visiting": { "name": "Team-7", "goals": 0, "cards": { "red": 2, "yellow": 0 } }
-        }
-      ],
-      "next": {
-        "matches": [
-          {
-            "id": 7,
-            "local": { "name": "Team-4", "goals": 1, "cards": { "red": 0, "yellow": 0 } },
-            "visiting": { "name": "Team-6", "goals": 0, "cards": { "red": 1, "yellow": 0 } }
-          }
-        ],
-        "next": null
-      }
-    }
+    ]
   },
   "errors": {
     "championshipNotFound": "Championship not found"

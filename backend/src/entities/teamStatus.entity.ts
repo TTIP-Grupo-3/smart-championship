@@ -28,4 +28,14 @@ export class TeamStatus {
   constructor(team: ChampionshipTeam | null) {
     this.team = team;
   }
+
+  goal(goal: Goal) {
+    this.goals.push(goal);
+    goal.setStatus(this);
+  }
+
+  card(card: Card) {
+    this.cards.push(card);
+    card.setStatus(this);
+  }
 }
