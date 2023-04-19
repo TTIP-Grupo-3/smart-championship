@@ -28,6 +28,14 @@ export class EliminationChampionship extends Championship {
     return this.final.phases;
   }
 
+  public get room() {
+    return `championship-${this.id}`;
+  }
+
+  findMatch(id: number): EliminationMatch {
+    return this.final.findMatch(id);
+  }
+
   generateMatches() {
     if (!this.isGenerable()) throw new InvalidArgumentException(errors.invalidArgument);
     let baseMatches: Array<EliminationMatch> | Array<ChampionshipTeam> = this.unsortedTeams();

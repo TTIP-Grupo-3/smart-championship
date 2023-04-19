@@ -3,6 +3,9 @@ import { JoinColumn } from 'typeorm';
 import { OneToOne } from 'typeorm';
 import { Entity } from 'typeorm';
 import { TeamStatus } from './teamStatus.entity';
+import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
+import { Goal } from './goal.entity';
+import { Card } from './card.entity';
 
 @Entity()
 export class MatchStatus {
@@ -10,9 +13,9 @@ export class MatchStatus {
   id: number;
   @Column()
   date: Date;
-  @Column()
+  @Column({ nullable: true })
   start: Date;
-  @Column()
+  @Column({ nullable: true })
   end: Date;
   @OneToOne(() => TeamStatus, { eager: true, cascade: true })
   @JoinColumn()
@@ -24,5 +27,31 @@ export class MatchStatus {
   constructor(localStatus: TeamStatus, visitingStatus: TeamStatus) {
     this.localStatus = localStatus;
     this.visitingStatus = visitingStatus;
+  }
+
+  startMatch() {
+    if (!!this.start) throw new InvalidArgumentException();
+    this.start = new Date();
+  }
+
+  endMatch() {
+    if (!!this.end) throw new InvalidArgumentException();
+    this.end = new Date();
+  }
+
+  goal(goal: Goal, local: boolean) {
+    if (local) {
+      this.localStatus.goal(goal);
+    } else {
+      this.visitingStatus.goal(goal);
+    }
+  }
+
+  card(card: Card, local: boolean) {
+    if (local) {
+      this.localStatus.card(card);
+    } else {
+      this.visitingStatus.card(card);
+    }
   }
 }

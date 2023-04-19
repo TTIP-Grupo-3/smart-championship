@@ -14,4 +14,8 @@ export class Goal {
   player: ChampionshipPlayer;
   @ManyToOne(() => TeamStatus, (status) => status.goals)
   status: TeamStatus;
+
+  setStatus(status: TeamStatus) {
+    this.status = status;
+  }
 }

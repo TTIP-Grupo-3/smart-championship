@@ -13,6 +13,7 @@ import {
   championship,
   errors,
 } from '../../data/src/services/championship.service.spec.data.json';
+import { TransactionService } from 'src/services/transaction.service';
 
 describe('ChampionshipService', () => {
   let module: TestingModule;
@@ -26,7 +27,7 @@ describe('ChampionshipService', () => {
         TypeOrmModule.forRoot(testSqlClient()),
         TypeOrmModule.forFeature(entities),
       ],
-      providers: [ChampionshipService, DataService, EntityToDTOMapper],
+      providers: [ChampionshipService, DataService, EntityToDTOMapper, TransactionService],
     }).compile();
     service = module.get<ChampionshipService>(ChampionshipService);
     dataService = module.get<DataService>(DataService);

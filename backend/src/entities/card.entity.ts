@@ -22,4 +22,8 @@ export class Card {
   player: ChampionshipPlayer;
   @ManyToOne(() => TeamStatus, (status) => status.cards)
   status: TeamStatus;
+
+  setStatus(status: TeamStatus) {
+    this.status = status;
+  }
 }
