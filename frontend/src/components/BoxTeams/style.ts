@@ -19,6 +19,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     minWidth: '239px',
+    cursor: 'pointer',
   },
 }));
 

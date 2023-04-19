@@ -8,15 +8,16 @@ import { useStyles } from './style';
 interface MatchTeamProps {
   logo: string;
   team: TeamStatus;
+  showCards?: boolean;
 }
 
-export const MatchTeam: FC<MatchTeamProps> = ({ logo, team }) => {
+export const MatchTeam: FC<MatchTeamProps> = ({ logo, team, showCards = true }) => {
   const { classes } = useStyles();
   return (
     <Grid data-testid="MatchTeam" className={classes.gridIconTeam}>
       <img src={logo} data-testid="img-team" width="60" height="60" />
       <TooltipText text={team.name} />
-      <MatchTeamCards {...team} />
+      {showCards && <MatchTeamCards {...team} />}
     </Grid>
   );
 };

@@ -10,7 +10,11 @@ const team = {
   goals: 0,
   cards: cards,
 };
-const { mountComponent } = componentMounter(MatchTeam, { team, logo: smartLogoLocal }, theme);
+const { mountComponent } = componentMounter(
+  MatchTeam,
+  { team, logo: smartLogoLocal, showCards: true },
+  theme,
+);
 
 describe('MatchTeam', () => {
   beforeEach(() => {

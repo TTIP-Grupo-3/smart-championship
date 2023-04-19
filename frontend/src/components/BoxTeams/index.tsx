@@ -1,5 +1,6 @@
 import { Grid } from '@mui/material';
-import { FC } from 'react';
+import { FC, useState } from 'react';
+import { MatchDialog } from '../MatchDialog';
 import { Match } from '../Match';
 import { useStyles } from './style';
 
@@ -21,12 +22,22 @@ interface TypeCards {
 
 export const BoxTeams: FC<BoxTeamProps> = ({ local, visiting }) => {
   const { classes } = useStyles();
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Grid container data-testid="BoxTeams" className={classes.gridContainer}>
-      <Grid data-testid="BoxTeams-grid-teams" className={classes.gridTeam}>
+      <Grid data-testid="BoxTeams-grid-teams" className={classes.gridTeam} onClick={handleClickOpen}>
         <Match local={local} visiting={visiting} />
       </Grid>
+      <MatchDialog open={open} close={handleClose} />
     </Grid>
   );
 };
