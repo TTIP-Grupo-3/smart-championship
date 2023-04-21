@@ -6,6 +6,7 @@ import { TeamStatusResponseDTO } from './teamStatus.response.dto';
 export class MatchResponseDTO implements MatchResponse {
   @ApiProperty()
   id: number;
+
   @ApiProperty({ type: TeamStatusResponseDTO })
   @Type(() => TeamStatusResponseDTO)
   local: TeamStatusResponseDTO;
