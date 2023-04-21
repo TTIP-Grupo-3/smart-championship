@@ -1,6 +1,6 @@
-import { MatchResponse } from './match.response';
+import { PartialMatchResponse } from './partialMatch.response';
 
 export type PhaseResponse = null | {
-  matches: Array<MatchResponse>;
+  matches: Array<PartialMatchResponse>;
   next: PhaseResponse;
 };

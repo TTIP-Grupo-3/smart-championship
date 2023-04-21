@@ -6,6 +6,7 @@ import { TeamStatus } from './teamStatus.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { Goal } from './goal.entity';
 import { Card } from './card.entity';
+import { MatchResponseStatus } from 'src/responses/match.response';
 
 @Entity()
 export class MatchStatus {
@@ -23,6 +24,16 @@ export class MatchStatus {
   @OneToOne(() => TeamStatus, { eager: true, cascade: true })
   @JoinColumn()
   visitingStatus: TeamStatus;
+
+  public get status(): MatchResponseStatus {
+    if (this.end) {
+      return MatchResponseStatus.FINISHED;
+    } else if (this.start) {
+      return MatchResponseStatus.STARTED;
+    } else {
+      return MatchResponseStatus.TOSTART;
+    }
+  }
 
   constructor(localStatus: TeamStatus, visitingStatus: TeamStatus) {
     this.localStatus = localStatus;

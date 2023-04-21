@@ -16,6 +16,9 @@ import { CardDTO } from 'src/dtos/card.dto';
 import { UseFilters, UsePipes } from '@nestjs/common';
 import { wsValidationPipe } from 'src/pipes/ws.validation.pipe';
 import { WsExceptionFilter } from 'src/filters/ws.exception.filter';
+import { MatchResponseDTO } from 'src/dtos/responses/match.response.dto';
+import { DisallowGoalDTO } from 'src/dtos/disallowGoal.dto';
+import { DisallowCardDTO } from 'src/dtos/disallowCard.dto';
 
 @WebSocketGateway({ namespace: 'match' })
 @UseFilters(WsExceptionFilter)
@@ -33,7 +36,7 @@ export class MatchGateway {
   @SubscribeMessage('subscribe')
   async subscribe(@ConnectedSocket() client: Socket, @MessageBody() subscribeDTO: MatchIdDTO) {
     const match = (await this.matchService.findOne(subscribeDTO)) as EliminationMatch;
-    client.emit('match', this.mapper.map(match));
+    client.emit('match', this.mapper.map(match, MatchResponseDTO));
     client.join(match.room);
   }
 
@@ -67,8 +70,20 @@ export class MatchGateway {
     await this.notifyUpdate(match);
   }
 
+  @SubscribeMessage('goal:disallow')
+  async disallowGoal(@ConnectedSocket() client: Socket, @MessageBody() disallowGoalDTO: DisallowGoalDTO) {
+    const match = await this.matchService.disallowGoal(disallowGoalDTO);
+    await this.notifyUpdate(match);
+  }
+
+  @SubscribeMessage('card:disallow')
+  async disallowCard(@ConnectedSocket() client: Socket, @MessageBody() disallowCardDTO: DisallowCardDTO) {
+    const match = await this.matchService.disallowCard(disallowCardDTO);
+    await this.notifyUpdate(match);
+  }
+
   private async notifyUpdate(match: EliminationMatch) {
-    this.server.to(match.room).emit('match', this.mapper.map(match));
+    this.server.to(match.room).emit('match', this.mapper.map(match, MatchResponseDTO));
     await this.championshipGateway.notifyUpdate(match.championship);
   }
 }

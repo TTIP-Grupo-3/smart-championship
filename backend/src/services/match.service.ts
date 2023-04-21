@@ -14,6 +14,8 @@ import { ChampionshipPlayerService } from './championshipPlayer.service';
 import { Card } from 'src/entities/card.entity';
 import { CardDTO } from 'src/dtos/card.dto';
 import { ChampionshipService } from './championship.service';
+import { DisallowGoalDTO } from 'src/dtos/disallowGoal.dto';
+import { DisallowCardDTO } from 'src/dtos/disallowCard.dto';
 
 const errors = configService.get('service.errors');
 
@@ -76,5 +78,23 @@ export class MatchService {
       match.card(card, local);
       return await manager.save(EliminationMatch, match);
     }, manager);
+  }
+
+  async disallowCard(disallowCardDTO: DisallowCardDTO): Promise<EliminationMatch> {
+    return await this.transactionService.transaction(async (manager) => {
+      const { cardId: id } = disallowCardDTO;
+      const { affected } = await manager.delete(Card, { id });
+      if (affected === 0) throw new NotFoundException();
+      return await this.findOne(disallowCardDTO, manager);
+    });
+  }
+
+  async disallowGoal(disallowGoalDTO: DisallowGoalDTO): Promise<EliminationMatch> {
+    return await this.transactionService.transaction(async (manager) => {
+      const { goalId: id } = disallowGoalDTO;
+      const { affected } = await manager.delete(Goal, { id });
+      if (affected === 0) throw new NotFoundException();
+      return await this.findOne(disallowGoalDTO, manager);
+    });
   }
 }

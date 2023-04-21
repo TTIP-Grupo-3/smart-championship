@@ -1,4 +1,6 @@
+import { PlayerEventResponse } from './playerEvent.response';
+
 export interface CardsResponse {
-  red: number;
-  yellow: number;
+  red: Array<PlayerEventResponse>;
+  yellow: Array<PlayerEventResponse>;
 }
