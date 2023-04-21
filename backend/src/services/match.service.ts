@@ -16,6 +16,7 @@ import { CardDTO } from 'src/dtos/card.dto';
 import { ChampionshipService } from './championship.service';
 import { DisallowGoalDTO } from 'src/dtos/disallowGoal.dto';
 import { DisallowCardDTO } from 'src/dtos/disallowCard.dto';
+import { Match } from 'src/entities/match.entity';
 
 const errors = configService.get('service.errors');
 
@@ -39,6 +40,16 @@ export class MatchService {
       if (!match) throw new NotFoundException(errors.notFound);
       match.championship = championship;
       return match;
+    }, manager);
+  }
+
+  async matches(championshipId: number, manager?: EntityManager): Promise<Array<Match>> {
+    return await this.transactionService.transaction(async (manager) => {
+      const championship = (await this.championshipService.getChampionship(
+        championshipId,
+        manager,
+      )) as EliminationChampionship;
+      return championship.matches();
     }, manager);
   }
 

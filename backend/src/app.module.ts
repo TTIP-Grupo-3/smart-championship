@@ -13,6 +13,7 @@ import { MatchService } from './services/match.service';
 import { MatchGateway } from './gateways/match.gateway';
 import { ChampionshipGateway } from './gateways/championship.gateway';
 import { ChampionshipPlayerService } from './services/championshipPlayer.service';
+import { MatchController } from './controllers/match.controller';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { ChampionshipPlayerService } from './services/championshipPlayer.service
     TypeOrmModule.forRoot(sqlClient()),
     TypeOrmModule.forFeature(entities),
   ],
-  controllers: [ChampionshipController],
+  controllers: [ChampionshipController, MatchController],
   providers: [
     ChampionshipService,
     TransactionService,
