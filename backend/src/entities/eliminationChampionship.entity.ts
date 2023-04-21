@@ -32,6 +32,10 @@ export class EliminationChampionship extends Championship {
     return `championship-${this.id}`;
   }
 
+  matches(): Array<EliminationMatch> {
+    return this.final.toArray();
+  }
+
   findMatch(id: number): EliminationMatch {
     return this.final.findMatch(id);
   }

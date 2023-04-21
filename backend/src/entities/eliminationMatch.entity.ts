@@ -97,6 +97,10 @@ export class EliminationMatch extends Match {
     this.status.endMatch();
   }
 
+  toArray(): Array<EliminationMatch> {
+    return this.phases.flat();
+  }
+
   private isBaseMatch() {
     return this.submatches.length === 0;
   }
