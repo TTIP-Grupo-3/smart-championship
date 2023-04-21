@@ -1,7 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
-import { WsException } from '@nestjs/websockets';
+import { ValidationException } from 'src/exceptions/ValidationException';
 
 export const wsValidationPipe = new ValidationPipe({
   transform: true,
-  exceptionFactory: (errors) => new WsException(errors),
+  exceptionFactory: (errors) => new ValidationException(errors),
 });
