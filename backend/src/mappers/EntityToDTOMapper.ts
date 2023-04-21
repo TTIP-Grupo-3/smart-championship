@@ -76,14 +76,17 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     match: EliminationMatch,
     dtoCls?: Class<SmartChampionshipDTO>,
   ): PartialMatchResponseDTO | MatchResponseDTO {
-    const { id, status } = match;
+    const {
+      id,
+      status: { localStatus, visitingStatus, status },
+    } = match;
     if (dtoCls?.name === MatchResponseDTO.name) {
-      const local = this.teamStatusResponseDTO(status.localStatus, TeamStatusResponseDTO);
-      const visiting = this.teamStatusResponseDTO(status.visitingStatus, TeamStatusResponseDTO);
-      return this.plainToInstance(MatchResponseDTO, { id, local, visiting });
+      const local = this.teamStatusResponseDTO(localStatus, TeamStatusResponseDTO);
+      const visiting = this.teamStatusResponseDTO(visitingStatus, TeamStatusResponseDTO);
+      return this.plainToInstance(MatchResponseDTO, { id, status, local, visiting });
     } else {
-      const local = this.teamStatusResponseDTO(status.localStatus);
-      const visiting = this.teamStatusResponseDTO(status.visitingStatus);
+      const local = this.teamStatusResponseDTO(localStatus);
+      const visiting = this.teamStatusResponseDTO(visitingStatus);
       return this.plainToInstance(PartialMatchResponseDTO, { id, local, visiting });
     }
   }
