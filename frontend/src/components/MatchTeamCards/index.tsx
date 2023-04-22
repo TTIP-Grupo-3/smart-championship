@@ -8,11 +8,12 @@ type MatchTeamCardsProps = Partial<Omit<TeamStatus, 'name' | 'goals'>>;
 
 export const MatchTeamCards: FC<MatchTeamCardsProps> = ({ cards }) => {
   const { classes } = useStyles();
+  console.log(cards);
 
   return (
     <Grid data-testid="MatchTeamCards" className={classes.cardsGrid}>
-      <MatchTeamCard color="red" amount={cards?.red.length} />
-      <MatchTeamCard color="yellow" amount={cards?.yellow.length} />
+      <MatchTeamCard color="red" amount={cards?.red as number} />
+      <MatchTeamCard color="yellow" amount={cards?.yellow as number} />
     </Grid>
   );
 };

@@ -5,7 +5,13 @@ import { useStyles } from './style';
 import smartLogoLocal from '../../default_match_icon_local.svg';
 import smartLogoVisiting from '../../default_match_icon_visiting.svg';
 
-export const MatchScoreResult: FC<any> = ({ match, time, componentStart, componentStop }) => {
+export const MatchScoreResult: FC<any> = ({
+  match,
+  time,
+  componentStart,
+  componentStop,
+  showTime = true,
+}) => {
   const { classes } = useStyles();
 
   return (
@@ -18,12 +24,16 @@ export const MatchScoreResult: FC<any> = ({ match, time, componentStart, compone
       </Grid>
       <Grid className={classes.timer}>
         {componentStart}
-        <Typography variant="body1" className={classes.time}>
-          Tiempo
-        </Typography>
-        <Typography variant="body1" className={classes.time}>
-          {time}
-        </Typography>
+        {showTime && (
+          <>
+            <Typography variant="body1" className={classes.time}>
+              Tiempo
+            </Typography>
+            <Typography variant="body1" className={classes.time}>
+              {time}
+            </Typography>
+          </>
+        )}
         {componentStop}
       </Grid>
       <Grid className={classes.teamMatch}>

@@ -17,8 +17,8 @@ export interface TeamStatus {
 }
 
 interface TypeCards {
-  yellow: any[];
-  red: any[];
+  yellow: any[] | number;
+  red: any[] | number;
 }
 
 export const BoxTeams: FC<BoxTeamProps> = ({ id, local, visiting }) => {

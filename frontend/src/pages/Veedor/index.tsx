@@ -1,6 +1,7 @@
 import { Button, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { AnotationVeedor } from '../../components/AnotationVeedor';
+import { MatchManager } from '../../components/MatchManager';
 import { MatchScoreResult } from '../../components/MatchScoreResult';
 import { MatchSelector } from '../../components/MatchSelector';
 import { Navbar } from '../../components/NavBar';
@@ -61,9 +62,9 @@ export const Veedor = () => {
     });
   };
 
-  const disallowCard = (typeCard: 'YELLOW' | 'RED', isLocal: boolean) => {
+  const disallowCard = (cardId: number) => {
     socket.emit('card:disallow', {
-      cardId: 1,
+      cardId: cardId,
       id: idMatch,
       championshipId: 1,
     });
@@ -78,38 +79,50 @@ export const Veedor = () => {
           <MatchSelector setSelected={setSelected} matches={treeToList(tournament)} />
         ) : (
           <>
-            <Grid style={{ margin: 27, display: 'flex', width: '100%' }}>
+            <Grid className={classes.containerResult}>
               <MatchScoreResult
                 match={match}
+                showTime={match?.status !== 'FINISHED'}
                 time={`${minutes(time)}:${seconds(time)}`}
                 componentStart={
-                  <Button
-                    style={{ color: 'white', backgroundColor: '#bf360c', width: '105px' }}
-                    onClick={!isStarted ? start : stop}
-                  >
-                    <Typography variant="body1" style={{ paddingLeft: '20px', paddingRight: '20px' }}>
-                      {!isStarted ? 'Inicio' : 'Final  '}
+                  match?.status !== 'FINISHED' && (
+                    <Button
+                      style={{ color: 'white', backgroundColor: '#bf360c', width: '105px' }}
+                      onClick={!isStarted ? start : stop}
+                    >
+                      <Typography variant="body1" style={{ paddingLeft: '20px', paddingRight: '20px' }}>
+                        {!isStarted ? 'Inicio' : 'Final  '}
+                      </Typography>
+                    </Button>
+                  )
+                }
+                componentStop={
+                  <>
+                    <Typography
+                      color="white"
+                      style={{
+                        paddingTop: 3,
+                        paddingBottom: 3,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        backgroundColor: 'red',
+                        borderRadius: 6,
+                      }}
+                    >
+                      {match?.status}
                     </Typography>
-                  </Button>
+                  </>
                 }
               />
             </Grid>
             <Grid container direction="column" alignItems="center" justifyContent="center">
               <Typography color="white">Anotar/Desanotar Goles</Typography>
             </Grid>
-            <AnotationVeedor
-              buttonLeftAction={() => scoreGoal(true)}
-              buttonLeftChild={'+'}
-              buttonRightAction={() => disallowGoal(match?.local.goals.pop().id)}
-              buttonRightChild={'-'}
-            />
-            <Grid style={{ display: 'flex' }}></Grid>
-
-            <AnotationVeedor
-              buttonLeftAction={() => scoreGoal(false)}
-              buttonLeftChild={'+'}
-              buttonRightAction={() => disallowGoal(match?.visiting.goals.pop().id)}
-              buttonRightChild={'-'}
+            <MatchManager
+              buttonLeftLocal={() => scoreGoal(true)}
+              buttonRightLocal={() => disallowGoal(match?.local.goals.pop().id)}
+              buttonLeftVisiting={() => scoreGoal(true)}
+              buttonRightVisiting={() => disallowGoal(match?.visiting.goals.pop().id)}
             />
             <Grid container direction="column" alignItems="center" justifyContent="center">
               <Typography color="white">Anotar/Desanotar Infracciones</Typography>
@@ -118,36 +131,20 @@ export const Veedor = () => {
             <Grid container direction="column" alignItems="center" justifyContent="center">
               <Typography color="white">Rojas</Typography>
             </Grid>
-            <AnotationVeedor
-              buttonLeftAction={() => scoreCard('RED', true)}
-              buttonLeftChild={'+'}
-              buttonRightAction={() => disallowCard('RED', true)}
-              buttonRightChild={'-'}
+            <MatchManager
+              buttonLeftLocal={() => scoreCard('RED', true)}
+              buttonRightLocal={() => disallowCard(1)}
+              buttonLeftVisiting={() => scoreCard('RED', false)}
+              buttonRightVisiting={() => disallowCard(1)}
             />
-            <Grid style={{ display: 'flex' }}></Grid>
-            <AnotationVeedor
-              buttonLeftAction={() => scoreCard('RED', false)}
-              buttonLeftChild={'+'}
-              buttonRightAction={() => disallowCard('RED', false)}
-              buttonRightChild={'-'}
-            />
-
             <Grid container direction="column" alignItems="center" justifyContent="center">
               <Typography color="white">Amarillas</Typography>
             </Grid>
-            <AnotationVeedor
-              buttonLeftAction={() => scoreCard('YELLOW', true)}
-              buttonLeftChild={'+'}
-              buttonRightAction={() => disallowCard('YELLOW', true)}
-              buttonRightChild={'-'}
-            />
-            <Grid style={{ display: 'flex' }}></Grid>
-
-            <AnotationVeedor
-              buttonLeftAction={() => scoreCard('YELLOW', false)}
-              buttonLeftChild={'+'}
-              buttonRightAction={() => disallowCard('YELLOW', false)}
-              buttonRightChild={'-'}
+            <MatchManager
+              buttonLeftLocal={() => scoreCard('YELLOW', true)}
+              buttonRightLocal={() => disallowCard(1)}
+              buttonLeftVisiting={() => scoreCard('YELLOW', false)}
+              buttonRightVisiting={() => disallowCard(1)}
             />
           </>
         )}

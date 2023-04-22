@@ -20,4 +20,9 @@ export const useStyles = makeStyles()((theme: Theme) => ({
       marginLeft: 0,
     },
   },
+  containerResult: {
+    margin: 27,
+    display: 'flex',
+    width: '100%',
+  },
 }));
