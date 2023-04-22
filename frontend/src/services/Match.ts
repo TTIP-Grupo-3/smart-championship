@@ -8,11 +8,15 @@ class MatchService {
     this.httpClient = httpClient;
   }
 
-  getChampionship(): Promise<AxiosResponse<any>> {
-    return this.httpClient.get('/championship');
+  getMatches(championshipId: number): Promise<AxiosResponse<any>> {
+    return this.httpClient.get(`championship/${championshipId}/match`);
+  }
+
+  getMatch(championshipId: number, matchId: number): Promise<AxiosResponse<any>> {
+    return this.httpClient.get(`championship/${championshipId}/match/${matchId}`);
   }
 }
 
-const API = new MatchService();
+const API_MATCH = new MatchService();
 
-export { API };
+export { API_MATCH };

@@ -1,6 +1,6 @@
 import { Button, Grid } from '@mui/material';
-import { blue, deepPurple, red } from '@mui/material/colors';
-import { FC } from 'react';
+import { blue, red } from '@mui/material/colors';
+import { FC, useState } from 'react';
 import { useStyles } from './style';
 
 export const AnotationVeedor: FC<any> = ({
@@ -12,6 +12,17 @@ export const AnotationVeedor: FC<any> = ({
   buttonRightProps,
 }) => {
   const { classes } = useStyles();
+  const [open, setOpen] = useState(false);
+  const [action, setAction] = useState<any>();
+
+  const openDialog = (actionbutton: () => void) => {
+    setOpen(true);
+    setAction(actionbutton);
+  };
+  const closeDialog = () => {
+    setOpen(false);
+    action();
+  };
   return (
     <Grid
       style={{

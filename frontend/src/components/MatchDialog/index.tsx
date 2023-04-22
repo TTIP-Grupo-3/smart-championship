@@ -5,10 +5,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { FC, useEffect, useState } from 'react';
 import { useStyles } from './style';
-import { DialogTitle, Grid, IconButton, Typography } from '@mui/material';
+import { DialogTitle, IconButton, Typography } from '@mui/material';
 import { SocketService } from '../../services/SocketService';
 import { MatchScoreResult } from '../MatchScoreResult';
-import { MatchUserResult } from '../MatchUserResult';
 import { MatchUserStats } from '../MatchUserStats';
 
 const socketService = new SocketService();
@@ -48,10 +47,14 @@ export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
             paddingBottom: 3,
             paddingLeft: 6,
             paddingRight: 6,
-            backgroundColor: 'red',
+            backgroundColor: match?.status === 'FINISHED' ? 'red' : 'green',
           }}
         >
-          {match?.status}
+          {match?.status === 'FINISHED'
+            ? 'Finalizado'
+            : match?.status === 'TOSTART'
+            ? 'A jugar'
+            : 'En juego'}
         </Typography>
 
         <IconButton aria-label="close" onClick={close} className={classes.closeIcon}>
