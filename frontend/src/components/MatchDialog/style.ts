@@ -25,12 +25,4 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'column',
     flexGrow: 1,
   },
-  teamStats: {
-    borderRadius: '0px',
-    backgroundColor: 'white',
-    flexGrow: 1,
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 }));

@@ -70,8 +70,6 @@ export const Veedor = () => {
     });
   };
 
-  console.log(match);
-
   return (
     <Navbar>
       <Grid container className={classes.container}>

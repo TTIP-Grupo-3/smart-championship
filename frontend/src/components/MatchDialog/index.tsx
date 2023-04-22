@@ -7,8 +7,9 @@ import { FC, useEffect, useState } from 'react';
 import { useStyles } from './style';
 import { DialogTitle, Grid, IconButton, Typography } from '@mui/material';
 import { SocketService } from '../../services/SocketService';
-import { BoxTeamProps } from '../BoxTeams';
 import { MatchScoreResult } from '../MatchScoreResult';
+import { MatchUserResult } from '../MatchUserResult';
+import { MatchUserStats } from '../MatchUserStats';
 
 const socketService = new SocketService();
 
@@ -17,6 +18,7 @@ export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
   const { classes } = useStyles();
   const fullScreen = useMediaQuery(theme.breakpoints.down(300));
   const [match, setMatch] = useState<any>();
+  console.log(match);
 
   useEffect(() => {
     const socket = socketService.create('match');
@@ -58,74 +60,19 @@ export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
       </DialogTitle>
       <DialogContent className={classes.backgroundDialog}>
         <MatchScoreResult match={match} time="0" />
-        <Grid container>
-          <Grid className={classes.statsGrid}>
-            <Typography variant="h5" color="white">
-              Amarillas
-            </Typography>
-            <Grid container style={{ backgroundColor: 'palegoldenrod' }}>
-              <Grid className={classes.teamStats}>
-                {match?.local.cards.yellow.map((card: any) => (
-                  <Grid key={card.id}>
-                    <Typography>
-                      {card.player.number}
-                      {card.player.name} {card.minute}
-                    </Typography>
-                  </Grid>
-                ))}{' '}
-                {match?.local.cards.red.map((card: any) => (
-                  <Grid key={card.id}>
-                    <Typography>
-                      {card.player.number}
-                      {card.player.name} {card.minute}
-                    </Typography>
-                  </Grid>
-                ))}
-              </Grid>
-              <Grid className={classes.teamStats}>
-                {match?.visiting.cards.yellow.map((card: any) => (
-                  <Grid key={card.id}>
-                    <Typography>
-                      {card.player.number}
+        <MatchUserStats title="Goles" dataLocal={match?.local.goals} dataVisiting={match?.visiting.goals} />
 
-                      {card.player.name}
-                      {card.minute}
-                    </Typography>
-                  </Grid>
-                ))}
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid className={classes.statsGrid}>
-                <Typography variant="h5" color="white">
-                  Rojas
-                </Typography>
-                <Grid container style={{ backgroundColor: 'palegoldenrod' }}>
-                  <Grid className={classes.teamStats}>
-                    {match?.local.cards.red.map((card: any) => (
-                      <Grid key={card.id}>
-                        <Typography>
-                          {card.player.number}
-                          {card.player.name} {card.minute}
-                        </Typography>
-                      </Grid>
-                    ))}
-                  </Grid>
-                  <Grid className={classes.teamStats}>
-                    {match?.visiting.cards.red.map((card: any) => (
-                      <Grid key={card.id}>
-                        <Typography>
-                          {card.player.number}
-                          {card.player.name} {card.minute}
-                        </Typography>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+        <MatchUserStats
+          title="Amarillas"
+          dataLocal={match?.local.cards.yellow}
+          dataVisiting={match?.visiting.cards.yellow}
+        />
+
+        <MatchUserStats
+          title="Rojas"
+          dataLocal={match?.local.cards.red}
+          dataVisiting={match?.visiting.cards.red}
+        />
       </DialogContent>
     </Dialog>
   );
