@@ -1,40 +1,27 @@
-import { Socket } from 'dgram';
-import { io, ManagerOptions, SocketOptions } from 'socket.io-client';
+import { io, ManagerOptions, Socket, SocketOptions } from 'socket.io-client';
 
 export class SocketService {
   defaultOptions: Partial<ManagerOptions & SocketOptions> = {
-    autoConnect: false,
+    autoConnect: true,
     upgrade: true,
-    path: '/',
-    transports: ['websocket', 'polling', 'flashsocket'],
+    path: '/socket.io',
+    transports: ['websocket', 'polling'],
     reconnection: true,
     reconnectionAttempts: Infinity,
     reconnectionDelay: 3000,
   };
 
-  url = 'http://localhost:3001';
+  url = 'ws://localhost:3001';
 
-  create(options?: SocketOptions) {
-    return io(this.url, { ...this.defaultOptions, ...options });
+  create(namespace: string): Socket {
+    return io(`${this.url}/${namespace}`, this.defaultOptions);
   }
 
-  emitSubscribe(socket: any, data: any) {
+  subscribe(socket: Socket, data?: any) {
     socket.emit('subscribe', data);
-
-    socket.on('connect', () => socket.emit('subscribe', data));
   }
 
-  emitUnsubscribe(socket: any, data: any) {
+  unsubscribe(socket: Socket, data?: any) {
     socket.emit('unsubscribe', data);
-
-    socket.removeListener('connect');
-  }
-
-  subscribe(topic: string, socket: Socket, data: any) {
-    socket.emit(topic, data);
-  }
-
-  unSubscribe(topic: string, socket: Socket, data: any) {
-    socket.emit(topic, data);
   }
 }

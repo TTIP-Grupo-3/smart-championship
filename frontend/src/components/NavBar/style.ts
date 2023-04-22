@@ -2,7 +2,7 @@ import { makeStyles } from 'tss-react/mui';
 import { Theme } from '@mui/material/styles';
 
 const useStyles = makeStyles()((theme: Theme) => ({
-  root: { display: 'flex', flexGrow: 1, overflow: 'hidden' },
+  root: { display: 'flex', flexGrow: 1 },
   appBar: {
     boxShadow: theme.shadows[0],
     backgroundColor: theme.palette.common.black,
@@ -10,11 +10,6 @@ const useStyles = makeStyles()((theme: Theme) => ({
 
   main: {
     flexGrow: 1,
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#282c34',
-    paddingInline: theme.spacing(2),
   },
   titleSmart: {
     fontFamily: 'sans-serif',
@@ -45,6 +40,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     lineHeight: '24px',
     color: theme.palette.common.white,
   },
+  content: { flexGrow: 1, padding: theme.spacing(2) },
 }));
 
 export default useStyles;

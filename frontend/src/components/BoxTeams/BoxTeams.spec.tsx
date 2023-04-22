@@ -3,8 +3,9 @@ import { fakeTheme } from '../../test/fake_theme';
 import { componentMounter } from '../../test/utils';
 
 const theme = fakeTheme;
-const cards = { yellow: 0, red: 0 };
+const cards = { yellow: [], red: [] };
 const teams = {
+  id: 1,
   local: { name: 'team-1', goals: 0, cards: cards },
   visiting: { name: 'team-2', goals: 2, cards: cards },
 };

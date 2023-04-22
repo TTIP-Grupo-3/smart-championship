@@ -3,24 +3,28 @@ import DialogContent from '@mui/material/DialogContent';
 import { Close } from '@mui/icons-material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useStyles } from './style';
 import { DialogTitle, Grid, IconButton, Typography } from '@mui/material';
-import smartLogoLocal from '../../default_match_icon_local.svg';
-import smartLogoVisiting from '../../default_match_icon_visiting.svg';
-import { MatchTeam } from '../MatchTeam';
-import { SimpleAccordion } from '../Accordion';
+import { SocketService } from '../../services/SocketService';
+import { BoxTeamProps } from '../BoxTeams';
+import { MatchScoreResult } from '../MatchScoreResult';
 
-export const MatchDialog: FC<any> = ({ open, close }) => {
+const socketService = new SocketService();
+
+export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
   const theme = useTheme();
   const { classes } = useStyles();
   const fullScreen = useMediaQuery(theme.breakpoints.down(300));
-  const cards = { yellow: 0, red: 0 };
-  const team = {
-    name: 'Team-1',
-    goals: 0,
-    cards: cards,
-  };
+  const [match, setMatch] = useState<BoxTeamProps>();
+
+  useEffect(() => {
+    const socket = socketService.create('match');
+    socket.on('match', (data: any) => setMatch(data));
+    socketService.subscribe(socket, { id: matchId, championshipId: 1 });
+    return () => socketService.unsubscribe(socket);
+  }, []);
+  console.log(match);
   return (
     <Dialog
       classes={{ paper: classes.dialog }}
@@ -36,32 +40,73 @@ export const MatchDialog: FC<any> = ({ open, close }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.backgroundDialog}>
-        <Grid container>
-          <Grid className={classes.teamMatch}>
-            <MatchTeam logo={smartLogoLocal} team={team} showCards={false} />
-            <Typography variant="h3" className={classes.resultScore}>
-              0
-            </Typography>
-          </Grid>
-          <Grid className={classes.timer}>
-            <Typography variant="body1" className={classes.time}>
-              time
-            </Typography>
-            <Typography variant="body1" className={classes.time}>
-              -
-            </Typography>
-          </Grid>
-          <Grid className={classes.teamMatch}>
-            <MatchTeam logo={smartLogoVisiting} team={team} showCards={false} />
-            <Typography variant="h3" className={classes.resultScore}>
-              1
-            </Typography>
-          </Grid>
-        </Grid>
+        <MatchScoreResult match={match} time="0" />
         <Grid container>
           <Grid className={classes.statsGrid}>
-            <SimpleAccordion text="Goles" />
-            <SimpleAccordion text="Amonestaciones" />
+            <Typography variant="h5" color="white">
+              Amarillas
+            </Typography>
+            <Grid container style={{ backgroundColor: 'palegoldenrod' }}>
+              <Grid className={classes.teamStats}>
+                {match?.local.cards.yellow.map((card: any) => (
+                  <Grid key={card.id}>
+                    <Typography>
+                      {card.player.number}
+                      {card.player.name} {card.minute}
+                    </Typography>
+                  </Grid>
+                ))}{' '}
+                {match?.local.cards.red.map((card: any) => (
+                  <Grid key={card.id}>
+                    <Typography>
+                      {card.player.number}
+                      {card.player.name} {card.minute}
+                    </Typography>
+                  </Grid>
+                ))}
+              </Grid>
+              <Grid className={classes.teamStats}>
+                {match?.visiting.cards.yellow.map((card: any) => (
+                  <Grid key={card.id}>
+                    <Typography>
+                      {card.player.number}
+
+                      {card.player.name}
+                      {card.minute}
+                    </Typography>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid className={classes.statsGrid}>
+                <Typography variant="h5" color="white">
+                  Rojas
+                </Typography>
+                <Grid container style={{ backgroundColor: 'palegoldenrod' }}>
+                  <Grid className={classes.teamStats}>
+                    {match?.local.cards.red.map((card: any) => (
+                      <Grid key={card.id}>
+                        <Typography>
+                          {card.player.number}
+                          {card.player.name} {card.minute}
+                        </Typography>
+                      </Grid>
+                    ))}
+                  </Grid>
+                  <Grid className={classes.teamStats}>
+                    {match?.visiting.cards.red.map((card: any) => (
+                      <Grid key={card.id}>
+                        <Typography>
+                          {card.player.number}
+                          {card.player.name} {card.minute}
+                        </Typography>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </DialogContent>

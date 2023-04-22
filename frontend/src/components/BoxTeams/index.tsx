@@ -4,7 +4,8 @@ import { MatchDialog } from '../MatchDialog';
 import { Match } from '../Match';
 import { useStyles } from './style';
 
-interface BoxTeamProps {
+export interface BoxTeamProps {
+  id: number;
   local: TeamStatus;
   visiting: TeamStatus;
 }
@@ -16,11 +17,11 @@ export interface TeamStatus {
 }
 
 interface TypeCards {
-  yellow: number;
-  red: number;
+  yellow: any[];
+  red: any[];
 }
 
-export const BoxTeams: FC<BoxTeamProps> = ({ local, visiting }) => {
+export const BoxTeams: FC<BoxTeamProps> = ({ id, local, visiting }) => {
   const { classes } = useStyles();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -37,7 +38,7 @@ export const BoxTeams: FC<BoxTeamProps> = ({ local, visiting }) => {
       <Grid data-testid="BoxTeams-grid-teams" className={classes.gridTeam} onClick={handleClickOpen}>
         <Match local={local} visiting={visiting} />
       </Grid>
-      <MatchDialog open={open} close={handleClose} />
+      <MatchDialog open={open} close={handleClose} matchId={id} />
     </Grid>
   );
 };

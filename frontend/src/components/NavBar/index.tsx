@@ -24,7 +24,7 @@ export const Navbar: FC<any> = ({ children }) => {
       </AppBar>
       <main className={classes.main}>
         <Toolbar />
-        {children}
+        <Grid className={classes.content}>{children}</Grid>
       </main>
     </Grid>
   );

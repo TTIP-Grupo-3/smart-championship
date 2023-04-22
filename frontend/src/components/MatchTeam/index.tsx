@@ -7,7 +7,7 @@ import { useStyles } from './style';
 
 interface MatchTeamProps {
   logo: string;
-  team: TeamStatus;
+  team?: TeamStatus;
   showCards?: boolean;
 }
 
@@ -16,7 +16,7 @@ export const MatchTeam: FC<MatchTeamProps> = ({ logo, team, showCards = true }) 
   return (
     <Grid data-testid="MatchTeam" className={classes.gridIconTeam}>
       <img src={logo} data-testid="img-team" width="60" height="60" />
-      <TooltipText text={team.name} />
+      <TooltipText text={team?.name} />
       {showCards && <MatchTeamCards {...team} />}
     </Grid>
   );
