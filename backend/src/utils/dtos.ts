@@ -9,6 +9,8 @@ import { MatchResponseDTO } from 'src/dtos/responses/match.response.dto';
 import { PlayerEventResponseDTO } from 'src/dtos/responses/playerEvent.response.dto';
 import { PlayerResponseDTO } from 'src/dtos/responses/player.response.dto';
 import { TeamStatusResponseDTO } from 'src/dtos/responses/teamStatus.response.dto';
+import { MatchTeamsResponseDTO } from 'src/dtos/responses/matchTeams.response.dto';
+import { TeamResponseDTO } from 'src/dtos/responses/team.response.dto';
 
 export type SmartChampionshipDTO =
   | PartialCardsResponseDTO
@@ -21,4 +23,6 @@ export type SmartChampionshipDTO =
   | MatchResponseDTO
   | PlayerResponseDTO
   | PlayerEventResponseDTO
-  | TeamStatusResponseDTO;
+  | TeamStatusResponseDTO
+  | MatchTeamsResponseDTO
+  | TeamResponseDTO;

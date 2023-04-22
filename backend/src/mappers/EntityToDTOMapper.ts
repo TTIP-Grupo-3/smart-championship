@@ -20,6 +20,9 @@ import { PlayerResponseDTO } from 'src/dtos/responses/player.response.dto';
 import { PlayerEventResponseDTO } from 'src/dtos/responses/playerEvent.response.dto';
 import { MatchResponseDTO } from 'src/dtos/responses/match.response.dto';
 import { TeamStatusResponseDTO } from 'src/dtos/responses/teamStatus.response.dto';
+import { MatchTeamsResponseDTO } from 'src/dtos/responses/matchTeams.response.dto';
+import { TeamResponseDTO } from 'src/dtos/responses/team.response.dto';
+import { ChampionshipTeam } from 'src/entities/championshipTeam.entity';
 
 const errors = configService.get('service.errors');
 
@@ -41,12 +44,18 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     if (source instanceof Goal) return this.playerEventDTO(source, dtoCls);
     if (source instanceof Card) return this.playerEventDTO(source, dtoCls);
     if (source instanceof ChampionshipPlayer) return this.playerDTO(source, dtoCls);
+    if (source instanceof ChampionshipTeam) return this.teamDTO(source, dtoCls);
     throw new UnknownException(errors.unknown);
   }
 
   private playerDTO(source: ChampionshipPlayer, dtoCls?: Class<SmartChampionshipDTO>): PlayerResponseDTO {
     const { id, name, number } = source;
     return this.plainToInstance(PlayerResponseDTO, { id, name, number });
+  }
+
+  private teamDTO(source: ChampionshipTeam, dtoCls?: Class<SmartChampionshipDTO>): TeamResponseDTO {
+    const { id, name, players } = source;
+    return plainToInstance(TeamResponseDTO, { id, name, players: this.map(players, PlayerResponseDTO) });
   }
 
   private playerEventDTO(
@@ -75,15 +84,21 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
   private eliminationMatchResponseDTO(
     match: EliminationMatch,
     dtoCls?: Class<SmartChampionshipDTO>,
-  ): PartialMatchResponseDTO | MatchResponseDTO {
+  ): PartialMatchResponseDTO | MatchResponseDTO | MatchTeamsResponseDTO {
     const {
       id,
+      championship,
       status: { localStatus, visitingStatus, status },
     } = match;
     if (dtoCls?.name === MatchResponseDTO.name) {
       const local = this.teamStatusResponseDTO(localStatus, TeamStatusResponseDTO);
       const visiting = this.teamStatusResponseDTO(visitingStatus, TeamStatusResponseDTO);
       return this.plainToInstance(MatchResponseDTO, { id, status, local, visiting });
+    } else if (dtoCls?.name === MatchTeamsResponseDTO.name) {
+      const { id: championshipId } = championship;
+      const local = this.teamStatusResponseDTO(localStatus, TeamResponseDTO);
+      const visiting = this.teamStatusResponseDTO(visitingStatus, TeamResponseDTO);
+      return this.plainToInstance(MatchTeamsResponseDTO, { id, championshipId, local, visiting });
     } else {
       const local = this.teamStatusResponseDTO(localStatus);
       const visiting = this.teamStatusResponseDTO(visitingStatus);
@@ -94,7 +109,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
   private teamStatusResponseDTO(
     status: TeamStatus,
     dtoCls?: Class<SmartChampionshipDTO>,
-  ): PartialTeamStatusResponseDTO | TeamStatusResponseDTO {
+  ): PartialTeamStatusResponseDTO | TeamStatusResponseDTO | TeamResponseDTO {
     const { team, goals, reds, yellows } = status;
     if (dtoCls?.name === TeamStatusResponseDTO.name) {
       return this.plainToInstance(TeamStatusResponseDTO, {
@@ -102,6 +117,8 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
         goals: this.map(goals),
         cards: { red: this.map(reds), yellow: this.map(yellows) },
       });
+    } else if (dtoCls?.name === TeamResponseDTO.name) {
+      return this.map(team, TeamResponseDTO);
     } else {
       return this.plainToInstance(PartialTeamStatusResponseDTO, {
         name: team.name,
