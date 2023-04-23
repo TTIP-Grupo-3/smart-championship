@@ -6,7 +6,6 @@ import { Card, CardType } from './card.entity';
 import { Goal } from './goal.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
-import { ChampionshipPlayer } from './championshipPlayer.entity';
 
 @Entity()
 export class TeamStatus {
