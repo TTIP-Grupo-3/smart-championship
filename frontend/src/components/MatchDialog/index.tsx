@@ -11,24 +11,23 @@ import { MatchScoreResult } from '../MatchScoreResult';
 import { MatchUserStats } from '../MatchUserStats';
 
 const socketService = new SocketService();
+const socket = socketService.create('match');
 
 export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
-  const theme = useTheme();
   const { classes } = useStyles();
-  const fullScreen = useMediaQuery(theme.breakpoints.down(300));
   const [match, setMatch] = useState<any>();
-  console.log(match);
 
   useEffect(() => {
-    const socket = socketService.create('match');
-    socket.on('match', (data: any) => setMatch(data));
-    socketService.subscribe(socket, { id: matchId, championshipId: 1 });
-    return () => socketService.unsubscribe(socket);
-  }, []);
+    if (open) {
+      socket.on('match', (data: any) => setMatch(data));
+      socketService.subscribe(socket, { id: matchId, championshipId: 1 });
+    }
+    return () => (open ? socketService.unsubscribe(socket) : undefined);
+  }, [open]);
+
   return (
     <Dialog
       classes={{ paper: classes.dialog }}
-      fullScreen={fullScreen}
       open={open}
       PaperProps={{ elevation: 24 }}
       aria-labelledby="responsive-dialog-title"

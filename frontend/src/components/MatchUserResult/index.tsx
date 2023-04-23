@@ -7,18 +7,16 @@ export const MatchUserResult: FC<any> = ({ cards }) => {
   return (
     <List className={classes.teamStats}>
       {cards?.map((card: any) => (
-        <>
-          <ListItem key={card.id}>
-            <Grid style={{ display: 'flex', flexDirection: 'row' }}>
-              <Typography style={{ paddingLeft: 60 }} color="white">
-                {card.minute}'
-              </Typography>
-              <Typography style={{ paddingLeft: 10 }} color="white">
-                {card.player.name}
-              </Typography>
-            </Grid>
-          </ListItem>
-        </>
+        <ListItem key={card.id}>
+          <Grid style={{ display: 'flex', flexDirection: 'row' }}>
+            <Typography style={{ paddingLeft: 60 }} color="white">
+              {card.minute}'
+            </Typography>
+            <Typography style={{ paddingLeft: 10 }} color="white">
+              {card.player.name}
+            </Typography>
+          </Grid>
+        </ListItem>
       ))}
     </List>
   );
