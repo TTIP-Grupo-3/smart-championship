@@ -5,6 +5,7 @@ import { Entity } from 'typeorm';
 import { Card, CardType } from './card.entity';
 import { Goal } from './goal.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
+import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 
 @Entity()
 export class TeamStatus {
@@ -35,7 +36,15 @@ export class TeamStatus {
   }
 
   card(card: Card) {
+    if (!this.canAddCard(card)) throw new InvalidArgumentException("This player can't receive card");
     this.cards.push(card);
     card.setStatus(this);
+  }
+
+  private canAddCard(card: Card): boolean {
+    return this.cards.every(
+      ({ type, player }) =>
+        card.player.id !== player.id || (type === CardType.YELLOW && card.type === CardType.RED),
+    );
   }
 }
