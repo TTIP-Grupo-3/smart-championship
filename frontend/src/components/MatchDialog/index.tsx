@@ -1,8 +1,6 @@
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import { Close } from '@mui/icons-material';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import { FC, useEffect, useState } from 'react';
 import { useStyles } from './style';
 import { DialogTitle, IconButton, Typography } from '@mui/material';
@@ -35,19 +33,9 @@ export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
       <DialogTitle className={classes.dialogTitle} style={{ display: 'flex', flexDirection: 'row' }}>
         <Typography className={classes.typographyTitle}>Informacion del partido</Typography>
         <Typography
-          color="white"
           variant="body1"
-          style={{
-            marginLeft: 20,
-            fontSize: 13,
-            fontWeight: 700,
-            borderRadius: 6,
-            paddingTop: 3,
-            paddingBottom: 3,
-            paddingLeft: 6,
-            paddingRight: 6,
-            backgroundColor: match?.status === 'FINISHED' ? 'red' : 'green',
-          }}
+          className={classes.statusMatch}
+          style={{ backgroundColor: match?.status === 'FINISHED' ? 'red' : 'green' }}
         >
           {match?.status === 'FINISHED'
             ? 'Finalizado'

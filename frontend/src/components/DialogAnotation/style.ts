@@ -2,11 +2,15 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
-  statsGrid: {
+  dialogPaper: {
+    height: '70%',
+  },
+  itemList: {
+    height: '45px',
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    flexGrow: 1,
+    flexDirection: 'row',
+    '&:hover': {
+      backgroundColor: '#0059B2',
+    },
   },
 }));

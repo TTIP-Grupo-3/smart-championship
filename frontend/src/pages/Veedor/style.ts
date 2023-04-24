@@ -25,4 +25,22 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     display: 'flex',
     width: '100%',
   },
+  typographyStatus: {
+    paddingTop: 3,
+    color: theme.palette.common.white,
+    paddingBottom: 3,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: 'red',
+    borderRadius: 6,
+  },
+  initOrFinishButton: {
+    color: 'white',
+    backgroundColor: '#bf360c',
+    width: '105px',
+  },
+  initOrFinishTypography: {
+    paddingLeft: '20px',
+    paddingRight: '20px',
+  },
 }));

@@ -1,6 +1,6 @@
 import { Button, Grid } from '@mui/material';
-import { blue, red } from '@mui/material/colors';
 import { FC, useState } from 'react';
+import { DialogAnotation } from '../DialogAnotation';
 import { useStyles } from './style';
 
 export const AnotationVeedor: FC<any> = ({
@@ -16,51 +16,33 @@ export const AnotationVeedor: FC<any> = ({
   const [action, setAction] = useState<any>();
 
   const openDialog = (actionbutton: () => void) => {
-    setOpen(true);
     setAction(actionbutton);
+    setOpen(true);
   };
-  const closeDialog = () => {
+  const closeDialog = (id?: number) => {
+    if (!id) return setOpen(false);
+    const { args, function: cb } = action;
+    cb(...args, id);
     setOpen(false);
-    action();
   };
   return (
-    <Grid
-      style={{
-        display: 'flex',
-        flexGrow: 2,
-        justifyContent: 'center',
-        flexDirection: 'row',
-        padding: 0,
-        margin: 0,
-      }}
-    >
+    <Grid className={classes.gridContainer}>
       <Button
-        style={{
-          backgroundColor: red[500],
-          color: 'white',
-          width: '40%',
-          fontFamily: 800,
-          fontSize: 20,
-        }}
+        className={classes.buttonAdd}
         {...buttonLeftProps}
-        onClick={buttonLeftAction}
+        onClick={() => openDialog(buttonLeftAction)}
       >
         {buttonLeftChild}
       </Button>
       <Grid style={{ width: '2%' }}></Grid>
       <Button
-        style={{
-          backgroundColor: blue[500],
-          color: 'white',
-          width: '40%',
-          fontFamily: 800,
-          fontSize: 20,
-        }}
+        className={classes.buttonRemove}
         {...buttonRightProps}
-        onClick={buttonRightAction}
+        onClick={() => openDialog(buttonRightAction)}
       >
         {buttonRightChild}
       </Button>
+      <DialogAnotation items={action?.items ?? []} open={open} onClose={closeDialog} />
     </Grid>
   );
 };

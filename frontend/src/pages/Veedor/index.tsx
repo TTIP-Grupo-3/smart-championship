@@ -10,14 +10,13 @@ import { SocketService } from '../../services/SocketService';
 import { useStyles } from './style';
 
 const socketService = new SocketService();
-
+const socket = socketService.create('match');
 export const Veedor = () => {
   const { classes } = useStyles();
-  const socket = socketService.create('match');
   const [matches, setMatches] = useState([]);
   const [idMatch, setSelected] = useState(null);
   const [match, setMatch] = useState<any>();
-  const [players, setPlayers] = useState({});
+  const [currentMatch, setCurrentMatch] = useState<any>();
   const { minutes, seconds, start, stop, isStarted, time } = useTimer(0);
 
   useEffect(() => {
@@ -25,22 +24,26 @@ export const Veedor = () => {
       setMatches(r.data);
     });
   }, []);
-
+  console.log(match);
   useEffect(() => {
-    API_MATCH.getMatch(1, idMatch ?? 1).then((r) => setPlayers(r.data));
-  }, []);
-
-  useEffect(() => {
-    socket.on('match', (data: any) => setMatch(data));
-    socketService.subscribe(socket, { id: idMatch, championshipId: 1 });
-    return () => socketService.unsubscribe(socket);
+    if (idMatch) {
+      API_MATCH.getMatch(1, idMatch).then((r) => setCurrentMatch(r.data));
+    }
   }, [idMatch]);
 
-  const scoreGoal = (isLocal: boolean) => {
+  useEffect(() => {
+    if (idMatch) {
+      socket.on('match', (data: any) => setMatch(data));
+      socketService.subscribe(socket, { id: idMatch, championshipId: 1 });
+      return () => socketService.unsubscribe(socket);
+    }
+  }, [idMatch]);
+
+  const scoreGoal = (isLocal: boolean, idPlayer: number) => {
     socket.emit('goal', {
       id: idMatch,
       championshipId: 1,
-      playerId: 1,
+      playerId: idPlayer,
       minute: minutes(time),
       local: isLocal,
     });
@@ -50,13 +53,13 @@ export const Veedor = () => {
     socket.emit('goal:disallow', { goalId: idGoal, id: idMatch, championshipId: 1 });
   };
 
-  const scoreCard = (typeCard: 'YELLOW' | 'RED', isLocal: boolean) => {
+  const scoreCard = (typeCard: 'YELLOW' | 'RED', isLocal: boolean, idPlayer: number) => {
     socket.emit('card', {
       type: typeCard,
       id: idMatch,
       championshipId: 1,
       minute: minutes(time),
-      playerId: 12,
+      playerId: idPlayer,
       local: isLocal,
     });
   };
@@ -93,6 +96,22 @@ export const Veedor = () => {
     endGame();
   };
 
+  const getGoals = (type: 'local' | 'visiting') => {
+    if (match) {
+      return match[type].goals.map((goal: any) => ({ ...goal.player, id: goal.id, minute: goal.minute }));
+    }
+    return [];
+  };
+  const getCards = (type: 'local' | 'visiting', color: 'RED' | 'YELLOW') => {
+    if (match) {
+      return match[type].cards[color.toLowerCase()].map((card: any) => ({
+        ...card.player,
+        id: card.id,
+        minute: card.minute,
+      }));
+    }
+    return [];
+  };
   return (
     <Navbar>
       <Grid container className={classes.container}>
@@ -108,10 +127,10 @@ export const Veedor = () => {
                 componentStart={
                   match?.status !== 'FINISHED' && (
                     <Button
-                      style={{ color: 'white', backgroundColor: '#bf360c', width: '105px' }}
+                      className={classes.initOrFinishButton}
                       onClick={!isStarted ? initGame : finishGame}
                     >
-                      <Typography variant="body1" style={{ paddingLeft: '20px', paddingRight: '20px' }}>
+                      <Typography variant="body1" className={classes.initOrFinishTypography}>
                         {!isStarted ? 'Inicio' : 'Final  '}
                       </Typography>
                     </Button>
@@ -120,17 +139,7 @@ export const Veedor = () => {
                 componentStop={
                   <>
                     {match?.status === 'FINISHED' && (
-                      <Typography
-                        color="white"
-                        style={{
-                          paddingTop: 3,
-                          paddingBottom: 3,
-                          paddingLeft: 10,
-                          paddingRight: 10,
-                          backgroundColor: 'red',
-                          borderRadius: 6,
-                        }}
-                      >
+                      <Typography className={classes.typographyStatus}>
                         {match?.status === 'FINISHED' ? 'Finalizado' : ''}
                       </Typography>
                     )}{' '}
@@ -142,10 +151,14 @@ export const Veedor = () => {
               <Typography color="white">Anotar/Desanotar Goles</Typography>
             </Grid>
             <MatchManager
-              buttonLeftLocal={() => scoreGoal(true)}
-              buttonRightLocal={() => disallowGoal(match?.local.goals.pop().id)}
-              buttonLeftVisiting={() => scoreGoal(true)}
-              buttonRightVisiting={() => disallowGoal(match?.visiting.goals.pop().id)}
+              buttonLeftLocal={{ function: scoreGoal, args: [true], items: currentMatch?.local.players }}
+              buttonRightLocal={{ function: disallowGoal, args: [], items: getGoals('local') }}
+              buttonLeftVisiting={{
+                function: scoreGoal,
+                args: [true],
+                items: currentMatch?.visiting.players,
+              }}
+              buttonRightVisiting={{ function: disallowGoal, args: [], items: getGoals('visiting') }}
             />
             <Grid container direction="column" alignItems="center" justifyContent="center">
               <Typography color="white">Anotar/Desanotar Infracciones</Typography>
@@ -155,19 +168,39 @@ export const Veedor = () => {
               <Typography color="white">Rojas</Typography>
             </Grid>
             <MatchManager
-              buttonLeftLocal={() => scoreCard('RED', true)}
-              buttonRightLocal={() => disallowCard(1)}
-              buttonLeftVisiting={() => scoreCard('RED', false)}
-              buttonRightVisiting={() => disallowCard(1)}
+              buttonLeftLocal={{
+                function: scoreCard,
+                args: ['RED', true],
+                items: currentMatch?.local.players,
+              }}
+              buttonRightLocal={{ function: disallowCard, args: [], items: getCards('local', 'RED') }}
+              buttonLeftVisiting={{
+                function: scoreCard,
+                args: ['RED', false],
+                items: currentMatch?.visiting.players,
+              }}
+              buttonRightVisiting={{ function: disallowCard, args: [], items: getCards('visiting', 'RED') }}
             />
             <Grid container direction="column" alignItems="center" justifyContent="center">
               <Typography color="white">Amarillas</Typography>
             </Grid>
             <MatchManager
-              buttonLeftLocal={() => scoreCard('YELLOW', true)}
-              buttonRightLocal={() => disallowCard(1)}
-              buttonLeftVisiting={() => scoreCard('YELLOW', false)}
-              buttonRightVisiting={() => disallowCard(1)}
+              buttonLeftLocal={{
+                function: scoreCard,
+                args: ['YELLOW', true],
+                items: currentMatch?.local.players,
+              }}
+              buttonRightLocal={{ function: disallowCard, args: [], items: getCards('local', 'YELLOW') }}
+              buttonLeftVisiting={{
+                function: scoreCard,
+                args: ['YELLOW', false],
+                items: currentMatch?.visiting.players,
+              }}
+              buttonRightVisiting={{
+                function: disallowCard,
+                args: [],
+                items: getCards('visiting', 'YELLOW'),
+              }}
             />
           </>
         )}

@@ -25,4 +25,15 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'column',
     flexGrow: 1,
   },
+  statusMatch: {
+    color: theme.palette.common.white,
+    marginLeft: 20,
+    fontSize: 13,
+    fontWeight: 700,
+    borderRadius: 6,
+    paddingTop: 3,
+    paddingBottom: 3,
+    paddingLeft: 6,
+    paddingRight: 6,
+  },
 }));
