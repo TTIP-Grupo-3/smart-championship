@@ -5,7 +5,6 @@ import configuration from 'src/config/configuration';
 import { NotFoundException } from 'src/exceptions/NotFoundException';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
 import { ChampionshipService } from 'src/services/championship.service';
-import { DataService } from 'src/services/data.service';
 import { entities } from 'src/utils/entities';
 import { testSqlClient } from 'test/utils/testSqlClient';
 import {
@@ -14,6 +13,7 @@ import {
   errors,
 } from '../../data/src/services/championship.service.spec.data.json';
 import { TransactionService } from 'src/services/transaction.service';
+import { DataService } from 'test/utils/data.service';
 
 describe('ChampionshipService', () => {
   let module: TestingModule;
