@@ -14,6 +14,7 @@ import { MatchGateway } from './gateways/match.gateway';
 import { ChampionshipGateway } from './gateways/championship.gateway';
 import { ChampionshipPlayerService } from './services/championshipPlayer.service';
 import { MatchController } from './controllers/match.controller';
+import { UploadFileController } from './controllers/upload-file.controller';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { MatchController } from './controllers/match.controller';
     TypeOrmModule.forRoot(sqlClient()),
     TypeOrmModule.forFeature(entities),
   ],
-  controllers: [ChampionshipController, MatchController],
+  controllers: [ChampionshipController, MatchController, UploadFileController],
   providers: [
     ChampionshipService,
     TransactionService,

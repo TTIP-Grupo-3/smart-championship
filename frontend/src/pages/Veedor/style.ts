@@ -6,16 +6,16 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   container: {
     display: 'flex',
     width: 'auto',
-    marginTop: theme.spacing(3),
-    marginRight: theme.spacing(3),
-    marginLeft: theme.spacing(3),
+    marginTop: theme.spacing(2),
+    marginRight: theme.spacing(13),
+    marginLeft: theme.spacing(13),
     paddingBottom: theme.spacing(5),
     borderRadius: '4px',
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
     backgroundColor: grey[800],
-    [theme.breakpoints.down(370)]: {
+    [theme.breakpoints.down(700)]: {
       marginRight: 0,
       marginLeft: 0,
     },

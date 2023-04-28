@@ -1,5 +1,5 @@
 import { blue, red } from '@mui/material/colors';
-import { Theme } from '@mui/material/styles';
+import { lighten, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
@@ -12,23 +12,25 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     margin: 0,
   },
   buttonAdd: {
-    backgroundColor: red[500],
+    backgroundColor: blue[900],
     color: theme.palette.common.white,
-    width: '40%',
+    borderRadius: 90,
+    width: '25%',
     fontFamily: '800',
     fontSize: 20,
     '&:hover': {
-      backgroundColor: red[500],
+      backgroundColor: blue[900],
     },
   },
   buttonRemove: {
     fontFamily: '800',
-    backgroundColor: blue[500],
     color: theme.palette.common.white,
-    width: '40%',
+    borderRadius: 90,
+    width: '25%',
+    backgroundColor: lighten('#121212', 0.05),
     fontSize: 20,
     '&:hover': {
-      backgroundColor: blue[500],
+      backgroundColor: lighten('#121212', 0.05),
     },
   },
 }));

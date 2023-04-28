@@ -16,7 +16,7 @@ export const MatchManager: FC<any> = ({
         buttonRightAction={buttonRightLocal}
         buttonRightChild={'-'}
       />
-      <Grid style={{ display: 'flex' }}></Grid>
+      <Grid style={{ display: 'flex', width: '4.4%' }}></Grid>
 
       <AnotationVeedor
         buttonLeftAction={buttonLeftVisiting}

@@ -157,20 +157,12 @@
   ],
   "cards": [
     { "id": 1, "type": "YELLOW", "minute": 1, "player": { "id": 1 }, "status": { "id": 1 } },
-    { "id": 2, "type": "YELLOW", "minute": 2, "player": { "id": 1 }, "status": { "id": 1 } },
     { "id": 3, "type": "RED", "minute": 3, "player": { "id": 12 }, "status": { "id": 2 } },
-    { "id": 4, "type": "RED", "minute": 4, "player": { "id": 12 }, "status": { "id": 2 } },
     { "id": 5, "type": "YELLOW", "minute": 5, "player": { "id": 23 }, "status": { "id": 3 } },
-    { "id": 6, "type": "YELLOW", "minute": 6, "player": { "id": 23 }, "status": { "id": 3 } },
-    { "id": 7, "type": "YELLOW", "minute": 7, "player": { "id": 23 }, "status": { "id": 3 } },
-    { "id": 8, "type": "YELLOW", "minute": 8, "player": { "id": 23 }, "status": { "id": 3 } },
-    { "id": 9, "type": "YELLOW", "minute": 9, "player": { "id": 23 }, "status": { "id": 3 } },
     { "id": 10, "type": "YELLOW", "minute": 10, "player": { "id": 34 }, "status": { "id": 4 } },
-    { "id": 11, "type": "YELLOW", "minute": 11, "player": { "id": 34 }, "status": { "id": 4 } },
     { "id": 12, "type": "RED", "minute": 12, "player": { "id": 56 }, "status": { "id": 6 } },
     { "id": 13, "type": "RED", "minute": 13, "player": { "id": 78 }, "status": { "id": 8 } },
     { "id": 14, "type": "RED", "minute": 14, "player": { "id": 1 }, "status": { "id": 9 } },
-    { "id": 15, "type": "RED", "minute": 15, "player": { "id": 1 }, "status": { "id": 9 } },
-    { "id": 16, "type": "RED", "minute": 16, "player": { "id": 67 }, "status": { "id": 12 } },
-    { "id": 17, "type": "RED", "minute": 17, "player": { "id": 67 }, "status": { "id": 12 } }  ]
+    { "id": 16, "type": "RED", "minute": 16, "player": { "id": 67 }, "status": { "id": 12 } }
+  ]
 }
