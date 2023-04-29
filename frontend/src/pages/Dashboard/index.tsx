@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { TeamStatus } from '../../components/BoxTeams';
 import { Navbar } from '../../components/NavBar';
 import { Tournament } from '../../components/Tournament';
-import { SocketService } from '../../services/SocketService';
+import { ChampionshipService } from '../../services/ChampionshipService';
 import { useStyles } from './style';
 
 export interface SmartChampionship extends EliminationTournament {
@@ -21,17 +21,17 @@ export interface MatchTournament {
   visiting: TeamStatus;
 }
 
-const socketService = new SocketService();
+const championshipService = new ChampionshipService();
 
 export const Dashboard: FC = () => {
   const [matches, setMatches] = useState<EliminationTournament>({ matches: [], next: null });
   const { classes } = useStyles();
 
   useEffect(() => {
-    const socket = socketService.create('championship');
+    const socket = championshipService.create();
     socket.on('championship', (data: any) => setMatches(data));
-    socketService.subscribe(socket, { id: 1 });
-    return () => socketService.unsubscribe(socket);
+    championshipService.subscribe(socket, { id: 1 });
+    return () => championshipService.unsubscribe(socket);
   }, []);
 
   return (

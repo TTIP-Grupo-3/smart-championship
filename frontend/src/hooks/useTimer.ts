@@ -35,5 +35,5 @@ export const useTimer = (timeSeconds: number) => {
   const reset = () => {
     setTime(0);
   };
-  return { reset, start, stop, seconds, minutes, time , isStarted:isRunning };
+  return { reset, start, stop, seconds, minutes, time, isStarted: isRunning };
 };
