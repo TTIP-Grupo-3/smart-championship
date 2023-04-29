@@ -37,6 +37,7 @@ export type DeepPartial<T> =
         }
       : T);
 export type UserPayload = {
+  id: number;
   username: string;
   iat: number;
   exp: number;
