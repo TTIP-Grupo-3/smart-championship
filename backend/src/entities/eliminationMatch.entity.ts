@@ -7,6 +7,8 @@ import { MatchStatus } from './matchStatus.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { TeamStatus } from './teamStatus.entity';
 import { EliminationChampionship } from './eliminationChampionship.entity';
+import { Goal } from './goal.entity';
+import { Card } from './card.entity';
 
 const errors = configService.get('model.errors');
 
@@ -28,6 +30,16 @@ export class EliminationMatch extends Match {
   @TreeChildren({ cascade: true })
   submatches: [EliminationMatch, EliminationMatch] | [];
 
+  championship: EliminationChampionship;
+
+  public get local(): EliminationMatch {
+    return this.submatches[0];
+  }
+
+  public get visiting(): EliminationMatch {
+    return this.submatches[1];
+  }
+
   public get phases(): Array<Array<EliminationMatch>> {
     if (this.isBaseMatch()) {
       return [[this]];
@@ -38,6 +50,20 @@ export class EliminationMatch extends Match {
         ...visitingPhases[index],
       ]);
       return [...subphases, [this]];
+    }
+  }
+
+  public get room() {
+    return `match-${this.id}`;
+  }
+
+  findMatch(id: number) {
+    if (this.id === id) {
+      return this;
+    } else if (this.isBaseMatch()) {
+      return null;
+    } else {
+      return this.local.findMatch(id) ?? this.visiting.findMatch(id);
     }
   }
 
@@ -53,6 +79,26 @@ export class EliminationMatch extends Match {
       throw new InvalidArgumentException(errors.invalidArgument);
     }
     return this;
+  }
+
+  goal(goal: Goal, local: boolean) {
+    this.status.goal(goal, local);
+  }
+
+  card(card: Card, local: boolean) {
+    this.status.card(card, local);
+  }
+
+  start() {
+    this.status.startMatch();
+  }
+
+  end() {
+    this.status.endMatch();
+  }
+
+  toArray(): Array<EliminationMatch> {
+    return this.phases.flat();
   }
 
   private isBaseMatch() {

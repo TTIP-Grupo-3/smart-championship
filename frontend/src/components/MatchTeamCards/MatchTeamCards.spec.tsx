@@ -3,7 +3,7 @@ import { fakeTheme } from '../../test/fake_theme';
 import { componentMounter } from '../../test/utils';
 
 const theme = fakeTheme;
-const cards = { yellow: 0, red: 0 };
+const cards = { yellow: [], red: [] };
 
 const { mountComponent } = componentMounter(MatchTeamCards, { cards }, theme);
 

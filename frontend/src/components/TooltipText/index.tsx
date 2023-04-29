@@ -3,7 +3,7 @@ import { FC, useEffect, useState, useRef } from 'react';
 import { useStyles } from './style';
 
 interface TooltipTextProps {
-  text: string;
+  text?: string;
   disabled?: boolean;
   'data-testid'?: string;
 }

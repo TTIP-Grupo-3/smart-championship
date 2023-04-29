@@ -19,17 +19,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     minWidth: '239px',
+    cursor: 'pointer',
   },
 }));
-
-/*
-gridTeam: {
-    height: '50px',
-    margin: 30,
-    border: '2px solid black',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
- 
-  */

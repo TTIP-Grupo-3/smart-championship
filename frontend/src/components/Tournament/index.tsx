@@ -30,7 +30,7 @@ export const Tournament: FC<TournamentProps> = ({ dataSet, round = 0 }) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <BoxTeams local={match.local} visiting={match.visiting} />
+                <BoxTeams {...match} />
               </Grid>
             </Grid>
           </Grid>

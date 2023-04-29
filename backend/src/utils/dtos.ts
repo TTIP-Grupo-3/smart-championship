@@ -1,14 +1,28 @@
-import { CardsResponseDTO } from 'src/dtos/responses/cards.response.dto';
+import { PartialCardsResponseDTO } from 'src/dtos/responses/partialCards.response.dto';
 import { EliminationChampionshipResponseDTO } from 'src/dtos/responses/eliminationChampionship.response.dto';
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
-import { MatchResponseDTO } from 'src/dtos/responses/match.response.dto';
+import { PartialMatchResponseDTO } from 'src/dtos/responses/partialMatch.response.dto';
 import { PhaseResponseDTO } from 'src/dtos/responses/phase.response.dto';
+import { PartialTeamStatusResponseDTO } from 'src/dtos/responses/partialTeamStatus.response.dto';
+import { CardsResponseDTO } from 'src/dtos/responses/cards.response.dto';
+import { MatchResponseDTO } from 'src/dtos/responses/match.response.dto';
+import { PlayerEventResponseDTO } from 'src/dtos/responses/playerEvent.response.dto';
+import { PlayerResponseDTO } from 'src/dtos/responses/player.response.dto';
 import { TeamStatusResponseDTO } from 'src/dtos/responses/teamStatus.response.dto';
+import { MatchTeamsResponseDTO } from 'src/dtos/responses/matchTeams.response.dto';
+import { TeamResponseDTO } from 'src/dtos/responses/team.response.dto';
 
 export type SmartChampionshipDTO =
-  | CardsResponseDTO
+  | PartialCardsResponseDTO
   | EliminationChampionshipResponseDTO
   | ErrorResponseDTO
-  | MatchResponseDTO
+  | PartialMatchResponseDTO
   | PhaseResponseDTO
-  | TeamStatusResponseDTO;
+  | PartialTeamStatusResponseDTO
+  | CardsResponseDTO
+  | MatchResponseDTO
+  | PlayerResponseDTO
+  | PlayerEventResponseDTO
+  | TeamStatusResponseDTO
+  | MatchTeamsResponseDTO
+  | TeamResponseDTO;

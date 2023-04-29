@@ -3,10 +3,10 @@ import { FC } from 'react';
 
 interface MatchTeamCardProps {
   color: string;
-  amount: number;
+  amount?: number;
 }
 
-export const MatchTeamCard: FC<MatchTeamCardProps> = ({ color, amount }) => (
+export const MatchTeamCard: FC<MatchTeamCardProps> = ({ color, amount = 0 }) => (
   <>
     <Grid
       data-testid="MatchTeamCard"

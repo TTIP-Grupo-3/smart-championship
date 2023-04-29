@@ -6,7 +6,9 @@ import { MatchStatus } from 'src/entities/matchStatus.entity';
 import { ChampionshipPlayer } from 'src/entities/championshipPlayer.entity';
 import { ChampionshipTeam } from 'src/entities/championshipTeam.entity';
 import { TeamStatus } from 'src/entities/teamStatus.entity';
+import { User } from 'src/entities/user.entity';
 export type SmartChampionshipEntity =
+  | User
   | Card
   | EliminationChampionship
   | EliminationMatch
@@ -17,6 +19,7 @@ export type SmartChampionshipEntity =
   | TeamStatus;
 
 export const entities = [
+  User,
   Card,
   EliminationChampionship,
   EliminationMatch,

@@ -1,13 +1,10 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { plainToInstance } from 'class-transformer';
 import configuration from 'src/config/configuration';
-import { EliminationChampionshipResponseDTO } from 'src/dtos/responses/eliminationChampionship.response.dto';
 import { NotFoundException } from 'src/exceptions/NotFoundException';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
 import { ChampionshipService } from 'src/services/championship.service';
-import { DataService } from 'src/services/data.service';
 import { entities } from 'src/utils/entities';
 import { testSqlClient } from 'test/utils/testSqlClient';
 import {
@@ -15,6 +12,8 @@ import {
   championship,
   errors,
 } from '../../data/src/services/championship.service.spec.data.json';
+import { TransactionService } from 'src/services/transaction.service';
+import { DataService } from 'test/utils/data.service';
 
 describe('ChampionshipService', () => {
   let module: TestingModule;
@@ -28,7 +27,7 @@ describe('ChampionshipService', () => {
         TypeOrmModule.forRoot(testSqlClient()),
         TypeOrmModule.forFeature(entities),
       ],
-      providers: [ChampionshipService, DataService, EntityToDTOMapper],
+      providers: [ChampionshipService, DataService, EntityToDTOMapper, TransactionService],
     }).compile();
     service = module.get<ChampionshipService>(ChampionshipService);
     dataService = module.get<DataService>(DataService);
@@ -38,7 +37,7 @@ describe('ChampionshipService', () => {
   describe('GetChampionship', () => {
     it('should get championship', async () => {
       const result = await service.getChampionship(championship.id);
-      expect(result).toStrictEqual(plainToInstance(EliminationChampionshipResponseDTO, championship));
+      expect(result).toMatchObject(championship);
     });
 
     it('should fail if championship not exists', async () => {

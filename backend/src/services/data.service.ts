@@ -12,6 +12,7 @@ import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMa
 import { DeepPartial } from 'src/utils/types';
 import { DataSource } from 'typeorm';
 import {
+  users,
   players,
   teams,
   eliminationChampionships,
@@ -21,6 +22,7 @@ import {
   goals,
   cards,
 } from '../data/initial.data.json';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 @UseExceptionMapper(TypeOrmExceptionMapperExecutor)
@@ -29,6 +31,7 @@ export class DataService {
 
   async initialize() {
     await this.dataSource.transaction(async (manager) => {
+      await manager.save(User, users);
       await manager.save(EliminationChampionship, eliminationChampionships);
       await manager.save(ChampionshipTeam, teams);
       await manager.save(ChampionshipPlayer, players);

@@ -4,13 +4,17 @@ import { componentMounter, percentaje } from '../../test/utils';
 import smartLogoLocal from '../../default_match_icon_local.svg';
 
 const theme = fakeTheme;
-const cards = { yellow: 0, red: 0 };
+const cards = { yellow: [], red: [] };
 const team = {
   name: 'team-1',
   goals: 0,
   cards: cards,
 };
-const { mountComponent } = componentMounter(MatchTeam, { team, logo: smartLogoLocal }, theme);
+const { mountComponent } = componentMounter(
+  MatchTeam,
+  { team, logo: smartLogoLocal, showCards: true },
+  theme,
+);
 
 describe('MatchTeam', () => {
   beforeEach(() => {
