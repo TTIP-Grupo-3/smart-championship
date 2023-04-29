@@ -15,14 +15,24 @@ import { ChampionshipGateway } from './gateways/championship.gateway';
 import { ChampionshipPlayerService } from './services/championshipPlayer.service';
 import { MatchController } from './controllers/match.controller';
 import { UploadFileController } from './controllers/upload-file.controller';
+import { AuthService } from './services/auth.service';
+import { UsersService } from './services/user.service';
+import { JwtStrategy } from './strategies/jwt.startegy';
+import { AuthController } from './controllers/auth.controller';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { LocalStrategy } from './strategies/local.strategy';
+import { jwtModuleAsyncOptions } from './options/jwtModuleAsync.options';
 
 @Module({
   imports: [
+    PassportModule,
     ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
+    JwtModule.registerAsync(jwtModuleAsyncOptions()),
     TypeOrmModule.forRoot(sqlClient()),
     TypeOrmModule.forFeature(entities),
   ],
-  controllers: [ChampionshipController, MatchController, UploadFileController],
+  controllers: [ChampionshipController, MatchController, AuthController, UploadFileController],
   providers: [
     ChampionshipService,
     TransactionService,
@@ -32,6 +42,10 @@ import { UploadFileController } from './controllers/upload-file.controller';
     ChampionshipPlayerService,
     DataService,
     EntityToDTOMapper,
+    AuthService,
+    UsersService,
+    JwtStrategy,
+    LocalStrategy,
   ],
 })
 export class AppModule {

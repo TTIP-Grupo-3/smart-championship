@@ -13,12 +13,13 @@ import { EliminationMatch } from 'src/entities/eliminationMatch.entity';
 import { MatchIdDTO } from 'src/dtos/matchId.dto';
 import { GoalDTO } from 'src/dtos/goal.dto';
 import { CardDTO } from 'src/dtos/card.dto';
-import { UseFilters, UsePipes } from '@nestjs/common';
+import { UseFilters, UseGuards, UsePipes } from '@nestjs/common';
 import { wsValidationPipe } from 'src/pipes/ws.validation.pipe';
 import { WsExceptionFilter } from 'src/filters/ws.exception.filter';
 import { MatchResponseDTO } from 'src/dtos/responses/match.response.dto';
 import { DisallowGoalDTO } from 'src/dtos/disallowGoal.dto';
 import { DisallowCardDTO } from 'src/dtos/disallowCard.dto';
+import { WsAuthGuard } from 'src/guards/wsAuth.guard';
 
 @WebSocketGateway({ namespace: 'match' })
 @UseFilters(WsExceptionFilter)
@@ -46,36 +47,43 @@ export class MatchGateway {
     client.leave(match.room);
   }
 
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('start')
   async start(@ConnectedSocket() client: Socket, @MessageBody() startDTO: MatchIdDTO) {
     const match = (await this.matchService.start(startDTO)) as EliminationMatch;
     await this.notifyUpdate(match);
   }
 
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('end')
   async end(@ConnectedSocket() client: Socket, @MessageBody() endDTO: MatchIdDTO) {
     const match = (await this.matchService.end(endDTO)) as EliminationMatch;
     await this.notifyUpdate(match);
   }
 
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('goal')
   async goal(@ConnectedSocket() client: Socket, @MessageBody() goalDTO: GoalDTO) {
     const match = (await this.matchService.goal(goalDTO)) as EliminationMatch;
     await this.notifyUpdate(match);
   }
 
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('card')
   async card(@ConnectedSocket() client: Socket, @MessageBody() cardDTO: CardDTO) {
+    console.log(client.handshake.auth);
     const match = (await this.matchService.card(cardDTO)) as EliminationMatch;
     await this.notifyUpdate(match);
   }
 
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('goal:disallow')
   async disallowGoal(@ConnectedSocket() client: Socket, @MessageBody() disallowGoalDTO: DisallowGoalDTO) {
     const match = await this.matchService.disallowGoal(disallowGoalDTO);
     await this.notifyUpdate(match);
   }
 
+  @UseGuards(WsAuthGuard)
   @SubscribeMessage('card:disallow')
   async disallowCard(@ConnectedSocket() client: Socket, @MessageBody() disallowCardDTO: DisallowCardDTO) {
     const match = await this.matchService.disallowCard(disallowCardDTO);

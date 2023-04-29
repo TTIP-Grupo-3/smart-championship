@@ -36,3 +36,8 @@ export type DeepPartial<T> =
           [K in keyof T]?: DeepPartial<T[K]>;
         }
       : T);
+export type UserPayload = {
+  username: string;
+  iat: number;
+  exp: number;
+};
