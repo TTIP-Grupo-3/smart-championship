@@ -2,12 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from 'src/app.module';
-import { championship } from '../../data/e2e/championship/championship.e2e-spec.data.json';
+import { championship, SECRET } from '../../data/e2e/championship/championship.e2e-spec.data.json';
 
 describe('ChampionshipController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
+    process.env.JWT_SECRET = SECRET;
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
