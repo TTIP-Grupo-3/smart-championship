@@ -1,7 +1,7 @@
 import { Controller, Request, Post, UseGuards, UsePipes, Body } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LocalAuthGuard } from 'src/guards/localAuth.guard';
-import { ApiUnauthorizedResponse, ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import { ApiUnauthorizedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { validationPipe } from 'src/pipes/validation.pipe';
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
 import { LoginDTO } from 'src/dtos/login.dto';
@@ -17,7 +17,6 @@ export class AuthController {
   @ApiOperation({ summary: 'Login' })
   @ApiResponse({ type: AccessTokenResponseDTO, status: 201 })
   @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
-  @ApiBody({ type: LoginDTO })
   @Post('login')
   async login(@Body() user: LoginDTO, @Request() req) {
     return await this.authService.login(req.user);
