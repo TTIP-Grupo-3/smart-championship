@@ -1,5 +1,4 @@
 import { Socket } from 'socket.io-client';
-import { Cards } from '../interfaces';
 import { SubscriptionService } from './SubscriptionService';
 
 export class MatchService extends SubscriptionService {
