@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      
+           
       - name: Use Node.js ${{ matrix.node-version }}
          
         uses: actions/setup-node@v3
@@ -39,9 +39,12 @@ jobs:
       - name: Install dependencies
         run: npm install --silent
 
-      - name: Run the tests
-        run: npm run test
+      - name: Run Cypress Test
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: ./frontend
+          command: npx cypress run --component
+          browser: chrome
 
       - name: Build
         run: npm run build
-
