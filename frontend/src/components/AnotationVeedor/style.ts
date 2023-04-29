@@ -1,4 +1,4 @@
-import { blue, red } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
 import { lighten, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 

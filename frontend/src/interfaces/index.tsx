@@ -8,3 +8,8 @@ export enum MatchStatus {
   STARTED = 'STARTED',
   FINISHED = 'FINISHED',
 }
+
+export interface User {
+  username: string;
+  password: string;
+}

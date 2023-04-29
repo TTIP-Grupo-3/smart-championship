@@ -4,23 +4,24 @@ import { Close } from '@mui/icons-material';
 import { FC, useEffect, useState } from 'react';
 import { useStyles } from './style';
 import { DialogTitle, IconButton, Typography } from '@mui/material';
-import { SocketService } from '../../services/SocketService';
 import { MatchScoreResult } from '../MatchScoreResult';
 import { MatchUserStats } from '../MatchUserStats';
+import { MatchService } from '../../services/MatchService';
 
-const socketService = new SocketService();
-const socket = socketService.create('match');
+const matchService = new MatchService();
+const socket = matchService.create();
 
 export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
   const { classes } = useStyles();
   const [match, setMatch] = useState<any>();
+  const matchService = new MatchService();
 
   useEffect(() => {
     if (open) {
       socket.on('match', (data: any) => setMatch(data));
-      socketService.subscribe(socket, { id: matchId, championshipId: 1 });
+      matchService.subscribe(socket, { id: matchId, championshipId: 1 });
     }
-    return () => (open ? socketService.unsubscribe(socket) : undefined);
+    return () => (open ? matchService.unsubscribe(socket) : undefined);
   }, [open]);
 
   return (

@@ -22,8 +22,6 @@ export const useTimer = (timeSeconds: number) => {
 
   const seconds = (time: number) => Math.floor(time % 60);
 
-  const milliseconds = time % 100;
-
   const start = () => {
     setIsRunning(true);
   };
@@ -35,5 +33,5 @@ export const useTimer = (timeSeconds: number) => {
   const reset = () => {
     setTime(0);
   };
-  return { reset, start, stop, seconds, minutes, time , isStarted:isRunning };
+  return { reset, start, stop, seconds, minutes, time, isStarted: isRunning };
 };

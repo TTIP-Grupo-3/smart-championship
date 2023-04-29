@@ -2,7 +2,6 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Button,
   Card,
-  FormControl,
   Grid,
   IconButton,
   InputAdornment,
@@ -10,36 +9,45 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { ChangeEventHandler, FormEventHandler, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { User } from '../../interfaces';
+import { API_AUTH } from '../../services/Auth';
 import { useStyles } from './style';
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { classes } = useStyles();
-
+  const [user, setUser] = useState<User>({ username: '', password: '' });
+  const navigate = useNavigate();
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
+  const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+    setUser({ ...user, [target.name]: target.value });
+  };
+
+  const handleLogin: FormEventHandler<HTMLFormElement> = (e: any) => {
+    e.preventDefault();
+    API_AUTH.login(user).then(({ data }) => {
+      console.log(data);
+      localStorage.setItem('token', data.access_token);
+      navigate('/inspector');
+    });
+  };
+
   return (
-    <Grid
-      className={classes.root}
-      container
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      flexGrow={1}
-      minHeight="100vh"
-    >
+    <Grid className={classes.root} container>
       <Card style={{ backgroundColor: '#001E3C', padding: 48, borderRadius: 6 }} elevation={24}>
         <Typography color="white" variant="h5">
           SMART.CHAMPIONSHIP
         </Typography>
         <Grid style={{ padding: 20 }} />
 
-        <FormControl>
+        <form onSubmit={handleLogin}>
           <TextField
             variant="outlined"
             label="Usuario"
-            InputProps={{ classes: { notchedOutline: classes.notchedOutline } }}
+            InputProps={{ classes: { notchedOutline: classes.notchedOutline, input: classes.input } }}
             InputLabelProps={{
               sx: {
                 color: 'white',
@@ -48,13 +56,17 @@ export const Login = () => {
                 },
               },
             }}
+            name="username"
+            onChange={handleChange}
             placeholder="Usuario"
-            style={{ color: 'white' }}
+            style={{ color: 'white', width: '100%' }}
           />
           <Grid style={{ padding: 30 }} />
           <TextField
             label="Contraseña"
             variant="outlined"
+            name="password"
+            onChange={handleChange}
             InputLabelProps={{
               sx: {
                 color: 'white',
@@ -64,7 +76,7 @@ export const Login = () => {
               },
             }}
             InputProps={{
-              classes: { notchedOutline: classes.notchedOutline },
+              classes: { notchedOutline: classes.notchedOutline, input: classes.input },
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
@@ -82,16 +94,16 @@ export const Login = () => {
               ),
             }}
             placeholder="Contraseña"
-            style={{ color: 'white' }}
+            style={{ color: 'white', width: '100%' }}
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
           />
           <Grid direction="column" justifyContent="center" alignItems="center" display="flex" marginTop={6}>
-            <Button variant="contained" style={{ width: '50%', backgroundColor: '#00BCD4' }}>
+            <Button type="submit" variant="contained" style={{ width: '50%', backgroundColor: '#00BCD4' }}>
               Log in
             </Button>
           </Grid>
-        </FormControl>
+        </form>
       </Card>
     </Grid>
   );
