@@ -4,7 +4,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { List, ListItem, TableBody } from '@mui/material';
+import { TableBody } from '@mui/material';
+import { useStyles } from './style';
 
 interface Column {
   id: 'name' | 'population' | 'size' | 'density' | 'density2';
@@ -74,18 +75,15 @@ const rows = [
 ];
 
 export const TableClasification = () => {
+  const { classes } = useStyles();
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 380 }}>
-        <Table stickyHeader style={{ backgroundColor: 'white', color: 'black' }}>
+    <Paper className={classes.paper}>
+      <TableContainer className={classes.tableContainer}>
+        <Table stickyHeader className={classes.table}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
-                  style={{ backgroundColor: '#bf360c', minWidth: column.minWidth, color: 'white' }}
-                  key={column.id}
-                  align={column.align}
-                >
+                <TableCell className={classes.columnHead} key={column.id} align={column.align}>
                   {column.label}
                 </TableCell>
               ))}
@@ -95,18 +93,11 @@ export const TableClasification = () => {
             {rows.map((row) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell
-                        key={column.id}
-                        align={column.align}
-                        style={{ backgroundColor: 'black', color: 'white' }}
-                      >
-                        {value}
-                      </TableCell>
-                    );
-                  })}
+                  {columns.map((column) => (
+                    <TableCell key={column.id} align={column.align} className={classes.rows}>
+                      {row[column.id]}
+                    </TableCell>
+                  ))}
                 </TableRow>
               );
             })}
@@ -116,20 +107,3 @@ export const TableClasification = () => {
     </Paper>
   );
 };
-
-/*
-   <ListItem
-                style={{
-                  backgroundColor: 'black',
-                  color: 'white',
-                  height: 60,
-                  marginTop: 10,
-                  width: '100%',
-                }}
-              >
-                equipo 1
-              </ListItem>
-            );
-          })}
-        </List> 
- */
