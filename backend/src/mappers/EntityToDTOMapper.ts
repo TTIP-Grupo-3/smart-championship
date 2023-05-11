@@ -98,7 +98,15 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
       const { id: championshipId } = championship;
       const local = this.teamStatusResponseDTO(localStatus, TeamResponseDTO);
       const visiting = this.teamStatusResponseDTO(visitingStatus, TeamResponseDTO);
-      return this.plainToInstance(MatchTeamsResponseDTO, { id, championshipId, local, visiting });
+      return this.plainToInstance(MatchTeamsResponseDTO, {
+        id,
+        date,
+        start,
+        end,
+        championshipId,
+        local,
+        visiting,
+      });
     } else {
       const local = this.teamStatusResponseDTO(localStatus);
       const visiting = this.teamStatusResponseDTO(visitingStatus);

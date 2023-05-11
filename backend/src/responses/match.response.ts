@@ -8,6 +8,9 @@ export enum MatchResponseStatus {
 
 export interface MatchResponse {
   id: number;
+  date: string;
+  start: string;
+  end: string;
   status: MatchResponseStatus;
   local: TeamStatusResponse;
   visiting: TeamStatusResponse;
