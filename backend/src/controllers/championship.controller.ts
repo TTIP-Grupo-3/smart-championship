@@ -20,6 +20,7 @@ export class ChampionshipController {
   @UseInterceptors(new TransformInterceptor(EliminationChampionshipResponseDTO))
   @Get()
   async getChampionship(@Param('id') id = 1): Promise<Championship> {
-    return await this.championshipService.getChampionship(id);
+    const res = await this.championshipService.getChampionship(id);
+    return res;
   }
 }

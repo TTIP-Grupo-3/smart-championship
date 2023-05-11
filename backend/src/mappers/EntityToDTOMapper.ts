@@ -114,6 +114,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     if (dtoCls?.name === TeamStatusResponseDTO.name) {
       return this.plainToInstance(TeamStatusResponseDTO, {
         name: team.name,
+        logo: team.logo,
         goals: this.map(goals),
         cards: { red: this.map(reds), yellow: this.map(yellows) },
       });
@@ -122,6 +123,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     } else {
       return this.plainToInstance(PartialTeamStatusResponseDTO, {
         name: team.name,
+        logo: team.logo,
         goals: goals.length,
         cards: { red: reds.length, yellow: yellows.length },
       });

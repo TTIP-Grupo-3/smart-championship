@@ -14,6 +14,7 @@ export interface TeamStatus {
   name: string;
   goals: number;
   cards: TypeCards;
+  logo: string | null;
 }
 
 interface TypeCards {

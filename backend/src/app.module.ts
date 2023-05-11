@@ -23,7 +23,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './strategies/local.strategy';
 import { jwtModuleAsyncOptions } from './options/jwtModuleAsync.options';
-
+import { StorageService } from './services/storage.service';
 @Module({
   imports: [
     PassportModule,
@@ -46,6 +46,7 @@ import { jwtModuleAsyncOptions } from './options/jwtModuleAsync.options';
     UsersService,
     JwtStrategy,
     LocalStrategy,
+    StorageService,
   ],
 })
 export class AppModule {

@@ -7,6 +7,8 @@ export class TeamResponseDTO implements TeamResponse {
   @ApiProperty()
   id: number;
   @ApiProperty()
+  logo: string;
+  @ApiProperty()
   name: string;
   @ApiProperty({ type: PlayerResponseDTO, isArray: true })
   @Type(() => PlayerResponseDTO)

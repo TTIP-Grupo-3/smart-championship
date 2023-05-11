@@ -8,17 +8,23 @@ import { EntityManager } from 'typeorm';
 import { configService } from './config.service';
 import { Championship } from 'src/entities/championship.entity';
 import { TransactionService } from './transaction.service';
+import { StorageService } from 'src/services/storage.service';
 
 const errors = configService.get('service.errors');
 
 @Injectable()
 @UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class ChampionshipService {
-  constructor(private readonly transactionService: TransactionService) {}
+  constructor(
+    private readonly transactionService: TransactionService,
+    private storageService: StorageService,
+  ) {}
 
   async getChampionship(id: number, manager?: EntityManager): Promise<Championship> {
     return await this.transactionService.transaction(async (manager) => {
-      return await this.findChampionship(manager, id);
+      const championship = await this.findChampionship(manager, id);
+
+      return championship;
     }, manager);
   }
 
@@ -29,6 +35,13 @@ export class ChampionshipService {
     const final = finals.find(({ championshipFinal }) => championshipFinal?.id === id);
     if (!final) throw new NotFoundException(errors.notFoundChampionship);
     final.championshipFinal.final = final;
-    return final.championshipFinal;
+    return await this.addLogoTeams(final.championshipFinal);
+  }
+
+  private async addLogoTeams(championship: EliminationChampionship): Promise<EliminationChampionship> {
+    championship.final.teams().forEach((team) => {
+      team.logo = this.storageService.getImage(`${team.id}.png`);
+    });
+    return championship;
   }
 }

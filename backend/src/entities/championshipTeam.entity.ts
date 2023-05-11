@@ -19,4 +19,5 @@ export class ChampionshipTeam {
     orphanedRowAction: 'delete',
   })
   championship: Championship;
+  logo: string;
 }

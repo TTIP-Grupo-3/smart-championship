@@ -40,6 +40,19 @@ export class EliminationMatch extends Match {
     return this.submatches[1];
   }
 
+  teams(): Array<ChampionshipTeam> {
+    if (this.isBaseMatch()) {
+      return [this.status.localStatus.team, this.status.visitingStatus.team];
+    } else {
+      return [
+        this.status.localStatus.team,
+        this.status.visitingStatus.team,
+        ...this.local.teams(),
+        ...this.visiting.teams(),
+      ];
+    }
+  }
+
   public get phases(): Array<Array<EliminationMatch>> {
     if (this.isBaseMatch()) {
       return [[this]];
