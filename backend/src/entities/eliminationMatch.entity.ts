@@ -40,6 +40,10 @@ export class EliminationMatch extends Match {
     return this.submatches[1];
   }
 
+  public get next(): EliminationMatch {
+    return this.parent;
+  }
+
   public get phases(): Array<Array<EliminationMatch>> {
     if (this.isBaseMatch()) {
       return [[this]];
@@ -94,7 +98,14 @@ export class EliminationMatch extends Match {
   }
 
   end() {
-    this.status.endMatch();
+    const winner = this.status.endMatch();
+    if (this.next !== null) this.next.setTeam(winner, this);
+  }
+
+  setTeam(winner: ChampionshipTeam, match: EliminationMatch) {
+    if (this.local.id === match.id) this.status.setLocal(winner);
+    if (this.visiting.id === match.id) this.status.setVisiting(winner);
+    throw new InvalidArgumentException();
   }
 
   toArray(): Array<EliminationMatch> {

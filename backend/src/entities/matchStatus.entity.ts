@@ -7,6 +7,7 @@ import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentExceptio
 import { Goal } from './goal.entity';
 import { Card } from './card.entity';
 import { MatchResponseStatus } from 'src/responses/match.response';
+import { ChampionshipTeam } from './championshipTeam.entity';
 
 @Entity()
 export class MatchStatus {
@@ -24,6 +25,13 @@ export class MatchStatus {
   @OneToOne(() => TeamStatus, { eager: true, cascade: true })
   @JoinColumn()
   visitingStatus: TeamStatus;
+
+  public get winner(): ChampionshipTeam {
+    if (this.status !== MatchResponseStatus.FINISHED) throw new InvalidArgumentException();
+    return this.localStatus.goals.length > this.visitingStatus.goals.length
+      ? this.localStatus.team
+      : this.visitingStatus.team;
+  }
 
   public get status(): MatchResponseStatus {
     if (this.end) {
@@ -45,9 +53,10 @@ export class MatchStatus {
     this.start = new Date();
   }
 
-  endMatch() {
+  endMatch(): ChampionshipTeam {
     if (!!this.end) throw new InvalidArgumentException();
     this.end = new Date();
+    return this.winner;
   }
 
   goal(goal: Goal, local: boolean) {
@@ -64,5 +73,13 @@ export class MatchStatus {
     } else {
       this.visitingStatus.card(card);
     }
+  }
+
+  setVisiting(team: ChampionshipTeam) {
+    this.visitingStatus.setTeam(team);
+  }
+
+  setLocal(team: ChampionshipTeam) {
+    this.localStatus.setTeam(team);
   }
 }

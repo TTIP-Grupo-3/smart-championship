@@ -41,6 +41,10 @@ export class TeamStatus {
     card.setStatus(this);
   }
 
+  setTeam(team: ChampionshipTeam) {
+    this.team = team;
+  }
+
   private canAddCard(card: Card): boolean {
     return this.cards.every(
       ({ type, player }) =>
