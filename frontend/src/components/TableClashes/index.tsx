@@ -6,6 +6,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Grid, List, ListItem, Typography } from '@mui/material';
 import { useStyles } from './style';
+import smartLogoLocal from '../../default_match_icon_local.svg';
+import smartLogoVisiting from '../../default_match_icon_visiting.svg';
 
 const rows = [
   { date: '12/5/23 15:30hs', local: { name: 'Chile', score: 0 }, visiting: { name: 'Bolivia', score: 0 } },
@@ -32,14 +34,21 @@ export const TableClashes = () => {
           {rows.map((row) => {
             return (
               <ListItem className={classes.listItem}>
-                <Typography className={classes.teamName}>{row.local.name}</Typography>
+                <Grid className={classes.gridLogo} sx={{ marginLeft: '8%' }}>
+                  <img src={smartLogoLocal} style={{ height: 23, width: 23 }}></img>
+                  <Typography className={classes.teamName}>{row.local.name}</Typography>
+                </Grid>
                 <Typography className={classes.score}> {row.local.score}</Typography>
                 <Grid className={classes.gridMatch}>
                   <Typography style={{ fontSize: 12 }}>{row.date}</Typography>
                   <Typography className={classes.versus}>VS</Typography>
                 </Grid>
                 <Typography className={classes.score}> {row.visiting.score}</Typography>
-                <Typography className={classes.teamName}>{row.visiting.name}</Typography>
+                <Grid className={classes.gridLogo} sx={{ marginRight: '8%' }}>
+                  <img src={smartLogoVisiting} style={{ height: 23, width: 23 }}></img>
+
+                  <Typography className={classes.teamName}>{row.visiting.name}</Typography>
+                </Grid>
               </ListItem>
             );
           })}
@@ -48,20 +57,3 @@ export const TableClashes = () => {
     </Paper>
   );
 };
-
-/*
-   <ListItem
-                style={{
-                  backgroundColor: 'black',
-                  color: 'white',
-                  height: 60,
-                  marginTop: 10,
-                  width: '100%',
-                }}
-              >
-                equipo 1
-              </ListItem>
-            );
-          })}
-        </List> 
- */

@@ -33,11 +33,9 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     justifyContent: 'center',
     minWidth: '30%',
     textAlign: 'center',
-
     display: 'flex',
     backgroundColor: 'black',
     color: theme.palette.common.white,
-    marginTop: 22,
   },
   score: {
     justifyContent: 'center',
@@ -52,7 +50,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   versus: {
     textAlign: 'center',
     justifyContent: 'center',
-
     display: 'flex',
     backgroundColor: 'black',
     color: theme.palette.common.white,
@@ -63,5 +60,12 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  gridLogo: {
+    flexDirection: 'column',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 90,
   },
 }));
