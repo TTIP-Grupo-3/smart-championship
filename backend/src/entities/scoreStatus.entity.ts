@@ -3,8 +3,7 @@ import { ScoreChampionship } from './scoreChampionship.entity';
 import { ScoreMatch } from './scoreMatch.entity';
 
 export class ScoreStatus {
-  team: ChampionshipTeam;
-  championship: ScoreChampionship;
+  constructor(public team: ChampionshipTeam, public championship: ScoreChampionship) {}
 
   public get score(): number {
     return this.won.length * 3 + this.tied.length;

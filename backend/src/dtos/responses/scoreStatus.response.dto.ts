@@ -5,6 +5,8 @@ export class ScoreStatusResponseDTO implements ScoreStatusResponse {
   @ApiProperty()
   id: number;
   @ApiProperty()
+  score: number;
+  @ApiProperty()
   played: number;
   @ApiProperty()
   tied: number;

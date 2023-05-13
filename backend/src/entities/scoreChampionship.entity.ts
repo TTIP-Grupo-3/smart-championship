@@ -12,7 +12,7 @@ export class ScoreChampionship extends Championship {
 
   public get scoreStatuses(): Array<ScoreStatus> {
     return this.teams
-      .map((team) => plainToInstance(ScoreStatus, { team, championship: this }))
+      .map((team) => new ScoreStatus(team, this))
       .sort((status1, status2) => status2.score - status1.score);
   }
 
