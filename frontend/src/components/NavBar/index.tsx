@@ -1,11 +1,23 @@
 import { FC } from 'react';
-import { AppBar, Grid, Toolbar, Typography } from '@mui/material';
+import { AppBar, Grid, IconButton, Toolbar, Typography } from '@mui/material';
 import useStyles from './style';
 import CenteredSpacer from '../CenteredSpacer';
 import smartLogo from '../../default_match_icon_local.svg';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useNavigate } from 'react-router-dom';
 
 export const Navbar: FC<any> = ({ children }) => {
   const { classes } = useStyles();
+  const navigate = useNavigate();
+
+  const handleCloseSession = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
+  const isLogged = (): boolean => {
+    return !!localStorage.getItem('token');
+  };
 
   return (
     <Grid className={classes.root}>
@@ -19,6 +31,13 @@ export const Navbar: FC<any> = ({ children }) => {
               <img src={smartLogo} width="30px" height="30px" />
               <Typography className={classes.titleChampionship}>championship</Typography>
             </Grid>
+            {isLogged() && (
+              <Grid>
+                <IconButton onClick={handleCloseSession}>
+                  <ExitToAppIcon style={{ color: 'white' }} />
+                </IconButton>
+              </Grid>
+            )}
           </CenteredSpacer>
         </Toolbar>
       </AppBar>
