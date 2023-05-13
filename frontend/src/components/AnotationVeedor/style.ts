@@ -14,8 +14,9 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   buttonAdd: {
     backgroundColor: blue[900],
     color: theme.palette.common.white,
-    borderRadius: 90,
-    width: '25%',
+    borderRadius: 10,
+    width: '35%',
+    height: 50,
     fontFamily: '800',
     fontSize: 20,
     '&:hover': {
@@ -24,9 +25,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
   buttonRemove: {
     fontFamily: '800',
+    height: 50,
     color: theme.palette.common.white,
-    borderRadius: 90,
-    width: '25%',
+    borderRadius: 10,
+    width: '35%',
     backgroundColor: lighten('#121212', 0.05),
     fontSize: 20,
     '&:hover': {

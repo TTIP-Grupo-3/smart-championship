@@ -7,22 +7,23 @@ export const MatchManager: FC<any> = ({
   buttonRightLocal,
   buttonLeftVisiting,
   buttonRightVisiting,
+  icons,
 }) => {
   return (
     <Grid container direction="row">
       <AnotationVeedor
         buttonLeftAction={buttonLeftLocal}
-        buttonLeftChild={'+'}
+        buttonLeftChild={icons.left}
         buttonRightAction={buttonRightLocal}
-        buttonRightChild={'-'}
+        buttonRightChild={icons.right}
       />
       <Grid style={{ display: 'flex', width: '4.4%' }}></Grid>
 
       <AnotationVeedor
         buttonLeftAction={buttonLeftVisiting}
-        buttonLeftChild={'+'}
+        buttonLeftChild={icons.left}
         buttonRightAction={buttonRightVisiting}
-        buttonRightChild={'-'}
+        buttonRightChild={icons.right}
       />
     </Grid>
   );

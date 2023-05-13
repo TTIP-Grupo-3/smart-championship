@@ -9,7 +9,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     marginTop: theme.spacing(2),
     marginRight: theme.spacing(13),
     marginLeft: theme.spacing(13),
-    paddingBottom: theme.spacing(5),
     borderRadius: '4px',
     flexDirection: 'row',
     alignItems: 'flex-start',

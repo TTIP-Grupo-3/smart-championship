@@ -22,7 +22,7 @@ export const Veedor = () => {
     <Navbar>
       <Grid container className={classes.container}>
         {idMatch ? (
-          <InspectorMatch {...{ idMatch }} />
+          <InspectorMatch {...{ idMatch, setSelected }} />
         ) : (
           <MatchSelector setSelected={setSelected} matches={matches} />
         )}

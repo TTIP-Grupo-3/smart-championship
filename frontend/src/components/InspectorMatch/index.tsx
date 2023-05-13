@@ -3,15 +3,19 @@ import { Button, Grid, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useTimer } from '../../hooks/useTimer';
+import { InspectorMatchProps } from '../../interfaces';
 import { API_MATCH } from '../../services/Match';
 import { MatchService } from '../../services/MatchService';
 import { MatchManager } from '../MatchManager';
 import { MatchScoreResult } from '../MatchScoreResult';
 import { useStyles } from './style';
+import CloseIcon from '@mui/icons-material/Close';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import { MatchTeamCard } from '../MatchTeamCard';
 
 const matchService = new MatchService();
 
-export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
+export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected }) => {
   const [match, setMatch] = useState<any>();
   const [currentMatch, setCurrentMatch] = useState<any>();
   const { minutes, seconds, start, stop, isStarted, time } = useTimer(0);
@@ -69,10 +73,15 @@ export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
     }
     return [];
   };
+
+  const handleBack = () => {
+    setSelected(null);
+  };
+
   return (
     <>
       {' '}
-      <Grid className={classes.containerResult}>
+      <Grid classes={{ root: classes.containerResult }}>
         <MatchScoreResult
           match={match}
           showTime={match?.status !== 'FINISHED'}
@@ -109,12 +118,23 @@ export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
           items: currentMatch?.visiting.players,
         }}
         buttonRightVisiting={{ function: disallowGoal, args: [], items: getGoals('visiting') }}
+        icons={{
+          left: <SportsSoccerIcon style={{ position: 'absolute', color: 'white' }} />,
+          right: (
+            <Grid display="flex" alignItems="center" justifyContent="center">
+              <SportsSoccerIcon
+                style={{
+                  position: 'absolute',
+                  color: 'white',
+                }}
+              ></SportsSoccerIcon>
+              <CloseIcon style={{ position: 'absolute', color: 'red', fontSize: 40 }}></CloseIcon>
+            </Grid>
+          ),
+        }}
       />
-      <Grid container direction="column" alignItems="center" justifyContent="center">
+      <Grid container direction="column" alignItems="center" justifyContent="center" padding={2}>
         <Typography color="white">Anotar/Desanotar Infracciones</Typography>
-      </Grid>
-      <Grid container direction="column" alignItems="center" justifyContent="center">
-        <Typography color="white">Rojas</Typography>
       </Grid>
       <MatchManager
         buttonLeftLocal={{
@@ -129,10 +149,17 @@ export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
           items: currentMatch?.visiting.players,
         }}
         buttonRightVisiting={{ function: disallowCard, args: [], items: getCards('visiting', 'RED') }}
+        icons={{
+          left: <MatchTeamCard color="red" absolute amount={1} width={16} height={20} />,
+          right: (
+            <Grid display="flex" alignItems="center" justifyContent="center">
+              <MatchTeamCard color="red" absolute amount={1} width={16} height={20} />
+              <CloseIcon style={{ position: 'absolute', color: 'white', fontSize: 40 }}></CloseIcon>
+            </Grid>
+          ),
+        }}
       />
-      <Grid container direction="column" alignItems="center" justifyContent="center">
-        <Typography color="white">Amarillas</Typography>
-      </Grid>
+      <Grid container direction="column" alignItems="center" justifyContent="center" paddingTop={3}></Grid>
       <MatchManager
         buttonLeftLocal={{
           function: scoreCard,
@@ -150,7 +177,19 @@ export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
           args: [],
           items: getCards('visiting', 'YELLOW'),
         }}
+        icons={{
+          left: <MatchTeamCard color="yellow" absolute amount={1} width={16} height={20} />,
+          right: (
+            <Grid display="flex" alignItems="center" justifyContent="center">
+              <MatchTeamCard color="yellow" absolute amount={1} width={16} height={20} />
+              <CloseIcon style={{ position: 'absolute', color: 'red', fontSize: 40 }}></CloseIcon>
+            </Grid>
+          ),
+        }}
       />
+      <Button onClick={handleBack} style={{ color: 'white', backgroundColor: '#bf360c', marginTop: 30 }}>
+        Volver a partidos
+      </Button>
     </>
   );
 };
