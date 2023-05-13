@@ -1,39 +1,24 @@
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { configService } from 'src/services/config.service';
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { ChildEntity, JoinColumn, OneToOne } from 'typeorm';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { Championship } from './championship.entity';
 import { EliminationMatch } from './eliminationMatch.entity';
-import { ChampionshipPlayer } from './championshipPlayer.entity';
 
 const errors = configService.get('model.errors');
 
-@Entity()
+@ChildEntity()
 export class EliminationChampionship extends Championship {
-  @PrimaryGeneratedColumn()
-  id: number;
-  @Column()
-  name: string;
-  @OneToMany(() => ChampionshipTeam, (team) => team.championship, { eager: true })
-  teams: Array<ChampionshipTeam>;
-  @OneToMany(() => ChampionshipPlayer, (player) => player.championship, {
-    createForeignKeyConstraints: false,
-  })
-  players: Array<ChampionshipPlayer>;
   @OneToOne(() => EliminationMatch, { cascade: true })
   @JoinColumn()
   final: EliminationMatch;
 
+  public get matches(): Array<EliminationMatch> {
+    return this.final?.toArray() ?? [];
+  }
+
   public get phases(): Array<Array<EliminationMatch>> {
     return this.final.phases;
-  }
-
-  public get room() {
-    return `championship-${this.id}`;
-  }
-
-  matches(): Array<EliminationMatch> {
-    return this.final.toArray();
   }
 
   findMatch(id: number): EliminationMatch {

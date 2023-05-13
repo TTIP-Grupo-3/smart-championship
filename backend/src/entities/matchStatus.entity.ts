@@ -26,11 +26,15 @@ export class MatchStatus {
   @JoinColumn()
   visitingStatus: TeamStatus;
 
-  public get winner(): ChampionshipTeam {
+  public get winner(): ChampionshipTeam | null {
     if (this.status !== MatchResponseStatus.FINISHED) throw new InvalidArgumentException();
-    return this.localStatus.goals.length > this.visitingStatus.goals.length
-      ? this.localStatus.team
-      : this.visitingStatus.team;
+    return this.partialWinner;
+  }
+
+  public get partialWinner(): ChampionshipTeam | null {
+    if (this.localStatus.goals.length > this.visitingStatus.goals.length) return this.localStatus.team;
+    if (this.localStatus.goals.length < this.visitingStatus.goals.length) return this.visitingStatus.team;
+    return null;
   }
 
   public get status(): MatchResponseStatus {
@@ -81,5 +85,9 @@ export class MatchStatus {
 
   setLocal(team: ChampionshipTeam) {
     this.localStatus.setTeam(team);
+  }
+
+  includes(team: ChampionshipTeam): boolean {
+    return [this.localStatus.team.id, this.visitingStatus.team.id].includes(team.id);
   }
 }

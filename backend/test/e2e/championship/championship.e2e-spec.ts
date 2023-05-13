@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from 'src/app.module';
-import { championship, SECRET } from '../../data/e2e/championship/championship.e2e-spec.data.json';
+import { params, championship, SECRET } from '../../data/e2e/championship/championship.e2e-spec.data.json';
 
 describe('ChampionshipController (e2e)', () => {
   let app: INestApplication;
@@ -19,7 +19,7 @@ describe('ChampionshipController (e2e)', () => {
   describe('Championship', () => {
     it('should return championship data', async () => {
       return await request(app.getHttpServer())
-        .get('/championship')
+        .get(`/championship/${params.championship.championshipType}/${params.championship.championshipId}`)
         .expect(200)
         .then(({ body }) => expect(body).toStrictEqual(championship));
     });

@@ -1,8 +1,12 @@
 {
+  "params": {
+    "championship": { "championshipId": 1, "championshipType": "elimination" }
+  },
   "SECRET": "SECRET",
   "championship": {
     "id": 1,
     "name": "Smart Championship",
+    "type": "elimination",
     "matches": [
       {
         "id": 1,

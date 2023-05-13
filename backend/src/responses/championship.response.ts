@@ -1,6 +1,7 @@
-import { PhaseResponse } from './phase.response';
+import { ChampionshipType } from 'src/services/championship.service';
 
-export interface ChampionshipResponse extends PhaseResponse {
+export interface ChampionshipResponse {
   id: number;
   name: string;
+  type: ChampionshipType;
 }
