@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ErrorLogin } from '../../components/Snackbar';
 import { User } from '../../interfaces';
 import { API_AUTH } from '../../services/Auth';
 import { useStyles } from './style';
@@ -20,6 +21,7 @@ export const Login = () => {
   const { classes } = useStyles();
   const [user, setUser] = useState<User>({ username: '', password: '' });
   const navigate = useNavigate();
+  const [isInvalidUser, setIsInvalidUser] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -28,11 +30,12 @@ export const Login = () => {
 
   const handleLogin: FormEventHandler<HTMLFormElement> = (e: any) => {
     e.preventDefault();
-    API_AUTH.login(user).then(({ data }) => {
-      console.log(data);
-      localStorage.setItem('token', data.access_token);
-      navigate('/inspector');
-    });
+    API_AUTH.login(user)
+      .then(({ data }) => {
+        localStorage.setItem('token', data.access_token);
+        navigate('/inspector');
+      })
+      .catch(() => setIsInvalidUser(true));
   };
 
   return (
@@ -98,7 +101,14 @@ export const Login = () => {
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
           />
-          <Grid direction="column" justifyContent="center" alignItems="center" display="flex" marginTop={6}>
+          <ErrorLogin open={isInvalidUser} />
+          <Grid
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            display="flex"
+            marginTop={isInvalidUser ? 2 : 6}
+          >
             <Button type="submit" variant="contained" style={{ width: '50%', backgroundColor: '#00BCD4' }}>
               Log in
             </Button>
