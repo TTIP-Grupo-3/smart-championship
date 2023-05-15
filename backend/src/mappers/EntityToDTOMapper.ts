@@ -62,8 +62,10 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     dtoCls?: Class<SmartChampionshipDTO>,
   ): ScoreStatusResponseDTO {
     const { team, score, played, tied, lost, won } = scoreStatus;
+    const { id, name } = team;
     return plainToInstance(ScoreStatusResponseDTO, {
-      id: team.id,
+      id,
+      name,
       score,
       played: played.length,
       tied: tied.length,
