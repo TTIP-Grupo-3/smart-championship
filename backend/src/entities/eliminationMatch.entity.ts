@@ -1,25 +1,18 @@
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { configService } from 'src/services/config.service';
-import { Entity, JoinColumn, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from 'typeorm';
+import { ChildEntity, Tree, TreeChildren, TreeParent } from 'typeorm';
 import { OneToOne } from 'typeorm';
 import { Match } from './match.entity';
 import { MatchStatus } from './matchStatus.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { TeamStatus } from './teamStatus.entity';
 import { EliminationChampionship } from './eliminationChampionship.entity';
-import { Goal } from './goal.entity';
-import { Card } from './card.entity';
 
 const errors = configService.get('model.errors');
 
-@Entity()
+@ChildEntity()
 @Tree('closure-table')
 export class EliminationMatch extends Match {
-  @PrimaryGeneratedColumn()
-  id: number;
-  @OneToOne(() => MatchStatus, { eager: true, cascade: true })
-  @JoinColumn()
-  status: MatchStatus;
   @OneToOne(() => EliminationChampionship, (championship) => championship.final, {
     onDelete: 'CASCADE',
     orphanedRowAction: 'delete',
@@ -52,6 +45,10 @@ export class EliminationMatch extends Match {
       ];
     }
   }
+  
+  public get next(): EliminationMatch {
+    return this.parent;
+  }
 
   public get phases(): Array<Array<EliminationMatch>> {
     if (this.isBaseMatch()) {
@@ -64,10 +61,6 @@ export class EliminationMatch extends Match {
       ]);
       return [...subphases, [this]];
     }
-  }
-
-  public get room() {
-    return `match-${this.id}`;
   }
 
   findMatch(id: number) {
@@ -94,20 +87,17 @@ export class EliminationMatch extends Match {
     return this;
   }
 
-  goal(goal: Goal, local: boolean) {
-    this.status.goal(goal, local);
-  }
-
-  card(card: Card, local: boolean) {
-    this.status.card(card, local);
-  }
-
-  start() {
-    this.status.startMatch();
-  }
-
   end() {
-    this.status.endMatch();
+    if (!this.status.partialWinner) throw new InvalidArgumentException();
+    const winner = super.end();
+    if (this.next !== null) this.next.setTeam(winner, this);
+    return winner;
+  }
+
+  setTeam(winner: ChampionshipTeam, match: EliminationMatch) {
+    if (this.local.id === match.id) this.status.setLocal(winner);
+    if (this.visiting.id === match.id) this.status.setVisiting(winner);
+    throw new InvalidArgumentException();
   }
 
   toArray(): Array<EliminationMatch> {

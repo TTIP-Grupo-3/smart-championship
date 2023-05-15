@@ -1,26 +1,42 @@
 {
+  "params": {
+    "championship": { "championshipId": 1, "championshipType": "elimination" }
+  },
   "SECRET": "SECRET",
   "championship": {
     "id": 1,
     "name": "Smart Championship",
+    "type": "elimination",
     "matches": [
       {
         "id": 1,
+        "date": "2017-06-15T00:00:00.000Z",
+        "end": "2017-06-15T00:00:00.000Z",
+        "start": "2017-06-15T00:00:00.000Z",
         "local": { "name": "El Dorado FC", "goals": 2, "cards": { "red": 0, "yellow": 1 } },
         "visiting": { "name": "Se me complico", "goals": 0, "cards": { "red": 1, "yellow": 0 } }
       },
       {
         "id": 2,
+        "date": "2017-06-15T00:00:00.000Z",
+        "end": "2017-06-15T00:00:00.000Z",
+        "start": "2017-06-15T00:00:00.000Z",
         "local": { "name": "El Pozo FC", "goals": 0, "cards": { "red": 0, "yellow": 1 } },
         "visiting": { "name": "Ashton Birra", "goals": 3, "cards": { "red": 0, "yellow": 1 } }
       },
       {
         "id": 3,
+        "date": "2017-06-15T00:00:00.000Z",
+        "end": "2017-06-15T00:00:00.000Z",
+        "start": "2017-06-15T00:00:00.000Z",
         "local": { "name": "Real Bañil", "goals": 0, "cards": { "red": 0, "yellow": 0 } },
         "visiting": { "name": "Toco y me voy FC", "goals": 1, "cards": { "red": 1, "yellow": 0 } }
       },
       {
         "id": 4,
+        "date": "2017-06-15T00:00:00.000Z",
+        "end": "2017-06-15T00:00:00.000Z",
+        "start": "2017-06-15T00:00:00.000Z",
         "local": { "name": "Manaos FC", "goals": 5, "cards": { "red": 0, "yellow": 0 } },
         "visiting": { "name": "Alto Guiso", "goals": 0, "cards": { "red": 1, "yellow": 0 } }
       }
@@ -29,11 +45,17 @@
       "matches": [
         {
           "id": 5,
+          "date": "2017-06-15T00:00:00.000Z",
+          "end": "2017-06-15T00:00:00.000Z",
+          "start": "2017-06-15T00:00:00.000Z",
           "local": { "name": "El Dorado FC", "goals": 0, "cards": { "red": 1, "yellow": 0 } },
           "visiting": { "name": "Ashton Birra", "goals": 4, "cards": { "red": 0, "yellow": 0 } }
         },
         {
           "id": 6,
+          "date": "2017-06-15T00:00:00.000Z",
+          "end": "2017-06-15T00:00:00.000Z",
+          "start": "2017-06-15T00:00:00.000Z",
           "local": { "name": "Toco y me voy FC", "goals": 3, "cards": { "red": 0, "yellow": 0 } },
           "visiting": { "name": "Manaos FC", "goals": 0, "cards": { "red": 1, "yellow": 0 } }
         }
@@ -42,6 +64,9 @@
         "matches": [
           {
             "id": 7,
+            "date": "2017-06-15T00:00:00.000Z",
+            "end": null,
+            "start": null,
             "local": { "name": "Ashton Birra", "goals": 1, "cards": { "red": 0, "yellow": 0 } },
             "visiting": { "name": "Toco y me voy FC", "goals": 0, "cards": { "red": 0, "yellow": 0 } }
           }

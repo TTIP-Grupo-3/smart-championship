@@ -1,4 +1,7 @@
 {
+  "args": {
+    "championshipDTO": { "championshipId": 1, "championshipType": "elimination" }
+  },
   "notFoundId": 0,
   "championship": {
     "id": 1,
