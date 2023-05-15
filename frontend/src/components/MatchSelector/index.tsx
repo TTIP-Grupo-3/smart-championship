@@ -1,10 +1,10 @@
-import { Grid, ListItem, Typography } from '@mui/material';
+import { Button, Grid, ListItem, Typography } from '@mui/material';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import { FC } from 'react';
 import { useStyles } from './style';
 
-export const MatchSelector: FC<any> = ({ matches, setSelected }) => {
+export const MatchSelector: FC<any> = ({ matches, setSelected, back }) => {
   const { classes } = useStyles();
 
   const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
@@ -13,7 +13,14 @@ export const MatchSelector: FC<any> = ({ matches, setSelected }) => {
 
   return (
     <>
-      <Grid>
+      <Grid container flexDirection="row" alignItems="center">
+        <Button
+          style={{ marginTop: '2%', color: 'white', marginRight: '16%', marginLeft: '6%' }}
+          onClick={() => back(null)}
+        >
+          volver
+        </Button>
+
         <Typography className={classes.titleText} variant="h5">
           Selecciona un partido para administrar:
         </Typography>

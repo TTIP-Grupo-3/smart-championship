@@ -41,7 +41,7 @@ export const Veedor = () => {
             }}
           />
         ) : currentChampionship ? (
-          <MatchSelector setSelected={setSelected} matches={matches} />
+          <MatchSelector setSelected={setSelected} matches={matches} back={setChampionship} />
         ) : (
           <ChampionshipSelector {...{ championships, setChampionship }} />
         )}
