@@ -19,4 +19,6 @@ export interface User {
 export interface InspectorMatchProps {
   idMatch: number;
   setSelected: Dispatch<SetStateAction<null>>;
+  championshipId: number | null;
+  type: string;
 }

@@ -11,7 +11,7 @@ import { MatchService } from '../../services/MatchService';
 const matchService = new MatchService();
 const socket = matchService.create();
 
-export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
+export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData }) => {
   const { classes } = useStyles();
   const [match, setMatch] = useState<any>();
   const matchService = new MatchService();
@@ -19,7 +19,11 @@ export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
   useEffect(() => {
     if (open) {
       socket.on('match', (data: any) => setMatch(data));
-      matchService.subscribe(socket, { id: matchId, championshipId: 1 });
+      matchService.subscribe(socket, {
+        id: matchId,
+        championshipId: +championshipData.id,
+        championshipType: championshipData.type,
+      });
     }
     return () => (open ? matchService.unsubscribe(socket) : undefined);
   }, [open]);

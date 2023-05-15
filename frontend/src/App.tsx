@@ -11,8 +11,8 @@ const App: FC = () => (
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Tournaments />} />
-      <Route path="/eliminacion" element={<DashboardElimination />} />
-      <Route path="/clasificacion" element={<DashboardClasification />} />
+      <Route path="/eliminacion/:id" element={<DashboardElimination />} />
+      <Route path="/clasificacion/:id" element={<DashboardClasification />} />
       <Route path="/login" element={<Login />} />
       <Route path="/inspector" element={<Veedor />} />
     </Routes>

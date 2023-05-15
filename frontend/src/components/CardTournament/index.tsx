@@ -9,10 +9,13 @@ import { FC } from 'react';
 import { blue } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
 
-export const CardTournament: FC<any> = ({ tournamentType, title, description }) => {
+type TypesTournament = { [key: string]: string };
+
+export const CardTournament: FC<any> = ({ championship }) => {
   const navigate = useNavigate();
+  const types: TypesTournament = { score: 'clasificacion', elimination: 'eliminacion' };
   const handleTournament = () => {
-    navigate(`/${tournamentType}`);
+    navigate(`/${types[championship.type]}/${championship.id}`);
   };
 
   return (
@@ -23,20 +26,19 @@ export const CardTournament: FC<any> = ({ tournamentType, title, description }) 
           <CardContent>
             <Grid container flexDirection="row" display="flex">
               <Typography gutterBottom variant="h5" component="div" color="white" paddingRight={1}>
-                {title}
+                {championship.name}
               </Typography>
               <Chip
                 variant="outlined"
-                label={tournamentType}
+                label={types[championship.type]}
                 style={{
-                  color: tournamentType === 'clasificacion' ? 'orange' : blue[400],
-                  border:
-                    tournamentType === 'clasificacion' ? '1px solid orange' : `1px solid ${blue[400]}`,
+                  color: championship.type === 'score' ? 'orange' : blue[400],
+                  border: championship.type === 'score' ? '1px solid orange' : `1px solid ${blue[400]}`,
                 }}
               />
             </Grid>
             <Typography variant="body2" color="white">
-              {description}
+              {'description'}
             </Typography>
           </CardContent>
         </CardActionArea>

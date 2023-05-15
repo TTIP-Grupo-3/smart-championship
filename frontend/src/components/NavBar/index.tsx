@@ -5,7 +5,7 @@ import CenteredSpacer from '../CenteredSpacer';
 import smartLogo from '../../default_match_icon_local.svg';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useNavigate } from 'react-router-dom';
-import { blue, grey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 export const Navbar: FC<any> = ({ children, button }) => {
   const { classes } = useStyles();

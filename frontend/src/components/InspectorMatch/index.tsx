@@ -15,7 +15,7 @@ import { MatchTeamCard } from '../MatchTeamCard';
 
 const matchService = new MatchService();
 
-export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected }) => {
+export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, championshipId, type }) => {
   const [match, setMatch] = useState<any>();
   const [currentMatch, setCurrentMatch] = useState<any>();
   const { minutes, seconds, start, stop, isStarted, time } = useTimer(0);
@@ -23,11 +23,15 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected }
   const { classes } = useStyles();
 
   useEffect(() => {
-    API_MATCH.getMatch(1, idMatch).then(({ data }) => setCurrentMatch(data));
+    API_MATCH.getMatch(championshipId!, idMatch).then(({ data }) => setCurrentMatch(data));
     const socketCreated = matchService.create();
     setSocket(socketCreated);
     socketCreated.on('match', (data: any) => setMatch(data));
-    matchService.subscribe(socketCreated, { id: idMatch, championshipId: 1 });
+    matchService.subscribe(socketCreated, {
+      id: idMatch,
+      championshipId: championshipId,
+      championshipType: type,
+    });
     return () => matchService.unsubscribe(socketCreated);
   }, []);
 

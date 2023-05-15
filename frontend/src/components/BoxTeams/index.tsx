@@ -3,6 +3,7 @@ import { FC, useState } from 'react';
 import { MatchDialog } from '../MatchDialog';
 import { Match } from '../Match';
 import { useStyles } from './style';
+import { useParams } from 'react-router-dom';
 
 export interface BoxTeamProps {
   id: number;
@@ -22,9 +23,10 @@ interface TypeCards {
   red: any[] | number;
 }
 
-export const BoxTeams: FC<BoxTeamProps> = ({ id, local, visiting }) => {
+export const BoxTeams: FC<BoxTeamProps> = ({ id: matchId, local, visiting }) => {
   const { classes } = useStyles();
   const [open, setOpen] = useState<boolean>(false);
+  const { id } = useParams();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -39,7 +41,12 @@ export const BoxTeams: FC<BoxTeamProps> = ({ id, local, visiting }) => {
       <Grid data-testid="BoxTeams-grid-teams" className={classes.gridTeam} onClick={handleClickOpen}>
         <Match local={local} visiting={visiting} />
       </Grid>
-      <MatchDialog open={open} close={handleClose} matchId={id} />
+      <MatchDialog
+        open={open}
+        close={handleClose}
+        matchId={matchId}
+        championshipData={{ type: 'elimination', id: id }}
+      />
     </Grid>
   );
 };

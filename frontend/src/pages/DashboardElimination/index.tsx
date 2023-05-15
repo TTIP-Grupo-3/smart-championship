@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Grid } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TeamStatus } from '../../components/BoxTeams';
 import { Navbar } from '../../components/NavBar';
 import { Tournament } from '../../components/Tournament';
@@ -28,11 +29,12 @@ export const DashboardElimination: FC = () => {
   const [matches, setMatches] = useState<EliminationTournament>({ matches: [], next: null });
   const { classes } = useStyles();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
     const socket = championshipService.create();
     socket.on('championship', (data: any) => setMatches(data));
-    championshipService.subscribe(socket, { id: 1 });
+    championshipService.subscribe(socket, { championshipId: +id!, championshipType: 'elimination' });
     return () => championshipService.unsubscribe(socket);
   }, []);
 

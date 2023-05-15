@@ -8,7 +8,7 @@ class ChampionshipService {
     this.httpClient = httpClient;
   }
 
-  getChampionship(): Promise<AxiosResponse<any>> {
+  getChampionships(): Promise<AxiosResponse<any>> {
     return this.httpClient.get('/championship');
   }
 }
