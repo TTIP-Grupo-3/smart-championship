@@ -8,6 +8,8 @@ export const MatchManager: FC<any> = ({
   buttonLeftVisiting,
   buttonRightVisiting,
   icons,
+  buttonRightProps,
+  buttonRightPropsVisiting,
 }) => {
   return (
     <Grid container direction="row">
@@ -16,6 +18,7 @@ export const MatchManager: FC<any> = ({
         buttonLeftChild={icons.left}
         buttonRightAction={buttonRightLocal}
         buttonRightChild={icons.right}
+        {...{ buttonRightProps }}
       />
       <Grid style={{ display: 'flex', width: '4.4%' }}></Grid>
 
@@ -24,6 +27,7 @@ export const MatchManager: FC<any> = ({
         buttonLeftChild={icons.left}
         buttonRightAction={buttonRightVisiting}
         buttonRightChild={icons.right}
+        buttonRightProps={buttonRightPropsVisiting}
       />
     </Grid>
   );

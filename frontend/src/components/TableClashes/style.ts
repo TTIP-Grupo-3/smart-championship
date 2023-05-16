@@ -23,11 +23,14 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'black',
+    backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
     height: 60,
     marginTop: 10,
     width: '100%',
+    '&:hover': {
+      backgroundColor: theme.palette.common.black,
+    },
   },
   teamName: {
     justifyContent: 'center',
@@ -36,6 +39,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     display: 'flex',
     backgroundColor: 'black',
     color: theme.palette.common.white,
+    width: 150,
   },
   score: {
     justifyContent: 'center',

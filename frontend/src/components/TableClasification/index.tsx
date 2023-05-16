@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableCell from '@mui/material/TableCell';
@@ -6,6 +7,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { TableBody } from '@mui/material';
 import { useStyles } from './style';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { ChampionshipScoreService } from '../../services/ChampionshipScore';
 
 interface Column {
   id: 'name' | 'population' | 'size' | 'density' | 'density2';
@@ -76,6 +80,15 @@ const rows = [
 
 export const TableClasification = () => {
   const { classes } = useStyles();
+  const service = new ChampionshipScoreService();
+  const socket = service.create();
+  const { id } = useParams();
+
+  useEffect(() => {
+    socket.on('teams', (data) => console.log(data));
+    service.teams(socket, +id!);
+  }, []);
+
   return (
     <Paper className={classes.paper}>
       <TableContainer className={classes.tableContainer}>

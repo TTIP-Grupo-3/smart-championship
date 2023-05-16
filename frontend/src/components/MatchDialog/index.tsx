@@ -7,6 +7,7 @@ import { DialogTitle, IconButton, Typography } from '@mui/material';
 import { MatchScoreResult } from '../MatchScoreResult';
 import { MatchUserStats } from '../MatchUserStats';
 import { MatchService } from '../../services/MatchService';
+import dayjs from 'dayjs';
 
 const matchService = new MatchService();
 const socket = matchService.create();
@@ -14,6 +15,7 @@ const socket = matchService.create();
 export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData }) => {
   const { classes } = useStyles();
   const [match, setMatch] = useState<any>();
+  const [time, setTime] = useState(0);
   const matchService = new MatchService();
 
   useEffect(() => {
@@ -27,6 +29,21 @@ export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData })
     }
     return () => (open ? matchService.unsubscribe(socket) : undefined);
   }, [open]);
+
+  const currentTime = () => {
+    const startTime = dayjs(match?.start);
+    if (match?.status === 'FINISHED') {
+      return startTime.diff(match.end, 'minute');
+    }
+    return dayjs(new Date().toISOString()).diff(startTime, 'minute');
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(currentTime());
+    }, 100);
+    return () => clearInterval(interval);
+  }, [currentTime]);
 
   return (
     <Dialog
@@ -54,7 +71,7 @@ export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData })
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.backgroundDialog}>
-        <MatchScoreResult match={match} time="0" />
+        <MatchScoreResult {...{ match, time }} />
         <MatchUserStats title="Goles" dataLocal={match?.local.goals} dataVisiting={match?.visiting.goals} />
 
         <MatchUserStats

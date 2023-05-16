@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { DashboardClasification } from './pages/DashboardClasification';
 import { Login } from './pages/Login';
-import { Veedor } from './pages/Veedor';
+import { Veedor } from './pages/Inspector';
 import { Tournaments } from './pages/Tournaments';
 import { DashboardElimination } from './pages/DashboardElimination';
 

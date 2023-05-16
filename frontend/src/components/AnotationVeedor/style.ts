@@ -34,5 +34,8 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     '&:hover': {
       backgroundColor: lighten('#121212', 0.05),
     },
+    '&.Mui-disabled': {
+      backgroundColor: 'grey',
+    },
   },
 }));
