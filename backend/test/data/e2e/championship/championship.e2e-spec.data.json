@@ -1,6 +1,6 @@
 {
   "params": {
-    "championship": { "championshipId": 1, "championshipType": "elimination" }
+    "championship": { "championshipId": 1 }
   },
   "SECRET": "SECRET",
   "championship": {

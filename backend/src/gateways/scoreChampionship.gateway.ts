@@ -7,8 +7,8 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
 import { ScoreStatusResponseDTO } from 'src/dtos/responses/scoreStatus.response.dto';
-import { ScoreChampionshipIdDTO } from 'src/dtos/scoreChampionshipId.dto';
 import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
 import { WsExceptionFilter } from 'src/filters/ws.exception.filter';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
@@ -28,7 +28,7 @@ export class ScoreChampionshipGateway {
   ) {}
 
   @SubscribeMessage('teams')
-  async teams(@ConnectedSocket() client: Socket, @MessageBody() championshipIdDTO: ScoreChampionshipIdDTO) {
+  async teams(@ConnectedSocket() client: Socket, @MessageBody() championshipIdDTO: ChampionshipIdDTO) {
     const teamStatuses = await this.scoreChampionshipService.getTeamStatuses(championshipIdDTO);
     client.emit('teams', this.mapper.map(teamStatuses, ScoreStatusResponseDTO));
     client.join(this.teamStatusesRoom(championshipIdDTO.championshipId));

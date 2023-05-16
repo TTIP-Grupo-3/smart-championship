@@ -45,7 +45,7 @@ export class EliminationMatch extends Match {
       ];
     }
   }
-  
+
   public get next(): EliminationMatch {
     return this.parent;
   }
