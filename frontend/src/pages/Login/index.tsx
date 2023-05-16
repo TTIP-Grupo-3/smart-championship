@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Navbar } from '../../components/NavBar';
 import { ErrorLogin } from '../../components/Snackbar';
 import { User } from '../../interfaces';
 import { API_AUTH } from '../../services/Auth';
@@ -39,82 +40,88 @@ export const Login = () => {
   };
 
   return (
-    <Grid className={classes.root} container>
-      <Card style={{ backgroundColor: '#001E3C', padding: 48, borderRadius: 6 }} elevation={24}>
-        <Typography color="white" variant="h5">
-          SMART.CHAMPIONSHIP
-        </Typography>
-        <Grid style={{ padding: 20 }} />
+    <Navbar removebuttonLog button={{ action: () => navigate('/'), text: 'Torneos' }}>
+      <Grid className={classes.root} container>
+        <Card style={{ backgroundColor: '#001E3C', padding: 48, borderRadius: 6 }} elevation={24}>
+          <Typography color="white" variant="h5">
+            SMART.CHAMPIONSHIP
+          </Typography>
+          <Grid style={{ padding: 20 }} />
 
-        <form onSubmit={handleLogin}>
-          <TextField
-            variant="outlined"
-            label="Usuario"
-            InputProps={{ classes: { notchedOutline: classes.notchedOutline, input: classes.input } }}
-            InputLabelProps={{
-              sx: {
-                color: 'white',
-                [`&.${inputLabelClasses.shrink}`]: {
+          <form onSubmit={handleLogin}>
+            <TextField
+              variant="outlined"
+              label="Usuario"
+              InputProps={{ classes: { notchedOutline: classes.notchedOutline, input: classes.input } }}
+              InputLabelProps={{
+                sx: {
                   color: 'white',
+                  [`&.${inputLabelClasses.shrink}`]: {
+                    color: 'white',
+                  },
                 },
-              },
-            }}
-            name="username"
-            onChange={handleChange}
-            placeholder="Usuario"
-            style={{ color: 'white', width: '100%' }}
-          />
-          <Grid style={{ padding: 30 }} />
-          <TextField
-            label="Contraseña"
-            variant="outlined"
-            name="password"
-            onChange={handleChange}
-            InputLabelProps={{
-              sx: {
-                color: 'white',
-                [`&.${inputLabelClasses.shrink}`]: {
+              }}
+              name="username"
+              onChange={handleChange}
+              placeholder="Usuario"
+              style={{ color: 'white', width: '100%' }}
+            />
+            <Grid style={{ padding: 30 }} />
+            <TextField
+              label="Contraseña"
+              variant="outlined"
+              name="password"
+              onChange={handleChange}
+              InputLabelProps={{
+                sx: {
                   color: 'white',
+                  [`&.${inputLabelClasses.shrink}`]: {
+                    color: 'white',
+                  },
                 },
-              },
-            }}
-            InputProps={{
-              classes: { notchedOutline: classes.notchedOutline, input: classes.input },
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    edge="end"
-                  >
-                    {showPassword ? (
-                      <VisibilityOff style={{ color: 'grey' }} />
-                    ) : (
-                      <Visibility style={{ color: 'white' }} />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            placeholder="Contraseña"
-            style={{ color: 'white', width: '100%' }}
-            id="outlined-adornment-password"
-            type={showPassword ? 'text' : 'password'}
-          />
-          <ErrorLogin open={isInvalidUser} />
-          <Grid
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            display="flex"
-            marginTop={isInvalidUser ? 2 : 6}
-          >
-            <Button type="submit" variant="contained" style={{ width: '50%', backgroundColor: '#00BCD4' }}>
-              Log in
-            </Button>
-          </Grid>
-        </form>
-      </Card>
-    </Grid>
+              }}
+              InputProps={{
+                classes: { notchedOutline: classes.notchedOutline, input: classes.input },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? (
+                        <VisibilityOff style={{ color: 'grey' }} />
+                      ) : (
+                        <Visibility style={{ color: 'white' }} />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              placeholder="Contraseña"
+              style={{ color: 'white', width: '100%' }}
+              id="outlined-adornment-password"
+              type={showPassword ? 'text' : 'password'}
+            />
+            <ErrorLogin open={isInvalidUser} />
+            <Grid
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              display="flex"
+              marginTop={isInvalidUser ? 2 : 6}
+            >
+              <Button
+                type="submit"
+                variant="contained"
+                style={{ width: '50%', backgroundColor: '#00BCD4' }}
+              >
+                Log in
+              </Button>
+            </Grid>
+          </form>
+        </Card>
+      </Grid>
+    </Navbar>
   );
 };
