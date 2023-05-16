@@ -1,24 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { EntityManager } from 'typeorm';
 import { ScoreStatus } from 'src/entities/scoreStatus.entity';
-import { ChampionshipService } from './championship.service';
-import { ScoreChampionshipIdDTO } from 'src/dtos/scoreChampionshipId.dto';
+import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
+import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
 
 @Injectable()
 export class ScoreChampionshipService {
-  constructor(
-    private readonly transactionService: TransactionService,
-    private readonly championshipService: ChampionshipService,
-  ) {}
+  constructor(private readonly transactionService: TransactionService) {}
 
   async getTeamStatuses(
-    championshipIdDTO: ScoreChampionshipIdDTO,
+    championshipIdDTO: ChampionshipIdDTO,
     manager?: EntityManager,
   ): Promise<Array<ScoreStatus>> {
     return await this.transactionService.transaction(async (manager) => {
-      const championship = await this.championshipService.getChampionship(championshipIdDTO, manager);
+      const { championshipId } = championshipIdDTO;
+      const championship = await this.findScoreChampionship(championshipId, manager);
       return championship.scoreStatuses;
     }, manager);
+  }
+
+  private async findScoreChampionship(id: number, manager: EntityManager): Promise<ScoreChampionship> {
+    const championship = await manager.findOneBy(ScoreChampionship, { id });
+    if (!championship) throw new NotFoundException();
+    return championship;
   }
 }

@@ -10,7 +10,7 @@ import { ScoreChampionshipResponseDTO } from 'src/dtos/responses/scoreChampionsh
 import { Championship } from 'src/entities/championship.entity';
 import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 import { validationPipe } from 'src/pipes/validation.pipe';
-import { ChampionshipService, ChampionshipType } from 'src/services/championship.service';
+import { ChampionshipService } from 'src/services/championship.service';
 
 @Controller('championship')
 @ApiTags('Championship')
@@ -22,10 +22,9 @@ export class ChampionshipController {
   @ApiResponse({ type: EliminationChampionshipResponseDTO, status: 200 })
   @ApiResponse({ type: ScoreChampionshipResponseDTO, status: 200 })
   @ApiNotFoundResponse({ type: ErrorResponseDTO })
-  @ApiParam({ name: 'championshipType', enum: ChampionshipType })
   @ApiParam({ name: 'championshipId', type: 'number' })
   @UseInterceptors(new TransformInterceptor(ChampionshipResponseDTO))
-  @Get(':championshipType/:championshipId')
+  @Get(':championshipId')
   async getChampionship(@Param() getChampionshipDTO: ChampionshipIdDTO): Promise<Championship> {
     return await this.championshipService.getChampionship(getChampionshipDTO);
   }

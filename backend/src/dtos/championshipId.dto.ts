@@ -1,13 +1,9 @@
 import { Transform } from 'class-transformer';
-import { IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
-import { ChampionshipType } from 'src/services/championship.service';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export class ChampionshipIdDTO<T extends ChampionshipType = ChampionshipType> {
+export class ChampionshipIdDTO {
   @IsNumber()
   @Transform(({ value }) => parseInt(value))
   @IsNotEmpty()
   championshipId: number;
-  @IsEnum(ChampionshipType)
-  @IsNotEmpty()
-  championshipType: T;
 }

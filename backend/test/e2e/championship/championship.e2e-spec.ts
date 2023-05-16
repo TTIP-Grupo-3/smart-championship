@@ -19,7 +19,7 @@ describe('ChampionshipController (e2e)', () => {
   describe('Championship', () => {
     it('should return championship data', async () => {
       return await request(app.getHttpServer())
-        .get(`/championship/${params.championship.championshipType}/${params.championship.championshipId}`)
+        .get(`/championship/${params.championship.championshipId}`)
         .expect(200)
         .then(({ body }) => expect(body).toStrictEqual(championship));
     });
