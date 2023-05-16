@@ -13,7 +13,8 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexGrow: 1,
-    minHeight: '100vh',
+    minHeight: '89vh',
+    position: 'absolute',
   },
   notchedOutline: {
     borderWidth: '1px',

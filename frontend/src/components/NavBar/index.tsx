@@ -7,7 +7,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useNavigate } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-export const Navbar: FC<any> = ({ children, button }) => {
+export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
   const { classes } = useStyles();
   const navigate = useNavigate();
 
@@ -43,7 +43,9 @@ export const Navbar: FC<any> = ({ children, button }) => {
               <img src={smartLogo} width="30px" height="30px" />
               <Typography className={classes.titleChampionship}>championship</Typography>
             </Grid>
-            {isLogged() ? (
+            {removebuttonLog ? (
+              <></>
+            ) : isLogged() ? (
               <Grid>
                 <IconButton onClick={handleCloseSession}>
                   <ExitToAppIcon style={{ color: 'white' }} />
