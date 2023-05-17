@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppBar, Box, Grid, Tab, Tabs, Typography } from '@mui/material';
+import { AppBar, Box, Grid, Tab, Tabs } from '@mui/material';
 import { useState } from 'react';
 import { useStyles } from './style';
 import { TableClasification } from '../TableClasification';

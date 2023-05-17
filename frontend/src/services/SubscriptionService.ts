@@ -9,8 +9,4 @@ export abstract class SubscriptionService extends SocketService {
   unsubscribe(socket: Socket, data?: any) {
     socket.emit('unsubscribe', data);
   }
-
-  exception(socket: Socket, cb: (algo: any) => void) {
-    socket.on('exception', cb);
-  }
 }

@@ -32,6 +32,7 @@ export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData })
 
   const currentTime = () => {
     const startTime = dayjs(match?.start);
+    if (match?.status === 'TOSTART') return 0;
     if (match?.status === 'FINISHED') {
       return startTime.diff(match.end, 'minute');
     }
