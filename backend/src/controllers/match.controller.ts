@@ -7,10 +7,9 @@ import { MatchTeamsResponseDTO } from 'src/dtos/responses/matchTeams.response.dt
 import { PartialMatchResponseDTO } from 'src/dtos/responses/partialMatch.response.dto';
 import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 import { validationPipe } from 'src/pipes/validation.pipe';
-import { ChampionshipType } from 'src/services/championship.service';
 import { MatchService } from 'src/services/match.service';
 
-@Controller('championship/:championshipType/:championshipId/match')
+@Controller('championship/:championshipId/match')
 @ApiTags('Matches')
 @UsePipes(validationPipe)
 export class MatchController {
@@ -19,7 +18,6 @@ export class MatchController {
   @ApiOperation({ summary: 'Get championship matches' })
   @ApiResponse({ type: PartialMatchResponseDTO, status: 200, isArray: true })
   @ApiNotFoundResponse({ type: ErrorResponseDTO })
-  @ApiParam({ name: 'championshipType', enum: ChampionshipType })
   @ApiParam({ name: 'championshipId', type: 'number' })
   @UseInterceptors(new TransformInterceptor(PartialMatchResponseDTO))
   @Get()
@@ -30,7 +28,6 @@ export class MatchController {
   @ApiOperation({ summary: 'Get match' })
   @ApiResponse({ type: MatchTeamsResponseDTO, status: 200 })
   @ApiNotFoundResponse({ type: ErrorResponseDTO })
-  @ApiParam({ name: 'championshipType', enum: ChampionshipType })
   @ApiParam({ name: 'championshipId', type: 'number' })
   @ApiParam({ name: 'id', type: 'number' })
   @UseInterceptors(new TransformInterceptor(MatchTeamsResponseDTO))

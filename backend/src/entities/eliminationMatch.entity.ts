@@ -45,7 +45,7 @@ export class EliminationMatch extends Match {
       ];
     }
   }
-  
+
   public get next(): EliminationMatch {
     return this.parent;
   }
@@ -90,7 +90,7 @@ export class EliminationMatch extends Match {
   end() {
     if (!this.status.partialWinner) throw new InvalidArgumentException();
     const winner = super.end();
-    if (this.next !== null) this.next.setTeam(winner, this);
+    if (!!this.next) this.next.setTeam(winner, this);
     return winner;
   }
 

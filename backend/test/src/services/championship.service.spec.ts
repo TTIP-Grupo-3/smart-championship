@@ -16,6 +16,7 @@ import {
 import { TransactionService } from 'src/services/transaction.service';
 import { DataService } from 'test/utils/data.service';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
+import { StorageService } from 'src/services/storage.service';
 
 describe('ChampionshipService', () => {
   let module: TestingModule;
@@ -29,7 +30,7 @@ describe('ChampionshipService', () => {
         TypeOrmModule.forRoot(testSqlClient()),
         TypeOrmModule.forFeature(entities),
       ],
-      providers: [ChampionshipService, DataService, EntityToDTOMapper, TransactionService],
+      providers: [ChampionshipService, DataService, EntityToDTOMapper, TransactionService, StorageService],
     }).compile();
     service = module.get<ChampionshipService>(ChampionshipService);
     dataService = module.get<DataService>(DataService);

@@ -9,7 +9,6 @@ import { configService } from './config.service';
 import { Championship } from 'src/entities/championship.entity';
 import { TransactionService } from './transaction.service';
 import { StorageService } from 'src/services/storage.service';
-import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
 
 const errors = configService.get('service.errors');
@@ -28,28 +27,13 @@ export class ChampionshipService {
   ) {}
 
   async getChampionship(
-    getChampionshipDTO: ChampionshipIdDTO<ChampionshipType.ELIMINATION>,
-    manager?: EntityManager,
-  ): Promise<EliminationChampionship>;
-  async getChampionship(
-    getChampionshipDTO: ChampionshipIdDTO<ChampionshipType.SCORE>,
-    manager?: EntityManager,
-  ): Promise<ScoreChampionship>;
-  async getChampionship(
-    getChampionshipDTO: ChampionshipIdDTO,
-    manager?: EntityManager,
-  ): Promise<Championship>;
-  async getChampionship(
     getChampionshipDTO: ChampionshipIdDTO,
     manager?: EntityManager,
   ): Promise<Championship> {
     return await this.transactionService.transaction(async (manager) => {
-      const { championshipId, championshipType } = getChampionshipDTO;
-      if (championshipType === ChampionshipType.ELIMINATION) {
-        return await this.findEliminationChampionship(manager, championshipId);
-      } else {
-        return await this.findScoreChampionship(manager, championshipId);
-      }
+      const { championshipId } = getChampionshipDTO;
+      const championship = await this.findChampionship(championshipId, manager);
+      return await this.setMatches(championship, manager);
     }, manager);
   }
 
@@ -59,17 +43,18 @@ export class ChampionshipService {
     }, manager);
   }
 
-  private async findEliminationChampionship(
-    manager: EntityManager,
-    id: number,
-  ): Promise<EliminationChampionship> {
-    const finals = await manager
-      .getTreeRepository(EliminationMatch)
-      .findTrees({ relations: ['championshipFinal', 'status'] });
-    const final = finals.find(({ championshipFinal }) => championshipFinal?.id === id);
-    if (!final) throw new NotFoundException(errors.notFoundChampionship);
-    final.championshipFinal.final = final;
-    return await this.addLogoTeams(final.championshipFinal);
+  private async findChampionship(id: number, manager: EntityManager): Promise<Championship> {
+    const championship = await manager.findOneBy(Championship, { id });
+    if (!championship) throw new NotFoundException(errors.notFoundChampionship);
+    return championship;
+  }
+
+  private async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
+    if (championship instanceof EliminationChampionship) {
+      championship.final = await this.findFinal(championship, manager);
+      await this.addLogoTeams(championship);
+    }
+    return championship;
   }
 
   private async addLogoTeams(championship: EliminationChampionship): Promise<EliminationChampionship> {
@@ -79,9 +64,14 @@ export class ChampionshipService {
     return championship;
   }
 
-  private async findScoreChampionship(manager: EntityManager, id: number): Promise<ScoreChampionship> {
-    const championship = await manager.findOneBy(ScoreChampionship, { id });
-    if (!championship) throw new NotFoundException(errors.notFoundChampionship);
-    return championship;
+  private async findFinal(
+    championship: EliminationChampionship,
+    manager: EntityManager,
+  ): Promise<EliminationMatch> {
+    const relations = ['championshipFinal', 'status'];
+    const finals = await manager.getTreeRepository(EliminationMatch).findTrees({ relations });
+    const final = finals.find(({ championshipFinal }) => championshipFinal?.id === championship.id);
+    if (!final) throw new NotFoundException(errors.notFoundChampionship);
+    return final;
   }
 }
