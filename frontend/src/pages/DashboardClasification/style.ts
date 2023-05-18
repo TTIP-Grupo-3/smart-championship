@@ -9,5 +9,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
+    margin: theme.spacing(3),
   },
 }));
