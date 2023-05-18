@@ -40,7 +40,6 @@ export class MatchService extends SubscriptionService {
     idPlayer: number,
     idMatch: number,
     championshipId: number,
-    type: string,
   ) => {
     socket.emit('card', {
       type: typeCard,
@@ -49,37 +48,33 @@ export class MatchService extends SubscriptionService {
       minute: time,
       playerId: idPlayer,
       local: isLocal,
-      championshipType: type,
     });
   };
 
-  disallowCard(socket: Socket, cardId: number, idMatch: number, championshipId: number, type: string) {
+  disallowCard(socket: Socket, cardId: number, idMatch: number, championshipId: number) {
     socket.emit('card:disallow', {
       cardId: cardId,
       id: idMatch,
       championshipId: championshipId,
-      championshipType: type,
     });
   }
 
-  startGame = (socket: Socket, idMatch: number, championshipId: number, type: string) => {
-    socket.emit('start', { id: idMatch, championshipId: championshipId, championshipType: type });
+  startGame = (socket: Socket, idMatch: number, championshipId: number) => {
+    socket.emit('start', { id: idMatch, championshipId: championshipId });
   };
 
-  endGame(socket: Socket, idMatch: number, championshipId: number, type: string) {
+  endGame(socket: Socket, idMatch: number, championshipId: number) {
     socket.emit('end', {
       id: idMatch,
       championshipId: championshipId,
-      championshipType: type,
     });
   }
 
-  goalDisallow(socket: Socket, idGoal: number, idMatch: number, championshipId: number, type: string) {
+  goalDisallow(socket: Socket, idGoal: number, idMatch: number, championshipId: number) {
     socket.emit('goal:disallow', {
       goalId: idGoal,
       id: idMatch,
       championshipId: championshipId,
-      championshipType: type,
     });
   }
 }

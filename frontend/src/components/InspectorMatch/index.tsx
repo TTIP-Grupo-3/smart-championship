@@ -23,7 +23,7 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, 
   const { classes } = useStyles();
 
   useEffect(() => {
-    API_MATCH.getMatch(+championshipId!, idMatch, type).then(({ data }) => setCurrentMatch(data));
+    API_MATCH.getMatch(+championshipId!, idMatch).then(({ data }) => setCurrentMatch(data));
     const socketCreated = matchService.create();
     setSocket(socketCreated);
     socketCreated.on('match', (data: any) => setMatch(data));
@@ -39,34 +39,25 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, 
   };
 
   const disallowGoal = (idGoal: number) => {
-    matchService.goalDisallow(socket!, idGoal, idMatch, +championshipId!, type);
+    matchService.goalDisallow(socket!, idGoal, idMatch, +championshipId!);
   };
 
   const scoreCard = (typeCard: 'YELLOW' | 'RED', isLocal: boolean, idPlayer: number) => {
-    matchService.scoreCard(
-      socket!,
-      typeCard,
-      minutes(time),
-      isLocal,
-      idPlayer,
-      idMatch,
-      +championshipId!,
-      type,
-    );
+    matchService.scoreCard(socket!, typeCard, minutes(time), isLocal, idPlayer, idMatch, +championshipId!);
   };
 
   const disallowCard = (cardId: number) => {
-    matchService.disallowCard(socket!, cardId, idMatch, +championshipId!, type);
+    matchService.disallowCard(socket!, cardId, idMatch, +championshipId!);
   };
 
   const initGame = () => {
     start();
-    matchService.startGame(socket!, idMatch!, +championshipId!, type);
+    matchService.startGame(socket!, idMatch!, +championshipId!);
   };
 
   const finishGame = () => {
     stop();
-    matchService.endGame(socket!, idMatch!, +championshipId!, type);
+    matchService.endGame(socket!, idMatch!, +championshipId!);
   };
 
   const getGoals = (type: 'local' | 'visiting') => {

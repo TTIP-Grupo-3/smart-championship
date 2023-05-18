@@ -8,12 +8,12 @@ class MatchService {
     this.httpClient = httpClient;
   }
 
-  getMatches(championshipId: number, type: string): Promise<AxiosResponse<any>> {
-    return this.httpClient.get(`championship/${type}/${championshipId}/match`);
+  getMatches(championshipId: number): Promise<AxiosResponse<any>> {
+    return this.httpClient.get(`championship/${championshipId}/match`);
   }
 
-  getMatch(championshipId: number, matchId: number, type: string): Promise<AxiosResponse<any>> {
-    return this.httpClient.get(`championship/${type}/${championshipId}/match/${matchId}`);
+  getMatch(championshipId: number, matchId: number): Promise<AxiosResponse<any>> {
+    return this.httpClient.get(`championship/${championshipId}/match/${matchId}`);
   }
 }
 

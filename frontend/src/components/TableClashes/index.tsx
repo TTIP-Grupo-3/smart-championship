@@ -23,7 +23,7 @@ export const TableClashes = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    API_MATCH.getMatches(+id!, 'score').then((r) => setMatches(r.data));
+    API_MATCH.getMatches(+id!).then((r) => setMatches(r.data));
   }, []);
 
   const handleClose = () => setOpen(false);

@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { TableBody } from '@mui/material';
 import { useStyles } from './style';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ChampionshipScoreService } from '../../services/ChampionshipScore';
 
@@ -52,40 +52,15 @@ const columns: readonly Column[] = [
   },
 ];
 
-function createData(
-  name: string,
-  density2: number,
-  population: number,
-  size: number,
-  density: number,
-): any {
-  return { name, density2, population, size, density };
-}
-
-const rows = [
-  createData('India', 3, 1, 1, 3),
-  createData('China', 2, 1, 1, 3),
-  createData('Italia', 2, 1, 1, 3),
-  createData('Francia', 2, 1, 1, 3),
-  createData('España', 2, 1, 1, 3),
-  createData('Chile', 2, 1, 1, 3),
-  createData('Bolivia', 2, 1, 1, 3),
-  createData('Mexico', 2, 1, 1, 3),
-  createData('Marruecos', 2, 1, 1, 3),
-  createData('Colombia', 2, 1, 1, 3),
-  createData('Ecuador', 2, 1, 1, 3),
-  createData('Peru', 2, 1, 1, 3),
-  createData('Dinamarca', 2, 1, 1, 3),
-];
-
 export const TableClasification = () => {
   const { classes } = useStyles();
   const service = new ChampionshipScoreService();
   const socket = service.create();
   const { id } = useParams();
+  const [teams, setTeams] = useState<any>([]);
 
   useEffect(() => {
-    socket.on('teams', (data) => console.log(data));
+    socket.on('teams', (data) => setTeams(data));
     service.teams(socket, +id!);
   }, []);
 
@@ -103,17 +78,25 @@ export const TableClasification = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1}>
-                  {columns.map((column) => (
-                    <TableCell key={column.id} align={column.align} className={classes.rows}>
-                      {row[column.id]}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              );
-            })}
+            {teams.map((team: any) => (
+              <TableRow hover role="checkbox" tabIndex={-1}>
+                <TableCell key={team?.id} align="left" className={classes.rows}>
+                  {team?.name}
+                </TableCell>
+                <TableCell align="right" className={classes.rows}>
+                  {team?.lost}
+                </TableCell>
+                <TableCell align="right" className={classes.rows}>
+                  {team?.won}
+                </TableCell>
+                <TableCell align="right" className={classes.rows}>
+                  {team?.tied}
+                </TableCell>
+                <TableCell align="right" className={classes.rows}>
+                  {team?.score}
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>

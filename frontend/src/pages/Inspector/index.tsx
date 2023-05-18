@@ -22,7 +22,7 @@ export const Veedor = () => {
 
   useEffect(() => {
     if (currentChampionship) {
-      API_MATCH.getMatches(currentChampionship.id, currentChampionship.type).then((r) => {
+      API_MATCH.getMatches(currentChampionship.id).then((r) => {
         setMatches(r.data);
       });
     }
