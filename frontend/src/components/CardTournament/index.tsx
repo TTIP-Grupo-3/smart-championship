@@ -37,9 +37,6 @@ export const CardTournament: FC<any> = ({ championship }) => {
                 }}
               />
             </Grid>
-            <Typography variant="body2" color="white">
-              {'description'}
-            </Typography>
           </CardContent>
         </CardActionArea>
       </Card>

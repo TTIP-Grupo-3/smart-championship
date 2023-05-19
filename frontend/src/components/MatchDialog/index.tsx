@@ -41,7 +41,7 @@ export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData })
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime(currentTime());
+      setTime(Math.abs(currentTime()));
     }, 100);
     return () => clearInterval(interval);
   }, [currentTime]);

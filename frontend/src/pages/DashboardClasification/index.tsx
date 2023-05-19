@@ -9,7 +9,7 @@ export const DashboardClasification = () => {
   const navigate = useNavigate();
 
   return (
-    <Navbar button={{ action: () => navigate(-1), text: 'Inicio' }}>
+    <Navbar button={{ action: () => navigate(-1), text: 'Torneos' }}>
       <Grid className={classes.gridContainer}>
         <ClasificationTournamentTabs />
       </Grid>

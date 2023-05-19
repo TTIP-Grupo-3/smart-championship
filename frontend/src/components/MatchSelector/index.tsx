@@ -3,6 +3,7 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import { FC } from 'react';
 import { useStyles } from './style';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export const MatchSelector: FC<any> = ({ matches, setSelected, back }) => {
   const { classes } = useStyles();
@@ -18,7 +19,7 @@ export const MatchSelector: FC<any> = ({ matches, setSelected, back }) => {
           style={{ marginTop: '2%', color: 'white', marginRight: '16%', marginLeft: '6%' }}
           onClick={() => back(null)}
         >
-          volver
+          <ArrowBackIcon style={{ color: 'white' }} />
         </Button>
 
         <Typography className={classes.titleText} variant="h5">

@@ -39,7 +39,7 @@ export const DashboardElimination: FC = () => {
   }, []);
 
   return (
-    <Navbar button={{ action: () => navigate(-1), text: 'Inicio' }}>
+    <Navbar button={{ action: () => navigate(-1), text: 'Torneos' }}>
       <Grid container className={classes.gridContainer}>
         <Tournament dataSet={matches} />
       </Grid>

@@ -12,6 +12,7 @@ import { useStyles } from './style';
 import CloseIcon from '@mui/icons-material/Close';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { MatchTeamCard } from '../MatchTeamCard';
+import { EliminationInspectorDialog } from '../EliminationInspectorDialog';
 
 const matchService = new MatchService();
 
@@ -20,6 +21,7 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, 
   const [currentMatch, setCurrentMatch] = useState<any>();
   const { minutes, seconds, start, stop, isStarted, time } = useTimer(0);
   const [socket, setSocket] = useState<Socket>();
+  const [open, setOpen] = useState<boolean>(false);
   const { classes } = useStyles();
 
   useEffect(() => {
@@ -56,8 +58,12 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, 
   };
 
   const finishGame = () => {
-    stop();
-    matchService.endGame(socket!, idMatch!, +championshipId!);
+    if (isEliminationTied()) {
+      setOpen(true);
+    } else {
+      stop();
+      matchService.endGame(socket!, idMatch!, +championshipId!);
+    }
   };
 
   const getGoals = (type: 'local' | 'visiting') => {
@@ -66,6 +72,11 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, 
     }
     return [];
   };
+
+  const isEliminationTied = () => {
+    return type === 'elimination' && match.local.goals.length === match.visiting.goals.length;
+  };
+
   const getCards = (type: 'local' | 'visiting', color: 'RED' | 'YELLOW') => {
     if (match) {
       return match[type].cards[color.toLowerCase()].map((card: any) => ({
@@ -199,6 +210,7 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, 
       <Button onClick={handleBack} style={{ color: 'white', backgroundColor: '#bf360c', marginTop: 30 }}>
         Volver a partidos
       </Button>
+      <EliminationInspectorDialog open={open} setOpen={setOpen} />
     </>
   );
 };

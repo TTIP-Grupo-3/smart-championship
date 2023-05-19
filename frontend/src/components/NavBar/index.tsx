@@ -3,10 +3,11 @@ import { AppBar, Button, Grid, IconButton, Toolbar, Typography } from '@mui/mate
 import useStyles from './style';
 import CenteredSpacer from '../CenteredSpacer';
 import smartLogo from '../../default_match_icon_local.svg';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useNavigate } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import LogoutIcon from '@mui/icons-material/Logout';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+
 export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
   const { classes } = useStyles();
   const navigate = useNavigate();
@@ -29,10 +30,16 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
               <Button
                 sx={{ color: grey[200] }}
                 onClick={button.action}
-                style={{ justifyContent: 'center', display: 'flex', alignItems: 'center' }}
+                style={{
+                  justifyContent: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
               >
-                <ArrowBackIosNewIcon style={{ height: 16, display: 'flex' }} />
-                <Typography style={{ fontSize: 15, fontWeight: 600 }}>{button.text}</Typography>
+                <EmojiEventsIcon style={{ height: 22, display: 'flex', color: 'yellow' }} />
+                <Typography style={{ fontSize: 15, fontWeight: 600, paddingTop: 3 }}>
+                  {button.text}
+                </Typography>
               </Button>
             ) : (
               <div></div>
@@ -48,7 +55,7 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
             ) : isLogged() ? (
               <Grid>
                 <IconButton onClick={handleCloseSession}>
-                  <ExitToAppIcon style={{ color: 'white' }} />
+                  <LogoutIcon style={{ color: 'white' }} />
                 </IconButton>
               </Grid>
             ) : (
