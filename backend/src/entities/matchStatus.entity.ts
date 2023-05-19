@@ -47,6 +47,10 @@ export class MatchStatus {
     }
   }
 
+  public get teams() {
+    return [this.localStatus.team, this.visitingStatus.team];
+  }
+
   constructor(localStatus: TeamStatus, visitingStatus: TeamStatus) {
     this.localStatus = localStatus;
     this.visitingStatus = visitingStatus;

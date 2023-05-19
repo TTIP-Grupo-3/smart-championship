@@ -19,6 +19,10 @@ export abstract class Match {
     return `match-${this.id}`;
   }
 
+  public get teams() {
+    return this.status.teams;
+  }
+
   goal(goal: Goal, local: boolean) {
     this.status.goal(goal, local);
   }

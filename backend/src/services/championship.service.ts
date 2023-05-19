@@ -52,15 +52,13 @@ export class ChampionshipService {
   private async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
     if (championship instanceof EliminationChampionship) {
       championship.final = await this.findFinal(championship, manager);
-      await this.addLogoTeams(championship);
     }
+    await this.addLogoTeams(championship);
     return championship;
   }
 
-  private async addLogoTeams(championship: EliminationChampionship): Promise<EliminationChampionship> {
-    championship.final.teams().forEach((team) => {
-      team.logo = this.storageService.getImage(`${team.id}.png`);
-    });
+  private async addLogoTeams(championship: Championship): Promise<Championship> {
+    championship.matchTeams.forEach((team) => (team.logo = this.storageService.getImage(`${team.id}.png`)));
     return championship;
   }
 

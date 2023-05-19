@@ -24,4 +24,8 @@ export abstract class Championship {
   public get room() {
     return `championship-${this.id}`;
   }
+
+  public get matchTeams() {
+    return this.matches.flatMap((match) => match.teams);
+  }
 }
