@@ -45,25 +45,35 @@ export const TableClashes = () => {
         </Table>
 
         <List>
-          {matches.map((row: any) => {
+          {matches.map((match: any) => {
             return (
-              <ListItemButton className={classes.listItem} onClick={() => handleOpen(row.id)}>
+              <ListItemButton className={classes.listItem} onClick={() => handleOpen(match.id)}>
                 <Grid className={classes.gridLogo} sx={{ marginLeft: '8%' }}>
-                  <img src={smartLogoLocal} style={{ height: 23, width: 23 }}></img>
-                  <Typography className={classes.teamName}>{row.local.name}</Typography>
+                  <img
+                    src={match?.local?.logo ? `data:image/png;base64,${match?.local.logo}` : smartLogoLocal}
+                    style={{ height: 23, width: 23, borderRadius: '50%' }}
+                  ></img>
+                  <Typography className={classes.teamName}>{match.local.name}</Typography>
                 </Grid>
-                <Typography className={classes.score}> {row.local.score}</Typography>
+                <Typography className={classes.score}> {match.local.score}</Typography>
                 <Grid className={classes.gridMatch}>
                   <Typography style={{ fontSize: 12 }}>
-                    {dayjs(row.date).format('DD/MM/YYYY HH:MM')}
+                    {dayjs(match.date).format('DD/MM/YYYY HH:MM')}
                   </Typography>
                   <Typography className={classes.versus}>VS</Typography>
                 </Grid>
-                <Typography className={classes.score}> {row.visiting.score}</Typography>
+                <Typography className={classes.score}> {match.visiting.score}</Typography>
                 <Grid className={classes.gridLogo} sx={{ marginRight: '8%' }}>
-                  <img src={smartLogoVisiting} style={{ height: 23, width: 23 }}></img>
+                  <img
+                    src={
+                      match?.visiting.logo
+                        ? `data:image/png;base64,${match.visiting.logo}`
+                        : smartLogoVisiting
+                    }
+                    style={{ height: 23, width: 23, borderRadius: '50%' }}
+                  ></img>
 
-                  <Typography className={classes.teamName}>{row.visiting.name}</Typography>
+                  <Typography className={classes.teamName}>{match.visiting.name}</Typography>
                 </Grid>
               </ListItemButton>
             );
