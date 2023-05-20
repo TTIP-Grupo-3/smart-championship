@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { AppBar, Box, Grid, Tab, Tabs, Typography } from '@mui/material';
+import { AppBar, Box, Grid, Tab, Tabs } from '@mui/material';
 import { useState } from 'react';
 import { useStyles } from './style';
 import { TableClasification } from '../TableClasification';
+import { TableClashes } from '../TableClashes';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -62,7 +63,7 @@ export const ClasificationTournamentTabs = () => {
         <TableClasification />{' '}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Typography color="white">Item TWO </Typography>
+        <TableClashes />
       </TabPanel>
     </div>
   );

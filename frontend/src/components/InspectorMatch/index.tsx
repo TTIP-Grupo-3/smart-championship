@@ -3,54 +3,67 @@ import { Button, Grid, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useTimer } from '../../hooks/useTimer';
+import { InspectorMatchProps } from '../../interfaces';
 import { API_MATCH } from '../../services/Match';
 import { MatchService } from '../../services/MatchService';
 import { MatchManager } from '../MatchManager';
 import { MatchScoreResult } from '../MatchScoreResult';
 import { useStyles } from './style';
+import CloseIcon from '@mui/icons-material/Close';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import { MatchTeamCard } from '../MatchTeamCard';
+import { EliminationInspectorDialog } from '../EliminationInspectorDialog';
 
 const matchService = new MatchService();
 
-export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
+export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, championshipId, type }) => {
   const [match, setMatch] = useState<any>();
   const [currentMatch, setCurrentMatch] = useState<any>();
   const { minutes, seconds, start, stop, isStarted, time } = useTimer(0);
   const [socket, setSocket] = useState<Socket>();
+  const [open, setOpen] = useState<boolean>(false);
   const { classes } = useStyles();
 
   useEffect(() => {
-    API_MATCH.getMatch(1, idMatch).then(({ data }) => setCurrentMatch(data));
+    API_MATCH.getMatch(+championshipId!, idMatch).then(({ data }) => setCurrentMatch(data));
     const socketCreated = matchService.create();
     setSocket(socketCreated);
     socketCreated.on('match', (data: any) => setMatch(data));
-    matchService.subscribe(socketCreated, { id: idMatch, championshipId: 1 });
+    matchService.subscribe(socketCreated, {
+      id: idMatch,
+      championshipId: +championshipId!,
+      championshipType: type,
+    });
     return () => matchService.unsubscribe(socketCreated);
   }, []);
-
   const scoreGoal = (isLocal: boolean, idPlayer: number) => {
-    matchService.goal(socket!, idMatch, idPlayer, 1, minutes(time), isLocal);
+    matchService.goal(socket!, idMatch, idPlayer, +championshipId!, minutes(time), isLocal, type);
   };
 
   const disallowGoal = (idGoal: number) => {
-    matchService.goalDisallow(socket!, idGoal, idMatch, 1);
+    matchService.goalDisallow(socket!, idGoal, idMatch, +championshipId!);
   };
 
   const scoreCard = (typeCard: 'YELLOW' | 'RED', isLocal: boolean, idPlayer: number) => {
-    matchService.scoreCard(socket!, typeCard, minutes(time), isLocal, idPlayer, idMatch, 1);
+    matchService.scoreCard(socket!, typeCard, minutes(time), isLocal, idPlayer, idMatch, +championshipId!);
   };
 
   const disallowCard = (cardId: number) => {
-    matchService.disallowCard(socket!, cardId, idMatch, 1);
+    matchService.disallowCard(socket!, cardId, idMatch, +championshipId!);
   };
 
   const initGame = () => {
     start();
-    matchService.startGame(socket!, idMatch!, 1);
+    matchService.startGame(socket!, idMatch!, +championshipId!);
   };
 
   const finishGame = () => {
-    stop();
-    matchService.endGame(socket!, idMatch!, 1);
+    if (isEliminationTied()) {
+      setOpen(true);
+    } else {
+      stop();
+      matchService.endGame(socket!, idMatch!, +championshipId!);
+    }
   };
 
   const getGoals = (type: 'local' | 'visiting') => {
@@ -59,6 +72,11 @@ export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
     }
     return [];
   };
+
+  const isEliminationTied = () => {
+    return type === 'elimination' && match.local.goals.length === match.visiting.goals.length;
+  };
+
   const getCards = (type: 'local' | 'visiting', color: 'RED' | 'YELLOW') => {
     if (match) {
       return match[type].cards[color.toLowerCase()].map((card: any) => ({
@@ -69,10 +87,15 @@ export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
     }
     return [];
   };
+
+  const handleBack = () => {
+    setSelected(null);
+  };
+
   return (
     <>
       {' '}
-      <Grid className={classes.containerResult}>
+      <Grid classes={{ root: classes.containerResult }}>
         <MatchScoreResult
           match={match}
           showTime={match?.status !== 'FINISHED'}
@@ -105,16 +128,29 @@ export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
         buttonRightLocal={{ function: disallowGoal, args: [], items: getGoals('local') }}
         buttonLeftVisiting={{
           function: scoreGoal,
-          args: [true],
+          args: [false],
           items: currentMatch?.visiting.players,
         }}
+        buttonRightProps={{ disabled: match?.local.goals.length < 1 }}
+        buttonRightPropsVisiting={{ disabled: match?.visiting.goals.length < 1 }}
         buttonRightVisiting={{ function: disallowGoal, args: [], items: getGoals('visiting') }}
+        icons={{
+          left: <SportsSoccerIcon style={{ position: 'absolute', color: 'white' }} />,
+          right: (
+            <Grid display="flex" alignItems="center" justifyContent="center">
+              <SportsSoccerIcon
+                style={{
+                  position: 'absolute',
+                  color: 'white',
+                }}
+              ></SportsSoccerIcon>
+              <CloseIcon style={{ position: 'absolute', color: 'red', fontSize: 40 }}></CloseIcon>
+            </Grid>
+          ),
+        }}
       />
-      <Grid container direction="column" alignItems="center" justifyContent="center">
+      <Grid container direction="column" alignItems="center" justifyContent="center" padding={2}>
         <Typography color="white">Anotar/Desanotar Infracciones</Typography>
-      </Grid>
-      <Grid container direction="column" alignItems="center" justifyContent="center">
-        <Typography color="white">Rojas</Typography>
       </Grid>
       <MatchManager
         buttonLeftLocal={{
@@ -122,6 +158,8 @@ export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
           args: ['RED', true],
           items: currentMatch?.local.players,
         }}
+        buttonRightProps={{ disabled: match?.local.cards.red.length < 1 }}
+        buttonRightPropsVisiting={{ disabled: match?.visiting.cards.red.length < 1 }}
         buttonRightLocal={{ function: disallowCard, args: [], items: getCards('local', 'RED') }}
         buttonLeftVisiting={{
           function: scoreCard,
@@ -129,16 +167,25 @@ export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
           items: currentMatch?.visiting.players,
         }}
         buttonRightVisiting={{ function: disallowCard, args: [], items: getCards('visiting', 'RED') }}
+        icons={{
+          left: <MatchTeamCard color="red" absolute amount={1} width={16} height={20} />,
+          right: (
+            <Grid display="flex" alignItems="center" justifyContent="center">
+              <MatchTeamCard color="red" absolute amount={1} width={16} height={20} />
+              <CloseIcon style={{ position: 'absolute', color: 'white', fontSize: 40 }}></CloseIcon>
+            </Grid>
+          ),
+        }}
       />
-      <Grid container direction="column" alignItems="center" justifyContent="center">
-        <Typography color="white">Amarillas</Typography>
-      </Grid>
+      <Grid container direction="column" alignItems="center" justifyContent="center" paddingTop={3}></Grid>
       <MatchManager
         buttonLeftLocal={{
           function: scoreCard,
           args: ['YELLOW', true],
           items: currentMatch?.local.players,
         }}
+        buttonRightProps={{ disabled: match?.local.cards.yellow.length < 1 }}
+        buttonRightPropsVisiting={{ disabled: match?.visiting.cards.yellow.length < 1 }}
         buttonRightLocal={{ function: disallowCard, args: [], items: getCards('local', 'YELLOW') }}
         buttonLeftVisiting={{
           function: scoreCard,
@@ -150,7 +197,20 @@ export const InspectorMatch: FC<{ idMatch: number }> = ({ idMatch }) => {
           args: [],
           items: getCards('visiting', 'YELLOW'),
         }}
+        icons={{
+          left: <MatchTeamCard color="yellow" absolute amount={1} width={16} height={20} />,
+          right: (
+            <Grid display="flex" alignItems="center" justifyContent="center">
+              <MatchTeamCard color="yellow" absolute amount={1} width={16} height={20} />
+              <CloseIcon style={{ position: 'absolute', color: 'red', fontSize: 40 }}></CloseIcon>
+            </Grid>
+          ),
+        }}
       />
+      <Button onClick={handleBack} style={{ color: 'white', backgroundColor: '#bf360c', marginTop: 30 }}>
+        Volver a partidos
+      </Button>
+      <EliminationInspectorDialog open={open} setOpen={setOpen} />
     </>
   );
 };

@@ -7,6 +7,8 @@ export class PartialTeamStatusResponseDTO implements PartialTeamStatusResponse {
   @ApiProperty()
   name: string;
   @ApiProperty()
+  logo: string;
+  @ApiProperty()
   goals: number;
   @ApiProperty({ type: PartialCardsResponseDTO })
   @Type(() => PartialCardsResponseDTO)

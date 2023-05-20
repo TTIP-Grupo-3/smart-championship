@@ -9,6 +9,7 @@ const team = {
   name: 'team-1',
   goals: 0,
   cards: cards,
+  logo: null,
 };
 const { mountComponent } = componentMounter(
   MatchTeam,

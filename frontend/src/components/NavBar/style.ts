@@ -40,7 +40,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
     lineHeight: '24px',
     color: theme.palette.common.white,
   },
-  content: { flexGrow: 1, padding: theme.spacing(2) },
+  content: { flexGrow: 1 },
 }));
 
 export default useStyles;

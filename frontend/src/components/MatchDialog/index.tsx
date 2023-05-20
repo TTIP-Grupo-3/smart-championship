@@ -7,22 +7,44 @@ import { DialogTitle, IconButton, Typography } from '@mui/material';
 import { MatchScoreResult } from '../MatchScoreResult';
 import { MatchUserStats } from '../MatchUserStats';
 import { MatchService } from '../../services/MatchService';
+import dayjs from 'dayjs';
 
 const matchService = new MatchService();
 const socket = matchService.create();
 
-export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
+export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData }) => {
   const { classes } = useStyles();
   const [match, setMatch] = useState<any>();
+  const [time, setTime] = useState(0);
   const matchService = new MatchService();
 
   useEffect(() => {
     if (open) {
       socket.on('match', (data: any) => setMatch(data));
-      matchService.subscribe(socket, { id: matchId, championshipId: 1 });
+      matchService.subscribe(socket, {
+        id: matchId,
+        championshipId: +championshipData.id,
+        championshipType: championshipData.type,
+      });
     }
     return () => (open ? matchService.unsubscribe(socket) : undefined);
   }, [open]);
+
+  const currentTime = () => {
+    const startTime = dayjs(match?.start);
+    if (match?.status === 'TOSTART') return 0;
+    if (match?.status === 'FINISHED') {
+      return startTime.diff(match.end, 'minute');
+    }
+    return dayjs(new Date().toISOString()).diff(startTime, 'minute');
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(Math.abs(currentTime()));
+    }, 100);
+    return () => clearInterval(interval);
+  }, [currentTime]);
 
   return (
     <Dialog
@@ -50,7 +72,7 @@ export const MatchDialog: FC<any> = ({ open, close, matchId }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.backgroundDialog}>
-        <MatchScoreResult match={match} time="0" />
+        <MatchScoreResult {...{ match, time }} />
         <MatchUserStats title="Goles" dataLocal={match?.local.goals} dataVisiting={match?.visiting.goals} />
 
         <MatchUserStats

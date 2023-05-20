@@ -28,7 +28,7 @@ describe('ChampionshipController', () => {
 
   methods.forEach((method: Methods<ChampionshipController>) => {
     it(`${method} should be called on service`, async () => {
-      await controller[method](...args[method]);
+      await controller[method](args[method]);
       expect(service[method]).toBeCalled();
     });
   });

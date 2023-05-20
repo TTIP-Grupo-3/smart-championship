@@ -7,7 +7,14 @@ import { ChampionshipPlayer } from 'src/entities/championshipPlayer.entity';
 import { ChampionshipTeam } from 'src/entities/championshipTeam.entity';
 import { TeamStatus } from 'src/entities/teamStatus.entity';
 import { User } from 'src/entities/user.entity';
+import { Championship } from 'src/entities/championship.entity';
+import { Match } from 'src/entities/match.entity';
+import { ScoreStatus } from 'src/entities/scoreStatus.entity';
+import { ScoreMatch } from 'src/entities/scoreMatch.entity';
+import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
 export type SmartChampionshipEntity =
+  | Championship
+  | Match
   | User
   | Card
   | EliminationChampionship
@@ -16,9 +23,14 @@ export type SmartChampionshipEntity =
   | MatchStatus
   | ChampionshipPlayer
   | ChampionshipTeam
-  | TeamStatus;
+  | TeamStatus
+  | ScoreStatus
+  | ScoreMatch
+  | ScoreChampionship;
 
 export const entities = [
+  Championship,
+  Match,
   User,
   Card,
   EliminationChampionship,
@@ -28,4 +40,6 @@ export const entities = [
   ChampionshipPlayer,
   ChampionshipTeam,
   TeamStatus,
+  ScoreMatch,
+  ScoreChampionship,
 ];

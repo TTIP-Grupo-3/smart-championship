@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import { FC } from 'react';
-import { EliminationTournament, MatchTournament } from '../../pages/Dashboard';
+import { EliminationTournament, MatchTournament } from '../../pages/DashboardElimination';
 import { BoxTeams } from '../BoxTeams';
 import { Bracket } from '../Bracket';
 import { useStyles } from './style';

@@ -1,5 +1,6 @@
-import { Controller, Get, Param, ParseIntPipe, UseInterceptors, UsePipes } from '@nestjs/common';
+import { Controller, Get, Param, UseInterceptors, UsePipes } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
 import { MatchIdDTO } from 'src/dtos/matchId.dto';
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
 import { MatchTeamsResponseDTO } from 'src/dtos/responses/matchTeams.response.dto';
@@ -17,10 +18,11 @@ export class MatchController {
   @ApiOperation({ summary: 'Get championship matches' })
   @ApiResponse({ type: PartialMatchResponseDTO, status: 200, isArray: true })
   @ApiNotFoundResponse({ type: ErrorResponseDTO })
+  @ApiParam({ name: 'championshipId', type: 'number' })
   @UseInterceptors(new TransformInterceptor(PartialMatchResponseDTO))
   @Get()
-  async matches(@Param('championshipId', ParseIntPipe) championshipId: number) {
-    return await this.matchService.matches(championshipId);
+  async matches(@Param() matchesDTO: ChampionshipIdDTO) {
+    return await this.matchService.matches(matchesDTO);
   }
 
   @ApiOperation({ summary: 'Get match' })

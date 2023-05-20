@@ -23,6 +23,9 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './strategies/local.strategy';
 import { jwtModuleAsyncOptions } from './options/jwtModuleAsync.options';
+import { StorageService } from './services/storage.service';
+import { ScoreChampionshipGateway } from './gateways/scoreChampionship.gateway';
+import { ScoreChampionshipService } from './services/scoreChampionship.service';
 
 @Module({
   imports: [
@@ -39,6 +42,8 @@ import { jwtModuleAsyncOptions } from './options/jwtModuleAsync.options';
     MatchService,
     MatchGateway,
     ChampionshipGateway,
+    ScoreChampionshipGateway,
+    ScoreChampionshipService,
     ChampionshipPlayerService,
     DataService,
     EntityToDTOMapper,
@@ -46,6 +51,7 @@ import { jwtModuleAsyncOptions } from './options/jwtModuleAsync.options';
     UsersService,
     JwtStrategy,
     LocalStrategy,
+    StorageService,
   ],
 })
 export class AppModule {

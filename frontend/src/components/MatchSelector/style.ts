@@ -19,6 +19,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   titleText: {
     marginTop: '2%',
     color: theme.palette.common.white,
+    textAlign: 'center',
   },
   listItemButton: {
     marginTop: '1.3%',

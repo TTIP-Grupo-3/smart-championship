@@ -23,6 +23,14 @@ import { TeamStatusResponseDTO } from 'src/dtos/responses/teamStatus.response.dt
 import { MatchTeamsResponseDTO } from 'src/dtos/responses/matchTeams.response.dto';
 import { TeamResponseDTO } from 'src/dtos/responses/team.response.dto';
 import { ChampionshipTeam } from 'src/entities/championshipTeam.entity';
+import { Championship } from 'src/entities/championship.entity';
+import { Match } from 'src/entities/match.entity';
+import { ScoreStatus } from 'src/entities/scoreStatus.entity';
+import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
+import { ChampionshipType } from 'src/services/championship.service';
+import { ScoreChampionshipResponseDTO } from 'src/dtos/responses/scoreChampionship.response.dto';
+import { PartialChampionshipResponseDTO } from 'src/dtos/responses/partialChampionship.response.dto';
+import { ScoreStatusResponseDTO } from 'src/dtos/responses/scoreStatus.response.dto';
 
 const errors = configService.get('service.errors');
 
@@ -38,14 +46,60 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     dtoCls?: Class<SmartChampionshipDTO>,
   ): MaybeArray<SmartChampionshipDTO> {
     if (source instanceof Array) return source.map((source) => this.map(source, dtoCls));
-    if (source instanceof EliminationChampionship) return this.eliminationChampionshipResponseDTO(source);
-    if (source instanceof EliminationMatch) return this.eliminationMatchResponseDTO(source, dtoCls);
-    if (source instanceof TeamStatus) return this.teamStatusResponseDTO(source);
+    if (source instanceof Championship) return this.championshipResponseDTO(source, dtoCls);
+    if (source instanceof Match) return this.matchResponseDTO(source, dtoCls);
+    if (source instanceof ScoreStatus) return this.scoreStatusResponseDTO(source, dtoCls);
+    if (source instanceof TeamStatus) return this.teamStatusResponseDTO(source, dtoCls);
     if (source instanceof Goal) return this.playerEventDTO(source, dtoCls);
     if (source instanceof Card) return this.playerEventDTO(source, dtoCls);
     if (source instanceof ChampionshipPlayer) return this.playerDTO(source, dtoCls);
     if (source instanceof ChampionshipTeam) return this.teamDTO(source, dtoCls);
     throw new UnknownException(errors.unknown);
+  }
+
+  private scoreStatusResponseDTO(
+    scoreStatus: ScoreStatus,
+    dtoCls?: Class<SmartChampionshipDTO>,
+  ): ScoreStatusResponseDTO {
+    const { team, score, played, tied, lost, won } = scoreStatus;
+    const { id, name } = team;
+    return plainToInstance(ScoreStatusResponseDTO, {
+      id,
+      name,
+      score,
+      played: played.length,
+      tied: tied.length,
+      lost: lost.length,
+      won: won.length,
+    });
+  }
+
+  private championshipResponseDTO(championship: Championship, dtoCls?: Class<SmartChampionshipDTO>) {
+    if (championship instanceof EliminationChampionship) {
+      return this.eliminationChampionshipResponseDTO(championship, dtoCls);
+    }
+    if (championship instanceof ScoreChampionship) {
+      return this.scoreChampionshipResponseDTO(championship, dtoCls);
+    }
+    throw new UnknownException(errors.unknown);
+  }
+
+  private scoreChampionshipResponseDTO(
+    championship: ScoreChampionship,
+    dtoCls?: Class<SmartChampionshipDTO>,
+  ): ScoreChampionshipResponseDTO | PartialChampionshipResponseDTO {
+    const { id, name, matches } = championship;
+    const type = ChampionshipType.SCORE;
+    if (dtoCls?.name === PartialChampionshipResponseDTO.name) {
+      return this.plainToInstance(PartialChampionshipResponseDTO, { id, name, type });
+    } else {
+      return this.plainToInstance(ScoreChampionshipResponseDTO, {
+        id,
+        name,
+        type,
+        matches: this.map(matches),
+      });
+    }
   }
 
   private playerDTO(source: ChampionshipPlayer, dtoCls?: Class<SmartChampionshipDTO>): PlayerResponseDTO {
@@ -72,37 +126,52 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
 
   private eliminationChampionshipResponseDTO(
     championship: EliminationChampionship,
-  ): EliminationChampionshipResponseDTO {
+    dtoCls?: Class<SmartChampionshipDTO>,
+  ): EliminationChampionshipResponseDTO | PartialChampionshipResponseDTO {
     const { id, name, final } = championship;
-    return this.plainToInstance(EliminationChampionshipResponseDTO, {
-      id,
-      name,
-      ...this.phaseResponseDTO(final.phases),
-    });
+    const type = ChampionshipType.ELIMINATION;
+    if (dtoCls?.name === PartialChampionshipResponseDTO.name) {
+      return this.plainToInstance(PartialChampionshipResponseDTO, { id, name, type });
+    } else {
+      return this.plainToInstance(EliminationChampionshipResponseDTO, {
+        id,
+        name,
+        type,
+        ...this.phaseResponseDTO(final.phases),
+      });
+    }
   }
 
-  private eliminationMatchResponseDTO(
-    match: EliminationMatch,
+  private matchResponseDTO(
+    match: Match,
     dtoCls?: Class<SmartChampionshipDTO>,
   ): PartialMatchResponseDTO | MatchResponseDTO | MatchTeamsResponseDTO {
     const {
       id,
       championship,
-      status: { localStatus, visitingStatus, status },
+      status: { localStatus, visitingStatus, status, date, start, end },
     } = match;
     if (dtoCls?.name === MatchResponseDTO.name) {
       const local = this.teamStatusResponseDTO(localStatus, TeamStatusResponseDTO);
       const visiting = this.teamStatusResponseDTO(visitingStatus, TeamStatusResponseDTO);
-      return this.plainToInstance(MatchResponseDTO, { id, status, local, visiting });
+      return this.plainToInstance(MatchResponseDTO, { id, date, start, end, status, local, visiting });
     } else if (dtoCls?.name === MatchTeamsResponseDTO.name) {
       const { id: championshipId } = championship;
       const local = this.teamStatusResponseDTO(localStatus, TeamResponseDTO);
       const visiting = this.teamStatusResponseDTO(visitingStatus, TeamResponseDTO);
-      return this.plainToInstance(MatchTeamsResponseDTO, { id, championshipId, local, visiting });
+      return this.plainToInstance(MatchTeamsResponseDTO, {
+        id,
+        date,
+        start,
+        end,
+        championshipId,
+        local,
+        visiting,
+      });
     } else {
       const local = this.teamStatusResponseDTO(localStatus);
       const visiting = this.teamStatusResponseDTO(visitingStatus);
-      return this.plainToInstance(PartialMatchResponseDTO, { id, local, visiting });
+      return this.plainToInstance(PartialMatchResponseDTO, { id, date, start, end, local, visiting });
     }
   }
 
@@ -114,6 +183,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     if (dtoCls?.name === TeamStatusResponseDTO.name) {
       return this.plainToInstance(TeamStatusResponseDTO, {
         name: team.name,
+        logo: team.logo,
         goals: this.map(goals),
         cards: { red: this.map(reds), yellow: this.map(yellows) },
       });
@@ -122,6 +192,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     } else {
       return this.plainToInstance(PartialTeamStatusResponseDTO, {
         name: team.name,
+        logo: team.logo,
         goals: goals.length,
         cards: { red: reds.length, yellow: yellows.length },
       });
@@ -133,7 +204,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
       return null;
     } else {
       return this.plainToInstance(PhaseResponseDTO, {
-        matches: phases[0].map((match) => this.eliminationMatchResponseDTO(match)),
+        matches: phases[0].map((match) => this.matchResponseDTO(match)),
         next: this.phaseResponseDTO(phases.slice(1)),
       });
     }

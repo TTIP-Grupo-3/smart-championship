@@ -8,12 +8,15 @@ import { ChampionshipService } from 'src/services/championship.service';
 import { entities } from 'src/utils/entities';
 import { testSqlClient } from 'test/utils/testSqlClient';
 import {
+  args,
   notFoundId,
   championship,
   errors,
 } from '../../data/src/services/championship.service.spec.data.json';
 import { TransactionService } from 'src/services/transaction.service';
 import { DataService } from 'test/utils/data.service';
+import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
+import { StorageService } from 'src/services/storage.service';
 
 describe('ChampionshipService', () => {
   let module: TestingModule;
@@ -27,7 +30,7 @@ describe('ChampionshipService', () => {
         TypeOrmModule.forRoot(testSqlClient()),
         TypeOrmModule.forFeature(entities),
       ],
-      providers: [ChampionshipService, DataService, EntityToDTOMapper, TransactionService],
+      providers: [ChampionshipService, DataService, EntityToDTOMapper, TransactionService, StorageService],
     }).compile();
     service = module.get<ChampionshipService>(ChampionshipService);
     dataService = module.get<DataService>(DataService);
@@ -36,14 +39,17 @@ describe('ChampionshipService', () => {
 
   describe('GetChampionship', () => {
     it('should get championship', async () => {
-      const result = await service.getChampionship(championship.id);
+      const result = await service.getChampionship(args.championshipDTO as ChampionshipIdDTO);
       expect(result).toMatchObject(championship);
     });
 
     it('should fail if championship not exists', async () => {
-      await expect(service.getChampionship(notFoundId)).rejects.toStrictEqual(
-        new NotFoundException(errors.championshipNotFound),
-      );
+      await expect(
+        service.getChampionship({
+          ...args.championshipDTO,
+          championshipId: notFoundId,
+        } as ChampionshipIdDTO),
+      ).rejects.toStrictEqual(new NotFoundException(errors.championshipNotFound));
     });
   });
 

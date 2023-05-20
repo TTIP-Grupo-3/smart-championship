@@ -16,13 +16,17 @@ import {
   players,
   teams,
   eliminationChampionships,
+  scoreChampionships,
   eliminationMatches,
+  scoreMatches,
   matchStatuses,
   teamStatuses,
   goals,
   cards,
 } from '../data/initial.data.json';
 import { User } from 'src/entities/user.entity';
+import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
+import { ScoreMatch } from 'src/entities/scoreMatch.entity';
 
 @Injectable()
 @UseExceptionMapper(TypeOrmExceptionMapperExecutor)
@@ -33,11 +37,13 @@ export class DataService {
     await this.dataSource.transaction(async (manager) => {
       await manager.save(User, users);
       await manager.save(EliminationChampionship, eliminationChampionships);
+      await manager.save(ScoreChampionship, scoreChampionships);
       await manager.save(ChampionshipTeam, teams);
       await manager.save(ChampionshipPlayer, players);
       await manager.save(TeamStatus, teamStatuses);
       await manager.save(MatchStatus, matchStatuses);
       await manager.save(EliminationMatch, eliminationMatches);
+      await manager.save(ScoreMatch, scoreMatches);
       await manager.save(Goal, goals);
       await manager.save(Card, cards as Array<DeepPartial<Card>>);
     });

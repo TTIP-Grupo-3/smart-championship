@@ -15,10 +15,21 @@ export abstract class SocketService {
     };
   }
 
+  exception(socket: Socket, cb: (algo: any) => void) {
+    socket.on('exception', cb);
+  }
   protected url = process.env.REACT_APP_API_SERVER_URL!;
   protected abstract readonly namespace: string;
 
   create(): Socket {
-    return io(`${this.url}/${this.namespace}`, this.defaultOptions);
+    const socket = io(`${this.url}/${this.namespace}`, this.defaultOptions);
+    this.exception(socket, (data) => {
+      if (data.message === 'Unauthorized') {
+        window.location.href = `${window.location.origin}/login`;
+        localStorage.removeItem('token');
+      }
+    });
+
+    return socket;
   }
 }
