@@ -128,7 +128,7 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, 
         buttonRightLocal={{ function: disallowGoal, args: [], items: getGoals('local') }}
         buttonLeftVisiting={{
           function: scoreGoal,
-          args: [true],
+          args: [false],
           items: currentMatch?.visiting.players,
         }}
         buttonRightProps={{ disabled: match?.local.goals.length < 1 }}
