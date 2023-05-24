@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, LinearProgress, Typography } from '@mui/material';
 import { FC } from 'react';
 import { MatchTeam } from '../MatchTeam';
 import { useStyles } from './style';
@@ -32,6 +32,7 @@ export const MatchScoreResult: FC<any> = ({
             <Typography variant="body1" className={classes.time}>
               {time}
             </Typography>
+            {match?.status === 'STARTED' && <LinearProgress className={classes.loader} />}
           </>
         )}
         {componentStop}
