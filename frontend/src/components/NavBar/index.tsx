@@ -6,7 +6,6 @@ import smartLogo from '../../default_match_icon_local.svg';
 import { useNavigate } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
 import LogoutIcon from '@mui/icons-material/Logout';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
   const { classes } = useStyles();
@@ -36,7 +35,7 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
                   alignItems: 'center',
                 }}
               >
-                <EmojiEventsIcon style={{ height: 22, display: 'flex', color: 'yellow' }} />
+                {button.icon ?? ''}
                 <Typography style={{ fontSize: 15, fontWeight: 600, paddingTop: 3 }}>
                   {button.text}
                 </Typography>

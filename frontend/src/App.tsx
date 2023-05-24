@@ -7,6 +7,7 @@ import { Veedor } from './pages/Inspector';
 import { Tournaments } from './pages/Tournaments';
 import { DashboardElimination } from './pages/DashboardElimination';
 import { PrivateRoute } from './components/Route';
+import { Admin } from './pages/Admin';
 
 const App: FC = () => (
   <BrowserRouter>
@@ -23,6 +24,7 @@ const App: FC = () => (
           </PrivateRoute>
         }
       />
+      <Route path="/admin" element={<Admin />} />
     </Routes>
   </BrowserRouter>
 );

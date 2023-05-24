@@ -7,6 +7,7 @@ import { Navbar } from '../../components/NavBar';
 import { Tournament } from '../../components/Tournament';
 import { ChampionshipService } from '../../services/ChampionshipService';
 import { useStyles } from './style';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 export interface SmartChampionship extends EliminationTournament {
   id: number;
@@ -39,7 +40,13 @@ export const DashboardElimination: FC = () => {
   }, []);
 
   return (
-    <Navbar button={{ action: () => navigate(-1), text: 'Torneos' }}>
+    <Navbar
+      button={{
+        action: () => navigate(-1),
+        text: 'Torneos',
+        icon: <EmojiEventsIcon style={{ height: 22, display: 'flex', color: 'yellow' }} />,
+      }}
+    >
       <Grid container className={classes.gridContainer}>
         <Tournament dataSet={matches} />
       </Grid>

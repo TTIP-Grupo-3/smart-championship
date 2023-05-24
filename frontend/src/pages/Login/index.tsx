@@ -16,6 +16,7 @@ import { ErrorLogin } from '../../components/Snackbar';
 import { User } from '../../interfaces';
 import { API_AUTH } from '../../services/Auth';
 import { useStyles } from './style';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +41,15 @@ export const Login = () => {
   };
 
   return (
-    <Navbar removebuttonLog button={{ action: () => navigate('/'), text: 'Torneos' }}>
+    <Navbar
+      removebuttonLog
+      button={{
+        action: () => navigate(-1),
+        text: 'Torneos',
+        icon: <EmojiEventsIcon style={{ height: 22, display: 'flex', color: 'yellow' }} />,
+      }}
+    >
+      {' '}
       <Grid className={classes.root} container>
         <Card style={{ backgroundColor: '#001E3C', padding: 48, borderRadius: 6 }} elevation={24}>
           <Typography color="white" variant="h5">
