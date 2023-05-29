@@ -1,10 +1,21 @@
-import { Controller, Get, Param, UseInterceptors, UsePipes } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { Roles } from 'src/decorators/roles.decorator';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
 import { MatchIdDTO } from 'src/dtos/matchId.dto';
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
 import { MatchTeamsResponseDTO } from 'src/dtos/responses/matchTeams.response.dto';
 import { PartialMatchResponseDTO } from 'src/dtos/responses/partialMatch.response.dto';
+import { Role } from 'src/enums/role.enum';
+import { JwtAuthGuard } from 'src/guards/jwtAuth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
 import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 import { validationPipe } from 'src/pipes/validation.pipe';
 import { MatchService } from 'src/services/match.service';
@@ -25,6 +36,9 @@ export class MatchController {
     return await this.matchService.matches(matchesDTO);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Reviewer)
   @ApiOperation({ summary: 'Get match' })
   @ApiResponse({ type: MatchTeamsResponseDTO, status: 200 })
   @ApiNotFoundResponse({ type: ErrorResponseDTO })
