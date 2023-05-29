@@ -35,7 +35,7 @@ export class DataService {
 
   async initialize() {
     await this.dataSource.transaction(async (manager) => {
-      await manager.save(User, users);
+      await manager.save(User, users as Array<DeepPartial<User>>);
       await manager.save(EliminationChampionship, eliminationChampionships);
       await manager.save(ScoreChampionship, scoreChampionships);
       await manager.save(ChampionshipTeam, teams);

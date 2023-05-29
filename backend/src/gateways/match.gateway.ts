@@ -22,6 +22,9 @@ import { WsAuthGuard } from 'src/guards/wsAuth.guard';
 import { ScoreChampionshipGateway } from './scoreChampionship.gateway';
 import { Match } from 'src/entities/match.entity';
 import { ScoreMatch } from 'src/entities/scoreMatch.entity';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enums/role.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @WebSocketGateway({ namespace: 'match' })
 @UseFilters(WsExceptionFilter)
@@ -50,28 +53,32 @@ export class MatchGateway {
     client.leave(match.room);
   }
 
-  @UseGuards(WsAuthGuard)
+  @UseGuards(WsAuthGuard, RolesGuard)
+  @Roles(Role.Reviewer)
   @SubscribeMessage('start')
   async start(@ConnectedSocket() client: Socket, @MessageBody() startDTO: MatchIdDTO) {
     const match = await this.matchService.start(startDTO);
     await this.notifyUpdate(match);
   }
 
-  @UseGuards(WsAuthGuard)
+  @UseGuards(WsAuthGuard, RolesGuard)
+  @Roles(Role.Reviewer)
   @SubscribeMessage('end')
   async end(@ConnectedSocket() client: Socket, @MessageBody() endDTO: MatchIdDTO) {
     const match = await this.matchService.end(endDTO);
     await this.notifyUpdate(match);
   }
 
-  @UseGuards(WsAuthGuard)
+  @UseGuards(WsAuthGuard, RolesGuard)
+  @Roles(Role.Reviewer)
   @SubscribeMessage('goal')
   async goal(@ConnectedSocket() client: Socket, @MessageBody() goalDTO: GoalDTO) {
     const match = await this.matchService.goal(goalDTO);
     await this.notifyUpdate(match);
   }
 
-  @UseGuards(WsAuthGuard)
+  @UseGuards(WsAuthGuard, RolesGuard)
+  @Roles(Role.Reviewer)
   @SubscribeMessage('card')
   async card(@ConnectedSocket() client: Socket, @MessageBody() cardDTO: CardDTO) {
     console.log(client.handshake.auth);
@@ -79,14 +86,16 @@ export class MatchGateway {
     await this.notifyUpdate(match);
   }
 
-  @UseGuards(WsAuthGuard)
+  @UseGuards(WsAuthGuard, RolesGuard)
+  @Roles(Role.Reviewer)
   @SubscribeMessage('goal:disallow')
   async disallowGoal(@ConnectedSocket() client: Socket, @MessageBody() disallowGoalDTO: DisallowGoalDTO) {
     const match = await this.matchService.disallowGoal(disallowGoalDTO);
     await this.notifyUpdate(match);
   }
 
-  @UseGuards(WsAuthGuard)
+  @UseGuards(WsAuthGuard, RolesGuard)
+  @Roles(Role.Reviewer)
   @SubscribeMessage('card:disallow')
   async disallowCard(@ConnectedSocket() client: Socket, @MessageBody() disallowCardDTO: DisallowCardDTO) {
     const match = await this.matchService.disallowCard(disallowCardDTO);
