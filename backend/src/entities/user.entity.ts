@@ -16,6 +16,8 @@ export class User {
   })
   roles: Array<Role>;
 
+  access_token: string;
+
   public get role(): Role {
     return this.roles[0];
   }

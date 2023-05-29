@@ -12,6 +12,7 @@ async function bootstrap() {
   app.useGlobalPipes(validationPipe);
   const config = new DocumentBuilder()
     .setTitle('Smart Championship')
+    .addBearerAuth()
     .setDescription('Smart Championship API V1')
     .setVersion('1.0')
     .build();

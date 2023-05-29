@@ -81,7 +81,6 @@ export class MatchGateway {
   @Roles(Role.Reviewer)
   @SubscribeMessage('card')
   async card(@ConnectedSocket() client: Socket, @MessageBody() cardDTO: CardDTO) {
-    console.log(client.handshake.auth);
     const match = await this.matchService.card(cardDTO);
     await this.notifyUpdate(match);
   }

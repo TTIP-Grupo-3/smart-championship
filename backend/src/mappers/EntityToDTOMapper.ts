@@ -31,6 +31,9 @@ import { ChampionshipType } from 'src/services/championship.service';
 import { ScoreChampionshipResponseDTO } from 'src/dtos/responses/scoreChampionship.response.dto';
 import { PartialChampionshipResponseDTO } from 'src/dtos/responses/partialChampionship.response.dto';
 import { ScoreStatusResponseDTO } from 'src/dtos/responses/scoreStatus.response.dto';
+import { User } from 'src/entities/user.entity';
+import { UserResponseDTO } from 'src/dtos/responses/user.response.dto';
+import { AccessTokenResponseDTO } from 'src/dtos/responses/accessToken.response.dto';
 
 const errors = configService.get('service.errors');
 
@@ -54,7 +57,20 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     if (source instanceof Card) return this.playerEventDTO(source, dtoCls);
     if (source instanceof ChampionshipPlayer) return this.playerDTO(source, dtoCls);
     if (source instanceof ChampionshipTeam) return this.teamDTO(source, dtoCls);
+    if (source instanceof User) return this.userDTO(source, dtoCls);
     throw new UnknownException(errors.unknown);
+  }
+
+  private userDTO(
+    user: User,
+    dtoCls?: Class<SmartChampionshipDTO>,
+  ): UserResponseDTO | AccessTokenResponseDTO {
+    const { username, role, access_token } = user;
+    if (dtoCls?.name === UserResponseDTO.name) {
+      return plainToInstance(UserResponseDTO, { username, role });
+    } else {
+      return plainToInstance(AccessTokenResponseDTO, { username, role, access_token });
+    }
   }
 
   private scoreStatusResponseDTO(

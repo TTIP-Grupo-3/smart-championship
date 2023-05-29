@@ -15,6 +15,7 @@ import { PartialChampionshipResponseDTO } from 'src/dtos/responses/partialChampi
 import { ChampionshipResponseDTO } from 'src/dtos/responses/championship.response.dto';
 import { ScoreChampionshipResponseDTO } from 'src/dtos/responses/scoreChampionship.response.dto';
 import { ScoreStatusResponseDTO } from 'src/dtos/responses/scoreStatus.response.dto';
+import { UserResponseDTO } from 'src/dtos/responses/user.response.dto';
 
 export type SmartChampionshipDTO =
   | PartialCardsResponseDTO
@@ -33,4 +34,5 @@ export type SmartChampionshipDTO =
   | PartialChampionshipResponseDTO
   | ChampionshipResponseDTO
   | ScoreChampionshipResponseDTO
-  | ScoreStatusResponseDTO;
+  | ScoreStatusResponseDTO
+  | UserResponseDTO;
