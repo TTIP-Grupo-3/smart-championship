@@ -10,6 +10,8 @@ import { Championship } from 'src/entities/championship.entity';
 import { TransactionService } from './transaction.service';
 import { StorageService } from 'src/services/storage.service';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
+import { CreateChampionshipDTO } from 'src/dtos/createChampionship.dto';
+import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
 
 const errors = configService.get('service.errors');
 
@@ -41,6 +43,29 @@ export class ChampionshipService {
     return await this.transactionService.transaction(async (manager) => {
       return await manager.findBy(Championship, {});
     }, manager);
+  }
+
+  async createChampionship(
+    createChampionshipDTO: CreateChampionshipDTO,
+    manager?: EntityManager,
+  ): Promise<Championship> {
+    return await this.transactionService.transaction(async (manager) => {
+      const championship = this.newChampionship(createChampionshipDTO, manager);
+      return await manager.save(championship);
+    }, manager);
+  }
+
+  private newChampionship(
+    createChampionshipDTO: CreateChampionshipDTO,
+    manager: EntityManager,
+  ): Championship {
+    const championshipSubclasses = {
+      [ChampionshipType.ELIMINATION]: EliminationChampionship,
+      [ChampionshipType.SCORE]: ScoreChampionship,
+    };
+    const { name, type } = createChampionshipDTO;
+    const championshipSubclass = championshipSubclasses[type];
+    return manager.create<Championship>(championshipSubclass, { name });
   }
 
   private async findChampionship(id: number, manager: EntityManager): Promise<Championship> {
