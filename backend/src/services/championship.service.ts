@@ -63,9 +63,9 @@ export class ChampionshipService {
       [ChampionshipType.ELIMINATION]: EliminationChampionship,
       [ChampionshipType.SCORE]: ScoreChampionship,
     };
-    const { name, type } = createChampionshipDTO;
-    const championshipSubclass = championshipSubclasses[type];
-    return manager.create<Championship>(championshipSubclass, { name });
+    const { name, date, size, price, type } = createChampionshipDTO;
+    const ChampionshipSubclass = championshipSubclasses[type];
+    return manager.create<Championship>(ChampionshipSubclass, { name, date, size, price });
   }
 
   private async findChampionship(id: number, manager: EntityManager): Promise<Championship> {

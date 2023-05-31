@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { hashSync as hash, genSaltSync as salt } from 'bcrypt';
-import { Role } from 'src/enums/role.enum';
+import { UserRole } from 'src/enums/role.enum';
 
 @Entity()
 export class User {
@@ -14,11 +14,11 @@ export class User {
     type: 'nvarchar',
     transformer: { to: (value) => JSON.stringify(value), from: (value) => JSON.parse(value) },
   })
-  roles: Array<Role>;
+  roles: Array<UserRole>;
 
   access_token: string;
 
-  public get role(): Role {
+  public get role(): UserRole {
     return this.roles[0];
   }
 }

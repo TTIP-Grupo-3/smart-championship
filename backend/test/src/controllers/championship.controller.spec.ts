@@ -21,6 +21,7 @@ describe('ChampionshipController', () => {
     })
       .overrideProvider(ChampionshipService)
       .useValue(mock(ChampionshipService))
+      .useMocker(mock)
       .compile();
     controller = module.get<ChampionshipController>(ChampionshipController);
     service = module.get<ChampionshipService>(ChampionshipService);

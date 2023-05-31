@@ -7,6 +7,7 @@ import {
   ApiResponse,
   ApiTags,
   ApiBearerAuth,
+  ApiForbiddenResponse,
 } from '@nestjs/swagger';
 import { validationPipe } from 'src/pipes/validation.pipe';
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
@@ -37,6 +38,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Profile' })
   @ApiResponse({ type: UserResponseDTO, status: 200 })
   @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
+  @ApiForbiddenResponse({ type: ErrorResponseDTO })
   @UseInterceptors(new TransformInterceptor(UserResponseDTO))
   @Get('profile')
   async profile(@Request() req) {

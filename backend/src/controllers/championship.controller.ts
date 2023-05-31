@@ -7,6 +7,8 @@ import {
   ApiNotFoundResponse,
   ApiParam,
   ApiBearerAuth,
+  ApiForbiddenResponse,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
@@ -14,11 +16,11 @@ import { CreateChampionshipDTO } from 'src/dtos/createChampionship.dto';
 import { ChampionshipResponseDTO } from 'src/dtos/responses/championship.response.dto';
 import { EliminationChampionshipResponseDTO } from 'src/dtos/responses/eliminationChampionship.response.dto';
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
+import { PartialAdminChampionshipResponseDTO } from 'src/dtos/responses/partialAdminChampionship.response.dto';
 import { PartialChampionshipResponseDTO } from 'src/dtos/responses/partialChampionship.response.dto';
 import { ScoreChampionshipResponseDTO } from 'src/dtos/responses/scoreChampionship.response.dto';
 import { Championship } from 'src/entities/championship.entity';
 import { Role } from 'src/enums/role.enum';
-import { JwtAuthGuard } from 'src/guards/jwtAuth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 import { validationPipe } from 'src/pipes/validation.pipe';
@@ -51,12 +53,13 @@ export class ChampionshipController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(Role.Admin)
   @ApiOperation({ summary: 'Create championship' })
-  @ApiResponse({ type: PartialChampionshipResponseDTO, status: 201 })
-  @ApiNotFoundResponse({ type: ErrorResponseDTO })
-  @UseInterceptors(new TransformInterceptor(PartialChampionshipResponseDTO))
+  @ApiResponse({ type: PartialAdminChampionshipResponseDTO, status: 201 })
+  @ApiForbiddenResponse({ type: ErrorResponseDTO })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
+  @UseInterceptors(new TransformInterceptor(PartialAdminChampionshipResponseDTO))
   @Post()
   async createChampionship(@Body() createChampionshipDTO: CreateChampionshipDTO): Promise<Championship> {
     return await this.championshipService.createChampionship(createChampionshipDTO);

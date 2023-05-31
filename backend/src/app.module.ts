@@ -26,6 +26,7 @@ import { jwtModuleAsyncOptions } from './options/jwtModuleAsync.options';
 import { StorageService } from './services/storage.service';
 import { ScoreChampionshipGateway } from './gateways/scoreChampionship.gateway';
 import { ScoreChampionshipService } from './services/scoreChampionship.service';
+import { JwtAuthGuard } from './guards/jwtAuth.guard';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { ScoreChampionshipService } from './services/scoreChampionship.service';
     JwtStrategy,
     LocalStrategy,
     StorageService,
+    JwtAuthGuard,
   ],
 })
 export class AppModule {

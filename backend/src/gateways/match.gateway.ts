@@ -5,7 +5,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
 import { ChampionshipGateway } from './championship.gateway';
 import { MatchService } from 'src/services/match.service';
@@ -18,13 +18,13 @@ import { WsExceptionFilter } from 'src/filters/ws.exception.filter';
 import { MatchResponseDTO } from 'src/dtos/responses/match.response.dto';
 import { DisallowGoalDTO } from 'src/dtos/disallowGoal.dto';
 import { DisallowCardDTO } from 'src/dtos/disallowCard.dto';
-import { WsAuthGuard } from 'src/guards/wsAuth.guard';
 import { ScoreChampionshipGateway } from './scoreChampionship.gateway';
 import { Match } from 'src/entities/match.entity';
 import { ScoreMatch } from 'src/entities/scoreMatch.entity';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { UserSocket } from 'src/utils/types';
 
 @WebSocketGateway({ namespace: 'match' })
 @UseFilters(WsExceptionFilter)
@@ -41,69 +41,77 @@ export class MatchGateway {
   ) {}
 
   @SubscribeMessage('subscribe')
-  async subscribe(@ConnectedSocket() client: Socket, @MessageBody() subscribeDTO: MatchIdDTO) {
+  async subscribe(@ConnectedSocket() client: UserSocket, @MessageBody() subscribeDTO: MatchIdDTO) {
     const match = await this.matchService.findOne(subscribeDTO);
-    client.emit('match', this.mapper.map(match, MatchResponseDTO));
+    client.emit('match', this.mapper.map(match, client, MatchResponseDTO));
     client.join(match.room);
   }
 
   @SubscribeMessage('unsubscribe')
-  async unsubscribe(@ConnectedSocket() client: Socket, @MessageBody() unsubscribeDTO: MatchIdDTO) {
+  async unsubscribe(@ConnectedSocket() client: UserSocket, @MessageBody() unsubscribeDTO: MatchIdDTO) {
     const match = await this.matchService.findOne(unsubscribeDTO);
     client.leave(match.room);
   }
 
-  @UseGuards(WsAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(Role.Reviewer)
   @SubscribeMessage('start')
-  async start(@ConnectedSocket() client: Socket, @MessageBody() startDTO: MatchIdDTO) {
+  async start(@ConnectedSocket() client: UserSocket, @MessageBody() startDTO: MatchIdDTO) {
     const match = await this.matchService.start(startDTO);
-    await this.notifyUpdate(match);
+    await this.notifyUpdate(client, match);
   }
 
-  @UseGuards(WsAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(Role.Reviewer)
   @SubscribeMessage('end')
-  async end(@ConnectedSocket() client: Socket, @MessageBody() endDTO: MatchIdDTO) {
+  async end(@ConnectedSocket() client: UserSocket, @MessageBody() endDTO: MatchIdDTO) {
     const match = await this.matchService.end(endDTO);
-    await this.notifyUpdate(match);
+    await this.notifyUpdate(client, match);
   }
 
-  @UseGuards(WsAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(Role.Reviewer)
   @SubscribeMessage('goal')
-  async goal(@ConnectedSocket() client: Socket, @MessageBody() goalDTO: GoalDTO) {
+  async goal(@ConnectedSocket() client: UserSocket, @MessageBody() goalDTO: GoalDTO) {
     const match = await this.matchService.goal(goalDTO);
-    await this.notifyUpdate(match);
+    await this.notifyUpdate(client, match);
   }
 
-  @UseGuards(WsAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(Role.Reviewer)
   @SubscribeMessage('card')
-  async card(@ConnectedSocket() client: Socket, @MessageBody() cardDTO: CardDTO) {
+  async card(@ConnectedSocket() client: UserSocket, @MessageBody() cardDTO: CardDTO) {
     const match = await this.matchService.card(cardDTO);
-    await this.notifyUpdate(match);
+    await this.notifyUpdate(client, match);
   }
 
-  @UseGuards(WsAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(Role.Reviewer)
   @SubscribeMessage('goal:disallow')
-  async disallowGoal(@ConnectedSocket() client: Socket, @MessageBody() disallowGoalDTO: DisallowGoalDTO) {
+  async disallowGoal(
+    @ConnectedSocket() client: UserSocket,
+    @MessageBody() disallowGoalDTO: DisallowGoalDTO,
+  ) {
     const match = await this.matchService.disallowGoal(disallowGoalDTO);
-    await this.notifyUpdate(match);
+    await this.notifyUpdate(client, match);
   }
 
-  @UseGuards(WsAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles(Role.Reviewer)
   @SubscribeMessage('card:disallow')
-  async disallowCard(@ConnectedSocket() client: Socket, @MessageBody() disallowCardDTO: DisallowCardDTO) {
+  async disallowCard(
+    @ConnectedSocket() client: UserSocket,
+    @MessageBody() disallowCardDTO: DisallowCardDTO,
+  ) {
     const match = await this.matchService.disallowCard(disallowCardDTO);
-    await this.notifyUpdate(match);
+    await this.notifyUpdate(client, match);
   }
 
-  private async notifyUpdate(match: Match) {
-    this.server.to(match.room).emit('match', this.mapper.map(match, MatchResponseDTO));
-    await this.championshipGateway.notifyUpdate(match.championship);
-    if (match instanceof ScoreMatch) await this.scoreChampionshipGateway.notifyUpdate(match.championship);
+  private async notifyUpdate(client: UserSocket, match: Match) {
+    this.server.to(match.room).emit('match', this.mapper.map(match, client, MatchResponseDTO));
+    await this.championshipGateway.notifyUpdate(client, match.championship);
+    if (match instanceof ScoreMatch) {
+      await this.scoreChampionshipGateway.notifyUpdate(client, match.championship);
+    }
   }
 }
