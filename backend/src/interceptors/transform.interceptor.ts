@@ -3,6 +3,7 @@ import { Observable, map } from 'rxjs';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
 import { SmartChampionshipDTO } from 'src/utils/dtos';
 import { SmartChampionshipEntity } from 'src/utils/entities';
+import { getRequest } from 'src/utils/executionContext';
 import { Class, MaybeArray } from 'src/utils/types';
 
 export class TransformInterceptor<T extends MaybeArray<SmartChampionshipEntity>>
@@ -13,6 +14,6 @@ export class TransformInterceptor<T extends MaybeArray<SmartChampionshipEntity>>
   constructor(private dtoCls?: Class<SmartChampionshipDTO>) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<MaybeArray<SmartChampionshipDTO>> {
-    return next.handle().pipe(map((data) => this.mapper.map(data, this.dtoCls)));
+    return next.handle().pipe(map((data) => this.mapper.map(data, getRequest(context), this.dtoCls)));
   }
 }

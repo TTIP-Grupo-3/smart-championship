@@ -1,5 +1,5 @@
 {
-  "eliminationChampionships": [{ "id": 1, "name": "Smart Championship" }],
+  "eliminationChampionships": [{ "id": 1, "date": "2017-06-15", "start": "2017-06-15", "size": 0, "price": 0, "name": "Smart Championship" }],
   "teams": [
     { "id": 1, "name": "Team-1", "championship": { "id": 1 } },
     { "id": 2, "name": "Team-2", "championship": { "id": 1 } },

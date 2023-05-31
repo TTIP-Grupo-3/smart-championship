@@ -10,6 +10,11 @@ import { Championship } from 'src/entities/championship.entity';
 import { TransactionService } from './transaction.service';
 import { StorageService } from 'src/services/storage.service';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
+import { CreateChampionshipDTO } from 'src/dtos/createChampionship.dto';
+import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
+import { User } from 'src/entities/user.entity';
+import { Role } from 'src/enums/role.enum';
+import { ChampionshipStatus } from 'src/enums/championshipStatus.enum';
 
 const errors = configService.get('service.errors');
 
@@ -37,10 +42,35 @@ export class ChampionshipService {
     }, manager);
   }
 
-  async getChampionships(manager?: EntityManager): Promise<Array<Championship>> {
+  async getChampionships(user?: User, manager?: EntityManager): Promise<Array<Championship>> {
     return await this.transactionService.transaction(async (manager) => {
-      return await manager.findBy(Championship, {});
+      const championships = await manager.findBy(Championship, {});
+      if (user?.role === Role.Admin) return championships;
+      return championships.filter((championship) => championship.status === ChampionshipStatus.STARTED);
     }, manager);
+  }
+
+  async createChampionship(
+    createChampionshipDTO: CreateChampionshipDTO,
+    manager?: EntityManager,
+  ): Promise<Championship> {
+    return await this.transactionService.transaction(async (manager) => {
+      const championship = this.newChampionship(createChampionshipDTO, manager);
+      return await manager.save(championship);
+    }, manager);
+  }
+
+  private newChampionship(
+    createChampionshipDTO: CreateChampionshipDTO,
+    manager: EntityManager,
+  ): Championship {
+    const championshipSubclasses = {
+      [ChampionshipType.ELIMINATION]: EliminationChampionship,
+      [ChampionshipType.SCORE]: ScoreChampionship,
+    };
+    const { name, date, size, price, type } = createChampionshipDTO;
+    const ChampionshipSubclass = championshipSubclasses[type];
+    return manager.create<Championship>(ChampionshipSubclass, { name, date, size, price });
   }
 
   private async findChampionship(id: number, manager: EntityManager): Promise<Championship> {

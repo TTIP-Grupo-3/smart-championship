@@ -2,6 +2,8 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn, TableInheritance } f
 import { ChampionshipPlayer } from './championshipPlayer.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { Match } from './match.entity';
+import { ChampionshipType } from 'src/services/championship.service';
+import { ChampionshipStatus } from 'src/enums/championshipStatus.enum';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -16,6 +18,18 @@ export abstract class Championship {
     createForeignKeyConstraints: false,
   })
   players: Array<ChampionshipPlayer>;
+  @Column({ nullable: false })
+  date: Date;
+  @Column({ nullable: true })
+  start: Date;
+  @Column({ nullable: true })
+  end: Date;
+  @Column()
+  size: number;
+  @Column()
+  price: number;
+
+  abstract type: ChampionshipType;
 
   abstract matches: Array<Match>;
 
@@ -27,5 +41,15 @@ export abstract class Championship {
 
   public get matchTeams() {
     return this.matches.flatMap((match) => match.teams);
+  }
+
+  public get status(): ChampionshipStatus {
+    if (this.end) {
+      return ChampionshipStatus.FINISHED;
+    } else if (this.start) {
+      return ChampionshipStatus.STARTED;
+    } else {
+      return ChampionshipStatus.TOSTART;
+    }
   }
 }
