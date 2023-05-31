@@ -17,7 +17,7 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
     const request = getRequest(context);
-    if (requiredRoles && requiredRoles.includes(Role.All)) {
+    if (!this.hasToken(context) && requiredRoles && requiredRoles.includes(Role.All)) {
       request.role = Role.All;
       return true;
     }
@@ -30,5 +30,17 @@ export class RolesGuard implements CanActivate {
 
   private hasRoles(user?: User, requiredRoles?: Array<Role>): boolean {
     return !requiredRoles || requiredRoles.some((role) => (user?.roles as Array<Role>)?.includes(role));
+  }
+
+  private hasToken(context): boolean {
+    return this.wsHasToken(context) || this.httpHasToken(context);
+  }
+
+  private wsHasToken(context): boolean {
+    return context.getType() === 'ws' && context.args[0].handshake.auth.token;
+  }
+
+  private httpHasToken(context): boolean {
+    return context.getType() === 'http' && context.switchToHttp().getRequest().headers.authorization;
   }
 }

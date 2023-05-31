@@ -3,6 +3,7 @@ import { ChampionshipPlayer } from './championshipPlayer.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { Match } from './match.entity';
 import { ChampionshipType } from 'src/services/championship.service';
+import { ChampionshipStatus } from 'src/enums/championshipStatus.enum';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -40,5 +41,15 @@ export abstract class Championship {
 
   public get matchTeams() {
     return this.matches.flatMap((match) => match.teams);
+  }
+
+  public get status(): ChampionshipStatus {
+    if (this.end) {
+      return ChampionshipStatus.FINISHED;
+    } else if (this.start) {
+      return ChampionshipStatus.STARTED;
+    } else {
+      return ChampionshipStatus.TOSTART;
+    }
   }
 }
