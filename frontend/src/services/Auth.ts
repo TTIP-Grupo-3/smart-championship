@@ -12,6 +12,10 @@ class AuthService {
   login(user: User): Promise<AxiosResponse<any>> {
     return this.httpClient.post('/auth/login', user);
   }
+
+  profile(): Promise<AxiosResponse<any>> {
+    return this.httpClient.get('/auth/profile');
+  }
 }
 
 const API_AUTH = new AuthService();

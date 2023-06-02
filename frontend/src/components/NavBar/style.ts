@@ -41,6 +41,20 @@ const useStyles = makeStyles()((theme: Theme) => ({
     color: theme.palette.common.white,
   },
   content: { flexGrow: 1 },
+  username: {
+    color: theme.palette.grey[50],
+    fontFamily: 'sans-serif',
+    flexWrap: 'nowrap',
+    [theme.breakpoints.down(554)]: {
+      display: 'none',
+    },
+  },
+  gridUser: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));
 
 export default useStyles;

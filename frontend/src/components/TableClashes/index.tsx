@@ -32,7 +32,6 @@ export const TableClashes = () => {
     setMatchId(id);
     setOpen(true);
   };
-  console.log(matches);
   return (
     <Paper className={classes.paper}>
       <TableContainer className={classes.tableContainer}>

@@ -6,7 +6,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     borderWidth: '1px',
     borderColor: 'white !important',
   },
-
+  title: { borderBottom: `1px solid ${theme.palette.grey[500]}` },
   root: {
     marginTop: 16,
     '& input[type=number]': {
@@ -25,4 +25,12 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     color: theme.palette.common.white,
   },
   scroll: { height: '60vh', marginRight: '4px', paddingInline: 20 },
+  confirmButton: {
+    backgroundColor: '#1990BB',
+    fontWeight: 600,
+    color: theme.palette.common.white,
+    '&:hover': {
+      backgroundColor: '#1990BB',
+    },
+  },
 }));

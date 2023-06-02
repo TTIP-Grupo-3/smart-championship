@@ -18,6 +18,10 @@ import { API_AUTH } from '../../services/Auth';
 import { useStyles } from './style';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
+type RoleType = { [key: string]: string };
+
+export const roles: RoleType = { admin: '/admin/tournaments', reviewer: '/inspector' };
+
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { classes } = useStyles();
@@ -33,18 +37,23 @@ export const Login = () => {
   const handleLogin: FormEventHandler<HTMLFormElement> = (e: any) => {
     e.preventDefault();
     API_AUTH.login(user)
-      .then(({ data }) => {
+      .then(async ({ data }) => {
         localStorage.setItem('token', data.access_token);
-        navigate('/inspector');
+        const { data: profile } = await API_AUTH.profile();
+        redirectAccordingToRole(profile.role);
       })
       .catch(() => setIsInvalidUser(true));
+  };
+
+  const redirectAccordingToRole = (role: string) => {
+    navigate(roles[role]);
   };
 
   return (
     <Navbar
       removebuttonLog
       button={{
-        action: () => navigate(-1),
+        action: () => navigate('/'),
         text: 'Torneos',
         icon: <EmojiEventsIcon style={{ height: 22, display: 'flex', color: 'yellow' }} />,
       }}

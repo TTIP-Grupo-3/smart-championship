@@ -20,13 +20,27 @@ const App: FC = () => (
       <Route
         path="/inspector"
         element={
-          <PrivateRoute role="inspector" redirectTo="/login">
+          <PrivateRoute role="reviewer" redirectTo="/login">
             <Veedor />
           </PrivateRoute>
         }
       />
-      <Route path="/admin/tournaments" element={<Admin />} />
-      <Route path="/admin/inscriptions" element={<AdminInscription />} />
+      <Route
+        path="/admin/tournaments"
+        element={
+          <PrivateRoute role="admin" redirectTo="/login">
+            <Admin />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/inscriptions"
+        element={
+          <PrivateRoute role="admin" redirectTo="/login">
+            <AdminInscription />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   </BrowserRouter>
 );

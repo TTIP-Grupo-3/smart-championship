@@ -3,6 +3,14 @@ import axios from 'axios';
 const httpClient = axios.create({
   baseURL: process.env.REACT_APP_API_SERVER_URL,
 });
+
+httpClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  // eslint-disable-next-line no-param-reassign
+  if (config.headers) config.headers.Authorization = token ? `Bearer ${token}` : '';
+  return config;
+});
+
 httpClient.interceptors.response.use(
   (response) => response,
   async (error) => {

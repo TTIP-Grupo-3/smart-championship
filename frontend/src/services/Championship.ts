@@ -11,6 +11,10 @@ class ChampionshipService {
   getChampionships(): Promise<AxiosResponse<any>> {
     return this.httpClient.get('/championship');
   }
+
+  getChampionshipId(id: number) {
+    return this.httpClient.get(`/championship/${id}`);
+  }
 }
 
 const API = new ChampionshipService();
