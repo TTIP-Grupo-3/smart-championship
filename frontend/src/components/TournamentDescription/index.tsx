@@ -4,10 +4,10 @@ import { useStyles } from './style';
 
 export interface TitledTextProps {
   name: string;
-  capacity: number;
+  size: number;
 }
 
-export const TournamentDescription: FC<TitledTextProps> = ({ name, capacity }) => {
+export const TournamentDescription: FC<TitledTextProps> = ({ name, size }) => {
   const { classes } = useStyles();
 
   return (
@@ -15,7 +15,7 @@ export const TournamentDescription: FC<TitledTextProps> = ({ name, capacity }) =
       <Typography variant="subtitle1" className={classes.title}>
         {name}
       </Typography>
-      <Typography variant="body2">Cupos disponibles:{capacity}</Typography>
+      <Typography variant="body2">Cupos disponibles:{size}</Typography>
     </Grid>
   );
 };

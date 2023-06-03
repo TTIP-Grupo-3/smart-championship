@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import { FC } from 'react';
-import { TeamStatus } from '../BoxTeams';
+import { TeamStatus } from '../BoxMatch';
 import { useStyles } from './style';
 import smartLogoLocal from '../../default_match_icon_local.svg';
 import smartLogoVisiting from '../../default_match_icon_visiting.svg';

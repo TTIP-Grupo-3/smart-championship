@@ -2,7 +2,7 @@
 import { Grid, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { TeamStatus } from '../../components/BoxTeams';
+import { TeamStatus } from '../../components/BoxMatch';
 import { Navbar } from '../../components/NavBar';
 import { Tournament } from '../../components/Tournament';
 import { ChampionshipService } from '../../services/ChampionshipService';

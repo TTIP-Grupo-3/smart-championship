@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import { FC } from 'react';
-import { TeamStatus } from '../BoxTeams';
+import { TeamStatus } from '../BoxMatch';
 import { MatchTeamCards } from '../MatchTeamCards';
 import { TooltipText } from '../TooltipText';
 import { useStyles } from './style';

@@ -5,7 +5,7 @@ import { Match } from '../Match';
 import { useStyles } from './style';
 import { useParams } from 'react-router-dom';
 
-export interface BoxTeamProps {
+export interface BoxMatchProps {
   id: number;
   local: TeamStatus;
   visiting: TeamStatus;
@@ -23,7 +23,7 @@ interface TypeCards {
   red: any[] | number;
 }
 
-export const BoxTeams: FC<BoxTeamProps> = ({ id: matchId, local, visiting }) => {
+export const BoxMatch: FC<BoxMatchProps> = ({ id: matchId, local, visiting }) => {
   const { classes } = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   const { id } = useParams();

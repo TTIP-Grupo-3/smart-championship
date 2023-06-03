@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import { FC } from 'react';
 import { EliminationTournament, MatchTournament } from '../../pages/DashboardElimination';
-import { BoxTeams } from '../BoxTeams';
+import { BoxMatch } from '../BoxMatch';
 import { Bracket } from '../Bracket';
 import { useStyles } from './style';
 
@@ -30,7 +30,7 @@ export const Tournament: FC<TournamentProps> = ({ dataSet, round = 0 }) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <BoxTeams {...match} />
+                <BoxMatch {...match} />
               </Grid>
             </Grid>
           </Grid>

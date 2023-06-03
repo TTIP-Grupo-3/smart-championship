@@ -1,14 +1,5 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import {
-  Button,
-  Card,
-  Grid,
-  IconButton,
-  InputAdornment,
-  inputLabelClasses,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, Card, Grid, IconButton, InputAdornment, Typography } from '@mui/material';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
@@ -17,6 +8,7 @@ import { User } from '../../interfaces';
 import { API_AUTH } from '../../services/Auth';
 import { useStyles } from './style';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { OutlinedInput } from '../../components/OutlinedInput';
 
 type RoleType = { [key: string]: string };
 
@@ -49,6 +41,10 @@ export const Login = () => {
     navigate(roles[role]);
   };
 
+  const canLogin = () => {
+    return user.username.trim().length !== 0 && user.password.trim().length !== 0;
+  };
+
   return (
     <Navbar
       removebuttonLog
@@ -67,37 +63,19 @@ export const Login = () => {
           <Grid style={{ padding: 20 }} />
 
           <form onSubmit={handleLogin}>
-            <TextField
+            <OutlinedInput
               variant="outlined"
               label="Usuario"
-              InputProps={{ classes: { notchedOutline: classes.notchedOutline, input: classes.input } }}
-              InputLabelProps={{
-                sx: {
-                  color: 'white',
-                  [`&.${inputLabelClasses.shrink}`]: {
-                    color: 'white',
-                  },
-                },
-              }}
               name="username"
               onChange={handleChange}
               placeholder="Usuario"
-              style={{ color: 'white', width: '100%' }}
             />
             <Grid style={{ padding: 30 }} />
-            <TextField
+            <OutlinedInput
               label="Contraseña"
               variant="outlined"
               name="password"
               onChange={handleChange}
-              InputLabelProps={{
-                sx: {
-                  color: 'white',
-                  [`&.${inputLabelClasses.shrink}`]: {
-                    color: 'white',
-                  },
-                },
-              }}
               InputProps={{
                 classes: { notchedOutline: classes.notchedOutline, input: classes.input },
                 endAdornment: (
@@ -117,24 +95,17 @@ export const Login = () => {
                 ),
               }}
               placeholder="Contraseña"
-              style={{ color: 'white', width: '100%' }}
-              id="outlined-adornment-password"
               type={showPassword ? 'text' : 'password'}
             />
             <ErrorLogin open={isInvalidUser} />
-            <Grid
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              display="flex"
-              marginTop={isInvalidUser ? 2 : 6}
-            >
+            <Grid className={classes.gridContainerButton} marginTop={isInvalidUser ? 2 : 6}>
               <Button
                 type="submit"
                 variant="contained"
-                style={{ width: '50%', backgroundColor: '#00BCD4' }}
+                className={classes.buttonLogin}
+                disabled={!canLogin()}
               >
-                Log in
+                <Typography className={classes.textLogin}>Log in</Typography>
               </Button>
             </Grid>
           </form>

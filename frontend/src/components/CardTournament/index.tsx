@@ -24,7 +24,7 @@ export const CardTournament: FC<any> = ({ championship }) => {
         <CardActionArea onClick={handleTournament}>
           <CardMedia component="img" height="140" width="auto" src={image} />
           <CardContent>
-            <Grid container flexDirection="row" display="flex">
+            <Grid container flexDirection="row" display="flex" alignItems="center">
               <Typography gutterBottom variant="h5" component="div" color="white" paddingRight={1}>
                 {championship.name}
               </Typography>
@@ -36,7 +36,13 @@ export const CardTournament: FC<any> = ({ championship }) => {
                   border: championship.type === 'score' ? '1px solid orange' : `1px solid ${blue[400]}`,
                 }}
               />
+              <Typography color="grey" fontSize={15} paddingLeft={1}>
+                11 jugadores
+              </Typography>
             </Grid>
+            <Typography color="grey" fontSize={15} paddingLeft={1} paddingTop={2}>
+              Fecha Inicio : 23/5/23
+            </Typography>
           </CardContent>
         </CardActionArea>
       </Card>

@@ -17,7 +17,12 @@ httpClient.interceptors.response.use(
     const originalRequest = error.config;
 
     // eslint-disable-next-line no-underscore-dangle
-    if (error.response !== undefined && error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response !== undefined &&
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      location.pathname !== '/login'
+    ) {
       // eslint-disable-next-line no-underscore-dangle
       originalRequest._retry = true;
 
