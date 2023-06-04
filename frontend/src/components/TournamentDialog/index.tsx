@@ -4,18 +4,26 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
 import { FC, useState } from 'react';
-import { SelectChangeEvent } from '@mui/material';
+import { inputLabelClasses, SelectChangeEvent } from '@mui/material';
 import { SelectorNumber } from '../SelectorNumber';
 import { SelectTournamentType } from '../SelectTournamentType';
 import { useStyles } from './style';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Scroll from '../Scroll';
 import { BootstrapDialog } from '../StyledDialog';
 import { BootstrapDialogTitle } from '../DialogTitle';
 import { OutlinedInput } from '../OutlinedInput';
+import { esES, LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 export const TournamentDialog: FC<any> = ({ title, open, onClose }) => {
   const { classes } = useStyles();
   const [tournamentType, setTournamentType] = useState<number>(1);
+  const [date, setDate] = useState(dayjs());
+
+  const dateToIso = () => date.add(-3, 'hour').toISOString();
 
   const handleChange = (event: SelectChangeEvent<number>) => {
     const {
@@ -42,7 +50,43 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose }) => {
             }}
             placeholder="Torneo Smart Championship"
           />
-
+          <Typography color="white" paddingTop={2} paddingBottom={2}>
+            Fecha de Inicio:
+          </Typography>
+          <LocalizationProvider
+            localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
+            dateAdapter={AdapterDayjs}
+          >
+            <MobileDateTimePicker
+              value={date}
+              onChange={(e) => setDate(dayjs(e))}
+              slotProps={{
+                textField: {
+                  InputProps: {
+                    classes: { notchedOutline: classes.notchedOutline, input: classes.input },
+                  },
+                  InputLabelProps: {
+                    sx: {
+                      color: 'white',
+                      [`&.${inputLabelClasses.shrink}`]: {
+                        color: 'white',
+                      },
+                    },
+                  },
+                },
+                toolbar: {
+                  className: classes.toolbar,
+                },
+                tabs: {
+                  timeIcon: <AccessTimeIcon style={{ color: 'white' }} />,
+                  dateIcon: <CalendarTodayIcon style={{ color: 'white' }} />,
+                },
+                dialog: {
+                  className: classes.dialogCalendarPaper,
+                },
+              }}
+            />
+          </LocalizationProvider>
           <Typography color="white" paddingTop={2}>
             Modalidad de torneo:
           </Typography>

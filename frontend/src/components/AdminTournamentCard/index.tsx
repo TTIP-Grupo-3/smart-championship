@@ -18,11 +18,15 @@ export const AdminTournamentCard: FC<any> = ({ id, createdAt, ...props }) => {
         <TournamentDescription {...props} />
       </Grid>
       <Grid className={classes.endGrid}>
+        <Button onClick={handleOpen} className={classes.button} disabled={props.size > 0}>
+          Iniciar
+        </Button>
         <Grid className={classes.rightSpacer} />
         <Grid className={classes.rightButtons}>
           <Button onClick={handleOpen} className={classes.button}>
-            Modificar
+            Editar
           </Button>
+
           <IconButton onClick={(): void => console.log('')}>
             <DeleteOutlineIcon className={classes.delete} />
           </IconButton>

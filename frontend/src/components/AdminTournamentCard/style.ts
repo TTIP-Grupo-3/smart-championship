@@ -21,7 +21,12 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     padding: theme.spacing(0),
     transform: 'translate(5px, 0px)',
   },
-  button: { color: 'aqua' },
+  button: {
+    color: 'aqua',
+    '&.Mui-disabled': {
+      color: alpha(theme.palette.common.white, 0.5),
+    },
+  },
   rightSpacer: { display: 'flex', flexGrow: 1, width: theme.spacing(0) },
   rightButtons: {
     display: 'flex',
