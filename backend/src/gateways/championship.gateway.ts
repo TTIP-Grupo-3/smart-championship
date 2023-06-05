@@ -13,7 +13,7 @@ import { Championship } from 'src/entities/championship.entity';
 import { WsExceptionFilter } from 'src/filters/ws.exception.filter';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
 import { wsValidationPipe } from 'src/pipes/ws.validation.pipe';
-import { ChampionshipService } from 'src/services/championship.service';
+import { AllChampionshipService } from 'src/services/allChampionship.service';
 import { UserSocket } from 'src/utils/types';
 
 @WebSocketGateway({ namespace: 'championship' })
@@ -24,7 +24,7 @@ export class ChampionshipGateway {
   server: Server;
 
   constructor(
-    private readonly championshipService: ChampionshipService,
+    private readonly championshipService: AllChampionshipService,
     private readonly mapper: EntityToDTOMapper,
   ) {}
 

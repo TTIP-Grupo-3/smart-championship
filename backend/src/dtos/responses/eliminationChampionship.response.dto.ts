@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { EliminationChampionshipResponse } from 'src/responses/eliminationChampionship.response';
 import { PhaseResponseDTO } from './phase.response.dto';
-import { ChampionshipType } from 'src/services/championship.service';
 import { PartialMatchResponseDTO } from './partialMatch.response.dto';
 import { Type } from 'class-transformer';
 import { ChampionshipResponseDTO } from './championship.response.dto';
+import { ChampionshipType } from 'src/enums/championshipType.enum';
 
 export class EliminationChampionshipResponseDTO
   extends ChampionshipResponseDTO

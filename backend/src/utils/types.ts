@@ -2,6 +2,15 @@ import { Socket } from 'socket.io';
 import { User } from 'src/entities/user.entity';
 import { Role } from 'src/enums/role.enum';
 
+export interface EditChampionshipInfo {
+  name?: string;
+  date?: Date;
+  size?: number;
+  price?: number;
+  duration?: number;
+  teamSize?: number;
+}
+
 export type UserRequestInfo = { user?: User; role?: Role };
 export type UserSocket = Socket & UserRequestInfo;
 export type NoPromise = Diff<any, Promise<any>>;

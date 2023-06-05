@@ -4,7 +4,7 @@ import { ScoreMatch } from './scoreMatch.entity';
 import { plainToInstance } from 'class-transformer';
 import { ScoreStatus } from './scoreStatus.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
-import { ChampionshipType } from 'src/services/championship.service';
+import { ChampionshipType } from 'src/enums/championshipType.enum';
 
 @ChildEntity()
 export class ScoreChampionship extends Championship {

@@ -4,7 +4,7 @@ import { ChildEntity, JoinColumn, OneToOne } from 'typeorm';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { Championship } from './championship.entity';
 import { EliminationMatch } from './eliminationMatch.entity';
-import { ChampionshipType } from 'src/services/championship.service';
+import { ChampionshipType } from 'src/enums/championshipType.enum';
 
 const errors = configService.get('model.errors');
 

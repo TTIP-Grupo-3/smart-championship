@@ -2,8 +2,10 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn, TableInheritance } f
 import { ChampionshipPlayer } from './championshipPlayer.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { Match } from './match.entity';
-import { ChampionshipType } from 'src/services/championship.service';
 import { ChampionshipStatus } from 'src/enums/championshipStatus.enum';
+import { ChampionshipType } from 'src/enums/championshipType.enum';
+import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
+import { EditChampionshipInfo } from 'src/utils/types';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -28,6 +30,10 @@ export abstract class Championship {
   size: number;
   @Column()
   price: number;
+  @Column()
+  duration: number;
+  @Column()
+  teamSize: number;
 
   abstract type: ChampionshipType;
 
@@ -51,5 +57,15 @@ export abstract class Championship {
     } else {
       return ChampionshipStatus.TOSTART;
     }
+  }
+
+  edit({ name, date, size, price, duration, teamSize }: EditChampionshipInfo) {
+    if (this.status !== ChampionshipStatus.TOSTART) throw new InvalidArgumentException();
+    this.name = name ?? this.name;
+    this.date = date ?? this.date;
+    this.size = size ?? this.size;
+    this.price = price ?? this.price;
+    this.duration = duration ?? this.duration;
+    this.teamSize = teamSize ?? this.teamSize;
   }
 }

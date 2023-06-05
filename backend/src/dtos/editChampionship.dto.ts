@@ -1,32 +1,34 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsDate, IsEnum, IsInt, IsNotEmpty } from 'class-validator';
+import { IsDate, IsEnum, IsInt, IsOptional } from 'class-validator';
 import { ChampionshipType } from 'src/enums/championshipType.enum';
 
-export class CreateChampionshipDTO {
+export class EditChampionshipDTO {
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
   @ApiProperty({ enum: ChampionshipType })
   @IsEnum(ChampionshipType)
-  @IsNotEmpty()
+  @IsOptional()
   type: ChampionshipType;
   @ApiProperty()
   @IsDate()
-  @IsNotEmpty()
+  @IsOptional()
   @Transform(({ value }) => new Date(Date.parse(value)))
   date: Date;
   @ApiProperty()
   @IsInt()
-  @IsNotEmpty()
+  @IsOptional()
   size: number;
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   price: number;
   @ApiProperty()
-  @IsNotEmpty()
+  @IsInt()
+  @IsOptional()
   duration: number;
   @ApiProperty()
-  @IsNotEmpty()
+  @IsInt()
+  @IsOptional()
   teamSize: number;
 }

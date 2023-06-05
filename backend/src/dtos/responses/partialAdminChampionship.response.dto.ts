@@ -1,6 +1,7 @@
 import { PartialAdminChampionshipResponse } from 'src/responses/partialAdminChampionship.response';
 import { PartialChampionshipResponseDTO } from './partialChampionship.response.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { ChampionshipStatus } from 'src/enums/championshipStatus.enum';
 
 export class PartialAdminChampionshipResponseDTO
   extends PartialChampionshipResponseDTO
@@ -16,4 +17,10 @@ export class PartialAdminChampionshipResponseDTO
   size: number;
   @ApiProperty()
   price: number;
+  @ApiProperty()
+  duration: number;
+  @ApiProperty()
+  teamSize: number;
+  @ApiProperty({ enum: ChampionshipStatus })
+  status: ChampionshipStatus;
 }

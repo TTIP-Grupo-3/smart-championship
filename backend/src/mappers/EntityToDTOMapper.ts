@@ -120,7 +120,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     { role }: UserRequestInfo = {},
     dtoCls?: Class<SmartChampionshipDTO>,
   ) {
-    const { id, name, type, date, start, end, size, price } = championship;
+    const { id, name, type, date, start, end, size, price, duration, teamSize, status } = championship;
     if (role === Role.Admin || dtoCls?.name === PartialAdminChampionshipResponseDTO.name) {
       return this.plainToInstance(PartialAdminChampionshipResponseDTO, {
         id,
@@ -131,6 +131,9 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
         end,
         size,
         price,
+        duration,
+        teamSize,
+        status,
       });
     } else {
       return this.plainToInstance(PartialChampionshipResponseDTO, { id, name, type });

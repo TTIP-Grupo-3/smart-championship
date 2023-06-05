@@ -1,4 +1,4 @@
-import { ChampionshipType } from 'src/services/championship.service';
+import { ChampionshipType } from 'src/enums/championshipType.enum';
 import { ChampionshipResponse } from './championship.response';
 import { PartialMatchResponse } from './partialMatch.response';
 

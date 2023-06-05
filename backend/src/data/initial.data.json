@@ -3,8 +3,8 @@
     { "id": 1, "username": "john", "password": "changeme", "roles": ["reviewer"] },
     { "id": 2, "username": "admin", "password": "admin", "roles": ["admin"] }
   ],
-  "eliminationChampionships": [{ "id": 1, "date": "2017-06-15", "start": "2017-06-15", "size": 0, "price": 0, "name": "Smart Championship" }],
-  "scoreChampionships": [{ "id": 2, "date": "2017-06-15", "start": "2017-06-15", "size": 0, "price": 0, "name": "Smart Score Championship" }],
+  "eliminationChampionships": [{ "id": 1, "date": "2017-06-15", "start": "2017-06-15", "size": 0, "price": 0, "duration": 0, "teamSize": 5, "name": "Smart Championship" }],
+  "scoreChampionships": [{ "id": 2, "date": "2017-06-15", "start": "2017-06-15", "size": 0, "price": 0, "duration": 0, "teamSize": 11, "name": "Smart Score Championship" }],
   "teams": [
     { "id": 1, "name": "El Dorado FC", "championship": { "id": 1 } },
     { "id": 2, "name": "Se me complico", "championship": { "id": 1 } },

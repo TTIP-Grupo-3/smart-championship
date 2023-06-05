@@ -1,6 +1,5 @@
 {
   "args": {
-    "getChampionship": { "championshipId": 1, "championshipType": "elimination" },
-    "getChampionships": {}
+    "getChampionship": { "championshipId": 1, "championshipType": "elimination" }
   }
 }
