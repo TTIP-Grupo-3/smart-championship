@@ -46,6 +46,17 @@ export class AdminChampionshipService extends ChampionshipService {
     }, manager);
   }
 
+  async startChampionship(
+    championshipIdDTO: ChampionshipIdDTO,
+    manager?: EntityManager,
+  ): Promise<Championship> {
+    return await this.transactionService.transaction(async (manager) => {
+      const championship = await this.getChampionship(championshipIdDTO, manager);
+      championship.startChampionship();
+      return await manager.save(championship);
+    }, manager);
+  }
+
   protected exists(championship?: Championship): boolean {
     return !!championship;
   }

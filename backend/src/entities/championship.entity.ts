@@ -68,4 +68,17 @@ export abstract class Championship {
     this.duration = duration ?? this.duration;
     this.teamSize = teamSize ?? this.teamSize;
   }
+
+  startChampionship() {
+    if (!(this.toStart() && this.matchesInitialized())) throw new InvalidArgumentException();
+    this.date = new Date();
+  }
+
+  private toStart(): boolean {
+    return this.status === ChampionshipStatus.TOSTART;
+  }
+
+  private matchesInitialized(): boolean {
+    return !!this.matches && this.matches.every((match) => match.initialized());
+  }
 }

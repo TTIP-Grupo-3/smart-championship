@@ -89,4 +89,16 @@ export class AdminChampionshipController {
   ): Promise<Championship> {
     return await this.adminChampionshipService.editChampionship(championshipIdDTO, editChampionshipDTO);
   }
+
+  @Roles(Role.Admin)
+  @ApiOperation({ summary: 'Start championship' })
+  @ApiOkResponse({ type: PartialAdminChampionshipResponseDTO })
+  @ApiParam({ name: 'championshipId', type: 'number' })
+  @ApiForbiddenResponse({ type: ErrorResponseDTO })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
+  @UseInterceptors(new TransformInterceptor(PartialAdminChampionshipResponseDTO))
+  @Patch(':championshipId')
+  async startChampionship(@Param() championshipIdDTO: ChampionshipIdDTO): Promise<Championship> {
+    return await this.adminChampionshipService.startChampionship(championshipIdDTO);
+  }
 }
