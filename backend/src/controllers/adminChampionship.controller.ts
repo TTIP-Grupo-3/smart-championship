@@ -97,7 +97,7 @@ export class AdminChampionshipController {
   @ApiForbiddenResponse({ type: ErrorResponseDTO })
   @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
   @UseInterceptors(new TransformInterceptor(PartialAdminChampionshipResponseDTO))
-  @Patch(':championshipId')
+  @Patch(':championshipId/start')
   async startChampionship(@Param() championshipIdDTO: ChampionshipIdDTO): Promise<Championship> {
     return await this.adminChampionshipService.startChampionship(championshipIdDTO);
   }
