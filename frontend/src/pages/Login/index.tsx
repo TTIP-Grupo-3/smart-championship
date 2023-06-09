@@ -3,7 +3,7 @@ import { Button, Card, Grid, IconButton, InputAdornment, Typography } from '@mui
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
-import { ErrorLogin } from '../../components/Snackbar';
+import { ErrorLogin } from '../../components/ErrorLogin';
 import { User } from '../../interfaces';
 import { API_AUTH } from '../../services/Auth';
 import { useStyles } from './style';

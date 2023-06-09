@@ -1,20 +1,12 @@
 import * as React from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { FC, useState } from 'react';
+import Select from '@mui/material/Select';
+import { FC } from 'react';
 import { useStyles } from './style';
 
-export const SelectorNumber: FC<any> = ({ options, isTeamSelector, defaultOption }) => {
+export const SelectorNumber: FC<any> = ({ options, isTeamSelector, ...props }) => {
   const { classes } = useStyles();
-  const [number, setNumber] = useState<number>(defaultOption);
-
-  const handleChange = (event: SelectChangeEvent<typeof number>) => {
-    const {
-      target: { value },
-    } = event;
-    setNumber(+value);
-  };
 
   return (
     <div>
@@ -25,9 +17,7 @@ export const SelectorNumber: FC<any> = ({ options, isTeamSelector, defaultOption
           }}
           variant="outlined"
           native={false}
-          value={number}
           disableUnderline
-          onChange={handleChange}
           className={classes.selectStyle}
           inputProps={{
             MenuProps: {
@@ -37,6 +27,7 @@ export const SelectorNumber: FC<any> = ({ options, isTeamSelector, defaultOption
               elevation: 0,
             },
           }}
+          {...props}
         >
           {options.map((num: any) => (
             <MenuItem key={num} value={num}>

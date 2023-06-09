@@ -4,10 +4,11 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { FC } from 'react';
 import { useStyles } from './style';
+import { TypesTournament } from '../CardTournament';
 
-const numbers = ['Eliminación', 'Clasificación'];
+const types: TypesTournament = { elimination: 'Eliminación', score: 'Clasificación' };
 
-export const SelectTournamentType: FC<any> = ({ value, onChange }) => {
+export const SelectTournamentType: FC<any> = ({ value, onChange, name }) => {
   const { classes } = useStyles();
 
   return (
@@ -18,6 +19,7 @@ export const SelectTournamentType: FC<any> = ({ value, onChange }) => {
             '& fieldset': { border: 'none' },
           }}
           variant="outlined"
+          name={name}
           native={false}
           value={value}
           disableUnderline
@@ -32,9 +34,9 @@ export const SelectTournamentType: FC<any> = ({ value, onChange }) => {
             },
           }}
         >
-          {numbers.map((num, index) => (
-            <MenuItem key={num} value={index + 1}>
-              {num}
+          {Object.keys(types).map((key: string, index) => (
+            <MenuItem key={index} value={key}>
+              {types[key]}
             </MenuItem>
           ))}
         </Select>

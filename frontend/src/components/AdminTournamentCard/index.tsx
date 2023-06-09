@@ -5,12 +5,8 @@ import { useStyles } from './style';
 import { TournamentDescription } from '../TournamentDescription';
 import { TournamentDialog } from '../TournamentDialog';
 
-export const AdminTournamentCard: FC<any> = ({ id, createdAt, ...props }) => {
+export const AdminTournamentCard: FC<any> = ({ id, createdAt, handleEdit, handleInit, ...props }) => {
   const { classes } = useStyles();
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   return (
     <Grid className={classes.card}>
@@ -18,12 +14,12 @@ export const AdminTournamentCard: FC<any> = ({ id, createdAt, ...props }) => {
         <TournamentDescription {...props} />
       </Grid>
       <Grid className={classes.endGrid}>
-        <Button onClick={handleOpen} className={classes.button} disabled={props.size > 0}>
+        <Button onClick={handleInit} className={classes.button} disabled={props.size > 0}>
           Iniciar
         </Button>
         <Grid className={classes.rightSpacer} />
         <Grid className={classes.rightButtons}>
-          <Button onClick={handleOpen} className={classes.button}>
+          <Button onClick={() => handleEdit(id)} className={classes.button}>
             Editar
           </Button>
 
@@ -32,7 +28,6 @@ export const AdminTournamentCard: FC<any> = ({ id, createdAt, ...props }) => {
           </IconButton>
         </Grid>
       </Grid>
-      <TournamentDialog title="Modificar Torneo" open={open} onClose={handleClose} />
     </Grid>
   );
 };

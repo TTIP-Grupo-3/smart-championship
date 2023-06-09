@@ -6,14 +6,21 @@ import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import { theme } from './theme';
 
 import reportWebVitals from './reportWebVitals';
+import { esES, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <StyledEngineProvider injectFirst>
-        <App />
-      </StyledEngineProvider>
+      <LocalizationProvider
+        localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
+        dateAdapter={AdapterDayjs}
+      >
+        <StyledEngineProvider injectFirst>
+          <App />
+        </StyledEngineProvider>
+      </LocalizationProvider>
     </ThemeProvider>
   </React.StrictMode>,
 );

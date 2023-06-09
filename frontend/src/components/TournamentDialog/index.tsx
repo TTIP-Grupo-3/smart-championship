@@ -3,34 +3,71 @@ import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
-import { FC, useState } from 'react';
-import { inputLabelClasses, SelectChangeEvent } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
 import { SelectorNumber } from '../SelectorNumber';
 import { SelectTournamentType } from '../SelectTournamentType';
 import { useStyles } from './style';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Scroll from '../Scroll';
 import { BootstrapDialog } from '../StyledDialog';
 import { BootstrapDialogTitle } from '../DialogTitle';
 import { OutlinedInput } from '../OutlinedInput';
-import { esES, LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import dayjs, { Dayjs } from 'dayjs';
+import { DateTime } from '../DateTime';
+import { API_ADMIN } from '../../services/Admin';
 
-export const TournamentDialog: FC<any> = ({ title, open, onClose }) => {
+export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onError, id }) => {
   const { classes } = useStyles();
-  const [tournamentType, setTournamentType] = useState<number>(1);
-  const [date, setDate] = useState(dayjs());
-
-  const dateToIso = () => date.add(-3, 'hour').toISOString();
-
-  const handleChange = (event: SelectChangeEvent<number>) => {
-    const {
-      target: { value },
-    } = event;
-    setTournamentType(+value);
+  const dateToIso = (date: Dayjs) => date.toISOString();
+  const [newTournament, setDataTournament] = useState({
+    name: '',
+    type: 'elimination',
+    date: dayjs().toISOString(),
+    size: 16,
+    price: 0,
+    duration: 0,
+    teamSize: 5,
+  });
+  const handleChange = (event: any) => {
+    const { target } = event;
+    setDataTournament((prev) => ({ ...prev, [target.name]: target.value }));
   };
+
+  const handleNumberChange = (e: any) =>
+    setDataTournament((prev) => ({ ...prev, [e.target.name]: +e.target.value }));
+
+  const handleChangeDate = (e: any) => {
+    setDataTournament((prev) => ({ ...prev, date: dateToIso(dayjs(e)) }));
+  };
+
+  const createTournament = () => {
+    API_ADMIN.createChampionship(newTournament)
+      .then(() => {
+        onSuccess();
+        onClose();
+      })
+      .catch(() => {
+        onError();
+      });
+  };
+
+  const editTournament = () => {
+    API_ADMIN.editChampionship(id, newTournament)
+      .then(() => {
+        onSuccess();
+        onClose();
+      })
+      .catch(() => {
+        onError();
+      });
+  };
+
+  useEffect(() => {
+    if (id) {
+      API_ADMIN.getAdminChampionship(id).then((r) => {
+        setDataTournament(r.data);
+      });
+    }
+  }, []);
 
   return (
     <BootstrapDialog onClose={onClose} open={open} PaperProps={{ elevation: 24 }}>
@@ -45,78 +82,91 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose }) => {
             required
             variant="outlined"
             label="Nombre del torneo"
-            onChange={() => {
-              console.log('');
-            }}
+            name="name"
+            value={newTournament.name}
+            onChange={handleChange}
             placeholder="Torneo Smart Championship"
           />
           <Typography color="white" paddingTop={2} paddingBottom={2}>
+            Duracion por partido :
+          </Typography>
+          <OutlinedInput
+            required
+            variant="outlined"
+            className={classes.root}
+            type="number"
+            label="Minutos"
+            name="duration"
+            value={newTournament.duration}
+            onChange={handleNumberChange}
+            placeholder={50}
+          />
+
+          <Typography color="white" paddingTop={2} paddingBottom={2}>
             Fecha de Inicio:
           </Typography>
-          <LocalizationProvider
-            localeText={esES.components.MuiLocalizationProvider.defaultProps.localeText}
-            dateAdapter={AdapterDayjs}
-          >
-            <MobileDateTimePicker
-              value={date}
-              onChange={(e) => setDate(dayjs(e))}
-              slotProps={{
-                textField: {
-                  InputProps: {
-                    classes: { notchedOutline: classes.notchedOutline, input: classes.input },
-                  },
-                  InputLabelProps: {
-                    sx: {
-                      color: 'white',
-                      [`&.${inputLabelClasses.shrink}`]: {
-                        color: 'white',
-                      },
-                    },
-                  },
-                },
-                toolbar: {
-                  className: classes.toolbar,
-                },
-                tabs: {
-                  timeIcon: <AccessTimeIcon style={{ color: 'white' }} />,
-                  dateIcon: <CalendarTodayIcon style={{ color: 'white' }} />,
-                },
-                dialog: {
-                  className: classes.dialogCalendarPaper,
-                },
-              }}
-            />
-          </LocalizationProvider>
+          <DateTime value={dayjs(newTournament.date)} onChange={handleChangeDate} />
+          <Typography color="white" paddingTop={2} paddingBottom={2}>
+            Precio de inscripción:
+          </Typography>
+          <OutlinedInput
+            required
+            className={classes.root}
+            variant="outlined"
+            label="Monto"
+            name="price"
+            value={newTournament.price}
+            onChange={handleNumberChange}
+            type="number"
+            placeholder="un monto en pesos"
+          />
           <Typography color="white" paddingTop={2}>
             Modalidad de torneo:
           </Typography>
-          <SelectTournamentType value={tournamentType} onChange={handleChange} />
+          <SelectTournamentType value={newTournament.type} onChange={handleChange} name="type" />
           <Typography gutterBottom color="white" paddingTop={2}>
             Equipos :
           </Typography>
-          {tournamentType === 2 ? (
+          {newTournament.type === 'score' ? (
             <OutlinedInput
               required
               className={classes.root}
               variant="outlined"
               label="Cantidad"
-              onChange={() => {
-                console.log('');
-              }}
+              name="size"
+              value={newTournament.size}
+              onChange={handleNumberChange}
               type="number"
               placeholder="10 Equipos"
             />
           ) : (
-            <SelectorNumber isTeamSelector options={[2, 4, 8, 16, 32]} defaultOption={16} />
+            <SelectorNumber
+              value={newTournament.size}
+              onChange={handleChange}
+              name="size"
+              isTeamSelector
+              options={[2, 4, 8, 16, 32]}
+              defaultValue={16}
+            />
           )}
           <Typography color="white" variant="body2" paddingTop={2}>
             Cantidad de jugadores
           </Typography>
-          <SelectorNumber options={[5, 6, 7, 8, 9, 10, 11]} defaultOption={5} />
+          <SelectorNumber
+            value={newTournament.teamSize}
+            onChange={handleChange}
+            name="teamSize"
+            options={[5, 6, 7, 8, 9, 10, 11]}
+            defaultValue={5}
+          />
         </Scroll>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={onClose} className={classes.confirmButton}>
+        <Button
+          autoFocus
+          onClick={id ? editTournament : createTournament}
+          className={classes.confirmButton}
+        >
           Confirmar
         </Button>
       </DialogActions>

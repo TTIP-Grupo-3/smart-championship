@@ -9,7 +9,7 @@ import { FC } from 'react';
 import { blue } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
 
-type TypesTournament = { [key: string]: string };
+export type TypesTournament = { [key: string]: string };
 
 export const CardTournament: FC<any> = ({ championship }) => {
   const navigate = useNavigate();
