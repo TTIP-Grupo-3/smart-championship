@@ -23,6 +23,7 @@ export interface EliminationTournament {
 
 export interface MatchTournament {
   id: number;
+  status: string;
   local: TeamStatus;
   visiting: TeamStatus;
 }

@@ -12,8 +12,12 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
   resultGrid: {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     flexGrow: 1,
+  },
+  statusMatch: {
+    marginLeft: 0,
   },
 }));

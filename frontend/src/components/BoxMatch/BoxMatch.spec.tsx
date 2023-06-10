@@ -6,6 +6,7 @@ const theme = fakeTheme;
 const cards = { yellow: [], red: [] };
 const teams = {
   id: 1,
+  status: 'TOSTART',
   local: { name: 'team-1', goals: 0, cards: cards, logo: null },
   visiting: { name: 'team-2', goals: 2, cards: cards, logo: null },
 };

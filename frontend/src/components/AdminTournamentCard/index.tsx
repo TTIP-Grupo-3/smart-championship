@@ -1,12 +1,20 @@
 import { Button, Grid, IconButton } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useStyles } from './style';
 import { TournamentDescription } from '../TournamentDescription';
-import { TournamentDialog } from '../TournamentDialog';
+import { useNavigate } from 'react-router-dom';
 
-export const AdminTournamentCard: FC<any> = ({ id, createdAt, handleEdit, handleInit, ...props }) => {
+export const AdminTournamentCard: FC<any> = ({
+  id,
+  createdAt,
+  handleEdit,
+  status,
+  handleInit,
+  ...props
+}) => {
   const { classes } = useStyles();
+  const navigate = useNavigate();
 
   return (
     <Grid className={classes.card}>
@@ -14,18 +22,21 @@ export const AdminTournamentCard: FC<any> = ({ id, createdAt, handleEdit, handle
         <TournamentDescription {...props} />
       </Grid>
       <Grid className={classes.endGrid}>
-        <Button onClick={handleInit} className={classes.button} disabled={props.size > 0}>
+        <Button onClick={() => handleInit(id)} className={classes.button} disabled={status === 'STARTED'}>
           Iniciar
         </Button>
         <Grid className={classes.rightSpacer} />
         <Grid className={classes.rightButtons}>
-          <Button onClick={() => handleEdit(id)} className={classes.button}>
+          <Button onClick={() => handleEdit(id)} className={classes.button} disabled={status === 'STARTED'}>
             Editar
           </Button>
+          <Button onClick={() => navigate(`/admin/enrollments/${id}`)} className={classes.button}>
+            Inscripciones
+          </Button>
 
-          <IconButton onClick={(): void => console.log('')}>
+          {/*<IconButton onClick={(): void => console.log('')}>
             <DeleteOutlineIcon className={classes.delete} />
-          </IconButton>
+  </IconButton>*/}
         </Grid>
       </Grid>
     </Grid>

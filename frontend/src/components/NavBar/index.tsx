@@ -7,8 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { API_AUTH } from '../../services/Auth';
+import MailIcon from '@mui/icons-material/Mail';
 
-export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
+export const Navbar: FC<any> = ({ children, button, removebuttonLog, footer = false }) => {
   const { classes } = useStyles();
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>('');
@@ -78,6 +79,15 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
       <main className={classes.main}>
         <Toolbar />
         <Grid className={classes.content}>{children}</Grid>
+        {footer && (
+          <Grid className={classes.footer}>
+            <Typography className={classes.contact}>Contacto</Typography>
+            <Grid className={classes.containerEmail}>
+              <MailIcon style={{ color: 'white' }} />
+              <Typography className={classes.email}>admin.championship@gmail.com</Typography>
+            </Grid>
+          </Grid>
+        )}
       </main>
     </Grid>
   );

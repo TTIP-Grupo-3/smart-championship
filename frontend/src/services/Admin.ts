@@ -24,8 +24,8 @@ class AdminService {
     return this.httpClient.patch(`/admin/championship/${id}`, championshipData);
   }
 
-  startChampionships(id: number): Promise<AxiosResponse<any>> {
-    return this.httpClient.get(`/admin/championship/${id}/start`);
+  startChampionship(id: number): Promise<AxiosResponse<any>> {
+    return this.httpClient.patch(`/admin/championship/${id}/start`);
   }
 }
 

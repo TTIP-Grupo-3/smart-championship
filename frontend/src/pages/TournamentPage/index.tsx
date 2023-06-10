@@ -14,7 +14,7 @@ export const Tournaments = () => {
   }, []);
 
   return (
-    <Navbar>
+    <Navbar footer>
       <Typography className={classes.title}>Selecciona un torneo para visualizar su estado: </Typography>
 
       <Grid

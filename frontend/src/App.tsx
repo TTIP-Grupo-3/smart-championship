@@ -34,7 +34,7 @@ const App: FC = () => (
         }
       />
       <Route
-        path="/admin/inscriptions"
+        path="/admin/enrollments/:championshipId"
         element={
           <PrivateRoute role="admin" redirectTo="/login">
             <AdminInscription />

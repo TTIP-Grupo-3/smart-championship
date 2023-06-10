@@ -36,4 +36,11 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     paddingLeft: 6,
     paddingRight: 6,
   },
+  status: {
+    marginLeft: 20,
+  },
+  scroll: {
+    height: '70vh',
+    paddingInline: 10,
+  },
 }));

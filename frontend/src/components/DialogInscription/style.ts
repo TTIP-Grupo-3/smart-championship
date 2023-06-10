@@ -1,4 +1,4 @@
-import { Theme } from '@mui/material/styles';
+import { alpha, lighten, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
@@ -26,6 +26,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     '&:hover': {
       backgroundColor: 'green',
     },
+    '&.Mui-disabled': {
+      color: lighten(theme.palette.common.white, 0.05),
+      backgroundColor: alpha(theme.palette.common.white, 0.38),
+    },
   },
   buttonDecline: {
     color: theme.palette.common.white,
@@ -33,6 +37,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     backgroundColor: 'red',
     '&:hover': {
       backgroundColor: 'red',
+    },
+    '&.Mui-disabled': {
+      color: lighten(theme.palette.common.white, 0.05),
+      backgroundColor: alpha(theme.palette.common.white, 0.38),
     },
   },
   scroll: { height: '80vh' },
