@@ -4,7 +4,11 @@
     { "id": 2, "username": "admin", "password": "admin", "roles": ["admin"] }
   ],
   "teamLeaders": [{ "id": 3, "username": "leader", "password": "leader", "roles": ["team_leader"], "enrollments": [] }],
-  "championshipEnrollments": [{ "id": 1, "size": 1, "price": 50, "championship": { "id": 3 } }],
+  "championshipEnrollments": [
+    { "id": 1, "size": 1, "price": 50, "championship": { "id": 3 } },
+    { "id": 2, "size": 3, "price": 50, "championship": { "id": 2 } },
+    { "id": 3, "size": 8, "price": 50, "championship": { "id": 1 } }
+  ],
   "teamEnrollments": [{ "id": 1, "payStatus": "to_review", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } }],
   "eliminationChampionships": [{ "id": 1, "date": "2017-06-15", "start": "2017-06-15", "size": 0, "price": 0, "duration": 0, "teamSize": 5, "name": "Smart Championship" }],
   "scoreChampionships": [
