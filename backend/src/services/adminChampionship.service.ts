@@ -81,16 +81,12 @@ export class AdminChampionshipService extends ChampionshipService {
     },
     manager: EntityManager,
   ): Championship {
-    const championshipSubclasses = {
-      [ChampionshipType.ELIMINATION]: EliminationChampionship,
-      [ChampionshipType.SCORE]: ScoreChampionship,
-    };
     const { name, date, size, price, duration, teamSize, type } = createChampionshipDTO;
-    const ChampionshipSubclass = championshipSubclasses[type];
+    const ChampionshipSubclass = this.getChampionshipSubclass(type);
     return manager.create<Championship>(ChampionshipSubclass, {
       name,
       date,
-      enrollment: { size, price },
+      enrollment: { size, price, teamEnrollments: [] },
       duration,
       teamSize,
     });
@@ -102,13 +98,23 @@ export class AdminChampionshipService extends ChampionshipService {
     manager: EntityManager,
   ): Promise<Championship> {
     const { type } = editChampionshipDTO;
-    const { size, price } = championship;
     if (type) {
-      const newChampionship = this.newChampionship({ ...championship, size, price, type }, manager);
-      newChampionship.id = championship.id;
+      const ChampionshipSubclass = this.getChampionshipSubclass(type);
+      const { enrollment, ...plainChampionship } = championship;
+      const newChampionship = manager.create<Championship>(ChampionshipSubclass, plainChampionship);
       await manager.remove(championship);
+      await manager.save(enrollment);
+      newChampionship.enrollment = enrollment;
       return newChampionship;
     }
     return championship;
+  }
+
+  private getChampionshipSubclass(type: ChampionshipType) {
+    const championshipSubclasses = {
+      [ChampionshipType.ELIMINATION]: EliminationChampionship,
+      [ChampionshipType.SCORE]: ScoreChampionship,
+    };
+    return championshipSubclasses[type];
   }
 }

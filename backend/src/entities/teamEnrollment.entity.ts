@@ -12,7 +12,7 @@ export class TeamEnrollment {
   payStatus: PayStatus;
   @ManyToOne(() => TeamLeader, (leader) => leader.enrollments, { eager: true })
   teamLeader: TeamLeader;
-  @ManyToOne(() => ChampionshipEnrollment, (enrollment) => enrollment.enrolledTeams, {
+  @ManyToOne(() => ChampionshipEnrollment, (enrollment) => enrollment.teamEnrollments, {
     onDelete: 'CASCADE',
     orphanedRowAction: 'delete',
   })
