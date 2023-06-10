@@ -8,8 +8,8 @@ export class StorageService {
     return fs.readFileSync(path, { encoding: 'base64' });
   }
 
-  getImage(name: string): string | null {
-    const fileLocation = join(__dirname, '../../', 'logos', name);
+  getImage(name: string, dirname = 'logos'): string | null {
+    const fileLocation = join(__dirname, '../../', dirname, name);
     if (fs.existsSync(fileLocation)) {
       return this.base64Encode(fileLocation);
     }

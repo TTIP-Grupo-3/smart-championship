@@ -1,8 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
 import { hashSync as hash, genSaltSync as salt } from 'bcrypt';
 import { UserRole } from 'src/enums/role.enum';
 
 @Entity()
+@TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;

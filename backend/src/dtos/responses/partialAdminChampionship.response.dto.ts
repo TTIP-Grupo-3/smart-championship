@@ -16,6 +16,8 @@ export class PartialAdminChampionshipResponseDTO
   @ApiProperty()
   size: number;
   @ApiProperty()
+  enrolled: number;
+  @ApiProperty()
   price: number;
   @ApiProperty()
   duration: number;

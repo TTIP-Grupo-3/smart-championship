@@ -6,6 +6,7 @@ export interface PartialAdminChampionshipResponse extends PartialChampionshipRes
   start?: string;
   end?: string;
   size: number;
+  enrolled: number;
   price: number;
   duration: number;
   teamSize: number;

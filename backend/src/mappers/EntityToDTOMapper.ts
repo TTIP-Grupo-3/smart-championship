@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common/decorators';
-import { plainToInstance } from 'class-transformer';
 import { EliminationChampionshipResponseDTO } from 'src/dtos/responses/eliminationChampionship.response.dto';
 import { PartialMatchResponseDTO } from 'src/dtos/responses/partialMatch.response.dto';
 import { PhaseResponseDTO } from 'src/dtos/responses/phase.response.dto';
@@ -33,8 +32,10 @@ import { ScoreStatusResponseDTO } from 'src/dtos/responses/scoreStatus.response.
 import { User } from 'src/entities/user.entity';
 import { UserResponseDTO } from 'src/dtos/responses/user.response.dto';
 import { AccessTokenResponseDTO } from 'src/dtos/responses/accessToken.response.dto';
-import { Role } from 'src/enums/role.enum';
 import { PartialAdminChampionshipResponseDTO } from 'src/dtos/responses/partialAdminChampionship.response.dto';
+import { TeamEnrollment } from 'src/entities/teamEnrollment.entity';
+import { EnrollmentResponseDTO } from 'src/dtos/responses/enrollment.response.dto';
+import { plainToInstance } from 'class-transformer';
 
 const errors = configService.get('service.errors');
 
@@ -65,7 +66,18 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     if (source instanceof ChampionshipPlayer) return this.playerDTO(source, request, dtoCls);
     if (source instanceof ChampionshipTeam) return this.teamDTO(source, request, dtoCls);
     if (source instanceof User) return this.userDTO(source, request, dtoCls);
+    if (source instanceof TeamEnrollment) return this.teamEnrollmentDTO(source, request, dtoCls);
     throw new UnknownException(errors.unknown);
+  }
+
+  private teamEnrollmentDTO(
+    enrollment: TeamEnrollment,
+    requst: UserRequestInfo = {},
+    dtoCls?: Class<SmartChampionshipDTO>,
+  ): EnrollmentResponseDTO {
+    const { id, payStatus: status, receipt, championshipEnrollment } = enrollment;
+    const { price } = championshipEnrollment;
+    return this.plainToInstance(EnrollmentResponseDTO, { id, price, status, receipt });
   }
 
   private userDTO(
@@ -75,9 +87,9 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
   ): UserResponseDTO | AccessTokenResponseDTO {
     const { username, role, access_token } = user;
     if (dtoCls?.name === UserResponseDTO.name) {
-      return plainToInstance(UserResponseDTO, { username, role });
+      return this.plainToInstance(UserResponseDTO, { username, role });
     } else {
-      return plainToInstance(AccessTokenResponseDTO, { username, role, access_token });
+      return this.plainToInstance(AccessTokenResponseDTO, { username, role, access_token });
     }
   }
 
@@ -88,7 +100,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
   ): ScoreStatusResponseDTO {
     const { team, score, played, tied, lost, won } = scoreStatus;
     const { id, name } = team;
-    return plainToInstance(ScoreStatusResponseDTO, {
+    return this.plainToInstance(ScoreStatusResponseDTO, {
       id,
       name,
       score,
@@ -120,8 +132,9 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     { role }: UserRequestInfo = {},
     dtoCls?: Class<SmartChampionshipDTO>,
   ) {
-    const { id, name, type, date, start, end, size, price, duration, teamSize, status } = championship;
-    if (role === Role.Admin || dtoCls?.name === PartialAdminChampionshipResponseDTO.name) {
+    const { id, name, type, date, start, end, size, enrollment, duration, teamSize, status } = championship;
+    const { price, enrolled } = enrollment;
+    if (dtoCls?.name === PartialAdminChampionshipResponseDTO.name) {
       return this.plainToInstance(PartialAdminChampionshipResponseDTO, {
         id,
         name,
@@ -130,6 +143,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
         start,
         end,
         size,
+        enrolled,
         price,
         duration,
         teamSize,
@@ -169,7 +183,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     dtoCls?: Class<SmartChampionshipDTO>,
   ): TeamResponseDTO {
     const { id, name, players } = source;
-    return plainToInstance(TeamResponseDTO, {
+    return this.plainToInstance(TeamResponseDTO, {
       id,
       name,
       players: this.map(players, request, PlayerResponseDTO),

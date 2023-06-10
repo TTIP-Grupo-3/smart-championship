@@ -90,8 +90,7 @@ export class AdminChampionshipService extends ChampionshipService {
     return manager.create<Championship>(ChampionshipSubclass, {
       name,
       date,
-      size,
-      price,
+      enrollment: { size, price },
       duration,
       teamSize,
     });
@@ -103,8 +102,9 @@ export class AdminChampionshipService extends ChampionshipService {
     manager: EntityManager,
   ): Promise<Championship> {
     const { type } = editChampionshipDTO;
+    const { size, price } = championship;
     if (type) {
-      const newChampionship = this.newChampionship({ ...championship, type }, manager);
+      const newChampionship = this.newChampionship({ ...championship, size, price, type }, manager);
       newChampionship.id = championship.id;
       await manager.remove(championship);
       return newChampionship;

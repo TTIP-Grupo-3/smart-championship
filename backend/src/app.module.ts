@@ -29,6 +29,8 @@ import { ScoreChampionshipService } from './services/scoreChampionship.service';
 import { JwtAuthGuard } from './guards/jwtAuth.guard';
 import { AdminChampionshipService } from './services/adminChampionship.service';
 import { AdminChampionshipController } from './controllers/adminChampionship.controller';
+import { EnrollmentController } from './controllers/enrollment.controller';
+import { EnrollmentService } from './services/enrollment.service';
 
 @Module({
   imports: [
@@ -44,6 +46,7 @@ import { AdminChampionshipController } from './controllers/adminChampionship.con
     MatchController,
     AuthController,
     UploadFileController,
+    EnrollmentController,
   ],
   providers: [
     AllChampionshipService,
@@ -63,6 +66,7 @@ import { AdminChampionshipController } from './controllers/adminChampionship.con
     LocalStrategy,
     StorageService,
     JwtAuthGuard,
+    EnrollmentService,
   ],
 })
 export class AppModule {

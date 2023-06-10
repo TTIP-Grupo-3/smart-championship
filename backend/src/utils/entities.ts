@@ -12,6 +12,9 @@ import { Match } from 'src/entities/match.entity';
 import { ScoreStatus } from 'src/entities/scoreStatus.entity';
 import { ScoreMatch } from 'src/entities/scoreMatch.entity';
 import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
+import { ChampionshipEnrollment } from 'src/entities/championshipEnrollment.entity';
+import { TeamEnrollment } from 'src/entities/teamEnrollment.entity';
+import { TeamLeader } from 'src/entities/teamLeader.entity';
 export type SmartChampionshipEntity =
   | Championship
   | Match
@@ -26,7 +29,10 @@ export type SmartChampionshipEntity =
   | TeamStatus
   | ScoreStatus
   | ScoreMatch
-  | ScoreChampionship;
+  | ScoreChampionship
+  | ChampionshipEnrollment
+  | TeamEnrollment
+  | TeamLeader;
 
 export const entities = [
   Championship,
@@ -42,4 +48,7 @@ export const entities = [
   TeamStatus,
   ScoreMatch,
   ScoreChampionship,
+  ChampionshipEnrollment,
+  TeamEnrollment,
+  TeamLeader,
 ];

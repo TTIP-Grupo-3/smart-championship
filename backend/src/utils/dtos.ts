@@ -17,6 +17,7 @@ import { ScoreChampionshipResponseDTO } from 'src/dtos/responses/scoreChampionsh
 import { ScoreStatusResponseDTO } from 'src/dtos/responses/scoreStatus.response.dto';
 import { UserResponseDTO } from 'src/dtos/responses/user.response.dto';
 import { PartialAdminChampionshipResponse } from 'src/responses/partialAdminChampionship.response';
+import { EnrollmentResponseDTO } from 'src/dtos/responses/enrollment.response.dto';
 
 export type SmartChampionshipDTO =
   | PartialCardsResponseDTO
@@ -37,4 +38,5 @@ export type SmartChampionshipDTO =
   | ScoreChampionshipResponseDTO
   | ScoreStatusResponseDTO
   | UserResponseDTO
-  | PartialAdminChampionshipResponse;
+  | PartialAdminChampionshipResponse
+  | EnrollmentResponseDTO;
