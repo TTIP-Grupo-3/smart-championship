@@ -9,6 +9,8 @@ import { SearchInput } from '../../components/SearchInput';
 import { TournamentDialog } from '../../components/TournamentDialog';
 import { API_ADMIN } from '../../services/Admin';
 import SnackBar from '../../components/Snackbar';
+import { Loader } from '../../components/Loader';
+import { EmptyData } from '../../components/EmptyData';
 
 export const msgTypes: any = {
   success: 'Cambios realizados correctamente',
@@ -24,6 +26,7 @@ export const Admin: FC = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [id, setId] = useState<any>();
   const [searched, setSearched] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleOpenEdit = () => setOpenEdit(true);
   const handleOpen = () => setOpen(true);
@@ -31,21 +34,24 @@ export const Admin: FC = () => {
   const onCloseEdit = () => setOpenEdit(false);
 
   useEffect(() => {
-    API_ADMIN.getAdminChampionships().then((r) => setTournaments(r.data));
+    API_ADMIN.getAdminChampionships().then((r) => {
+      setTournaments(r.data);
+      setIsLoading(false);
+    });
   }, []);
 
   const onSuccess = async () => {
     setOpenS({ open: true, type: 'success' });
     API_ADMIN.getAdminChampionships().then((r) => setTournaments(r.data));
     onClose();
-    await delay(1000);
+    await delay(2000);
     setOpenS({ open: false, type: 'success' });
   };
 
   const onError = async () => {
     setOpenS({ open: true, type: 'error' });
     onClose();
-    await delay(1000);
+    await delay(2000);
     setOpenS({ open: false, type: 'error' });
   };
 
@@ -84,11 +90,17 @@ export const Admin: FC = () => {
           </Grid>
         </Grid>
         <Grid className={classes.card}>
-          <Scroll className={classes.scroll}>
-            {searchedProjects().map((tournament: any) => (
-              <AdminTournamentCard key={tournament.id} {...tournament} {...{ handleEdit, handleInit }} />
-            ))}
-          </Scroll>
+          {isLoading ? (
+            <Loader text="Cargando Torneos" style={{ color: '#1990BB' }} />
+          ) : !searchedProjects().length ? (
+            <EmptyData emptyText="Ups, No hay torneos por aqui" />
+          ) : (
+            <Scroll className={classes.scroll}>
+              {searchedProjects().map((tournament: any) => (
+                <AdminTournamentCard key={tournament.id} {...tournament} {...{ handleEdit, handleInit }} />
+              ))}
+            </Scroll>
+          )}
         </Grid>
       </Grid>
       <TournamentDialog title="Crear Torneo" onClose={onClose} {...{ open, onSuccess, onError }} />

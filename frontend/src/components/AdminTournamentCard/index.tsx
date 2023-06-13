@@ -22,11 +22,11 @@ export const AdminTournamentCard: FC<any> = ({
         <TournamentDescription {...props} />
       </Grid>
       <Grid className={classes.endGrid}>
-        <Button onClick={() => handleInit(id)} className={classes.button} disabled={status === 'STARTED'}>
-          Iniciar
-        </Button>
-        <Grid className={classes.rightSpacer} />
+        {/*   <Grid className={classes.rightSpacer} />*/}
         <Grid className={classes.rightButtons}>
+          <Button onClick={() => handleInit(id)} className={classes.button} disabled={status === 'STARTED'}>
+            Iniciar
+          </Button>
           <Button onClick={() => handleEdit(id)} className={classes.button} disabled={status === 'STARTED'}>
             Editar
           </Button>

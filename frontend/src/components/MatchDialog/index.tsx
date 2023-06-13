@@ -10,6 +10,7 @@ import { MatchService } from '../../services/MatchService';
 import dayjs from 'dayjs';
 import { StatusMatch } from '../StatusMatch';
 import Scroll from '../Scroll';
+import { Loader } from '../Loader';
 
 const matchService = new MatchService();
 const socket = matchService.create();
@@ -19,10 +20,14 @@ export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData })
   const [match, setMatch] = useState<any>();
   const [time, setTime] = useState(0);
   const matchService = new MatchService();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (open) {
-      socket.on('match', (data: any) => setMatch(data));
+      socket.on('match', (data: any) => {
+        setMatch(data);
+        setIsLoading(false);
+      });
       matchService.subscribe(socket, {
         id: matchId,
         championshipId: +championshipData.id,
@@ -55,36 +60,42 @@ export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData })
       PaperProps={{ elevation: 24 }}
       aria-labelledby="responsive-dialog-title"
     >
-      <DialogTitle className={classes.dialogTitle} style={{ display: 'flex', flexDirection: 'row' }}>
-        <Typography className={classes.typographyTitle}>Informacion del partido</Typography>
-        <StatusMatch status={match?.status} className={classes.status} />
+      {isLoading ? (
+        <Loader text="" />
+      ) : (
+        <>
+          <DialogTitle className={classes.dialogTitle} style={{ display: 'flex', flexDirection: 'row' }}>
+            <Typography className={classes.typographyTitle}>Informacion del partido</Typography>
+            <StatusMatch status={match?.status} className={classes.status} />
 
-        <IconButton aria-label="close" onClick={close} className={classes.closeIcon}>
-          <Close />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent className={classes.backgroundDialog}>
-        <Scroll className={classes.scroll}>
-          <MatchScoreResult {...{ match, time }} />
-          <MatchUserStats
-            title="Goles"
-            dataLocal={match?.local.goals}
-            dataVisiting={match?.visiting.goals}
-          />
+            <IconButton aria-label="close" onClick={close} className={classes.closeIcon}>
+              <Close />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent className={classes.backgroundDialog}>
+            <Scroll className={classes.scroll}>
+              <MatchScoreResult {...{ match, time }} />
+              <MatchUserStats
+                title="Goles"
+                dataLocal={match?.local.goals}
+                dataVisiting={match?.visiting.goals}
+              />
 
-          <MatchUserStats
-            title="Amarillas"
-            dataLocal={match?.local.cards.yellow}
-            dataVisiting={match?.visiting.cards.yellow}
-          />
+              <MatchUserStats
+                title="Amarillas"
+                dataLocal={match?.local.cards.yellow}
+                dataVisiting={match?.visiting.cards.yellow}
+              />
 
-          <MatchUserStats
-            title="Rojas"
-            dataLocal={match?.local.cards.red}
-            dataVisiting={match?.visiting.cards.red}
-          />
-        </Scroll>
-      </DialogContent>
+              <MatchUserStats
+                title="Rojas"
+                dataLocal={match?.local.cards.red}
+                dataVisiting={match?.visiting.cards.red}
+              />
+            </Scroll>
+          </DialogContent>
+        </>
+      )}
     </Dialog>
   );
 };

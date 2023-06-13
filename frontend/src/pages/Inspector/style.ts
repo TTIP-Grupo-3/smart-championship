@@ -6,6 +6,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   container: {
     display: 'flex',
     width: 'auto',
+    minHeight: '70vh!important',
     marginTop: theme.spacing(2),
     marginRight: theme.spacing(13),
     marginLeft: theme.spacing(13),

@@ -42,12 +42,14 @@ export const BoxMatch: FC<BoxMatchProps> = ({ id: matchId, local, visiting, stat
       <Grid data-testid="BoxTeams-grid-teams" className={classes.gridTeam} onClick={handleClickOpen}>
         <Match local={local} visiting={visiting} status={status} />
       </Grid>
-      <MatchDialog
-        open={open}
-        close={handleClose}
-        matchId={matchId}
-        championshipData={{ type: 'elimination', id: id }}
-      />
+      {open && (
+        <MatchDialog
+          open={open}
+          close={handleClose}
+          matchId={matchId}
+          championshipData={{ type: 'elimination', id: id }}
+        />
+      )}
     </Grid>
   );
 };

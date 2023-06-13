@@ -11,6 +11,8 @@ import { API_ADMIN_ENROLLMENT } from '../../services/AdminEnrollment';
 import { DialogInscription } from '../../components/DialogInscription';
 import { delay, msgTypes } from '../Admin';
 import SnackBar from '../../components/Snackbar';
+import { Loader } from '../../components/Loader';
+import { EmptyData } from '../../components/EmptyData';
 
 export const AdminInscription: FC = () => {
   const { classes } = useStyles();
@@ -20,9 +22,13 @@ export const AdminInscription: FC = () => {
   const [idEnroll, setIdEnroll] = useState<any>();
   const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
   const { championshipId } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    API_ADMIN_ENROLLMENT.getAdminEnrollments(+championshipId!).then((r: any) => setEnrollments(r.data));
+    API_ADMIN_ENROLLMENT.getAdminEnrollments(+championshipId!).then((r: any) => {
+      setEnrollments(r.data);
+      setIsLoading(false);
+    });
   }, []);
 
   const extra = {
@@ -62,11 +68,17 @@ export const AdminInscription: FC = () => {
           </Typography>
         </Grid>
         <Grid className={classes.card}>
-          <Scroll className={classes.scroll}>
-            {enrollments.map((enrollment: any) => (
-              <AdminInscriptionCard key={enrollment.id} {...{ ...enrollment, ...extra, handleOpen }} />
-            ))}
-          </Scroll>
+          {isLoading ? (
+            <Loader text="Cargando inscripciones" />
+          ) : !enrollments.length ? (
+            <EmptyData emptyText="No hay inscripciones" />
+          ) : (
+            <Scroll className={classes.scroll}>
+              {enrollments.map((enrollment: any) => (
+                <AdminInscriptionCard key={enrollment.id} {...{ ...enrollment, ...extra, handleOpen }} />
+              ))}
+            </Scroll>
+          )}
         </Grid>
         {open && (
           <DialogInscription

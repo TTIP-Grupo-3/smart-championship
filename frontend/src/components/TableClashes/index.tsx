@@ -14,6 +14,8 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { MatchDialog } from '../MatchDialog';
+import { Loader } from '../Loader';
+import { EmptyData } from '../EmptyData';
 
 export const TableClashes = () => {
   const { classes } = useStyles();
@@ -21,9 +23,13 @@ export const TableClashes = () => {
   const [matches, setMatches] = useState([]);
   const [matchId, setMatchId] = useState<number>();
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    API_MATCH.getMatches(+id!).then((r) => setMatches(r.data));
+    API_MATCH.getMatches(+id!).then((r) => {
+      setMatches(r.data);
+      setIsLoading(false);
+    });
   }, []);
 
   const handleClose = () => setOpen(false);
@@ -34,59 +40,67 @@ export const TableClashes = () => {
   };
   return (
     <Paper className={classes.paper}>
-      <TableContainer className={classes.tableContainer}>
-        <Table stickyHeader className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell className={classes.columnHead}>Partidos y Resultados</TableCell>
-            </TableRow>
-          </TableHead>
-        </Table>
+      {isLoading ? (
+        <Loader text="Cargando Partidos" style={{ color: 'orange' }} />
+      ) : !matches.length ? (
+        <EmptyData emptyText="Contenido no disponible" />
+      ) : (
+        <TableContainer className={classes.tableContainer}>
+          <Table stickyHeader className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell className={classes.columnHead}>Partidos y Resultados</TableCell>
+              </TableRow>
+            </TableHead>
+          </Table>
 
-        <List>
-          {matches.map((match: any) => {
-            return (
-              <ListItemButton className={classes.listItem} onClick={() => handleOpen(match.id)}>
-                <Grid className={classes.gridLogo} sx={{ marginLeft: '8%' }}>
-                  <img
-                    src={match?.local?.logo ? `data:image/png;base64,${match?.local.logo}` : smartLogoLocal}
-                    style={{ height: 23, width: 23, borderRadius: '50%' }}
-                  ></img>
-                  <Typography className={classes.teamName} noWrap>
-                    {match.local.name}
-                  </Typography>
-                </Grid>
-                <Typography className={classes.score}> {match.local.goals}</Typography>
-                <Grid className={classes.gridMatch}>
-                  <Typography style={{ fontSize: 12 }}>
-                    {dayjs(match.date).format('DD/MM/YYYY HH:MM')}
-                  </Typography>
-                  <Typography className={classes.versus}>VS</Typography>
-                </Grid>
-                <Typography className={classes.score}> {match.visiting.goals}</Typography>
-                <Grid className={classes.gridLogo} sx={{ marginRight: '8%' }}>
-                  <img
-                    src={
-                      match?.visiting.logo
-                        ? `data:image/png;base64,${match.visiting.logo}`
-                        : smartLogoVisiting
-                    }
-                    style={{ height: 23, width: 23, borderRadius: '50%' }}
-                  ></img>
+          <List>
+            {matches.map((match: any) => {
+              return (
+                <ListItemButton className={classes.listItem} onClick={() => handleOpen(match.id)}>
+                  <Grid className={classes.gridLogo} sx={{ marginLeft: '8%' }}>
+                    <img
+                      src={
+                        match?.local?.logo ? `data:image/png;base64,${match?.local.logo}` : smartLogoLocal
+                      }
+                      style={{ height: 23, width: 23, borderRadius: '50%' }}
+                    ></img>
+                    <Typography className={classes.teamName} noWrap>
+                      {match.local.name}
+                    </Typography>
+                  </Grid>
+                  <Typography className={classes.score}> {match.local.goals}</Typography>
+                  <Grid className={classes.gridMatch}>
+                    <Typography style={{ fontSize: 12 }}>
+                      {dayjs(match.date).format('DD/MM/YYYY HH:MM')}
+                    </Typography>
+                    <Typography className={classes.versus}>VS</Typography>
+                  </Grid>
+                  <Typography className={classes.score}> {match.visiting.goals}</Typography>
+                  <Grid className={classes.gridLogo} sx={{ marginRight: '8%' }}>
+                    <img
+                      src={
+                        match?.visiting.logo
+                          ? `data:image/png;base64,${match.visiting.logo}`
+                          : smartLogoVisiting
+                      }
+                      style={{ height: 23, width: 23, borderRadius: '50%' }}
+                    ></img>
 
-                  <Typography className={classes.teamName}>{match.visiting.name}</Typography>
-                </Grid>
-              </ListItemButton>
-            );
-          })}
-        </List>
-        <MatchDialog
-          open={open}
-          close={handleClose}
-          matchId={matchId}
-          championshipData={{ id, type: 'score' }}
-        ></MatchDialog>
-      </TableContainer>
+                    <Typography className={classes.teamName}>{match.visiting.name}</Typography>
+                  </Grid>
+                </ListItemButton>
+              );
+            })}
+          </List>
+          <MatchDialog
+            open={open}
+            close={handleClose}
+            matchId={matchId}
+            championshipData={{ id, type: 'score' }}
+          ></MatchDialog>
+        </TableContainer>
+      )}
     </Paper>
   );
 };

@@ -8,6 +8,8 @@ import { Tournament } from '../../components/Tournament';
 import { ChampionshipService } from '../../services/ChampionshipService';
 import { useStyles } from './style';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { Loader } from '../../components/Loader';
+import { EmptyData } from '../../components/EmptyData';
 
 export interface SmartChampionship extends EliminationTournament {
   id: number;
@@ -31,19 +33,23 @@ export interface MatchTournament {
 const championshipService = new ChampionshipService();
 
 export const DashboardElimination: FC = () => {
+  const { classes } = useStyles();
   const [tournament, setTournament] = useState<EliminationTournament>({
     name: '',
     matches: [],
     next: null,
   });
-  const { classes } = useStyles();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     const socket = championshipService.create();
-    socket.on('championship', (data: any) => setTournament(data));
-    championshipService.subscribe(socket, { championshipId: +id!, championshipType: 'elimination' });
+    socket.on('championship', (data: any) => {
+      setTournament(data);
+      setIsLoading(false);
+    });
+    championshipService.subscribe(socket, { championshipId: id && +id, championshipType: 'elimination' });
     return () => championshipService.unsubscribe(socket);
   }, []);
 
@@ -55,10 +61,18 @@ export const DashboardElimination: FC = () => {
         icon: <EmojiEventsIcon style={{ height: 22, display: 'flex', color: 'yellow' }} />,
       }}
     >
-      <Typography className={classes.tournamentTitle}>{tournament.name}</Typography>
-      <Grid container className={classes.gridContainer}>
-        <Tournament dataSet={tournament} />
-      </Grid>
+      {isLoading ? (
+        <Loader text="Cargando Torneo" />
+      ) : !tournament.matches.length ? (
+        <EmptyData emptyText="Este torneo no se encuentra disponible" />
+      ) : (
+        <>
+          <Typography className={classes.tournamentTitle}>{tournament.name}</Typography>
+          <Grid container className={classes.gridContainer}>
+            <Tournament dataSet={tournament} />
+          </Grid>
+        </>
+      )}
     </Navbar>
   );
 };
