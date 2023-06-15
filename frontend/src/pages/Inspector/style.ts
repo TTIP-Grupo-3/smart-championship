@@ -1,5 +1,4 @@
-import { grey } from '@mui/material/colors';
-import { Theme } from '@mui/material/styles';
+import { lighten, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
@@ -7,7 +6,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     display: 'flex',
     width: 'auto',
     minHeight: '70vh!important',
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(6),
     marginRight: theme.spacing(13),
     marginLeft: theme.spacing(13),
     paddingBottom: theme.spacing(5),
@@ -15,7 +14,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    backgroundColor: grey[800],
+    backgroundColor: lighten(theme.palette.background.paper, 0.08),
     [theme.breakpoints.down(700)]: {
       marginRight: 0,
       marginLeft: 0,

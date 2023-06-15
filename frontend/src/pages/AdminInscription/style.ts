@@ -22,8 +22,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     //paddingBottom: theme.spacing(8.5),
   },
   card: {
-    paddingInline: theme.spacing(2),
-    paddingBlock: theme.spacing(4),
     borderRadius: theme.spacing(0.5),
     backgroundColor: lighten(theme.palette.background.paper, 0.08),
     display: 'flex',

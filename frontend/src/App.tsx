@@ -18,7 +18,7 @@ const App: FC = () => (
       <Route path="/clasificacion/:id" element={<DashboardClasification />} />
       <Route path="/login" element={<Login />} />
       <Route
-        path="/inspector"
+        path="/reviewer"
         element={
           <PrivateRoute role="reviewer" redirectTo="/login">
             <Veedor />

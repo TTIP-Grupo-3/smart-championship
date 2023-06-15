@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Grid } from '@mui/material';
 import { FC } from 'react';
+import { getInitials } from '../../utils/utils';
 import { TeamStatus } from '../BoxMatch';
 import { MatchTeamCards } from '../MatchTeamCards';
 import { TooltipText } from '../TooltipText';
@@ -10,9 +12,16 @@ interface MatchTeamProps {
   team?: TeamStatus;
   showCards?: boolean;
   paddingTopImg?: number;
+  inDialog?: boolean;
 }
 
-export const MatchTeam: FC<MatchTeamProps> = ({ logo, team, showCards = true, paddingTopImg = 0 }) => {
+export const MatchTeam: FC<MatchTeamProps> = ({
+  logo,
+  team,
+  showCards = true,
+  paddingTopImg = 0,
+  inDialog = false,
+}) => {
   const { classes } = useStyles();
   return (
     <Grid data-testid="MatchTeam" className={classes.gridIconTeam}>
@@ -23,7 +32,7 @@ export const MatchTeam: FC<MatchTeamProps> = ({ logo, team, showCards = true, pa
         height="45"
         style={{ borderRadius: '50%', paddingTop: paddingTopImg }}
       />
-      <TooltipText text={team?.name} />
+      <TooltipText text={inDialog ? getInitials(team!.name).toUpperCase() : team?.name} />
       {showCards && <MatchTeamCards {...team} />}
     </Grid>
   );

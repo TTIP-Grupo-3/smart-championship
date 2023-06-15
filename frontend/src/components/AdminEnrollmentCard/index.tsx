@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { useStyles } from './style';
 import { InscriptionDescription } from '../InscriptionDescription';
 
-export const AdminInscriptionCard: FC<any> = ({ id, createdAt, handleOpen, ...props }) => {
+export const AdminEnrollmentCard: FC<any> = ({ id, createdAt, handleOpen, ...props }) => {
   const { classes } = useStyles();
 
   return (

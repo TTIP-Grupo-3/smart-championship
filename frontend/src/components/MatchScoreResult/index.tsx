@@ -18,7 +18,13 @@ export const MatchScoreResult: FC<any> = ({
   return (
     <Grid container className={classes.containerStyle}>
       <Grid className={classes.teamMatch}>
-        <MatchTeam logo={smartLogoLocal} team={match?.local} showCards={false} paddingTopImg={14} />
+        <MatchTeam
+          logo={smartLogoLocal}
+          inDialog
+          team={match?.local}
+          showCards={false}
+          paddingTopImg={14}
+        />
         <Typography variant="h3" className={classes.resultScore}>
           {match?.local.goals.length}
         </Typography>
@@ -39,7 +45,13 @@ export const MatchScoreResult: FC<any> = ({
         {componentStop}
       </Grid>
       <Grid className={classes.teamMatch}>
-        <MatchTeam logo={smartLogoVisiting} team={match?.visiting} showCards={false} paddingTopImg={14} />
+        <MatchTeam
+          logo={smartLogoVisiting}
+          inDialog
+          team={match?.visiting}
+          showCards={false}
+          paddingTopImg={14}
+        />
         <Typography variant="h3" className={classes.resultScore}>
           {match?.visiting.goals.length}
         </Typography>

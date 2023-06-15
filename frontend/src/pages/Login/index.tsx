@@ -12,7 +12,7 @@ import { OutlinedInput } from '../../components/OutlinedInput';
 
 type RoleType = { [key: string]: string };
 
-export const roles: RoleType = { admin: '/admin/tournaments', reviewer: '/inspector' };
+export const roles: RoleType = { admin: '/admin/tournaments', reviewer: '/reviewer' };
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);

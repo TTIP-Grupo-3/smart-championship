@@ -19,7 +19,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexGrow: 1,
     flexDirection: 'column',
     paddingTop: theme.spacing(4.5),
-    //paddingBottom: theme.spacing(8.5),
   },
   card: {
     paddingInline: theme.spacing(2),

@@ -1,23 +1,16 @@
 import { FC, useEffect, useState } from 'react';
-import { AppBar, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, Grid, Toolbar, Typography } from '@mui/material';
 import useStyles from './style';
 import CenteredSpacer from '../CenteredSpacer';
 import smartLogo from '../../default_match_icon_local.svg';
-import { useNavigate } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
-import LogoutIcon from '@mui/icons-material/Logout';
 import { API_AUTH } from '../../services/Auth';
 import MailIcon from '@mui/icons-material/Mail';
+import { UserLogout } from '../UserLogout';
 
 export const Navbar: FC<any> = ({ children, button, removebuttonLog, footer = false }) => {
   const { classes } = useStyles();
-  const navigate = useNavigate();
-  const [username, setUsername] = useState<string>('');
-
-  const handleCloseSession = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
+  const [userData, setUsername] = useState<any>({ username: '', role: '' });
 
   const isLogged = (): boolean => {
     return !!localStorage.getItem('token');
@@ -25,7 +18,7 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog, footer = fa
   useEffect(() => {
     if (isLogged()) {
       API_AUTH.profile().then((r) => {
-        setUsername(r.data.username);
+        setUsername(r.data);
       });
     }
   }, []);
@@ -61,17 +54,10 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog, footer = fa
             </Grid>
             {removebuttonLog ? (
               <></>
-            ) : isLogged() ? (
-              <Grid className={classes.gridUser}>
-                <Typography className={classes.username}>{username}</Typography>
-                <IconButton onClick={handleCloseSession}>
-                  <LogoutIcon style={{ color: 'white' }} />
-                </IconButton>
-              </Grid>
             ) : (
-              <Button sx={{ color: grey[400] }} onClick={handleCloseSession}>
-                Log in
-              </Button>
+              <>
+                <UserLogout isLogged={isLogged()} {...{ userData }} />
+              </>
             )}
           </CenteredSpacer>
         </Toolbar>
