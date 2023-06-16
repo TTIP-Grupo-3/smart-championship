@@ -4,6 +4,7 @@ import { MatchTeam } from '../MatchTeam';
 import { useStyles } from './style';
 import smartLogoLocal from '../../default_match_icon_local.svg';
 import smartLogoVisiting from '../../default_match_icon_visiting.svg';
+import { StartedMatchLoader } from '../StartedMatchLoader';
 
 export const MatchScoreResult: FC<any> = ({
   match,
@@ -30,8 +31,9 @@ export const MatchScoreResult: FC<any> = ({
               Tiempo
             </Typography>
             <Typography variant="body1" className={classes.time}>
-              {time}
+              {time}'
             </Typography>
+            {match?.status === 'STARTED' && <StartedMatchLoader />}
           </>
         )}
         {componentStop}

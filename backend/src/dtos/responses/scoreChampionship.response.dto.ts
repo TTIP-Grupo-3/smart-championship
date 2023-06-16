@@ -1,9 +1,9 @@
 import { ScoreChampionshipResponse } from 'src/responses/scoreChampionship.response';
-import { ChampionshipType } from 'src/services/championship.service';
 import { ChampionshipResponseDTO } from './championship.response.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { PartialMatchResponseDTO } from './partialMatch.response.dto';
+import { ChampionshipType } from 'src/enums/championshipType.enum';
 
 export class ScoreChampionshipResponseDTO
   extends ChampionshipResponseDTO

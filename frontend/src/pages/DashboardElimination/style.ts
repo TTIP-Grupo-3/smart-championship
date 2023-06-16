@@ -5,7 +5,14 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   gridContainer: {
     width: 'auto',
     display: 'flex',
-    paddingTop: '2%',
+    paddingTop: '1%',
     flexWrap: 'nowrap',
+  },
+  tournamentTitle: {
+    color: theme.palette.common.white,
+    fontSize: 20,
+    fontWeight: 600,
+    paddingTop: '2%',
+    textAlign: 'center',
   },
 }));

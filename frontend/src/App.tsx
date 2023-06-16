@@ -4,9 +4,11 @@ import './App.css';
 import { DashboardClasification } from './pages/DashboardClasification';
 import { Login } from './pages/Login';
 import { Veedor } from './pages/Inspector';
-import { Tournaments } from './pages/Tournaments';
+import { Tournaments } from './pages/TournamentPage';
 import { DashboardElimination } from './pages/DashboardElimination';
 import { PrivateRoute } from './components/Route';
+import { Admin } from './pages/Admin';
+import { AdminInscription } from './pages/AdminInscription';
 
 const App: FC = () => (
   <BrowserRouter>
@@ -18,8 +20,24 @@ const App: FC = () => (
       <Route
         path="/inspector"
         element={
-          <PrivateRoute role="inspector" redirectTo="/login">
+          <PrivateRoute role="reviewer" redirectTo="/login">
             <Veedor />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/tournaments"
+        element={
+          <PrivateRoute role="admin" redirectTo="/login">
+            <Admin />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/enrollments/:championshipId"
+        element={
+          <PrivateRoute role="admin" redirectTo="/login">
+            <AdminInscription />
           </PrivateRoute>
         }
       />

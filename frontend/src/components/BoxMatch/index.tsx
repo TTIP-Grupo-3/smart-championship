@@ -5,10 +5,11 @@ import { Match } from '../Match';
 import { useStyles } from './style';
 import { useParams } from 'react-router-dom';
 
-export interface BoxTeamProps {
+export interface BoxMatchProps {
   id: number;
   local: TeamStatus;
   visiting: TeamStatus;
+  status: string;
 }
 
 export interface TeamStatus {
@@ -23,7 +24,7 @@ interface TypeCards {
   red: any[] | number;
 }
 
-export const BoxTeams: FC<BoxTeamProps> = ({ id: matchId, local, visiting }) => {
+export const BoxMatch: FC<BoxMatchProps> = ({ id: matchId, local, visiting, status }) => {
   const { classes } = useStyles();
   const [open, setOpen] = useState<boolean>(false);
   const { id } = useParams();
@@ -39,7 +40,7 @@ export const BoxTeams: FC<BoxTeamProps> = ({ id: matchId, local, visiting }) => 
   return (
     <Grid container data-testid="BoxTeams" className={classes.gridContainer}>
       <Grid data-testid="BoxTeams-grid-teams" className={classes.gridTeam} onClick={handleClickOpen}>
-        <Match local={local} visiting={visiting} />
+        <Match local={local} visiting={visiting} status={status} />
       </Grid>
       <MatchDialog
         open={open}

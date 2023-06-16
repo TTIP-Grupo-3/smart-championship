@@ -1,7 +1,20 @@
 {
-  "users": [{ "id": 1, "username": "john", "password": "changeme" }],
-  "eliminationChampionships": [{ "id": 1, "name": "Smart Championship" }],
-  "scoreChampionships": [{ "id": 2, "name": "Smart Score Championship" }],
+  "users": [
+    { "id": 1, "username": "john", "password": "changeme", "roles": ["reviewer"] },
+    { "id": 2, "username": "admin", "password": "admin", "roles": ["admin"] }
+  ],
+  "teamLeaders": [{ "id": 3, "username": "leader", "password": "leader", "roles": ["team_leader"], "enrollments": [] }],
+  "championshipEnrollments": [
+    { "id": 1, "size": 1, "price": 50, "championship": { "id": 3 } },
+    { "id": 2, "size": 3, "price": 50, "championship": { "id": 2 } },
+    { "id": 3, "size": 8, "price": 50, "championship": { "id": 1 } }
+  ],
+  "teamEnrollments": [{ "id": 1, "payStatus": "to_review", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } }],
+  "eliminationChampionships": [{ "id": 1, "date": "2017-06-15", "start": "2017-06-15", "size": 0, "price": 0, "duration": 0, "teamSize": 5, "name": "Smart Championship" }],
+  "scoreChampionships": [
+    { "id": 2, "date": "2017-06-15", "start": "2017-06-15", "size": 0, "duration": 0, "teamSize": 11, "name": "Smart Score Championship" },
+    { "id": 3, "date": "2017-06-15", "size": 1, "price": 50, "duration": 0, "teamSize": 11, "name": "To Start Championship" }
+  ],
   "teams": [
     { "id": 1, "name": "El Dorado FC", "championship": { "id": 1 } },
     { "id": 2, "name": "Se me complico", "championship": { "id": 1 } },
@@ -20,18 +33,42 @@
     { "id": 1, "name": "Adrian Cardozo", "number": 1, "team": { "id": 1 }, "championship": { "id": 1 } },
     { "id": 2, "name": "Gonzalo Higuain", "number": 2, "team": { "id": 1 }, "championship": { "id": 1 } },
     { "id": 3, "name": "Carlos Gutierrez", "number": 3, "team": { "id": 1 }, "championship": { "id": 1 } },
-    { "id": 4, "name": "Crisitan Gutierrez", "number": 4, "team": { "id": 1 }, "championship": { "id": 1 } },
-    { "id": 5, "name": "Leonardo Rodriguez", "number": 5, "team": { "id": 1 }, "championship": { "id": 1 } },
+    {
+      "id": 4,
+      "name": "Crisitan Gutierrez",
+      "number": 4,
+      "team": { "id": 1 },
+      "championship": { "id": 1 }
+    },
+    {
+      "id": 5,
+      "name": "Leonardo Rodriguez",
+      "number": 5,
+      "team": { "id": 1 },
+      "championship": { "id": 1 }
+    },
     { "id": 6, "name": "Martin Gonzalez", "number": 6, "team": { "id": 1 }, "championship": { "id": 1 } },
     { "id": 7, "name": "Brian Lopez", "number": 7, "team": { "id": 1 }, "championship": { "id": 1 } },
     { "id": 8, "name": "Castulo Smithers", "number": 8, "team": { "id": 1 }, "championship": { "id": 1 } },
     { "id": 9, "name": "Mariano Salinas", "number": 9, "team": { "id": 1 }, "championship": { "id": 1 } },
     { "id": 10, "name": "Gonzalo Lopez", "number": 10, "team": { "id": 1 }, "championship": { "id": 1 } },
-    { "id": 11, "name": "Leandro Villamonte", "number": 11, "team": { "id": 1 }, "championship": { "id": 1 } },
+    {
+      "id": 11,
+      "name": "Leandro Villamonte",
+      "number": 11,
+      "team": { "id": 1 },
+      "championship": { "id": 1 }
+    },
     { "id": 12, "name": "Diego Moronha", "number": 12, "team": { "id": 2 }, "championship": { "id": 1 } },
     { "id": 13, "name": "Claudio Gomez", "number": 13, "team": { "id": 2 }, "championship": { "id": 1 } },
     { "id": 14, "name": "Ivan Benitez", "number": 14, "team": { "id": 2 }, "championship": { "id": 1 } },
-    { "id": 15, "name": "Juan Pablo Balma", "number": 15, "team": { "id": 2 }, "championship": { "id": 1 } },
+    {
+      "id": 15,
+      "name": "Juan Pablo Balma",
+      "number": 15,
+      "team": { "id": 2 },
+      "championship": { "id": 1 }
+    },
     { "id": 16, "name": "Alan Aguero", "number": 16, "team": { "id": 2 }, "championship": { "id": 1 } },
     { "id": 17, "name": "Victor Garnacho", "number": 17, "team": { "id": 2 }, "championship": { "id": 1 } },
     { "id": 18, "name": "Facundo Pesci", "number": 18, "team": { "id": 2 }, "championship": { "id": 1 } },
@@ -41,104 +78,344 @@
     { "id": 22, "name": "Thomas Jimenez", "number": 22, "team": { "id": 2 }, "championship": { "id": 1 } },
     { "id": 23, "name": "Lionel Messi", "number": 23, "team": { "id": 3 }, "championship": { "id": 1 } },
     { "id": 24, "name": "Kylian Mbappe", "number": 24, "team": { "id": 3 }, "championship": { "id": 1 } },
-    { "id": 25, "name": "Cristian Gonzalez", "number": 25, "team": { "id": 3 }, "championship": { "id": 1 } },
+    {
+      "id": 25,
+      "name": "Cristian Gonzalez",
+      "number": 25,
+      "team": { "id": 3 },
+      "championship": { "id": 1 }
+    },
     { "id": 26, "name": "Lucio Fernandez", "number": 26, "team": { "id": 3 }, "championship": { "id": 1 } },
-    { "id": 27, "name": "Agustin Martinez", "number": 27, "team": { "id": 3 }, "championship": { "id": 1 } },
-    { "id": 28, "name": "Giovanni Dos Santos", "number": 28, "team": { "id": 3 }, "championship": { "id": 1 } },
+    {
+      "id": 27,
+      "name": "Agustin Martinez",
+      "number": 27,
+      "team": { "id": 3 },
+      "championship": { "id": 1 }
+    },
+    {
+      "id": 28,
+      "name": "Giovanni Dos Santos",
+      "number": 28,
+      "team": { "id": 3 },
+      "championship": { "id": 1 }
+    },
     { "id": 29, "name": "Lucas Morales", "number": 29, "team": { "id": 3 }, "championship": { "id": 1 } },
     { "id": 30, "name": "Pablo Martinez", "number": 30, "team": { "id": 3 }, "championship": { "id": 1 } },
-    { "id": 31, "name": "Jhonattan De Rossi", "number": 31, "team": { "id": 3 }, "championship": { "id": 1 } },
-    { "id": 32, "name": "Alejandro Castro", "number": 32, "team": { "id": 3 }, "championship": { "id": 1 } },
-    { "id": 33, "name": "Marcelo De Alvear", "number": 33, "team": { "id": 3 }, "championship": { "id": 1 } },
+    {
+      "id": 31,
+      "name": "Jhonattan De Rossi",
+      "number": 31,
+      "team": { "id": 3 },
+      "championship": { "id": 1 }
+    },
+    {
+      "id": 32,
+      "name": "Alejandro Castro",
+      "number": 32,
+      "team": { "id": 3 },
+      "championship": { "id": 1 }
+    },
+    {
+      "id": 33,
+      "name": "Marcelo De Alvear",
+      "number": 33,
+      "team": { "id": 3 },
+      "championship": { "id": 1 }
+    },
     { "id": 34, "name": "Jose Paso", "number": 34, "team": { "id": 4 }, "championship": { "id": 1 } },
-    { "id": 35, "name": "Benjamin Franklin", "number": 100, "team": { "id": 4 }, "championship": { "id": 1 } },
+    {
+      "id": 35,
+      "name": "Benjamin Franklin",
+      "number": 100,
+      "team": { "id": 4 },
+      "championship": { "id": 1 }
+    },
     { "id": 36, "name": "Amadeus Mozart", "number": 36, "team": { "id": 4 }, "championship": { "id": 1 } },
-    { "id": 37, "name": "Gonzalo Rodriguez", "number": 37, "team": { "id": 4 }, "championship": { "id": 1 } },
+    {
+      "id": 37,
+      "name": "Gonzalo Rodriguez",
+      "number": 37,
+      "team": { "id": 4 },
+      "championship": { "id": 1 }
+    },
     { "id": 38, "name": "Fernando Torres", "number": 38, "team": { "id": 4 }, "championship": { "id": 1 } },
     { "id": 39, "name": "Andres Iniesta", "number": 39, "team": { "id": 4 }, "championship": { "id": 1 } },
     { "id": 40, "name": "Enzo Fernandez", "number": 40, "team": { "id": 4 }, "championship": { "id": 1 } },
-    { "id": 41, "name": "Zlatan Ibrahimovic", "number": 41, "team": { "id": 4 }, "championship": { "id": 1 } },
+    {
+      "id": 41,
+      "name": "Zlatan Ibrahimovic",
+      "number": 41,
+      "team": { "id": 4 },
+      "championship": { "id": 1 }
+    },
     { "id": 42, "name": "Julian Alvarez", "number": 42, "team": { "id": 4 }, "championship": { "id": 1 } },
-    { "id": 43, "name": "Nicolas Tagliafico", "number": 43, "team": { "id": 4 }, "championship": { "id": 1 } },
+    {
+      "id": 43,
+      "name": "Nicolas Tagliafico",
+      "number": 43,
+      "team": { "id": 4 },
+      "championship": { "id": 1 }
+    },
     { "id": 44, "name": "Gustavo Lopez", "number": 44, "team": { "id": 4 }, "championship": { "id": 1 } },
     { "id": 45, "name": "Martin Diaz", "number": 45, "team": { "id": 5 }, "championship": { "id": 1 } },
-    { "id": 46, "name": "Oscar De La Renta", "number": 46, "team": { "id": 5 }, "championship": { "id": 1 } },
-    { "id": 47, "name": "Luciano Bardallo", "number": 47, "team": { "id": 5 }, "championship": { "id": 1 } },
+    {
+      "id": 46,
+      "name": "Oscar De La Renta",
+      "number": 46,
+      "team": { "id": 5 },
+      "championship": { "id": 1 }
+    },
+    {
+      "id": 47,
+      "name": "Luciano Bardallo",
+      "number": 47,
+      "team": { "id": 5 },
+      "championship": { "id": 1 }
+    },
     { "id": 48, "name": "Franco Lopez", "number": 48, "team": { "id": 5 }, "championship": { "id": 1 } },
     { "id": 49, "name": "Marcos Gonzalez", "number": 49, "team": { "id": 5 }, "championship": { "id": 1 } },
     { "id": 50, "name": "Tomas Martinez", "number": 50, "team": { "id": 5 }, "championship": { "id": 1 } },
     { "id": 51, "name": "Nicolas Alvarez", "number": 51, "team": { "id": 5 }, "championship": { "id": 1 } },
-    { "id": 52, "name": "Joaquin Fernandez", "number": 52, "team": { "id": 5 }, "championship": { "id": 1 } },
-    { "id": 53, "name": "Nicolas Gonzalez", "number": 53, "team": { "id": 5 }, "championship": { "id": 1 } },
+    {
+      "id": 52,
+      "name": "Joaquin Fernandez",
+      "number": 52,
+      "team": { "id": 5 },
+      "championship": { "id": 1 }
+    },
+    {
+      "id": 53,
+      "name": "Nicolas Gonzalez",
+      "number": 53,
+      "team": { "id": 5 },
+      "championship": { "id": 1 }
+    },
     { "id": 54, "name": "Agustin Lopez", "number": 54, "team": { "id": 5 }, "championship": { "id": 1 } },
     { "id": 55, "name": "Martin Diaz", "number": 55, "team": { "id": 5 }, "championship": { "id": 1 } },
     { "id": 56, "name": "Lautaro Lopez", "number": 56, "team": { "id": 6 }, "championship": { "id": 1 } },
-    { "id": 57, "name": "German Garmendia", "number": 57, "team": { "id": 6 }, "championship": { "id": 1 } },
+    {
+      "id": 57,
+      "name": "German Garmendia",
+      "number": 57,
+      "team": { "id": 6 },
+      "championship": { "id": 1 }
+    },
     { "id": 58, "name": "Augusto Conti", "number": 58, "team": { "id": 6 }, "championship": { "id": 1 } },
     { "id": 59, "name": "Xavi Alonso", "number": 59, "team": { "id": 6 }, "championship": { "id": 1 } },
     { "id": 60, "name": "Fernando Aguero", "number": 60, "team": { "id": 6 }, "championship": { "id": 1 } },
     { "id": 61, "name": "Alan Aguero", "number": 61, "team": { "id": 6 }, "championship": { "id": 1 } },
     { "id": 62, "name": "Martin Gonzalez", "number": 62, "team": { "id": 6 }, "championship": { "id": 1 } },
-    { "id": 63, "name": "Agustin Martinez", "number": 63, "team": { "id": 6 }, "championship": { "id": 1 } },
+    {
+      "id": 63,
+      "name": "Agustin Martinez",
+      "number": 63,
+      "team": { "id": 6 },
+      "championship": { "id": 1 }
+    },
     { "id": 64, "name": "Homero Simpson", "number": 64, "team": { "id": 6 }, "championship": { "id": 1 } },
     { "id": 65, "name": "Daniel Ciolek", "number": 65, "team": { "id": 6 }, "championship": { "id": 1 } },
     { "id": 66, "name": "Oscar Gutierrez", "number": 66, "team": { "id": 6 }, "championship": { "id": 1 } },
-    { "id": 67, "name": "Jose Luiz Romero", "number": 67, "team": { "id": 7 }, "championship": { "id": 1 } },
+    {
+      "id": 67,
+      "name": "Jose Luiz Romero",
+      "number": 67,
+      "team": { "id": 7 },
+      "championship": { "id": 1 }
+    },
     { "id": 68, "name": "Elias Baron", "number": 68, "team": { "id": 7 }, "championship": { "id": 1 } },
     { "id": 69, "name": "Marcos Lopez", "number": 69, "team": { "id": 7 }, "championship": { "id": 1 } },
     { "id": 70, "name": "Benjamin Lopez", "number": 70, "team": { "id": 7 }, "championship": { "id": 1 } },
     { "id": 71, "name": "Martin Gonzalez", "number": 71, "team": { "id": 7 }, "championship": { "id": 1 } },
-    { "id": 72, "name": "Gustavo Castillo", "number": 72, "team": { "id": 7 }, "championship": { "id": 1 } },
+    {
+      "id": 72,
+      "name": "Gustavo Castillo",
+      "number": 72,
+      "team": { "id": 7 },
+      "championship": { "id": 1 }
+    },
     { "id": 73, "name": "Martiniano Diaz", "number": 73, "team": { "id": 7 }, "championship": { "id": 1 } },
     { "id": 74, "name": "Dante Malatesta", "number": 74, "team": { "id": 7 }, "championship": { "id": 1 } },
-    { "id": 75, "name": "Christian Balottelli", "number": 75, "team": { "id": 7 }, "championship": { "id": 1 } },
+    {
+      "id": 75,
+      "name": "Christian Balottelli",
+      "number": 75,
+      "team": { "id": 7 },
+      "championship": { "id": 1 }
+    },
     { "id": 76, "name": "Julio Roca", "number": 76, "team": { "id": 7 }, "championship": { "id": 1 } },
-    { "id": 77, "name": "Victor Torresillas", "number": 77, "team": { "id": 7 }, "championship": { "id": 1 } },
+    {
+      "id": 77,
+      "name": "Victor Torresillas",
+      "number": 77,
+      "team": { "id": 7 },
+      "championship": { "id": 1 }
+    },
     { "id": 78, "name": "Rodrigo Vallejo", "number": 78, "team": { "id": 8 }, "championship": { "id": 1 } },
-    { "id": 79, "name": "Agustin Grondona", "number": 79, "team": { "id": 8 }, "championship": { "id": 1 } },
+    {
+      "id": 79,
+      "name": "Agustin Grondona",
+      "number": 79,
+      "team": { "id": 8 },
+      "championship": { "id": 1 }
+    },
     { "id": 80, "name": "Franco Armani", "number": 80, "team": { "id": 8 }, "championship": { "id": 1 } },
-    { "id": 81, "name": "Francisco Carrillo", "number": 81, "team": { "id": 8 }, "championship": { "id": 1 } },
-    { "id": 82, "name": "Ricardo Martinez", "number": 82, "team": { "id": 8 }, "championship": { "id": 1 } },
+    {
+      "id": 81,
+      "name": "Francisco Carrillo",
+      "number": 81,
+      "team": { "id": 8 },
+      "championship": { "id": 1 }
+    },
+    {
+      "id": 82,
+      "name": "Ricardo Martinez",
+      "number": 82,
+      "team": { "id": 8 },
+      "championship": { "id": 1 }
+    },
     { "id": 83, "name": "Lucas Mora", "number": 83, "team": { "id": 8 }, "championship": { "id": 1 } },
     { "id": 84, "name": "Andres Arguello", "number": 84, "team": { "id": 8 }, "championship": { "id": 1 } },
-    { "id": 85, "name": "Carlos Gutierrez", "number": 85, "team": { "id": 8 }, "championship": { "id": 1 } },
+    {
+      "id": 85,
+      "name": "Carlos Gutierrez",
+      "number": 85,
+      "team": { "id": 8 },
+      "championship": { "id": 1 }
+    },
     { "id": 86, "name": "Facundo Pesci", "number": 86, "team": { "id": 8 }, "championship": { "id": 1 } },
-    { "id": 87, "name": "Santiago Gutierrez", "number": 87, "team": { "id": 8 }, "championship": { "id": 1 } },
+    {
+      "id": 87,
+      "name": "Santiago Gutierrez",
+      "number": 87,
+      "team": { "id": 8 },
+      "championship": { "id": 1 }
+    },
     { "id": 88, "name": "Martin Gonzalez", "number": 88, "team": { "id": 8 }, "championship": { "id": 1 } },
-    
+
     { "id": 89, "name": "Adrian Cardozo", "number": 1, "team": { "id": 9 }, "championship": { "id": 2 } },
     { "id": 90, "name": "Gonzalo Higuain", "number": 2, "team": { "id": 9 }, "championship": { "id": 2 } },
     { "id": 91, "name": "Carlos Gutierrez", "number": 3, "team": { "id": 9 }, "championship": { "id": 2 } },
-    { "id": 92, "name": "Crisitan Gutierrez", "number": 4, "team": { "id": 9 }, "championship": { "id": 2 } },
-    { "id": 93, "name": "Leonardo Rodriguez", "number": 5, "team": { "id": 9 }, "championship": { "id": 2 } },
+    {
+      "id": 92,
+      "name": "Crisitan Gutierrez",
+      "number": 4,
+      "team": { "id": 9 },
+      "championship": { "id": 2 }
+    },
+    {
+      "id": 93,
+      "name": "Leonardo Rodriguez",
+      "number": 5,
+      "team": { "id": 9 },
+      "championship": { "id": 2 }
+    },
     { "id": 94, "name": "Martin Gonzalez", "number": 6, "team": { "id": 9 }, "championship": { "id": 2 } },
     { "id": 95, "name": "Brian Lopez", "number": 7, "team": { "id": 9 }, "championship": { "id": 2 } },
     { "id": 96, "name": "Castulo Smithers", "number": 8, "team": { "id": 9 }, "championship": { "id": 2 } },
     { "id": 97, "name": "Mariano Salinas", "number": 9, "team": { "id": 9 }, "championship": { "id": 2 } },
     { "id": 98, "name": "Gonzalo Lopez", "number": 10, "team": { "id": 9 }, "championship": { "id": 2 } },
-    { "id": 99, "name": "Leandro Villamonte", "number": 11, "team": { "id": 9 }, "championship": { "id": 2 } },
+    {
+      "id": 99,
+      "name": "Leandro Villamonte",
+      "number": 11,
+      "team": { "id": 9 },
+      "championship": { "id": 2 }
+    },
     { "id": 100, "name": "Diego Moronha", "number": 12, "team": { "id": 10 }, "championship": { "id": 2 } },
     { "id": 101, "name": "Claudio Gomez", "number": 13, "team": { "id": 10 }, "championship": { "id": 2 } },
     { "id": 102, "name": "Ivan Benitez", "number": 14, "team": { "id": 10 }, "championship": { "id": 2 } },
-    { "id": 103, "name": "Juan Pablo Balma", "number": 15, "team": { "id": 10 }, "championship": { "id": 2 } },
+    {
+      "id": 103,
+      "name": "Juan Pablo Balma",
+      "number": 15,
+      "team": { "id": 10 },
+      "championship": { "id": 2 }
+    },
     { "id": 104, "name": "Alan Aguero", "number": 16, "team": { "id": 10 }, "championship": { "id": 2 } },
-    { "id": 105, "name": "Victor Garnacho", "number": 17, "team": { "id": 10 }, "championship": { "id": 2 } },
+    {
+      "id": 105,
+      "name": "Victor Garnacho",
+      "number": 17,
+      "team": { "id": 10 },
+      "championship": { "id": 2 }
+    },
     { "id": 106, "name": "Facundo Pesci", "number": 18, "team": { "id": 10 }, "championship": { "id": 2 } },
     { "id": 107, "name": "Juan Perez", "number": 19, "team": { "id": 10 }, "championship": { "id": 2 } },
     { "id": 108, "name": "Jose Morales", "number": 20, "team": { "id": 10 }, "championship": { "id": 2 } },
-    { "id": 109, "name": "Esteban Zelaya", "number": 21, "team": { "id": 10 }, "championship": { "id": 2 } },
-    { "id": 110, "name": "Thomas Jimenez", "number": 22, "team": { "id": 10 }, "championship": { "id": 2 } },
+    {
+      "id": 109,
+      "name": "Esteban Zelaya",
+      "number": 21,
+      "team": { "id": 10 },
+      "championship": { "id": 2 }
+    },
+    {
+      "id": 110,
+      "name": "Thomas Jimenez",
+      "number": 22,
+      "team": { "id": 10 },
+      "championship": { "id": 2 }
+    },
     { "id": 111, "name": "Lionel Messi", "number": 23, "team": { "id": 11 }, "championship": { "id": 2 } },
     { "id": 112, "name": "Kylian Mbappe", "number": 24, "team": { "id": 11 }, "championship": { "id": 2 } },
-    { "id": 113, "name": "Cristian Gonzalez", "number": 25, "team": { "id": 11 }, "championship": { "id": 2 } },
-    { "id": 114, "name": "Lucio Fernandez", "number": 26, "team": { "id": 11 }, "championship": { "id": 2 } },
-    { "id": 115, "name": "Agustin Martinez", "number": 27, "team": { "id": 11 }, "championship": { "id": 2 } },
-    { "id": 116, "name": "Giovanni Dos Santos", "number": 28, "team": { "id": 11 }, "championship": { "id": 2 } },
+    {
+      "id": 113,
+      "name": "Cristian Gonzalez",
+      "number": 25,
+      "team": { "id": 11 },
+      "championship": { "id": 2 }
+    },
+    {
+      "id": 114,
+      "name": "Lucio Fernandez",
+      "number": 26,
+      "team": { "id": 11 },
+      "championship": { "id": 2 }
+    },
+    {
+      "id": 115,
+      "name": "Agustin Martinez",
+      "number": 27,
+      "team": { "id": 11 },
+      "championship": { "id": 2 }
+    },
+    {
+      "id": 116,
+      "name": "Giovanni Dos Santos",
+      "number": 28,
+      "team": { "id": 11 },
+      "championship": { "id": 2 }
+    },
     { "id": 117, "name": "Lucas Morales", "number": 29, "team": { "id": 11 }, "championship": { "id": 2 } },
-    { "id": 118, "name": "Pablo Martinez", "number": 30, "team": { "id": 11 }, "championship": { "id": 2 } },
-    { "id": 119, "name": "Jhonattan De Rossi", "number": 31, "team": { "id": 11 }, "championship": { "id": 2 } },
-    { "id": 120, "name": "Alejandro Castro", "number": 32, "team": { "id": 11 }, "championship": { "id": 2 } },
-    { "id": 121, "name": "Marcelo De Alvear", "number": 33, "team": { "id": 11 }, "championship": { "id": 2 } }
+    {
+      "id": 118,
+      "name": "Pablo Martinez",
+      "number": 30,
+      "team": { "id": 11 },
+      "championship": { "id": 2 }
+    },
+    {
+      "id": 119,
+      "name": "Jhonattan De Rossi",
+      "number": 31,
+      "team": { "id": 11 },
+      "championship": { "id": 2 }
+    },
+    {
+      "id": 120,
+      "name": "Alejandro Castro",
+      "number": 32,
+      "team": { "id": 11 },
+      "championship": { "id": 2 }
+    },
+    {
+      "id": 121,
+      "name": "Marcelo De Alvear",
+      "number": 33,
+      "team": { "id": 11 },
+      "championship": { "id": 2 }
+    }
   ],
   "teamStatuses": [
     { "id": 1, "team": { "id": 1 } },
@@ -155,7 +432,7 @@
     { "id": 12, "team": { "id": 7 } },
     { "id": 13, "team": { "id": 4 } },
     { "id": 14, "team": { "id": 6 } },
-    
+
     { "id": 15, "team": { "id": 9 } },
     { "id": 16, "team": { "id": 9 } },
     { "id": 17, "team": { "id": 10 } },
@@ -164,26 +441,145 @@
     { "id": 20, "team": { "id": 11 } }
   ],
   "matchStatuses": [
-    { "id": 1 , "date": "2017-06-15", "start": "2017-06-15", "end": "2017-06-15", "localStatus": { "id": 1 }, "visitingStatus": { "id": 2 } },
-    { "id": 2 , "date": "2017-06-15", "start": "2017-06-15", "end": "2017-06-15", "localStatus": { "id": 3 }, "visitingStatus": { "id": 4 } },
-    { "id": 3 , "date": "2017-06-15", "start": "2017-06-15", "end": "2017-06-15", "localStatus": { "id": 5 }, "visitingStatus": { "id": 6 } },
-    { "id": 4 , "date": "2017-06-15", "start": "2017-06-15", "end": "2017-06-15", "localStatus": { "id": 7 }, "visitingStatus": { "id": 8 } },
-    { "id": 5 , "date": "2017-06-15", "start": "2017-06-15", "end": "2017-06-15", "localStatus": { "id": 9 }, "visitingStatus": { "id": 10 } },
-    { "id": 6 , "date": "2017-06-15", "start": "2017-06-15", "end": "2017-06-15", "localStatus": { "id": 11 }, "visitingStatus": { "id": 12 } },
-    { "id": 7 , "date": "2017-06-15", "start": null, "end": null, "localStatus": { "id": 13 }, "visitingStatus": { "id": 14 } },
-    
-    { "id": 8 , "date": "2017-06-15", "start": "2017-06-15", "end": "2017-06-15", "localStatus": { "id": 15 }, "visitingStatus": { "id": 17 } },
-    { "id": 9 , "date": "2017-06-15", "start": "2017-06-15", "end": "2017-06-15", "localStatus": { "id": 16 }, "visitingStatus": { "id": 19 } },
-    { "id": 10 , "date": "2017-06-15", "start": null, "end": null, "localStatus": { "id": 18 }, "visitingStatus": { "id": 20 } }
+    {
+      "id": 1,
+      "date": "2017-06-15",
+      "start": "2017-06-15",
+      "end": "2017-06-15",
+      "localStatus": { "id": 1 },
+      "visitingStatus": { "id": 2 }
+    },
+    {
+      "id": 2,
+      "date": "2017-06-15",
+      "start": "2017-06-15",
+      "end": "2017-06-15",
+      "localStatus": { "id": 3 },
+      "visitingStatus": { "id": 4 }
+    },
+    {
+      "id": 3,
+      "date": "2017-06-15",
+      "start": "2017-06-15",
+      "end": "2017-06-15",
+      "localStatus": { "id": 5 },
+      "visitingStatus": { "id": 6 }
+    },
+    {
+      "id": 4,
+      "date": "2017-06-15",
+      "start": "2017-06-15",
+      "end": "2017-06-15",
+      "localStatus": { "id": 7 },
+      "visitingStatus": { "id": 8 }
+    },
+    {
+      "id": 5,
+      "date": "2017-06-15",
+      "start": "2017-06-15",
+      "end": "2017-06-15",
+      "localStatus": { "id": 9 },
+      "visitingStatus": { "id": 10 }
+    },
+    {
+      "id": 6,
+      "date": "2017-06-15",
+      "start": "2017-06-15",
+      "end": "2017-06-15",
+      "localStatus": { "id": 11 },
+      "visitingStatus": { "id": 12 }
+    },
+    {
+      "id": 7,
+      "date": "2017-06-15",
+      "start": null,
+      "end": null,
+      "localStatus": { "id": 13 },
+      "visitingStatus": { "id": 14 }
+    },
+
+    {
+      "id": 8,
+      "date": "2017-06-15",
+      "start": "2017-06-15",
+      "end": "2017-06-15",
+      "localStatus": { "id": 15 },
+      "visitingStatus": { "id": 17 }
+    },
+    {
+      "id": 9,
+      "date": "2017-06-15",
+      "start": "2017-06-15",
+      "end": "2017-06-15",
+      "localStatus": { "id": 16 },
+      "visitingStatus": { "id": 19 }
+    },
+    {
+      "id": 10,
+      "date": "2017-06-15",
+      "start": null,
+      "end": null,
+      "localStatus": { "id": 18 },
+      "visitingStatus": { "id": 20 }
+    }
   ],
   "eliminationMatches": [
-    { "id": 7, "status": { "id": 7 }, "championshipFinal": { "id": 1 }, "championship": { "id": 1 }, "parent": null, "submatches": [{ "id": 5 }, { "id": 6 }] },
-    { "id": 6, "status": { "id": 6 }, "championshipFinal": null, "championship": { "id": 1 }, "parent": { "id": 7 }, "submatches": [{ "id": 3 }, { "id": 4 }] },
-    { "id": 5, "status": { "id": 5 }, "championshipFinal": null, "championship": { "id": 1 }, "parent": { "id": 7 }, "submatches": [{ "id": 1 }, { "id": 2 }] },
-    { "id": 4, "status": { "id": 4 }, "championshipFinal": null, "championship": { "id": 1 }, "parent": { "id": 6 }, "submatches": [] },
-    { "id": 3, "status": { "id": 3 }, "championshipFinal": null, "championship": { "id": 1 }, "parent": { "id": 6 }, "submatches": [] },
-    { "id": 2, "status": { "id": 2 }, "championshipFinal": null, "championship": { "id": 1 }, "parent": { "id": 5 }, "submatches": [] },
-    { "id": 1, "status": { "id": 1 }, "championshipFinal": null, "championship": { "id": 1 } , "parent": { "id": 5 }, "submatches": [] }
+    {
+      "id": 7,
+      "status": { "id": 7 },
+      "championshipFinal": { "id": 1 },
+      "championship": { "id": 1 },
+      "parent": null,
+      "submatches": [{ "id": 5 }, { "id": 6 }]
+    },
+    {
+      "id": 6,
+      "status": { "id": 6 },
+      "championshipFinal": null,
+      "championship": { "id": 1 },
+      "parent": { "id": 7 },
+      "submatches": [{ "id": 3 }, { "id": 4 }]
+    },
+    {
+      "id": 5,
+      "status": { "id": 5 },
+      "championshipFinal": null,
+      "championship": { "id": 1 },
+      "parent": { "id": 7 },
+      "submatches": [{ "id": 1 }, { "id": 2 }]
+    },
+    {
+      "id": 4,
+      "status": { "id": 4 },
+      "championshipFinal": null,
+      "championship": { "id": 1 },
+      "parent": { "id": 6 },
+      "submatches": []
+    },
+    {
+      "id": 3,
+      "status": { "id": 3 },
+      "championshipFinal": null,
+      "championship": { "id": 1 },
+      "parent": { "id": 6 },
+      "submatches": []
+    },
+    {
+      "id": 2,
+      "status": { "id": 2 },
+      "championshipFinal": null,
+      "championship": { "id": 1 },
+      "parent": { "id": 5 },
+      "submatches": []
+    },
+    {
+      "id": 1,
+      "status": { "id": 1 },
+      "championshipFinal": null,
+      "championship": { "id": 1 },
+      "parent": { "id": 5 },
+      "submatches": []
+    }
   ],
   "scoreMatches": [
     { "id": 8, "status": { "id": 8 }, "championship": { "id": 2 } },
@@ -191,28 +587,27 @@
     { "id": 10, "status": { "id": 10 }, "championship": { "id": 2 } }
   ],
   "goals": [
-    { "id": 1, "minute": 1, "player": { "id": 1 }, "status": { "id": 1 }},
-    { "id": 2, "minute": 2, "player": { "id": 1 }, "status": { "id": 1 }},
-    { "id": 3, "minute": 3, "player": { "id": 34 }, "status": { "id": 4 }},
-    { "id": 4, "minute": 4, "player": { "id": 34 }, "status": { "id": 4 }},
-    { "id": 5, "minute": 5, "player": { "id": 34 }, "status": { "id": 4 }},
-    { "id": 6, "minute": 6, "player": { "id": 56 }, "status": { "id": 6 }},
-    { "id": 7, "minute": 7, "player": { "id": 67 }, "status": { "id": 7 }},
-    { "id": 8, "minute": 8, "player": { "id": 67 }, "status": { "id": 7 }},
-    { "id": 9, "minute": 9, "player": { "id": 67 }, "status": { "id": 7 }},
-    { "id": 10, "minute": 10, "player": { "id": 67 }, "status": { "id": 7 }},
-    { "id": 11, "minute": 11, "player": { "id": 67 }, "status": { "id": 7 }},
-    { "id": 12, "minute": 12, "player": { "id": 34 }, "status": { "id": 10 }},
-    { "id": 13, "minute": 13, "player": { "id": 34 }, "status": { "id": 10 }},
-    { "id": 14, "minute": 14, "player": { "id": 34 }, "status": { "id": 10 }},
-    { "id": 15, "minute": 15, "player": { "id": 34 }, "status": { "id": 10 }},
-    { "id": 16, "minute": 16, "player": { "id": 56 }, "status": { "id": 11 }},
-    { "id": 17, "minute": 17, "player": { "id": 56 }, "status": { "id": 11 }},
-    { "id": 18, "minute": 18, "player": { "id": 56 }, "status": { "id": 11 }},
-    { "id": 19, "minute": 19, "player": { "id": 34 }, "status": { "id": 13 }},
+    { "id": 1, "minute": 1, "player": { "id": 1 }, "status": { "id": 1 } },
+    { "id": 2, "minute": 2, "player": { "id": 1 }, "status": { "id": 1 } },
+    { "id": 3, "minute": 3, "player": { "id": 34 }, "status": { "id": 4 } },
+    { "id": 4, "minute": 4, "player": { "id": 34 }, "status": { "id": 4 } },
+    { "id": 5, "minute": 5, "player": { "id": 34 }, "status": { "id": 4 } },
+    { "id": 6, "minute": 6, "player": { "id": 56 }, "status": { "id": 6 } },
+    { "id": 7, "minute": 7, "player": { "id": 67 }, "status": { "id": 7 } },
+    { "id": 8, "minute": 8, "player": { "id": 67 }, "status": { "id": 7 } },
+    { "id": 9, "minute": 9, "player": { "id": 67 }, "status": { "id": 7 } },
+    { "id": 10, "minute": 10, "player": { "id": 67 }, "status": { "id": 7 } },
+    { "id": 11, "minute": 11, "player": { "id": 67 }, "status": { "id": 7 } },
+    { "id": 12, "minute": 12, "player": { "id": 34 }, "status": { "id": 10 } },
+    { "id": 13, "minute": 13, "player": { "id": 34 }, "status": { "id": 10 } },
+    { "id": 14, "minute": 14, "player": { "id": 34 }, "status": { "id": 10 } },
+    { "id": 15, "minute": 15, "player": { "id": 34 }, "status": { "id": 10 } },
+    { "id": 16, "minute": 16, "player": { "id": 56 }, "status": { "id": 11 } },
+    { "id": 17, "minute": 17, "player": { "id": 56 }, "status": { "id": 11 } },
+    { "id": 18, "minute": 18, "player": { "id": 56 }, "status": { "id": 11 } },
 
-    { "id": 20, "minute": 20, "player": { "id": 93 }, "status": { "id": 15 }},
-    { "id": 21, "minute": 21, "player": { "id": 113 }, "status": { "id": 19 }}
+    { "id": 20, "minute": 20, "player": { "id": 93 }, "status": { "id": 15 } },
+    { "id": 21, "minute": 21, "player": { "id": 113 }, "status": { "id": 19 } }
   ],
   "cards": [
     { "id": 1, "type": "YELLOW", "minute": 1, "player": { "id": 1 }, "status": { "id": 1 } },
@@ -223,7 +618,7 @@
     { "id": 13, "type": "RED", "minute": 13, "player": { "id": 78 }, "status": { "id": 8 } },
     { "id": 14, "type": "RED", "minute": 14, "player": { "id": 1 }, "status": { "id": 9 } },
     { "id": 16, "type": "RED", "minute": 16, "player": { "id": 67 }, "status": { "id": 12 } },
-    
+
     { "id": 17, "type": "RED", "minute": 21, "player": { "id": 93 }, "status": { "id": 15 } },
     { "id": 18, "type": "YELLOW", "minute": 1, "player": { "id": 113 }, "status": { "id": 19 } }
   ]

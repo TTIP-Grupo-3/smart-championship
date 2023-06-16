@@ -1,4 +1,4 @@
-import { ChampionshipType } from 'src/services/championship.service';
+import { ChampionshipType } from 'src/enums/championshipType.enum';
 
 export interface ChampionshipResponse {
   id: number;

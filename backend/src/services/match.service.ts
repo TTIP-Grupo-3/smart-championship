@@ -11,7 +11,7 @@ import { GoalDTO } from 'src/dtos/goal.dto';
 import { ChampionshipPlayerService } from './championshipPlayer.service';
 import { Card } from 'src/entities/card.entity';
 import { CardDTO } from 'src/dtos/card.dto';
-import { ChampionshipService } from './championship.service';
+import { AllChampionshipService } from './allChampionship.service';
 import { DisallowGoalDTO } from 'src/dtos/disallowGoal.dto';
 import { DisallowCardDTO } from 'src/dtos/disallowCard.dto';
 import { Match } from 'src/entities/match.entity';
@@ -25,13 +25,13 @@ export class MatchService {
   constructor(
     private readonly transactionService: TransactionService,
     private readonly championshipPlayerService: ChampionshipPlayerService,
-    private readonly championshipService: ChampionshipService,
+    private readonly championshipService: AllChampionshipService,
   ) {}
 
-  async findOne(matchUpdateDTO: MatchIdDTO, manager?: EntityManager): Promise<Match> {
+  async findOne(findOneDTO: MatchIdDTO, manager?: EntityManager): Promise<Match> {
     return await this.transactionService.transaction(async (manager) => {
-      const { id } = matchUpdateDTO;
-      const championship = await this.championshipService.getChampionship(matchUpdateDTO, manager);
+      const { id } = findOneDTO;
+      const championship = await this.championshipService.getChampionship(findOneDTO, manager);
       const match = championship.findMatch(id);
       if (!match) throw new NotFoundException(errors.notFound);
       match.championship = championship;
@@ -39,9 +39,9 @@ export class MatchService {
     }, manager);
   }
 
-  async matches(championshipIdDTO: ChampionshipIdDTO, manager?: EntityManager): Promise<Array<Match>> {
+  async matches(matchesDTO: ChampionshipIdDTO, manager?: EntityManager): Promise<Array<Match>> {
     return await this.transactionService.transaction(async (manager) => {
-      const championship = await this.championshipService.getChampionship(championshipIdDTO, manager);
+      const championship = await this.championshipService.getChampionship(matchesDTO, manager);
       return championship.matches;
     }, manager);
   }

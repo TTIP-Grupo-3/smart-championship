@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import configuration from 'src/config/configuration';
 import { NotFoundException } from 'src/exceptions/NotFoundException';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
-import { ChampionshipService } from 'src/services/championship.service';
+import { AllChampionshipService } from 'src/services/allChampionship.service';
 import { entities } from 'src/utils/entities';
 import { testSqlClient } from 'test/utils/testSqlClient';
 import {
@@ -20,7 +20,7 @@ import { StorageService } from 'src/services/storage.service';
 
 describe('ChampionshipService', () => {
   let module: TestingModule;
-  let service: ChampionshipService;
+  let service: AllChampionshipService;
   let dataService: DataService;
 
   beforeEach(async () => {
@@ -30,9 +30,15 @@ describe('ChampionshipService', () => {
         TypeOrmModule.forRoot(testSqlClient()),
         TypeOrmModule.forFeature(entities),
       ],
-      providers: [ChampionshipService, DataService, EntityToDTOMapper, TransactionService, StorageService],
+      providers: [
+        AllChampionshipService,
+        DataService,
+        EntityToDTOMapper,
+        TransactionService,
+        StorageService,
+      ],
     }).compile();
-    service = module.get<ChampionshipService>(ChampionshipService);
+    service = module.get<AllChampionshipService>(AllChampionshipService);
     dataService = module.get<DataService>(DataService);
     await dataService.initialize();
   });

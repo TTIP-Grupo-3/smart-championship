@@ -38,4 +38,8 @@ export abstract class Match {
   end() {
     return this.status.endMatch();
   }
+
+  initialized(): boolean {
+    return this.status.hasDate();
+  }
 }

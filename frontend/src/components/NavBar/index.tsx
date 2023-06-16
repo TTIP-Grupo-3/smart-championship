@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { AppBar, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material';
 import useStyles from './style';
 import CenteredSpacer from '../CenteredSpacer';
@@ -6,11 +6,13 @@ import smartLogo from '../../default_match_icon_local.svg';
 import { useNavigate } from 'react-router-dom';
 import { grey } from '@mui/material/colors';
 import LogoutIcon from '@mui/icons-material/Logout';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { API_AUTH } from '../../services/Auth';
+import MailIcon from '@mui/icons-material/Mail';
 
-export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
+export const Navbar: FC<any> = ({ children, button, removebuttonLog, footer = false }) => {
   const { classes } = useStyles();
   const navigate = useNavigate();
+  const [username, setUsername] = useState<string>('');
 
   const handleCloseSession = () => {
     localStorage.removeItem('token');
@@ -20,6 +22,13 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
   const isLogged = (): boolean => {
     return !!localStorage.getItem('token');
   };
+  useEffect(() => {
+    if (isLogged()) {
+      API_AUTH.profile().then((r) => {
+        setUsername(r.data.username);
+      });
+    }
+  }, []);
 
   return (
     <Grid className={classes.root}>
@@ -36,7 +45,7 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
                   alignItems: 'center',
                 }}
               >
-                <EmojiEventsIcon style={{ height: 22, display: 'flex', color: 'yellow' }} />
+                {button.icon ?? ''}
                 <Typography style={{ fontSize: 15, fontWeight: 600, paddingTop: 3 }}>
                   {button.text}
                 </Typography>
@@ -53,7 +62,8 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
             {removebuttonLog ? (
               <></>
             ) : isLogged() ? (
-              <Grid>
+              <Grid className={classes.gridUser}>
+                <Typography className={classes.username}>{username}</Typography>
                 <IconButton onClick={handleCloseSession}>
                   <LogoutIcon style={{ color: 'white' }} />
                 </IconButton>
@@ -69,6 +79,15 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog }) => {
       <main className={classes.main}>
         <Toolbar />
         <Grid className={classes.content}>{children}</Grid>
+        {footer && (
+          <Grid className={classes.footer}>
+            <Typography className={classes.contact}>Contacto</Typography>
+            <Grid className={classes.containerEmail}>
+              <MailIcon style={{ color: 'white' }} />
+              <Typography className={classes.email}>admin.championship@gmail.com</Typography>
+            </Grid>
+          </Grid>
+        )}
       </main>
     </Grid>
   );

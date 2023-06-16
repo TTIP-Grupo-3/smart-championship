@@ -1,6 +1,6 @@
 import { PhaseResponse } from './phase.response';
 import { ChampionshipResponse } from './championship.response';
-import { ChampionshipType } from 'src/services/championship.service';
+import { ChampionshipType } from 'src/enums/championshipType.enum';
 
 export type PartialEliminationChampionshipResponse = PhaseResponse & ChampionshipResponse;
 

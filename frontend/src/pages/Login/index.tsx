@@ -1,21 +1,18 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import {
-  Button,
-  Card,
-  Grid,
-  IconButton,
-  InputAdornment,
-  inputLabelClasses,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, Card, Grid, IconButton, InputAdornment, Typography } from '@mui/material';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
-import { ErrorLogin } from '../../components/Snackbar';
+import { ErrorLogin } from '../../components/ErrorLogin';
 import { User } from '../../interfaces';
 import { API_AUTH } from '../../services/Auth';
 import { useStyles } from './style';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { OutlinedInput } from '../../components/OutlinedInput';
+
+type RoleType = { [key: string]: string };
+
+export const roles: RoleType = { admin: '/admin/tournaments', reviewer: '/inspector' };
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,15 +29,32 @@ export const Login = () => {
   const handleLogin: FormEventHandler<HTMLFormElement> = (e: any) => {
     e.preventDefault();
     API_AUTH.login(user)
-      .then(({ data }) => {
+      .then(async ({ data }) => {
         localStorage.setItem('token', data.access_token);
-        navigate('/inspector');
+        const { data: profile } = await API_AUTH.profile();
+        redirectAccordingToRole(profile.role);
       })
       .catch(() => setIsInvalidUser(true));
   };
 
+  const redirectAccordingToRole = (role: string) => {
+    navigate(roles[role]);
+  };
+
+  const canLogin = () => {
+    return user.username.trim().length !== 0 && user.password.trim().length !== 0;
+  };
+
   return (
-    <Navbar removebuttonLog button={{ action: () => navigate('/'), text: 'Torneos' }}>
+    <Navbar
+      removebuttonLog
+      button={{
+        action: () => navigate('/'),
+        text: 'Torneos',
+        icon: <EmojiEventsIcon style={{ height: 22, display: 'flex', color: 'yellow' }} />,
+      }}
+    >
+      {' '}
       <Grid className={classes.root} container>
         <Card style={{ backgroundColor: '#001E3C', padding: 48, borderRadius: 6 }} elevation={24}>
           <Typography color="white" variant="h5">
@@ -49,37 +63,19 @@ export const Login = () => {
           <Grid style={{ padding: 20 }} />
 
           <form onSubmit={handleLogin}>
-            <TextField
+            <OutlinedInput
               variant="outlined"
               label="Usuario"
-              InputProps={{ classes: { notchedOutline: classes.notchedOutline, input: classes.input } }}
-              InputLabelProps={{
-                sx: {
-                  color: 'white',
-                  [`&.${inputLabelClasses.shrink}`]: {
-                    color: 'white',
-                  },
-                },
-              }}
               name="username"
               onChange={handleChange}
               placeholder="Usuario"
-              style={{ color: 'white', width: '100%' }}
             />
             <Grid style={{ padding: 30 }} />
-            <TextField
+            <OutlinedInput
               label="Contraseña"
               variant="outlined"
               name="password"
               onChange={handleChange}
-              InputLabelProps={{
-                sx: {
-                  color: 'white',
-                  [`&.${inputLabelClasses.shrink}`]: {
-                    color: 'white',
-                  },
-                },
-              }}
               InputProps={{
                 classes: { notchedOutline: classes.notchedOutline, input: classes.input },
                 endAdornment: (
@@ -99,24 +95,17 @@ export const Login = () => {
                 ),
               }}
               placeholder="Contraseña"
-              style={{ color: 'white', width: '100%' }}
-              id="outlined-adornment-password"
               type={showPassword ? 'text' : 'password'}
             />
             <ErrorLogin open={isInvalidUser} />
-            <Grid
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              display="flex"
-              marginTop={isInvalidUser ? 2 : 6}
-            >
+            <Grid className={classes.gridContainerButton} marginTop={isInvalidUser ? 2 : 6}>
               <Button
                 type="submit"
                 variant="contained"
-                style={{ width: '50%', backgroundColor: '#00BCD4' }}
+                className={classes.buttonLogin}
+                disabled={!canLogin()}
               >
-                Log in
+                <Typography className={classes.textLogin}>Log in</Typography>
               </Button>
             </Grid>
           </form>

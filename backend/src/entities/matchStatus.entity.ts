@@ -94,4 +94,8 @@ export class MatchStatus {
   includes(team: ChampionshipTeam): boolean {
     return [this.localStatus.team.id, this.visitingStatus.team.id].includes(team.id);
   }
+
+  hasDate(): boolean {
+    return !!this.date;
+  }
 }

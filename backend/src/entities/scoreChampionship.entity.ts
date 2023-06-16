@@ -4,11 +4,14 @@ import { ScoreMatch } from './scoreMatch.entity';
 import { plainToInstance } from 'class-transformer';
 import { ScoreStatus } from './scoreStatus.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
+import { ChampionshipType } from 'src/enums/championshipType.enum';
 
 @ChildEntity()
 export class ScoreChampionship extends Championship {
   @OneToMany(() => ScoreMatch, (match) => match.championship, { eager: true, cascade: true })
   matches: Array<ScoreMatch>;
+
+  readonly type: ChampionshipType = ChampionshipType.SCORE;
 
   public get scoreStatuses(): Array<ScoreStatus> {
     return this.teams

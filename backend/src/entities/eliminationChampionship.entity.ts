@@ -4,6 +4,7 @@ import { ChildEntity, JoinColumn, OneToOne } from 'typeorm';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { Championship } from './championship.entity';
 import { EliminationMatch } from './eliminationMatch.entity';
+import { ChampionshipType } from 'src/enums/championshipType.enum';
 
 const errors = configService.get('model.errors');
 
@@ -12,6 +13,8 @@ export class EliminationChampionship extends Championship {
   @OneToOne(() => EliminationMatch, { cascade: true })
   @JoinColumn()
   final: EliminationMatch;
+
+  readonly type: ChampionshipType = ChampionshipType.ELIMINATION;
 
   public get matches(): Array<EliminationMatch> {
     return this.final?.toArray() ?? [];

@@ -32,7 +32,6 @@ export const TableClashes = () => {
     setMatchId(id);
     setOpen(true);
   };
-
   return (
     <Paper className={classes.paper}>
       <TableContainer className={classes.tableContainer}>
@@ -53,16 +52,18 @@ export const TableClashes = () => {
                     src={match?.local?.logo ? `data:image/png;base64,${match?.local.logo}` : smartLogoLocal}
                     style={{ height: 23, width: 23, borderRadius: '50%' }}
                   ></img>
-                  <Typography className={classes.teamName}>{match.local.name}</Typography>
+                  <Typography className={classes.teamName} noWrap>
+                    {match.local.name}
+                  </Typography>
                 </Grid>
-                <Typography className={classes.score}> {match.local.score}</Typography>
+                <Typography className={classes.score}> {match.local.goals}</Typography>
                 <Grid className={classes.gridMatch}>
                   <Typography style={{ fontSize: 12 }}>
                     {dayjs(match.date).format('DD/MM/YYYY HH:MM')}
                   </Typography>
                   <Typography className={classes.versus}>VS</Typography>
                 </Grid>
-                <Typography className={classes.score}> {match.visiting.score}</Typography>
+                <Typography className={classes.score}> {match.visiting.goals}</Typography>
                 <Grid className={classes.gridLogo} sx={{ marginRight: '8%' }}>
                   <img
                     src={

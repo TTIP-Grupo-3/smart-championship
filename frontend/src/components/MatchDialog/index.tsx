@@ -8,6 +8,8 @@ import { MatchScoreResult } from '../MatchScoreResult';
 import { MatchUserStats } from '../MatchUserStats';
 import { MatchService } from '../../services/MatchService';
 import dayjs from 'dayjs';
+import { StatusMatch } from '../StatusMatch';
+import Scroll from '../Scroll';
 
 const matchService = new MatchService();
 const socket = matchService.create();
@@ -55,37 +57,33 @@ export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData })
     >
       <DialogTitle className={classes.dialogTitle} style={{ display: 'flex', flexDirection: 'row' }}>
         <Typography className={classes.typographyTitle}>Informacion del partido</Typography>
-        <Typography
-          variant="body1"
-          className={classes.statusMatch}
-          style={{ backgroundColor: match?.status === 'FINISHED' ? 'red' : 'green' }}
-        >
-          {match?.status === 'FINISHED'
-            ? 'Finalizado'
-            : match?.status === 'TOSTART'
-            ? 'A jugar'
-            : 'En juego'}
-        </Typography>
+        <StatusMatch status={match?.status} className={classes.status} />
 
         <IconButton aria-label="close" onClick={close} className={classes.closeIcon}>
           <Close />
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.backgroundDialog}>
-        <MatchScoreResult {...{ match, time }} />
-        <MatchUserStats title="Goles" dataLocal={match?.local.goals} dataVisiting={match?.visiting.goals} />
+        <Scroll className={classes.scroll}>
+          <MatchScoreResult {...{ match, time }} />
+          <MatchUserStats
+            title="Goles"
+            dataLocal={match?.local.goals}
+            dataVisiting={match?.visiting.goals}
+          />
 
-        <MatchUserStats
-          title="Amarillas"
-          dataLocal={match?.local.cards.yellow}
-          dataVisiting={match?.visiting.cards.yellow}
-        />
+          <MatchUserStats
+            title="Amarillas"
+            dataLocal={match?.local.cards.yellow}
+            dataVisiting={match?.visiting.cards.yellow}
+          />
 
-        <MatchUserStats
-          title="Rojas"
-          dataLocal={match?.local.cards.red}
-          dataVisiting={match?.visiting.cards.red}
-        />
+          <MatchUserStats
+            title="Rojas"
+            dataLocal={match?.local.cards.red}
+            dataVisiting={match?.visiting.cards.red}
+          />
+        </Scroll>
       </DialogContent>
     </Dialog>
   );

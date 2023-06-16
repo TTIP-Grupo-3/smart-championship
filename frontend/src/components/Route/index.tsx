@@ -1,10 +1,19 @@
-import { FC } from 'react';
-import { Navigate } from 'react-router-dom';
+import { FC, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { roles } from '../../pages/Login';
+import { API_AUTH } from '../../services/Auth';
 
 export const PrivateRoute: FC<any> = ({ children, role, redirectTo }) => {
-  const isRoleValid = () => {
-    return !!localStorage.getItem('token');
-  };
+  const ROLE = role;
+  const navigate = useNavigate();
 
-  return !role || isRoleValid() ? children : <Navigate to={redirectTo} />;
+  useEffect(() => {
+    API_AUTH.profile().then(({ data: { role } }: any) => {
+      if (role !== ROLE && !!localStorage.getItem('token')) {
+        navigate(roles[role]);
+      }
+    });
+  }, []);
+
+  return children;
 };

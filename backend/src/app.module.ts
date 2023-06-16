@@ -3,9 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { sqlClient } from './clients/sql.client';
 import configuration from './config/configuration';
-import { ChampionshipController } from './controllers/championship.controller';
+import { AllChampionshipController } from './controllers/allChampionship.controller';
 import { EntityToDTOMapper } from './mappers/EntityToDTOMapper';
-import { ChampionshipService } from './services/championship.service';
+import { AllChampionshipService } from './services/allChampionship.service';
 import { DataService } from './services/data.service';
 import { entities } from './utils/entities';
 import { TransactionService } from './services/transaction.service';
@@ -26,6 +26,11 @@ import { jwtModuleAsyncOptions } from './options/jwtModuleAsync.options';
 import { StorageService } from './services/storage.service';
 import { ScoreChampionshipGateway } from './gateways/scoreChampionship.gateway';
 import { ScoreChampionshipService } from './services/scoreChampionship.service';
+import { JwtAuthGuard } from './guards/jwtAuth.guard';
+import { AdminChampionshipService } from './services/adminChampionship.service';
+import { AdminChampionshipController } from './controllers/adminChampionship.controller';
+import { EnrollmentController } from './controllers/enrollment.controller';
+import { EnrollmentService } from './services/enrollment.service';
 
 @Module({
   imports: [
@@ -35,9 +40,17 @@ import { ScoreChampionshipService } from './services/scoreChampionship.service';
     TypeOrmModule.forRoot(sqlClient()),
     TypeOrmModule.forFeature(entities),
   ],
-  controllers: [ChampionshipController, MatchController, AuthController, UploadFileController],
+  controllers: [
+    AdminChampionshipController,
+    AllChampionshipController,
+    MatchController,
+    AuthController,
+    UploadFileController,
+    EnrollmentController,
+  ],
   providers: [
-    ChampionshipService,
+    AllChampionshipService,
+    AdminChampionshipService,
     TransactionService,
     MatchService,
     MatchGateway,
@@ -52,6 +65,8 @@ import { ScoreChampionshipService } from './services/scoreChampionship.service';
     JwtStrategy,
     LocalStrategy,
     StorageService,
+    JwtAuthGuard,
+    EnrollmentService,
   ],
 })
 export class AppModule {

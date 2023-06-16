@@ -9,6 +9,15 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
-    margin: theme.spacing(3),
+    marginLeft: theme.spacing(6),
+    marginRight: theme.spacing(6),
+    marginTop: theme.spacing(2),
+  },
+  tournamentTitle: {
+    color: theme.palette.common.white,
+    fontSize: 20,
+    fontWeight: 600,
+    paddingTop: '2%',
+    paddingLeft: theme.spacing(6),
   },
 }));

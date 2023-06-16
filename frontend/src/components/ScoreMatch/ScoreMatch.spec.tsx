@@ -5,7 +5,11 @@ import { componentMounter } from '../../test/utils';
 
 const theme = fakeTheme;
 
-const { mountComponent } = componentMounter(ScoreMatch, { localGoals: 1, visitingGoals: 2 }, theme);
+const { mountComponent } = componentMounter(
+  ScoreMatch,
+  { localGoals: 1, visitingGoals: 2, status: 'TOSTART' },
+  theme,
+);
 
 describe('ScoreMatch', () => {
   beforeEach(() => mountComponent());
