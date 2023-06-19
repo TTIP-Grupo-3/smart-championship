@@ -1,9 +1,9 @@
 {
   "users": [
-    { "id": 1, "username": "john", "password": "changeme", "roles": ["reviewer"] },
-    { "id": 2, "username": "admin", "password": "admin", "roles": ["admin"] }
+    { "id": 1, "firstName": "John", "lastName": "Doe", "username": "john", "password": "changeme", "roles": ["reviewer"] },
+    { "id": 2, "firstName": "Mr.", "lastName": "Admin", "username": "admin", "password": "admin", "roles": ["admin"] }
   ],
-  "teamLeaders": [{ "id": 3, "username": "leader", "password": "leader", "roles": ["team_leader"], "enrollments": [] }],
+  "teamLeaders": [{ "id": 3, "firstName": "Mr.", "lastName": "Leader", "username": "leader", "password": "leader", "roles": ["team_leader"], "enrollments": [] }],
   "championshipEnrollments": [
     { "id": 1, "size": 1, "price": 50, "championship": { "id": 3 } },
     { "id": 2, "size": 3, "price": 50, "championship": { "id": 2 } },

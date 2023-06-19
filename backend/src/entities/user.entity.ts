@@ -7,6 +7,10 @@ import { UserRole } from 'src/enums/role.enum';
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+  @Column()
+  firstName: string;
+  @Column()
+  lastName: string;
   @Column({ unique: true })
   username: string;
   @Column({ transformer: { to: (value) => hash(value, salt()), from: (value) => value } })
@@ -21,5 +25,9 @@ export class User {
 
   public get role(): UserRole {
     return this.roles[0];
+  }
+
+  public get name() {
+    return `${this.firstName} ${this.lastName}`;
   }
 }

@@ -85,11 +85,11 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     request: UserRequestInfo = {},
     dtoCls?: Class<SmartChampionshipDTO>,
   ): UserResponseDTO | AccessTokenResponseDTO {
-    const { username, role, access_token } = user;
+    const { name, username, role, access_token } = user;
     if (dtoCls?.name === UserResponseDTO.name) {
-      return this.plainToInstance(UserResponseDTO, { username, role });
+      return this.plainToInstance(UserResponseDTO, { name, username, role });
     } else {
-      return this.plainToInstance(AccessTokenResponseDTO, { username, role, access_token });
+      return this.plainToInstance(AccessTokenResponseDTO, { name, username, role, access_token });
     }
   }
 
