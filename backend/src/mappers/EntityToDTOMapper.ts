@@ -75,9 +75,10 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     requst: UserRequestInfo = {},
     dtoCls?: Class<SmartChampionshipDTO>,
   ): EnrollmentResponseDTO {
-    const { id, payStatus: status, receipt, championshipEnrollment } = enrollment;
+    const { id, payStatus: status, receipt, championshipEnrollment, teamLeader } = enrollment;
     const { price } = championshipEnrollment;
-    return this.plainToInstance(EnrollmentResponseDTO, { id, price, status, receipt });
+    const { name } = teamLeader;
+    return this.plainToInstance(EnrollmentResponseDTO, { id, name, price, status, receipt });
   }
 
   private userDTO(
