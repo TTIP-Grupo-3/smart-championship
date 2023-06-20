@@ -33,6 +33,8 @@ import { EnrollmentController } from './controllers/enrollment.controller';
 import { EnrollmentService } from './services/enrollment.service';
 import { TeamLeaderChampionshipController } from './controllers/teamLeaderChampionship.controller';
 import { TeamLeaderChampionshipService } from './services/teamLeaderChampionship.service';
+import { TeamLeaderService } from './services/teamLeader.service';
+import { TeamLeaderController } from './controllers/teamLeader.controller';
 
 @Module({
   imports: [
@@ -50,6 +52,7 @@ import { TeamLeaderChampionshipService } from './services/teamLeaderChampionship
     UploadFileController,
     EnrollmentController,
     TeamLeaderChampionshipController,
+    TeamLeaderController,
   ],
   providers: [
     AllChampionshipService,
@@ -71,6 +74,7 @@ import { TeamLeaderChampionshipService } from './services/teamLeaderChampionship
     StorageService,
     JwtAuthGuard,
     EnrollmentService,
+    TeamLeaderService,
   ],
 })
 export class AppModule {
