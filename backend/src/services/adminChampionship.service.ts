@@ -61,10 +61,6 @@ export class AdminChampionshipService extends ChampionshipService {
     return !!championship;
   }
 
-  protected filterChampionships(championships: Array<Championship>): Array<Championship> {
-    return championships;
-  }
-
   protected async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
     return championship;
   }
