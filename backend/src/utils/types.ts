@@ -11,7 +11,7 @@ export interface EditChampionshipInfo {
   teamSize?: number;
 }
 
-export type UserRequestInfo = { user?: User; role?: Role };
+export type UserRequestInfo<T extends User = User> = { user?: T; role?: Role };
 export type UserSocket = Socket & UserRequestInfo;
 export type NoPromise = Diff<any, Promise<any>>;
 export type MaybeArray<T> = T | Array<T>;

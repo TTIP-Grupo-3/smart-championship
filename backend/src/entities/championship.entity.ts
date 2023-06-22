@@ -8,6 +8,8 @@ import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentExceptio
 import { EditChampionshipInfo } from 'src/utils/types';
 import { ChampionshipEnrollment } from './championshipEnrollment.entity';
 import { TeamEnrollment } from './teamEnrollment.entity';
+import { TeamLeader } from './teamLeader.entity';
+import { User } from './user.entity';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -68,6 +70,14 @@ export abstract class Championship {
     } else {
       return ChampionshipStatus.TOSTART;
     }
+  }
+
+  isEnrolled(user: User): boolean {
+    return this.enrollment.isEnrolled(user);
+  }
+
+  enroll(teamLeader: TeamLeader): TeamEnrollment {
+    return this.enrollment.enroll(teamLeader);
   }
 
   edit({ name, date, size, price, duration, teamSize }: EditChampionshipInfo) {

@@ -9,4 +9,6 @@ export class PartialChampionshipResponseDTO implements PartialChampionshipRespon
   name: string;
   @ApiProperty({ enum: ChampionshipType })
   type: ChampionshipType;
+  @ApiProperty({ example: new Date() })
+  date: string;
 }

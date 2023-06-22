@@ -8,8 +8,8 @@ import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentExceptio
 export class TeamEnrollment {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
-  payStatus: PayStatus;
+  @Column({ default: PayStatus.ToPay })
+  payStatus: PayStatus = PayStatus.ToPay;
   @ManyToOne(() => TeamLeader, (leader) => leader.enrollments, { eager: true })
   teamLeader: TeamLeader;
   @ManyToOne(() => ChampionshipEnrollment, (enrollment) => enrollment.teamEnrollments, {
@@ -18,6 +18,13 @@ export class TeamEnrollment {
   })
   championshipEnrollment: ChampionshipEnrollment;
   receipt: string | null = null;
+
+  static from(enrollment: ChampionshipEnrollment, teamLeader: TeamLeader): TeamEnrollment {
+    const teamEnrollment = new TeamEnrollment();
+    teamEnrollment.championshipEnrollment = enrollment;
+    teamEnrollment.teamLeader = teamLeader;
+    return teamEnrollment;
+  }
 
   paid(): boolean {
     return this.payStatus === PayStatus.Paid;
