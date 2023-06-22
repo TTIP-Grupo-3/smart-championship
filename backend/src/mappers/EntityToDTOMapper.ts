@@ -172,7 +172,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
         isEnrolled: championship.isEnrolled(user),
       });
     } else {
-      return this.plainToInstance(PartialChampionshipResponseDTO, { id, name, type });
+      return this.plainToInstance(PartialChampionshipResponseDTO, { id, name, type, date: start });
     }
   }
 
