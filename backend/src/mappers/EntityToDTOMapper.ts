@@ -36,6 +36,7 @@ import { PartialAdminChampionshipResponseDTO } from 'src/dtos/responses/partialA
 import { TeamEnrollment } from 'src/entities/teamEnrollment.entity';
 import { EnrollmentResponseDTO } from 'src/dtos/responses/enrollment.response.dto';
 import { plainToInstance } from 'class-transformer';
+import { TeamLeaderChampionshipResponseDTO } from 'src/dtos/responses/teamLeaderChampionship.response.dto';
 
 const errors = configService.get('service.errors');
 
@@ -117,7 +118,11 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     request: UserRequestInfo = {},
     dtoCls?: Class<SmartChampionshipDTO>,
   ) {
-    const partialDTONames = [PartialChampionshipResponseDTO.name, PartialAdminChampionshipResponseDTO.name];
+    const partialDTONames = [
+      PartialChampionshipResponseDTO.name,
+      PartialAdminChampionshipResponseDTO.name,
+      TeamLeaderChampionshipResponseDTO.name,
+    ];
     if (partialDTONames.includes(dtoCls?.name)) {
       return this.partialChampionshipResponseDTO(championship, request, dtoCls);
     } else if (championship instanceof EliminationChampionship) {
@@ -130,7 +135,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
 
   private partialChampionshipResponseDTO(
     championship: Championship,
-    { role }: UserRequestInfo = {},
+    { user, role }: UserRequestInfo = {},
     dtoCls?: Class<SmartChampionshipDTO>,
   ) {
     const { id, name, type, date, start, end, size, enrollment, duration, teamSize, status } = championship;
@@ -149,6 +154,22 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
         duration,
         teamSize,
         status,
+      });
+    } else if (dtoCls?.name === TeamLeaderChampionshipResponseDTO.name) {
+      return this.plainToInstance(TeamLeaderChampionshipResponseDTO, {
+        id,
+        name,
+        type,
+        date,
+        start,
+        end,
+        size,
+        enrolled,
+        price,
+        duration,
+        teamSize,
+        status,
+        isEnrolled: championship.isEnrolled(user),
       });
     } else {
       return this.plainToInstance(PartialChampionshipResponseDTO, { id, name, type });

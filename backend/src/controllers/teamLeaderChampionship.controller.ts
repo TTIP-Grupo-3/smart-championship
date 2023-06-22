@@ -10,7 +10,7 @@ import {
 import { Roles } from 'src/decorators/roles.decorator';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
-import { PartialAdminChampionshipResponseDTO } from 'src/dtos/responses/partialAdminChampionship.response.dto';
+import { TeamLeaderChampionshipResponseDTO } from 'src/dtos/responses/teamLeaderChampionship.response.dto';
 import { Championship } from 'src/entities/championship.entity';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -28,10 +28,10 @@ export class TeamLeaderChampionshipController {
 
   @Roles(Role.TeamLeader)
   @ApiOperation({ summary: 'Get to start championship' })
-  @ApiOkResponse({ type: PartialAdminChampionshipResponseDTO })
+  @ApiOkResponse({ type: TeamLeaderChampionshipResponseDTO })
   @ApiNotFoundResponse({ type: ErrorResponseDTO })
   @ApiParam({ name: 'championshipId', type: 'number' })
-  @UseInterceptors(new TransformInterceptor(PartialAdminChampionshipResponseDTO))
+  @UseInterceptors(new TransformInterceptor(TeamLeaderChampionshipResponseDTO))
   @Get(':championshipId')
   async getChampionship(@Param() getChampionshipDTO: ChampionshipIdDTO): Promise<Championship> {
     return await this.leaderChampionshipService.getChampionship(getChampionshipDTO);
@@ -39,9 +39,9 @@ export class TeamLeaderChampionshipController {
 
   @Roles(Role.TeamLeader)
   @ApiOperation({ summary: 'Get to start championships' })
-  @ApiOkResponse({ type: PartialAdminChampionshipResponseDTO, isArray: true })
+  @ApiOkResponse({ type: TeamLeaderChampionshipResponseDTO, isArray: true })
   @ApiNotFoundResponse({ type: ErrorResponseDTO })
-  @UseInterceptors(new TransformInterceptor(PartialAdminChampionshipResponseDTO))
+  @UseInterceptors(new TransformInterceptor(TeamLeaderChampionshipResponseDTO))
   @Get()
   async getChampionships(): Promise<Array<Championship>> {
     return await this.leaderChampionshipService.getChampionships();

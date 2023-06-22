@@ -3,6 +3,7 @@ import { Championship } from './championship.entity';
 import { TeamEnrollment } from './teamEnrollment.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { TeamLeader } from './teamLeader.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class ChampionshipEnrollment {
@@ -57,12 +58,13 @@ export class ChampionshipEnrollment {
     return enrollment;
   }
 
-  private checkEnrolled(teamLeader: TeamLeader): void {
-    if (this.isEnrolled(teamLeader)) throw new InvalidArgumentException('Already enrolled');
+  isEnrolled(user: User): boolean {
+    if (!(user instanceof TeamLeader)) return false;
+    return this.teamEnrollments.some(({ teamLeader }) => teamLeader.id === user.id);
   }
 
-  private isEnrolled({ id }: TeamLeader): boolean {
-    return this.teamEnrollments.some(({ teamLeader }) => teamLeader.id === id);
+  private checkEnrolled(teamLeader: TeamLeader): void {
+    if (this.isEnrolled(teamLeader)) throw new InvalidArgumentException('Already enrolled');
   }
 
   private findEnrollment(id: number): TeamEnrollment {
