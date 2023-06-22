@@ -6,6 +6,8 @@ export class EnrollmentResponseDTO implements EnrollmentResponse {
   @ApiProperty()
   id: number;
   @ApiProperty()
+  name: string;
+  @ApiProperty()
   price: number;
   @ApiProperty({ enum: PayStatus })
   status: PayStatus;

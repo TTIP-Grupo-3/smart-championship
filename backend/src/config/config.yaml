@@ -3,6 +3,7 @@ service:
     notFoundChampionship: "Championship not found"
     unknown: "Unknown error"
     invalidArgument: "Invalid argument"
+    alreadyExists: "Already exists"
 
 model:
   errors:

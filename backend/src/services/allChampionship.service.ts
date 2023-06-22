@@ -25,10 +25,6 @@ export class AllChampionshipService extends ChampionshipService {
     return !!championship && championship.status !== ChampionshipStatus.TOSTART;
   }
 
-  protected filterChampionships(championships: Championship[]): Array<Championship> {
-    return championships.filter((championship) => championship.status === ChampionshipStatus.STARTED);
-  }
-
   protected async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
     if (championship instanceof EliminationChampionship) {
       championship.final = await this.findFinal(championship, manager);

@@ -1,6 +1,5 @@
-import { Button, Grid, IconButton } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { FC } from 'react';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useStyles } from './style';
 import { TournamentDescription } from '../TournamentDescription';
 import { useNavigate } from 'react-router-dom';

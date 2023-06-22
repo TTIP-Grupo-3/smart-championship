@@ -36,7 +36,9 @@ export abstract class ChampionshipService {
 
   protected abstract exists(championship?: Championship): boolean;
 
-  protected abstract filterChampionships(championships: Array<Championship>): Array<Championship>;
+  private filterChampionships(championships: Array<Championship>): Array<Championship> {
+    return championships.filter((championship) => this.exists(championship));
+  }
 
   protected abstract setMatches(championship: Championship, manager: EntityManager): Promise<Championship>;
 }
