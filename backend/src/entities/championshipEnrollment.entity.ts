@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 import { Championship } from './championship.entity';
 import { TeamEnrollment } from './teamEnrollment.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
+import { TeamLeader } from './teamLeader.entity';
 
 @Entity()
 export class ChampionshipEnrollment {
@@ -31,6 +32,13 @@ export class ChampionshipEnrollment {
     return this.teamEnrollments.filter((teamEnrollment) => teamEnrollment.paid());
   }
 
+  enroll(teamLeader: TeamLeader): TeamEnrollment {
+    this.checkEnrolled(teamLeader);
+    const enrollment = TeamEnrollment.from(this, teamLeader);
+    this.teamEnrollments.push(enrollment);
+    return enrollment;
+  }
+
   edit({ size, price }: { size?: number; price?: number }) {
     this.size = size ?? this.size;
     this.price = price ?? this.price;
@@ -47,6 +55,14 @@ export class ChampionshipEnrollment {
     const enrollment = this.findEnrollment(id);
     enrollment.accept();
     return enrollment;
+  }
+
+  private checkEnrolled(teamLeader: TeamLeader): void {
+    if (this.isEnrolled(teamLeader)) throw new InvalidArgumentException('Already enrolled');
+  }
+
+  private isEnrolled({ id }: TeamLeader): boolean {
+    return this.teamEnrollments.some(({ teamLeader }) => teamLeader.id === id);
   }
 
   private findEnrollment(id: number): TeamEnrollment {
