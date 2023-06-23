@@ -18,15 +18,15 @@ import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 import { validationPipe } from 'src/pipes/validation.pipe';
-import { EnrollmentService } from 'src/services/enrollment.service';
+import { AdminEnrollmentService } from 'src/services/adminEnrollment.service';
 
 @Controller('admin/championship/:championshipId/enrollment')
 @ApiTags('Enrollment management')
 @ApiBearerAuth()
 @UseGuards(RolesGuard)
 @UsePipes(validationPipe)
-export class EnrollmentController {
-  constructor(private readonly enrollmentService: EnrollmentService) {}
+export class AdminEnrollmentController {
+  constructor(private readonly enrollmentService: AdminEnrollmentService) {}
 
   @Roles(Role.Admin)
   @ApiOperation({ summary: 'Get enrollment' })

@@ -1,21 +1,23 @@
-import { EnrollmentIdDTO } from 'src/dtos/enrollmentId.dto';
-import { TransactionService } from './transaction.service';
-import { TeamEnrollment } from '../entities/teamEnrollment.entity';
-import { EntityManager } from 'typeorm';
-import { NotFoundException } from 'src/exceptions/NotFoundException';
 import { Injectable } from '@nestjs/common';
-import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
-import { AdminChampionshipService } from './adminChampionship.service';
-import { ChampionshipEnrollment } from 'src/entities/championshipEnrollment.entity';
+import { TransactionService } from './transaction.service';
+import { ChampionshipService } from './championship.service';
 import { StorageService } from './storage.service';
+import { EnrollmentIdDTO } from 'src/dtos/enrollmentId.dto';
+import { EntityManager } from 'typeorm';
+import { TeamEnrollment } from 'src/entities/teamEnrollment.entity';
+import { NotFoundException } from 'src/exceptions/NotFoundException';
+import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
 import { Championship } from 'src/entities/championship.entity';
+import { ChampionshipEnrollment } from 'src/entities/championshipEnrollment.entity';
 
 @Injectable()
 export class EnrollmentService {
+  protected receiptContainer = 'receipts';
+
   constructor(
-    private readonly transactionService: TransactionService,
-    private readonly championshipService: AdminChampionshipService,
-    private readonly storageService: StorageService,
+    protected readonly transactionService: TransactionService,
+    protected readonly championshipService: ChampionshipService,
+    protected readonly storageService: StorageService,
   ) {}
 
   async getEnrollment(getEnrollmentDTO: EnrollmentIdDTO, manager?: EntityManager): Promise<TeamEnrollment> {
@@ -44,31 +46,7 @@ export class EnrollmentService {
     }, manager);
   }
 
-  async acceptEnrollment(
-    acceptEnrollmentDTO: EnrollmentIdDTO,
-    manager?: EntityManager,
-  ): Promise<TeamEnrollment> {
-    return await this.transactionService.transaction(async (manager) => {
-      const championship = await this.getChampionship(acceptEnrollmentDTO, manager);
-      const enrollment = championship.acceptEnrollment(acceptEnrollmentDTO.id);
-      enrollment.championshipEnrollment = championship.enrollment;
-      return await manager.save(enrollment);
-    }, manager);
-  }
-
-  async rejectEnrollment(
-    rejectEnrollmentDTO: EnrollmentIdDTO,
-    manager?: EntityManager,
-  ): Promise<TeamEnrollment> {
-    return await this.transactionService.transaction(async (manager) => {
-      const championship = await this.getChampionship(rejectEnrollmentDTO, manager);
-      const enrollment = championship.rejectEnrollment(rejectEnrollmentDTO.id);
-      enrollment.championshipEnrollment = championship.enrollment;
-      return await manager.save(enrollment);
-    }, manager);
-  }
-
-  private async getChampionship(
+  protected async getChampionship(
     championshipIdDTO: ChampionshipIdDTO,
     manager: EntityManager,
   ): Promise<Championship> {
@@ -77,16 +55,16 @@ export class EnrollmentService {
     return championship;
   }
 
-  private setReceipts(enrollment: ChampionshipEnrollment): void {
+  protected setReceipts(enrollment: ChampionshipEnrollment): void {
     enrollment.teamEnrollments.forEach((teamEnrollment) => this.setReceipt(teamEnrollment));
   }
 
-  private setReceipt(enrollment: TeamEnrollment): TeamEnrollment {
-    enrollment.receipt = this.getReceipt(enrollment.id);
+  protected setReceipt(enrollment: TeamEnrollment): TeamEnrollment {
+    enrollment.receipt = this.getReceipt(enrollment);
     return enrollment;
   }
 
-  private getReceipt(id: number): string {
-    return this.storageService.getImage(`${id}.png`, 'receipts');
+  protected getReceipt(enrollment: TeamEnrollment): string {
+    return this.storageService.getImage(enrollment.filename, this.receiptContainer);
   }
 }
