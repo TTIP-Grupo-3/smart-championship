@@ -1,6 +1,18 @@
-import { Controller, Param, Post, Req, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Post,
+  Put,
+  Req,
+  UseGuards,
+  UseInterceptors,
+  UsePipes,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
+  ApiConsumes,
   ApiForbiddenResponse,
   ApiOperation,
   ApiParam,
@@ -10,12 +22,15 @@ import {
 } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
+import { EnrollmentIdDTO } from 'src/dtos/enrollmentId.dto';
 import { EnrollmentResponseDTO } from 'src/dtos/responses/enrollment.response.dto';
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
+import { UploadReceiptDTO } from 'src/dtos/uploadReceipt.dto';
 import { TeamEnrollment } from 'src/entities/teamEnrollment.entity';
 import { TeamLeader } from 'src/entities/teamLeader.entity';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { SetFileInterceptor } from 'src/interceptors/setFile.interceptor';
 import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 import { validationPipe } from 'src/pipes/validation.pipe';
 import { TeamLeaderEnrollmentService } from 'src/services/teamLeaderEnrollment.service';
@@ -42,5 +57,26 @@ export class TeamLeaderEnrollmentController {
     @Req() { user }: UserRequestInfo<TeamLeader>,
   ): Promise<TeamEnrollment> {
     return await this.teamLeaderEnrollmentService.enroll(enrollDTO, user);
+  }
+
+  @Roles(Role.TeamLeader)
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Upload receipt' })
+  @ApiResponse({ type: EnrollmentResponseDTO, status: 200 })
+  @ApiParam({ name: 'championshipId', type: 'number' })
+  @ApiParam({ name: 'id', type: 'number' })
+  @ApiForbiddenResponse({ type: ErrorResponseDTO })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
+  @UseInterceptors(
+    FileInterceptor('receipt'),
+    SetFileInterceptor,
+    new TransformInterceptor(EnrollmentResponseDTO),
+  )
+  @Put(':id')
+  async uploadReceipt(
+    @Param() enrollmentIdDTO: EnrollmentIdDTO,
+    @Body() uploadReceiptDTO: UploadReceiptDTO,
+  ): Promise<TeamEnrollment> {
+    return await this.teamLeaderEnrollmentService.uploadReceipt(enrollmentIdDTO, uploadReceiptDTO);
   }
 }

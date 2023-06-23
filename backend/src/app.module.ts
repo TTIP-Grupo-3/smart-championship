@@ -29,8 +29,8 @@ import { ScoreChampionshipService } from './services/scoreChampionship.service';
 import { JwtAuthGuard } from './guards/jwtAuth.guard';
 import { AdminChampionshipService } from './services/adminChampionship.service';
 import { AdminChampionshipController } from './controllers/adminChampionship.controller';
-import { EnrollmentController } from './controllers/enrollment.controller';
-import { EnrollmentService } from './services/enrollment.service';
+import { AdminEnrollmentController } from './controllers/adminEnrollment.controller';
+import { AdminEnrollmentService } from './services/adminEnrollment.service';
 import { TeamLeaderChampionshipController } from './controllers/teamLeaderChampionship.controller';
 import { TeamLeaderChampionshipService } from './services/teamLeaderChampionship.service';
 import { TeamLeaderService } from './services/teamLeader.service';
@@ -52,7 +52,7 @@ import { TeamLeaderEnrollmentService } from './services/teamLeaderEnrollment.ser
     MatchController,
     AuthController,
     UploadFileController,
-    EnrollmentController,
+    AdminEnrollmentController,
     TeamLeaderChampionshipController,
     TeamLeaderController,
     TeamLeaderEnrollmentController,
@@ -76,7 +76,7 @@ import { TeamLeaderEnrollmentService } from './services/teamLeaderEnrollment.ser
     LocalStrategy,
     StorageService,
     JwtAuthGuard,
-    EnrollmentService,
+    AdminEnrollmentService,
     TeamLeaderService,
     TeamLeaderEnrollmentService,
   ],

@@ -9,10 +9,30 @@ export class StorageService {
   }
 
   getImage(name: string, dirname = 'logos'): string | null {
-    const fileLocation = join(__dirname, '../../', dirname, name);
-    if (fs.existsSync(fileLocation)) {
-      return this.base64Encode(fileLocation);
-    }
+    const fileLocation = this.filePath(name, dirname);
+    if (fs.existsSync(fileLocation)) return this.base64Encode(fileLocation);
     return null;
+  }
+
+  async upload(filename: string, fileString: string, container: string): Promise<void> {
+    if (await this.exists(filename, container)) await this.delete(filename, container);
+    if (!(await this.exists('', container))) await this.createContainer(container);
+    fs.writeFileSync(this.filePath(filename, container), fileString, { encoding: 'base64' });
+  }
+
+  async delete(filename: string, receiptContainer: string): Promise<void> {
+    fs.unlinkSync(this.filePath(filename, receiptContainer));
+  }
+
+  private async createContainer(container: string) {
+    fs.mkdirSync(container, { recursive: true });
+  }
+
+  private async exists(filename: string, receiptContainer: string): Promise<boolean> {
+    return fs.existsSync(this.filePath(filename, receiptContainer));
+  }
+
+  private filePath(filename: string, receiptContainer: string): string {
+    return join(__dirname, '../../', receiptContainer, filename);
   }
 }

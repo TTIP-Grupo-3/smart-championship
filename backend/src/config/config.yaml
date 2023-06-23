@@ -12,3 +12,4 @@ model:
 controller:
   errors:
     badRequest: "Bad request"
+    wrongExtension: "Wrong extension type"
