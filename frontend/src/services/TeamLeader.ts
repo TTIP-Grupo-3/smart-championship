@@ -20,8 +20,12 @@ class TeamLeaderService {
     return this.httpClient.get('/team_leader/championship');
   }
 
-  championshipToEnroll(id:number): Promise<AxiosResponse<any>> {
+  championshipToEnroll(id: number): Promise<AxiosResponse<any>> {
     return this.httpClient.get(`/team_leader/championship/${id}`);
+  }
+
+  uploadReceipt(championshipId: number, enrollId: number): Promise<AxiosResponse<any>> {
+    return this.httpClient.put(`/team_leader/championship/${championshipId}/enrollment/${enrollId}`);
   }
 }
 

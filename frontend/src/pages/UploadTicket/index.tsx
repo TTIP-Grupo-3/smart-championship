@@ -1,13 +1,18 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Button, Grid, Typography } from '@mui/material';
 import { Navbar } from '../../components/NavBar';
 import { useStyles } from './style';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useState } from 'react';
 import defaultUpload from '../../upload.jpg';
+import { API_TEAM_LEADER } from '../../services/TeamLeader';
+import { useNavigate, useParams } from 'react-router-dom';
 export const UploadReceipt = () => {
   const { classes } = useStyles();
   const [file, setFile] = useState<File>();
   const [image, setImage] = useState<string>('');
+  const { id, enrollId } = useParams();
+  const navigate = useNavigate();
 
   const handleFile = (e: any) => {
     const files = e.target.files[0];
@@ -15,7 +20,9 @@ export const UploadReceipt = () => {
     setImage(URL.createObjectURL(files));
   };
 
-  console.log(file);
+  const uploadReceipt = () => {
+    API_TEAM_LEADER.uploadReceipt(+id!, +enrollId!).then(() => navigate('/leader'));
+  };
 
   return (
     <Navbar>
@@ -42,7 +49,7 @@ export const UploadReceipt = () => {
               Subir
               <input type="file" hidden onChange={handleFile} accept="image/*" />
             </Button>
-            <Button className={classes.confirmUpload} disabled={!file}>
+            <Button className={classes.confirmUpload} disabled={!file} onClick={uploadReceipt}>
               Enviar Comprobante
             </Button>
           </Grid>

@@ -19,7 +19,7 @@ export const EnrollReservation = () => {
 
   const handleReservation = () => {
     API_TEAM_LEADER.enrollToChampionship(+id!).then(({ data }) => {
-      navigate(`/leader/enrolling/receipt/${id}`);
+      navigate(`/leader/enrolling/receipt/${id}/upload/${data.id}`);
     });
   };
   return (

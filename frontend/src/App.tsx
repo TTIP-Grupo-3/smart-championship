@@ -59,7 +59,7 @@ const App: FC = () => (
         }
       />
       <Route
-        path="/leader/enrolling/receipt/:id"
+        path="/leader/enrolling/receipt/:id/upload/:enrollId"
         element={
           <PrivateRoute role="team_leader" redirectTo="/login">
             <UploadReceipt />
