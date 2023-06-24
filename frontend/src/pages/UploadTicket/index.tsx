@@ -21,7 +21,9 @@ export const UploadReceipt = () => {
   };
 
   const uploadReceipt = () => {
-    API_TEAM_LEADER.uploadReceipt(+id!, +enrollId!).then(() => navigate('/leader'));
+    const formdata = new FormData();
+    formdata.append('receipt', file!);
+    API_TEAM_LEADER.uploadReceipt(+id!, +enrollId!, formdata).then(() => navigate('/leader'));
   };
 
   return (

@@ -24,8 +24,11 @@ class TeamLeaderService {
     return this.httpClient.get(`/team_leader/championship/${id}`);
   }
 
-  uploadReceipt(championshipId: number, enrollId: number): Promise<AxiosResponse<any>> {
-    return this.httpClient.put(`/team_leader/championship/${championshipId}/enrollment/${enrollId}`);
+  uploadReceipt(championshipId: number, enrollId: number, formdata: FormData): Promise<AxiosResponse<any>> {
+    return this.httpClient.put(
+      `/team_leader/championship/${championshipId}/enrollment/${enrollId}`,
+      formdata,
+    );
   }
 }
 
