@@ -12,6 +12,7 @@ export enum MatchStatus {
 }
 
 export interface User {
+  [key: string]: string;
   username: string;
   password: string;
 }

@@ -10,7 +10,7 @@ import { API } from '../../services/Championship';
 import { API_MATCH } from '../../services/Match';
 import { useStyles } from './style';
 
-export const Veedor = () => {
+export const Reviewer = () => {
   const { classes } = useStyles();
   const [matches, setMatches] = useState([]);
   const [idMatch, setSelected] = useState(null);

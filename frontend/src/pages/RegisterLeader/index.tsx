@@ -3,50 +3,33 @@ import { Button, Card, Grid, IconButton, InputAdornment, Typography } from '@mui
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
-import { ErrorLogin } from '../../components/ErrorLogin';
 import { User } from '../../interfaces';
-import { API_AUTH } from '../../services/Auth';
 import { useStyles } from './style';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { OutlinedInput } from '../../components/OutlinedInput';
+import { API_TEAM_LEADER } from '../../services/TeamLeader';
 
-type RoleType = { [key: string]: string };
-
-export const roles: RoleType = {
-  admin: '/admin/tournaments',
-  reviewer: '/reviewer',
-  team_leader: '/leader',
-};
-
-export const Login = () => {
+export const RegisterLeader = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { classes } = useStyles();
-  const [user, setUser] = useState<User>({ username: '', password: '' });
+  const [user, setUser] = useState<User>({ firstName: '', lastName: '', username: '', password: '' });
   const navigate = useNavigate();
-  const [isInvalidUser, setIsInvalidUser] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setUser({ ...user, [target.name]: target.value });
   };
 
-  const handleLogin: FormEventHandler<HTMLFormElement> = (e: any) => {
+  const handleRegister: FormEventHandler<HTMLFormElement> = (e: any) => {
     e.preventDefault();
-    API_AUTH.login(user)
-      .then(async ({ data }) => {
-        localStorage.setItem('token', data.access_token);
-        const { data: profile } = await API_AUTH.profile();
-        redirectAccordingToRole(profile.role);
-      })
-      .catch(() => setIsInvalidUser(true));
+    API_TEAM_LEADER.register(user).then(({ data }) => {
+      localStorage.setItem('token', data.access_token);
+      navigate('/leader');
+    });
   };
 
-  const redirectAccordingToRole = (role: string) => {
-    navigate(roles[role]);
-  };
-
-  const canLogin = () => {
-    return user.username.trim().length !== 0 && user.password.trim().length !== 0;
+  const canRegister = () => {
+    return Object.keys(user).every((key: string) => user[key].trim().length !== 0);
   };
 
   return (
@@ -60,13 +43,34 @@ export const Login = () => {
     >
       {' '}
       <Grid className={classes.root} container>
-        <Card style={{ backgroundColor: '#001E3C', padding: 48, borderRadius: 6 }} elevation={24}>
+        <Card
+          style={{ backgroundColor: '#001E3C', padding: 20, paddingInline: 60, borderRadius: 4 }}
+          elevation={24}
+        >
           <Typography color="white" variant="h5">
-            SMART.CHAMPIONSHIP
+            Registro SMART.CHAMPIONSHIP
           </Typography>
           <Grid style={{ padding: 20 }} />
 
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleRegister}>
+            <OutlinedInput
+              variant="outlined"
+              label="Nombre"
+              name="firstName"
+              onChange={handleChange}
+              placeholder="Nombre"
+            />
+            <Grid style={{ padding: 15 }} />
+
+            <OutlinedInput
+              variant="outlined"
+              label="Apellido"
+              name="lastName"
+              onChange={handleChange}
+              placeholder="Apellido"
+            />
+            <Grid style={{ padding: 15 }} />
+
             <OutlinedInput
               variant="outlined"
               label="Usuario"
@@ -74,7 +78,7 @@ export const Login = () => {
               onChange={handleChange}
               placeholder="Usuario"
             />
-            <Grid style={{ padding: 30 }} />
+            <Grid style={{ padding: 15 }} />
             <OutlinedInput
               label="Contraseña"
               variant="outlined"
@@ -101,15 +105,15 @@ export const Login = () => {
               placeholder="Contraseña"
               type={showPassword ? 'text' : 'password'}
             />
-            <ErrorLogin open={isInvalidUser} />
-            <Grid className={classes.gridContainerButton} marginTop={isInvalidUser ? 2 : 6}>
+
+            <Grid className={classes.gridContainerButton} marginTop={6}>
               <Button
                 type="submit"
                 variant="contained"
                 className={classes.buttonLogin}
-                disabled={!canLogin()}
+                disabled={!canRegister()}
               >
-                <Typography className={classes.textLogin}>Log in</Typography>
+                <Typography className={classes.textLogin}>Registrarse</Typography>
               </Button>
             </Grid>
           </form>

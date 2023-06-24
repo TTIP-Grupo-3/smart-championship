@@ -11,7 +11,7 @@ import { useStyles } from './style';
 import { getInitials } from '../../utils/utils';
 import { roles } from '../../pages/Login';
 
-const avatarColor: any = { admin: '#1990BB', reviewer: 'rgb(191, 54, 12)' };
+const avatarColor: any = { admin: '#1990BB', reviewer: 'rgb(191, 54, 12)', team_leader: 'blue' };
 
 export const UserLogout: FC<any> = ({ isLogged, userData, ...restProps }) => {
   const menuWidth = 178;
@@ -68,12 +68,14 @@ export const UserLogout: FC<any> = ({ isLogged, userData, ...restProps }) => {
                 {userData.username}
               </Typography>
             </Grid>
-            <MenuItem className={classes.menuitem} onClick={openHome}>
-              <HomeIcon className={classes.icon} />
-              <Typography variant="body2" className={classes.text} noWrap>
-                Inicio
-              </Typography>
-            </MenuItem>
+            {userData.role !== 'reviewer' && (
+              <MenuItem className={classes.menuitem} onClick={openHome}>
+                <HomeIcon className={classes.icon} />
+                <Typography variant="body2" className={classes.text} noWrap>
+                  Inicio
+                </Typography>
+              </MenuItem>
+            )}
             <MenuItem className={classes.menuitem} onClick={logout}>
               <LogoutIcon className={classes.icon} />
               <Typography variant="body2" className={classes.text} noWrap>

@@ -18,7 +18,7 @@ export const useStyles = makeStyles<{ menuWidth: number }>()((theme: Theme, { me
   arrow: { fontSize: '16px' },
   text: { color: alpha(theme.palette.common.white, 0.87) },
   avatar: {
-    marginLeft: 5,
+    marginLeft: 9,
     width: 26,
     height: 26,
     fontSize: '1rem',

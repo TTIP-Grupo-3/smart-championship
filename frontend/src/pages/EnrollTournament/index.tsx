@@ -1,27 +1,25 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CardTournament } from '../../components/CardTournament';
+import { CardTournamentEnroll } from '../../components/CardTournamentEnroll';
 import { Loader } from '../../components/Loader';
 import { Navbar } from '../../components/NavBar';
-import { API } from '../../services/Championship';
+import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { useStyles } from './style';
 
-export const Tournaments = () => {
+export const TournamentsToStart = () => {
   const [championships, setChampionships] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { classes } = useStyles();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    API.getChampionships().then((r) => {
+    API_TEAM_LEADER.championshipsToEnroll().then((r) => {
       setChampionships(r.data);
       setIsLoading(false);
     });
   }, []);
 
   return (
-    <Navbar footer>
+    <Navbar>
       {isLoading ? (
         <Loader text="Cargando Torneos" />
       ) : (
@@ -33,12 +31,7 @@ export const Tournaments = () => {
             justifyContent="center"
             className={classes.title}
           >
-            <Typography>Selecciona un torneo para visualizar su estado o </Typography>
-            <Button className={classes.enrollmentButton} onClick={() => navigate('/check')}>
-              {' '}
-              Inscribete
-            </Button>
-            <Typography>a un torneo </Typography>
+            <Typography>Selecciona el torneo que deseas inscribirte: </Typography>
           </Grid>
           <Grid
             container
@@ -50,7 +43,7 @@ export const Tournaments = () => {
             padding={2}
           >
             {championships.map((championship) => (
-              <CardTournament championship={championship}></CardTournament>
+              <CardTournamentEnroll championship={championship}></CardTournamentEnroll>
             ))}
           </Grid>
         </>
