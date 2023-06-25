@@ -1,4 +1,4 @@
-import { Column, ManyToOne, OneToMany, Unique } from 'typeorm';
+import { Column, ManyToOne, OneToMany, RelationId, Unique } from 'typeorm';
 import { Entity } from 'typeorm';
 import { PrimaryGeneratedColumn } from 'typeorm';
 import { Championship } from './championship.entity';
@@ -19,15 +19,14 @@ export class ChampionshipTeam {
     orphanedRowAction: 'delete',
   })
   championship: Championship;
-  @ManyToOne(() => Team, (team) => team.championshipTeams, {
-    eager: true,
-    createForeignKeyConstraints: false,
-  })
+  @ManyToOne(() => Team, (team) => team.championshipTeams, { createForeignKeyConstraints: false })
   team: Team;
+  @RelationId('team')
+  teamId: number;
 
   logo: string;
 
   public get filename(): string {
-    return this.team.filename;
+    return `${this.teamId}.png`;
   }
 }
