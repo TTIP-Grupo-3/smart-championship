@@ -34,7 +34,7 @@ export class AllChampionshipService extends ChampionshipService {
   }
 
   private async addLogoTeams(championship: Championship): Promise<Championship> {
-    championship.matchTeams.forEach((team) => (team.logo = this.storageService.getImage(`${team.id}.png`)));
+    championship.matchTeams.forEach((team) => (team.logo = this.storageService.getImage(team.filename)));
     return championship;
   }
 
@@ -42,9 +42,9 @@ export class AllChampionshipService extends ChampionshipService {
     championship: EliminationChampionship,
     manager: EntityManager,
   ): Promise<EliminationMatch> {
-    const relations = ['championshipFinal', 'status'];
+    const relations = ['status'];
     const finals = await manager.getTreeRepository(EliminationMatch).findTrees({ relations });
-    const final = finals.find(({ championshipFinal }) => championshipFinal?.id === championship.id);
+    const final = finals.find(({ championshipId }) => championshipId === championship.id);
     if (!final) throw new NotFoundException(errors.notFoundChampionship);
     return final;
   }

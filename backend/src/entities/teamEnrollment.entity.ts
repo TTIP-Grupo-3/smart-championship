@@ -1,6 +1,6 @@
 import { PayStatus } from 'src/enums/payStatus.enum';
 import { TeamLeader } from './teamLeader.entity';
-import { Column, Entity, Generated, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ChampionshipEnrollment } from './championshipEnrollment.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 
@@ -8,8 +8,7 @@ import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentExceptio
 export class TeamEnrollment {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
-  @Generated('uuid')
+  @Column({ generated: 'uuid' })
   receiptId: string;
   @Column({ default: PayStatus.ToPay })
   payStatus: PayStatus = PayStatus.ToPay;

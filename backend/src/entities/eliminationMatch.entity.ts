@@ -1,6 +1,6 @@
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { configService } from 'src/services/config.service';
-import { ChildEntity, Tree, TreeChildren, TreeParent } from 'typeorm';
+import { ChildEntity, RelationId, Tree, TreeChildren, TreeParent } from 'typeorm';
 import { OneToOne } from 'typeorm';
 import { Match } from './match.entity';
 import { MatchStatus } from './matchStatus.entity';
@@ -18,6 +18,8 @@ export class EliminationMatch extends Match {
     orphanedRowAction: 'delete',
   })
   championshipFinal: EliminationChampionship;
+  @RelationId('championshipFinal')
+  championshipId: number;
   @TreeParent()
   parent: EliminationMatch | null;
   @TreeChildren({ cascade: true })

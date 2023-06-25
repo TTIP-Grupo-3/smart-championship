@@ -20,9 +20,7 @@ export abstract class Championship {
   name: string;
   @OneToMany(() => ChampionshipTeam, (team) => team.championship, { eager: true })
   teams: Array<ChampionshipTeam>;
-  @OneToMany(() => ChampionshipPlayer, (player) => player.championship, {
-    createForeignKeyConstraints: false,
-  })
+  @OneToMany(() => ChampionshipPlayer, (player) => player.championship)
   players: Array<ChampionshipPlayer>;
   @OneToOne(() => ChampionshipEnrollment, (enrollment) => enrollment.championship, {
     eager: true,
