@@ -2,13 +2,15 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
+  grid: {
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(2),
-
+  },
+  titleTournament: {
+    fontWeight: 600,
     textAlign: 'center',
-    color: 'white',
-    fontSize: 20,
+    color: theme.palette.common.white,
+    fontSize: 24,
     fontFamily: 'sans-serif',
   },
   gridLoading: {

@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardTournament } from '../../components/CardTournament';
@@ -6,6 +6,7 @@ import { Loader } from '../../components/Loader';
 import { Navbar } from '../../components/NavBar';
 import { API } from '../../services/Championship';
 import { useStyles } from './style';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 export const Tournaments = () => {
   const [championships, setChampionships] = useState([]);
@@ -21,7 +22,14 @@ export const Tournaments = () => {
   }, []);
 
   return (
-    <Navbar footer>
+    <Navbar
+      footer
+      button={{
+        action: () => navigate('/login'),
+        text: 'Inscribete',
+        icon: <PersonAddIcon style={{ height: 22, display: 'flex', color: 'white', paddingRight: 4 }} />,
+      }}
+    >
       {isLoading ? (
         <Loader text="Cargando Torneos" />
       ) : (
@@ -31,14 +39,9 @@ export const Tournaments = () => {
             direction="row"
             alignItems="center"
             justifyContent="center"
-            className={classes.title}
+            className={classes.grid}
           >
-            <Typography>Selecciona un torneo para visualizar su estado o </Typography>
-            <Button className={classes.enrollmentButton} onClick={() => navigate('/check')}>
-              {' '}
-              Inscribete
-            </Button>
-            <Typography>a un torneo </Typography>
+            <Typography className={classes.titleTournament}>Torneos en curso </Typography>
           </Grid>
           <Grid
             container

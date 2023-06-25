@@ -1,15 +1,18 @@
 import { Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CardTournamentEnroll } from '../../components/CardTournamentEnroll';
 import { Loader } from '../../components/Loader';
 import { Navbar } from '../../components/NavBar';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { useStyles } from './style';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export const TournamentsToStart = () => {
   const [championships, setChampionships] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { classes } = useStyles();
+  const navigate = useNavigate();
 
   useEffect(() => {
     API_TEAM_LEADER.championshipsToEnroll().then((r) => {
@@ -19,7 +22,13 @@ export const TournamentsToStart = () => {
   }, []);
 
   return (
-    <Navbar>
+    <Navbar
+      button={{
+        action: () => navigate('/leader'),
+        text: 'Volver',
+        icon: <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: 'white' }} />,
+      }}
+    >
       {isLoading ? (
         <Loader text="Cargando Torneos" />
       ) : (

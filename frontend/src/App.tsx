@@ -6,7 +6,7 @@ import { Login } from './pages/Login';
 import { Reviewer } from './pages/Inspector';
 import { Tournaments } from './pages/TournamentPage';
 import { DashboardElimination } from './pages/DashboardElimination';
-import { PrivateRoute } from './components/Route';
+import { PrivateRoute } from './components/PrivateRoute';
 import { Admin } from './pages/Admin';
 import { AdminInscription } from './pages/AdminInscription';
 import { RegisterLeader } from './pages/RegisterLeader';
@@ -15,6 +15,7 @@ import { TournamentsToStart } from './pages/EnrollTournament';
 import { EnrollReservation } from './pages/EnrollingReservation';
 import { UploadReceipt } from './pages/UploadTicket';
 import { CheckAccount } from './pages/CheckAccount';
+import { PublicRoute } from './components/PublicRoute';
 
 const App: FC = () => (
   <BrowserRouter>
@@ -22,8 +23,22 @@ const App: FC = () => (
       <Route path="/" element={<Tournaments />} />
       <Route path="/eliminacion/:id" element={<DashboardElimination />} />
       <Route path="/clasificacion/:id" element={<DashboardClasification />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<RegisterLeader />} />
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <RegisterLeader />{' '}
+          </PublicRoute>
+        }
+      />
       <Route path="/check" element={<CheckAccount />} />
 
       <Route

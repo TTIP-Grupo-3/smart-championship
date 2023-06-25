@@ -7,6 +7,8 @@ import { useState } from 'react';
 import defaultUpload from '../../upload.jpg';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { useNavigate, useParams } from 'react-router-dom';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
 export const UploadReceipt = () => {
   const { classes } = useStyles();
   const [file, setFile] = useState<File>();
@@ -27,7 +29,13 @@ export const UploadReceipt = () => {
   };
 
   return (
-    <Navbar>
+    <Navbar
+      button={{
+        action: () => navigate(`/leader/enrolling/reservation/${id}`),
+        text: 'Volver',
+        icon: <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: 'white' }} />,
+      }}
+    >
       <Grid className={classes.grid}>
         <Typography className={classes.reservationTitle}>Subir comprobante de pago</Typography>
         <Grid container className={classes.gridSuccess}>

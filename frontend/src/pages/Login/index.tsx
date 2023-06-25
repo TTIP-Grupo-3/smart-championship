@@ -1,7 +1,7 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Button, Card, Grid, IconButton, InputAdornment, Typography } from '@mui/material';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
 import { ErrorLogin } from '../../components/ErrorLogin';
 import { User } from '../../interfaces';
@@ -74,7 +74,10 @@ export const Login = () => {
               onChange={handleChange}
               placeholder="Usuario"
             />
-            <Grid style={{ padding: 30 }} />
+            <Grid style={{ padding: 22 }} />
+            <Typography fontSize={12} color="white" paddingBottom={1}>
+              8 caracteres con mayuscula, minuscula y al menos 1 caracter especial
+            </Typography>
             <OutlinedInput
               label="Contraseña"
               variant="outlined"
@@ -101,6 +104,14 @@ export const Login = () => {
               placeholder="Contraseña"
               type={showPassword ? 'text' : 'password'}
             />
+            <Grid container flexDirection="row" alignItems="center" justifyContent={'center'}>
+              <Typography fontSize={12} color="white" paddingTop={1} paddingRight={1}>
+                Si no posees cuenta
+              </Typography>
+              <Link to={'/register'} style={{ color: 'aquamarine' }}>
+                registrate
+              </Link>
+            </Grid>
             <ErrorLogin open={isInvalidUser} />
             <Grid className={classes.gridContainerButton} marginTop={isInvalidUser ? 2 : 6}>
               <Button
