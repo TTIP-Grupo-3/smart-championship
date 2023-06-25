@@ -8,4 +8,6 @@ export class PlayerResponseDTO implements PlayerResponse {
   name: string;
   @ApiProperty()
   number: number;
+  @ApiProperty()
+  dni: number;
 }

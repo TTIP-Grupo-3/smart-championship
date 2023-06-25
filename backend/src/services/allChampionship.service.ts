@@ -34,7 +34,7 @@ export class AllChampionshipService extends ChampionshipService {
   }
 
   private async addLogoTeams(championship: Championship): Promise<Championship> {
-    championship.matchTeams.forEach((team) => (team.logo = this.storageService.getImage(`${team.id}.png`)));
+    championship.matchTeams.forEach((team) => (team.logo = this.storageService.getImage(team.filename)));
     return championship;
   }
 

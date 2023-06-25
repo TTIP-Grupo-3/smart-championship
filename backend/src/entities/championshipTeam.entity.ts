@@ -3,6 +3,7 @@ import { Entity } from 'typeorm';
 import { PrimaryGeneratedColumn } from 'typeorm';
 import { Championship } from './championship.entity';
 import { ChampionshipPlayer } from './championshipPlayer.entity';
+import { Team } from './team.entity';
 
 @Entity()
 @Unique(['name', 'championship'])
@@ -18,5 +19,15 @@ export class ChampionshipTeam {
     orphanedRowAction: 'delete',
   })
   championship: Championship;
+  @ManyToOne(() => Team, (team) => team.championshipTeams, {
+    eager: true,
+    createForeignKeyConstraints: false,
+  })
+  team: Team;
+
   logo: string;
+
+  public get filename(): string {
+    return this.team.filename;
+  }
 }

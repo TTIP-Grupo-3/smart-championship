@@ -5,6 +5,7 @@ import { Entity } from 'typeorm';
 import { Championship } from './championship.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { EliminationChampionship } from './eliminationChampionship.entity';
+import { Player } from './player.entity';
 
 @Entity()
 export class ChampionshipPlayer {
@@ -14,6 +15,8 @@ export class ChampionshipPlayer {
   name: string;
   @Column()
   number: number;
+  @Column()
+  dni: number;
   @ManyToOne(() => ChampionshipTeam, (team) => team.players, {
     onDelete: 'CASCADE',
     orphanedRowAction: 'delete',
@@ -25,4 +28,6 @@ export class ChampionshipPlayer {
     orphanedRowAction: 'delete',
   })
   championship: Championship;
+  @ManyToOne(() => Player, (player) => player.championshipPlayers, { createForeignKeyConstraints: false })
+  player: Player;
 }
