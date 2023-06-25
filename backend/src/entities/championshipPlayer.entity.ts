@@ -20,6 +20,7 @@ export class ChampionshipPlayer {
   })
   team: ChampionshipTeam;
   @ManyToOne(() => EliminationChampionship, (championship) => championship.players, {
+    createForeignKeyConstraints: false,
     onDelete: 'CASCADE',
     orphanedRowAction: 'delete',
   })
