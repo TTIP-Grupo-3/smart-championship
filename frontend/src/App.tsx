@@ -13,7 +13,7 @@ import { RegisterLeader } from './pages/RegisterLeader';
 import { TeamLeader } from './pages/TeamLeader';
 import { TournamentsToStart } from './pages/EnrollTournament';
 import { EnrollReservation } from './pages/EnrollingReservation';
-import { UploadReceipt } from './pages/UploadTicket';
+import { UploadReceipt } from './pages/UploadReceipt';
 import { CheckAccount } from './pages/CheckAccount';
 import { PublicRoute } from './components/PublicRoute';
 

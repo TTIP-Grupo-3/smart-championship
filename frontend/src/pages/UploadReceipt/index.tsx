@@ -8,6 +8,7 @@ import defaultUpload from '../../upload.jpg';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { ConfirmationReceiptDialog } from '../../components/ConfirmationSendReceiptDialog';
 
 export const UploadReceipt = () => {
   const { classes } = useStyles();
@@ -15,6 +16,7 @@ export const UploadReceipt = () => {
   const [image, setImage] = useState<string>('');
   const { id, enrollId } = useParams();
   const navigate = useNavigate();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const handleFile = (e: any) => {
     const files = e.target.files[0];
@@ -23,6 +25,7 @@ export const UploadReceipt = () => {
   };
 
   const uploadReceipt = () => {
+    setOpenConfirmation(true);
     const formdata = new FormData();
     formdata.append('receipt', file!);
     API_TEAM_LEADER.uploadReceipt(+id!, +enrollId!, formdata).then(() => navigate('/leader'));
@@ -41,8 +44,8 @@ export const UploadReceipt = () => {
         <Grid container className={classes.gridSuccess}>
           <CheckCircleIcon className={classes.checkIcon} />
           <Typography className={classes.successReservation}>
-            Listo!, tu lugar esta reservado , tienes hasta "fecha" para poder subir el comprobante , caso
-            contrario perderas tu reservacion
+            Listo!, tu lugar esta reservado , tienes 1 hora para poder subir el comprobante , caso contrario
+            perderas tu reservacion.
           </Typography>
         </Grid>
         <Grid container className={classes.buttonReservationGrid}>
@@ -64,6 +67,7 @@ export const UploadReceipt = () => {
             </Button>
           </Grid>
         </Grid>
+        <ConfirmationReceiptDialog open={openConfirmation} setOpen={setOpenConfirmation} />
       </Grid>
     </Navbar>
   );
