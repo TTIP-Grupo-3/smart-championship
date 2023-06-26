@@ -20,8 +20,8 @@
   "teamLeaders": [
     {
       "id": 3,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Adrián",
+      "lastName": "Cardozo",
       "username": "leader",
       "password": "leader",
       "roles": ["team_leader"],
@@ -29,8 +29,8 @@
     },
     {
       "id": 4,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Diego",
+      "lastName": "Moronha",
       "username": "leader2",
       "password": "leader",
       "roles": ["team_leader"],
@@ -38,8 +38,8 @@
     },
     {
       "id": 5,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Lionel",
+      "lastName": "Messi",
       "username": "leader3",
       "password": "leader",
       "roles": ["team_leader"],
@@ -47,8 +47,8 @@
     },
     {
       "id": 6,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Jose",
+      "lastName": "Paso",
       "username": "leader4",
       "password": "leader",
       "roles": ["team_leader"],
@@ -56,8 +56,8 @@
     },
     {
       "id": 7,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Martin",
+      "lastName": "Diaz",
       "username": "leader5",
       "password": "leader",
       "roles": ["team_leader"],
@@ -65,8 +65,8 @@
     },
     {
       "id": 8,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Lautaro",
+      "lastName": "Lopez",
       "username": "leader6",
       "password": "leader",
       "roles": ["team_leader"],
@@ -74,8 +74,8 @@
     },
     {
       "id": 9,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Jose Luiz",
+      "lastName": "Romero",
       "username": "leader7",
       "password": "leader",
       "roles": ["team_leader"],
@@ -83,8 +83,8 @@
     },
     {
       "id": 10,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Rodrigo",
+      "lastName": "Vallejo",
       "username": "leader8",
       "password": "leader",
       "roles": ["team_leader"],
@@ -92,8 +92,8 @@
     },
     {
       "id": 11,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Carlos",
+      "lastName": "Gutierrez",
       "username": "leader9",
       "password": "leader",
       "roles": ["team_leader"],
@@ -101,8 +101,8 @@
     },
     {
       "id": 12,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Claudio",
+      "lastName": "Gomez",
       "username": "leader10",
       "password": "leader",
       "roles": ["team_leader"],
@@ -110,8 +110,8 @@
     },
     {
       "id": 13,
-      "firstName": "Mr.",
-      "lastName": "Leader",
+      "firstName": "Kylian",
+      "lastName": "Mbappe",
       "username": "leader11",
       "password": "leader",
       "roles": ["team_leader"],
@@ -124,7 +124,7 @@
     { "id": 3, "size": 8, "price": 50, "championship": { "id": 1 } }
   ],
   "teamEnrollments": [
-    { "id": 1, "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 1, "createdAt": "2017-06-15", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } },
     
     { "id": 2, "payStatus": "paid", "teamLeader": { "id": 11 }, "championshipEnrollment": { "id": 2 } },
     { "id": 3, "payStatus": "paid", "teamLeader": { "id": 12 }, "championshipEnrollment": { "id": 2 } },

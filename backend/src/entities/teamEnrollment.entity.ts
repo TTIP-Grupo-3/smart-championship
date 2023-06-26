@@ -1,6 +1,6 @@
 import { PayStatus } from 'src/enums/payStatus.enum';
 import { TeamLeader } from './teamLeader.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ChampionshipEnrollment } from './championshipEnrollment.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 
@@ -19,14 +19,22 @@ export class TeamEnrollment {
     orphanedRowAction: 'delete',
   })
   championshipEnrollment: ChampionshipEnrollment;
+  @CreateDateColumn({ type: 'datetime' })
+  createdAt: Date;
+
+  expireTime: number = 60 * 60 * 1000;
   receipt: string | null = null;
 
   public get filename(): string {
     return `${this.receiptId}-${this.id}.png`;
   }
 
+  public get status(): PayStatus {
+    return this.expired() ? PayStatus.Expired : this.payStatus;
+  }
+
   uploadReceipt(receipt: string) {
-    if (this.paid()) throw new InvalidArgumentException('Already paid');
+    if (!this.toPay()) throw new InvalidArgumentException('Invalid operation. Cannot upload receipt');
     this.receipt = receipt;
     this.payStatus = PayStatus.ToReview;
   }
@@ -39,7 +47,15 @@ export class TeamEnrollment {
   }
 
   paid(): boolean {
-    return this.payStatus === PayStatus.Paid;
+    return this.status === PayStatus.Paid;
+  }
+
+  toPay(): boolean {
+    return this.status === PayStatus.ToPay;
+  }
+
+  expired(): boolean {
+    return this.payStatus === PayStatus.ToPay && Date.now() - this.createdAt.getTime() >= this.expireTime;
   }
 
   accept() {
@@ -53,6 +69,6 @@ export class TeamEnrollment {
   }
 
   private reviewable(): boolean {
-    return !!this.receipt && this.payStatus === PayStatus.ToReview;
+    return !!this.receipt && this.status === PayStatus.ToReview;
   }
 }

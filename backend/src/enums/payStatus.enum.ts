@@ -3,4 +3,5 @@ export enum PayStatus {
   ToPay = 'to_pay',
   ToReview = 'to_review',
   Rejected = 'rejected',
+  Expired = 'expired',
 }
