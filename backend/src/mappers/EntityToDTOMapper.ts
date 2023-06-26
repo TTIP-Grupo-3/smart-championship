@@ -41,6 +41,8 @@ import { TeamLeader } from 'src/entities/teamLeader.entity';
 import { TeamLeaderResponseDTO } from 'src/dtos/responses/teamLeader.response.dto';
 import { TeamLeaderEnrollmentResponseDTO } from 'src/dtos/responses/teamLeaderEnrollment.response.dto';
 import { Player } from 'src/entities/player.entity';
+import { LeaderTeamResponseDTO } from 'src/dtos/responses/leaderTeam.response.dto';
+import { Team } from 'src/entities/team.entity';
 
 const errors = configService.get('service.errors');
 
@@ -70,7 +72,8 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     if (source instanceof Card) return this.playerEventDTO(source, request, dtoCls);
     if (source instanceof ChampionshipPlayer) return this.playerDTO(source, request, dtoCls);
     if (source instanceof Player) return this.playerDTO(source, request, dtoCls);
-    if (source instanceof ChampionshipTeam) return this.teamDTO(source, request, dtoCls);
+    if (source instanceof ChampionshipTeam) return this.championshipTeamDTO(source, request, dtoCls);
+    if (source instanceof Team) return this.teamDTO(source, request, dtoCls);
     if (source instanceof TeamLeader) return this.teamLeaderDTO(source, request, dtoCls);
     if (source instanceof User) return this.userDTO(source, request, dtoCls);
     if (source instanceof TeamEnrollment) return this.teamEnrollmentDTO(source, request, dtoCls);
@@ -105,24 +108,31 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     request: UserRequestInfo = {},
     dtoCls?: Class<SmartChampionshipDTO>,
   ): UserResponseDTO | AccessTokenResponseDTO | TeamLeaderResponseDTO {
-    const {
-      id,
-      name,
-      team: { name: team, logo, players },
-      enrollments,
-    } = teamLeader;
     if (dtoCls?.name === TeamLeaderResponseDTO.name) {
+      const { id, name, team, enrollments } = teamLeader;
       return this.plainToInstance(TeamLeaderResponseDTO, {
         id,
         name,
-        team,
-        logo,
-        players: this.map(players, request, PlayerResponseDTO),
+        team: team ? this.map(team, request, LeaderTeamResponseDTO) : null,
         enrollments: this.map(enrollments, request, TeamLeaderEnrollmentResponseDTO),
       });
     } else {
       return this.userDTO(teamLeader, request, dtoCls);
     }
+  }
+
+  private teamDTO(
+    team: Team,
+    request: UserRequestInfo = {},
+    dtoCls?: Class<SmartChampionshipDTO>,
+  ): LeaderTeamResponseDTO {
+    const { id, name, logo, players } = team;
+    return this.plainToInstance(LeaderTeamResponseDTO, {
+      id,
+      name,
+      logo,
+      players: this.map(players, request, PlayerResponseDTO),
+    });
   }
 
   private userDTO(
@@ -242,7 +252,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     return this.plainToInstance(PlayerResponseDTO, { id, name, number, dni });
   }
 
-  private teamDTO(
+  private championshipTeamDTO(
     source: ChampionshipTeam,
     request: UserRequestInfo = {},
     dtoCls?: Class<SmartChampionshipDTO>,

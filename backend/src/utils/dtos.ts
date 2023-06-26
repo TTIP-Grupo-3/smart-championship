@@ -20,6 +20,7 @@ import { PartialAdminChampionshipResponse } from 'src/responses/partialAdminCham
 import { EnrollmentResponseDTO } from 'src/dtos/responses/enrollment.response.dto';
 import { TeamLeaderResponseDTO } from 'src/dtos/responses/teamLeader.response.dto';
 import { TeamLeaderEnrollmentResponseDTO } from 'src/dtos/responses/teamLeaderEnrollment.response.dto';
+import { LeaderTeamResponseDTO } from 'src/dtos/responses/leaderTeam.response.dto';
 
 export type SmartChampionshipDTO =
   | PartialCardsResponseDTO
@@ -43,4 +44,5 @@ export type SmartChampionshipDTO =
   | PartialAdminChampionshipResponse
   | EnrollmentResponseDTO
   | TeamLeaderResponseDTO
-  | TeamLeaderEnrollmentResponseDTO;
+  | TeamLeaderEnrollmentResponseDTO
+  | LeaderTeamResponseDTO;

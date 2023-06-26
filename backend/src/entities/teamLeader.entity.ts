@@ -8,7 +8,7 @@ import { Team } from './team.entity';
 @ChildEntity()
 export class TeamLeader extends User {
   roles: UserRole[] = [Role.TeamLeader];
-  @OneToOne(() => Team, (team) => team.leader, { eager: true, cascade: true })
+  @OneToOne(() => Team, (team) => team.leader, { cascade: true })
   team: Team;
   @OneToMany(() => TeamEnrollment, (enrollment) => enrollment.teamLeader, { cascade: true })
   enrollments: Array<TeamEnrollment>;
