@@ -8,11 +8,13 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import TeamFormation from '../../components/TeamFormation';
 import AddIcon from '@mui/icons-material/Add';
 import { MyEnrollmentsDialog } from '../../components/MyEnrollmentsDialog';
+import { EnrollmentTeamDialog } from '../../components/EnrollTeamDialog';
 
 export const TeamLeader: FC = () => {
   const { classes } = useStyles();
   const navigate = useNavigate();
   const [openEnrollments, setOpenEnrollments] = useState(false);
+  const [openTeamCreator, setOpenCreator] = useState(false);
   const [data, setData] = useState([]);
 
   const handleEnroll = () => {
@@ -21,6 +23,10 @@ export const TeamLeader: FC = () => {
 
   const handleEnrollments = () => {
     setOpenEnrollments(true);
+  };
+
+  const handleCreate = () => {
+    setOpenCreator(true);
   };
 
   return (
@@ -39,9 +45,10 @@ export const TeamLeader: FC = () => {
             <Typography color="white" padding={2}>
               Notamos que no tienes ningun equipo.
             </Typography>
-            <Button className={classes.createTeam}>
+            <Button className={classes.createTeam} onClick={handleCreate}>
               <Typography className={classes.buttonText}>Crea Tu Primer Equipo</Typography>
             </Button>
+            <EnrollmentTeamDialog open={openTeamCreator} setOpen={setOpenCreator} />
           </Grid>
         ) : (
           <>
