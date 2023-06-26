@@ -1,11 +1,9 @@
-import { PlayerResponse } from './player.response';
+import { LeaderTeamResponse } from './leaderTeam.response';
 import { TeamLeaderEnrollmentResponse } from './teamLeaderEnrollment.response';
 
 export interface TeamLeaderResponse {
   id: number;
   name: string;
-  team: string;
-  logo?: string;
-  players: Array<PlayerResponse>;
+  team?: LeaderTeamResponse;
   enrollments: Array<TeamLeaderEnrollmentResponse>;
 }

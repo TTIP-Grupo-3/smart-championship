@@ -20,6 +20,7 @@ const errors = configService.get('service.errors');
 @UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class TeamLeaderService {
   private readonly relations: FindOptionsRelations<TeamLeader> = {
+    team: true,
     enrollments: {
       championshipEnrollment: { championship: { enrollment: false, teams: false }, teamEnrollments: false },
     },
@@ -50,7 +51,7 @@ export class TeamLeaderService {
     return await this.transactionService.transaction(async (manager) => {
       const teamLeader = await manager.findOne(TeamLeader, { where: { id }, relations: this.relations });
       if (!teamLeader) throw new NotFoundException();
-      teamLeader.team.logo = this.storageService.getImage(teamLeader.team.filename);
+      if (teamLeader.team) teamLeader.team.logo = this.storageService.getImage(teamLeader.team.filename);
       return teamLeader;
     }, manager);
   }

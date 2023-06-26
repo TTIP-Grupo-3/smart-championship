@@ -34,7 +34,7 @@ export class ChampionshipEnrollment {
   }
 
   enroll(teamLeader: TeamLeader): TeamEnrollment {
-    this.checkEnrolled(teamLeader);
+    this.checkCanEnroll(teamLeader);
     const enrollment = TeamEnrollment.from(this, teamLeader);
     this.teamEnrollments.push(enrollment);
     return enrollment;
@@ -63,7 +63,7 @@ export class ChampionshipEnrollment {
     return this.teamEnrollments.some(({ teamLeader }) => teamLeader.id === user.id);
   }
 
-  private checkEnrolled(teamLeader: TeamLeader): void {
+  private checkCanEnroll(teamLeader: TeamLeader): void {
     if (this.isEnrolled(teamLeader)) throw new InvalidArgumentException('Already enrolled');
   }
 

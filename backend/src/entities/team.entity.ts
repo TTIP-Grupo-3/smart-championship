@@ -2,6 +2,8 @@ import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { TeamLeader } from './teamLeader.entity';
 import { Player } from './player.entity';
+import { Championship } from './championship.entity';
+import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 
 @Entity()
 export class Team {
@@ -21,5 +23,13 @@ export class Team {
 
   public get filename(): string {
     return `${this.id}.png`;
+  }
+
+  checkCanEnroll(championship: Championship) {
+    if (!this.canEnroll(championship)) throw new InvalidArgumentException('Need more players');
+  }
+
+  private canEnroll(championship: Championship): boolean {
+    return this.players.length >= championship.teamSize;
   }
 }
