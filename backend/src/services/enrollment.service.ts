@@ -27,7 +27,7 @@ export class EnrollmentService {
         where: { id, championshipEnrollment: { championship: { id: championshipId } } },
         relations: { championshipEnrollment: { teamEnrollments: false } },
       });
-      if (!enrollment) throw new NotFoundException();
+      if (!this.exists(enrollment)) throw new NotFoundException();
       return this.setReceipt(enrollment);
     }, manager);
   }
@@ -42,7 +42,7 @@ export class EnrollmentService {
       teamEnrollments.forEach(
         (enrollment) => (enrollment.championshipEnrollment = championship.enrollment),
       );
-      return teamEnrollments;
+      return teamEnrollments.filter((enrollment) => this.exists(enrollment));
     }, manager);
   }
 
@@ -66,5 +66,9 @@ export class EnrollmentService {
 
   protected getReceipt(enrollment: TeamEnrollment): string {
     return this.storageService.getImage(enrollment.filename, this.receiptContainer);
+  }
+
+  protected exists(teamEnrollment?: TeamEnrollment): boolean {
+    return !!teamEnrollment;
   }
 }

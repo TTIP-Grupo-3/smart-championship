@@ -6,6 +6,7 @@ import { Injectable } from '@nestjs/common';
 import { AdminChampionshipService } from './adminChampionship.service';
 import { StorageService } from './storage.service';
 import { EnrollmentService } from './enrollment.service';
+import { PayStatus } from 'src/enums/payStatus.enum';
 
 @Injectable()
 export class AdminEnrollmentService extends EnrollmentService {
@@ -39,5 +40,10 @@ export class AdminEnrollmentService extends EnrollmentService {
       enrollment.championshipEnrollment = championship.enrollment;
       return await manager.save(enrollment);
     }, manager);
+  }
+
+  protected exists(teamEnrollment?: TeamEnrollment): boolean {
+    const adminStatuses = [PayStatus.ToReview, PayStatus.Paid, PayStatus.Rejected];
+    return !!teamEnrollment && adminStatuses.includes(teamEnrollment.payStatus);
   }
 }
