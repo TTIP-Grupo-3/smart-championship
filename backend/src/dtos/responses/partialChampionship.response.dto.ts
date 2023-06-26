@@ -11,4 +11,6 @@ export class PartialChampionshipResponseDTO implements PartialChampionshipRespon
   type: ChampionshipType;
   @ApiProperty({ example: new Date() })
   date: string;
+  @ApiProperty()
+  teamSize: number;
 }
