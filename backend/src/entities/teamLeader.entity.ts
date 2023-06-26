@@ -4,6 +4,7 @@ import { User } from './user.entity';
 import { Role, UserRole } from 'src/enums/role.enum';
 import { Championship } from './championship.entity';
 import { Team } from './team.entity';
+import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 
 @ChildEntity()
 export class TeamLeader extends User {
@@ -14,8 +15,14 @@ export class TeamLeader extends User {
   enrollments: Array<TeamEnrollment>;
 
   enrollTo(championship: Championship): TeamEnrollment {
+    this.checkCanEnroll(championship);
     const enrollment = championship.enroll(this);
     this.enrollments.push(enrollment);
     return enrollment;
+  }
+
+  private checkCanEnroll(championship: Championship) {
+    if (!this.team) throw new InvalidArgumentException('Team is not created');
+    this.team.checkCanEnroll(championship);
   }
 }

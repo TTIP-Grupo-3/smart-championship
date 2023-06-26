@@ -54,9 +54,9 @@ export class TeamLeaderEnrollmentController {
   @Post()
   async enroll(
     @Param() enrollDTO: ChampionshipIdDTO,
-    @Req() { user }: UserRequestInfo<TeamLeader>,
+    @Req() { userDTO }: UserRequestInfo<TeamLeader>,
   ): Promise<TeamEnrollment> {
-    return await this.teamLeaderEnrollmentService.enroll(enrollDTO, user);
+    return await this.teamLeaderEnrollmentService.enroll(enrollDTO, userDTO);
   }
 
   @Roles(Role.TeamLeader)
