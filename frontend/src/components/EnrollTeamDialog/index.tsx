@@ -151,7 +151,7 @@ export const EnrollmentTeamDialog: FC<any> = ({ open, setOpen }) => {
                   Carga la información de tus jugadores.
                 </Typography>
               </Grid>
-              <Grid container padding={2} direction="column">
+              <Grid container padding={2} paddingTop={0} paddingBottom={1} direction="column">
                 {players.map((player, index) => (
                   <Grid
                     container
@@ -179,7 +179,16 @@ export const EnrollmentTeamDialog: FC<any> = ({ open, setOpen }) => {
                   </Grid>
                 ))}
               </Grid>
-              <Grid container style={{ display: 'flex', flexDirection: 'row', padding: 10 }}>
+              <Grid
+                container
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  padding: 10,
+                  paddingTop: 1,
+                  paddingBottom: 8,
+                }}
+              >
                 <Grid container style={{ display: 'flex', flexDirection: 'row', padding: 5, width: 75 }}>
                   <OutlinedInput label="N°" name="number" placeholder="10" onChange={handleChange} />
                 </Grid>
