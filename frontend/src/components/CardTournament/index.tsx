@@ -8,6 +8,7 @@ import image from '../../prueba.jpg';
 import { FC } from 'react';
 import { blue } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 export type TypesTournament = { [key: string]: string };
 
@@ -37,11 +38,11 @@ export const CardTournament: FC<any> = ({ championship }) => {
                 }}
               />
               <Typography color="grey" fontSize={15} paddingLeft={1}>
-                11 jugadores
+                {championship.teamSize} jugadores
               </Typography>
             </Grid>
             <Typography color="grey" fontSize={15} paddingLeft={1} paddingTop={2}>
-              Fecha Inicio : 23/5/23
+              Fecha Inicio : {dayjs(championship.date).format('DD/MM/YYYY')}
             </Typography>
           </CardContent>
         </CardActionArea>

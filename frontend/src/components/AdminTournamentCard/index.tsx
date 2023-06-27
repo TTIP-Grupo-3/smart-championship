@@ -32,10 +32,6 @@ export const AdminTournamentCard: FC<any> = ({
           <Button onClick={() => navigate(`/admin/enrollments/${id}`)} className={classes.button}>
             Inscripciones
           </Button>
-
-          {/*<IconButton onClick={(): void => console.log('')}>
-            <DeleteOutlineIcon className={classes.delete} />
-  </IconButton>*/}
         </Grid>
       </Grid>
     </Grid>

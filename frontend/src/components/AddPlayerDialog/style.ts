@@ -9,6 +9,8 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     fontFamily: 'sans-serif',
   },
   steps: {
+    display: 'flex',
+    textAlign: 'center',
     color: alpha(theme.palette.common.white, 0.68),
   },
   inputContainer: {
@@ -21,8 +23,11 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
 
   buttonAdd: {
-    backgroundColor: '#00BCD4', 
+    backgroundColor: '#00BCD4',
     borderRadius: 4,
+    '&:hover': {
+      backgroundColor: '#00BCD4',
+    },
     '&.Mui-disabled': {
       color: lighten(theme.palette.common.white, 0.05),
       backgroundColor: alpha(theme.palette.common.white, 0.38),
@@ -33,6 +38,8 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'row',
     paddingTop: theme.spacing(2),
     width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
     '& input[type=number]': {

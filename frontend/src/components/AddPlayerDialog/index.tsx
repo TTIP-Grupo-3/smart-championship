@@ -36,10 +36,24 @@ export const AddPlayerDialog: FC<any> = ({ open, setOpen }) => {
           Agregar Jugador
         </BootstrapDialogTitle>
         <DialogContent style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Grid container style={{ flexDirection: 'column', display: 'flex' }}>
+          <Grid
+            container
+            style={{
+              flexDirection: 'column',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <Grid
               container
-              style={{ flexDirection: 'row', display: 'flex', paddingTop: '2%', alignItems: 'center' }}
+              style={{
+                flexDirection: 'row',
+                display: 'flex',
+                paddingTop: '2%',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             >
               <Typography variant="body1" className={classes.steps}>
                 Carga la información de tus jugadores.
@@ -71,6 +85,7 @@ export const AddPlayerDialog: FC<any> = ({ open, setOpen }) => {
                 className={classes.input}
                 label="DNI"
                 name="dni"
+                type="number"
                 placeholder="14607531"
                 onChange={handleChange}
               />

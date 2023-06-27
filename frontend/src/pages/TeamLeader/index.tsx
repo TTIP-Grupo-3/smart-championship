@@ -16,7 +16,7 @@ export const TeamLeader: FC = () => {
   const navigate = useNavigate();
   const [openEnrollments, setOpenEnrollments] = useState(false);
   const [openTeamCreator, setOpenCreator] = useState(false);
-  const [data, setData] = useState([1]);
+  const [data] = useState([1]);
   const [openPlayer, setOpenPlayer] = useState(false);
 
   const handleEnroll = () => {

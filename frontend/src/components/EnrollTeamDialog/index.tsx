@@ -3,23 +3,18 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
-import { Avatar, Grid, Typography } from '@mui/material';
+import { FC, useState } from 'react';
+import { Grid, Typography } from '@mui/material';
 import { useStyles } from './style';
 import { BootstrapDialogTitle } from '../DialogTitle';
-import { lightBlue } from '@mui/material/colors';
 import { OutlinedInput } from '../OutlinedInput';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import defaultFootball from '../../default_match_icon_local.svg';
-import Scroll from '../Scroll';
 
 export const EnrollmentTeamDialog: FC<any> = ({ open, setOpen }) => {
   const { classes } = useStyles();
   const [image, setImage] = useState<string>('');
   const [file, setFile] = useState<File>();
-  const [players, setPlayers] = useState<any[]>([]);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const [player, setPlayer] = useState<any>({ firstName: '', lastName: '', dni: '', number: '' });
 
   const handleClose = () => {
     setOpen(false);
@@ -32,23 +27,6 @@ export const EnrollmentTeamDialog: FC<any> = ({ open, setOpen }) => {
       setFile(file);
       setImage(url);
     } catch (e) {}
-  };
-
-  const handleAddPlayer = () => {
-    setPlayers((prev) => [...prev, 'player']);
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPlayer({ ...player, [e.target.name]: e.target.value });
-  };
-  const scrollToElement = () => buttonRef?.current?.scrollIntoView();
-
-  useEffect(() => {
-    scrollToElement();
-  }, [players]);
-
-  const fieldsCompleted = () => {
-    return Object.keys(player).every((key: string) => player[key].trim().length !== 0);
   };
 
   return (
