@@ -9,13 +9,15 @@ import TeamFormation from '../../components/TeamFormation';
 import AddIcon from '@mui/icons-material/Add';
 import { MyEnrollmentsDialog } from '../../components/MyEnrollmentsDialog';
 import { EnrollmentTeamDialog } from '../../components/EnrollTeamDialog';
+import { AddPlayerDialog } from '../../components/AddPlayerDialog';
 
 export const TeamLeader: FC = () => {
   const { classes } = useStyles();
   const navigate = useNavigate();
   const [openEnrollments, setOpenEnrollments] = useState(false);
   const [openTeamCreator, setOpenCreator] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([1]);
+  const [openPlayer, setOpenPlayer] = useState(false);
 
   const handleEnroll = () => {
     navigate('/leader/enrollment/tournaments');
@@ -27,6 +29,10 @@ export const TeamLeader: FC = () => {
 
   const handleCreate = () => {
     setOpenCreator(true);
+  };
+
+  const addPlayer = () => {
+    setOpenPlayer(true);
   };
 
   return (
@@ -76,7 +82,7 @@ export const TeamLeader: FC = () => {
                 <Grid className={classes.team}>
                   <Grid container className={classes.gridRigthContent}>
                     <Typography className={classes.teamPlayerText}>Jugadores:</Typography>
-                    <IconButton>
+                    <IconButton onClick={addPlayer}>
                       <AddIcon style={{ color: 'white', fontSize: 23 }}></AddIcon>
                     </IconButton>
                   </Grid>
@@ -88,6 +94,7 @@ export const TeamLeader: FC = () => {
           </>
         )}
         <MyEnrollmentsDialog open={openEnrollments} setOpen={setOpenEnrollments} />
+        <AddPlayerDialog open={openPlayer} setOpen={setOpenPlayer} />
       </Grid>
     </Navbar>
   );

@@ -26,20 +26,22 @@ export const EnrollmentTeamDialog: FC<any> = ({ open, setOpen }) => {
   };
 
   const handleFile = (e: any) => {
-    const files = e.target.files[0];
-    setFile(files);
-    setImage(URL.createObjectURL(files));
+    const file = e.target.files[0];
+    try {
+      const url = URL.createObjectURL(file);
+      setFile(file);
+      setImage(url);
+    } catch (e) {}
   };
 
   const handleAddPlayer = () => {
-    setPlayers((prev) => [...prev, player]);
+    setPlayers((prev) => [...prev, 'player']);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPlayer({ ...player, [e.target.name]: e.target.value });
   };
   const scrollToElement = () => buttonRef?.current?.scrollIntoView();
-  console.log(player);
 
   useEffect(() => {
     scrollToElement();
@@ -54,186 +56,61 @@ export const EnrollmentTeamDialog: FC<any> = ({ open, setOpen }) => {
       <Dialog
         open={open}
         style={{ borderRadius: 4, width: '100%' }}
-        PaperProps={{ elevation: 24, style: { width: '90vw', height: '90vh' } }}
+        PaperProps={{ elevation: 24, style: { width: '30vw', height: 'auto' } }}
       >
-        <BootstrapDialogTitle style={{ color: 'white' }} onClose={handleClose}>
+        <BootstrapDialogTitle style={{ color: 'white', paddingLeft: 23 }} onClose={handleClose}>
           Crea Tu Equipo
         </BootstrapDialogTitle>
-        <DialogContent>
-          <Scroll className={classes.scroll}>
-            <Grid container style={{ flexDirection: 'column', display: 'flex' }}>
-              <Grid
-                container
-                style={{ flexDirection: 'row', display: 'flex', paddingTop: '2%', alignItems: 'center' }}
-              >
-                {' '}
-                <Avatar
-                  style={{
-                    width: 26,
-                    height: 25,
-                    marginRight: '2%',
-                    backgroundColor: lightBlue[800],
-                    color: 'white',
-                    fontSize: 14,
-                    fontWeight: 700,
-                  }}
-                >
-                  1
-                </Avatar>
-                <Typography variant="body1" className={classes.steps}>
-                  Carga el escudo y nombre del equipo.
-                </Typography>
-              </Grid>
-              <Grid
-                container
-                style={{
-                  flexDirection: 'row',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: 24,
-                }}
-              >
-                <img
-                  src={!file ? defaultFootball : image}
-                  style={{ borderRadius: '100%', width: '60px', height: '60px', marginRight: 10 }}
-                  alt="avatar image"
-                />
-                <Button
-                  component="label"
-                  variant="contained"
-                  style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
-                >
-                  <AddPhotoAlternateIcon style={{ paddingRight: 6 }} /> Subir escudo
-                  <input
-                    accept="image/*"
-                    id="contained-button-file"
-                    hidden
-                    type="file"
-                    onChange={handleFile}
-                  />
-                </Button>
-              </Grid>
-              <Grid className={classes.inputContainer}>
-                <OutlinedInput
-                  variant="outlined"
-                  name="team"
-                  label="Nombre del equipo"
-                  placeholder="Championship FC"
-                />
-              </Grid>
-
-              <Grid
-                container
-                style={{
-                  flexDirection: 'row',
-                  display: 'flex',
-                  paddingTop: '2%',
-                  paddingBottom: '2%',
-                  alignItems: 'center',
-                }}
-              >
-                {' '}
-                <Avatar
-                  style={{
-                    width: 26,
-                    height: 25,
-                    marginRight: '2%',
-                    backgroundColor: lightBlue[800],
-                    color: 'white',
-                    fontSize: 14,
-                    fontWeight: 700,
-                  }}
-                >
-                  2
-                </Avatar>
-                <Typography variant="body1" className={classes.steps}>
-                  Carga la información de tus jugadores.
-                </Typography>
-              </Grid>
-              <Grid container padding={2} paddingTop={0} paddingBottom={1} direction="column">
-                {players.map((player, index) => (
-                  <Grid
-                    container
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      padding: 2,
-                      backgroundColor: 'gray',
-                      borderRadius: 4,
-                      margin: 5,
-                    }}
-                  >
-                    <Typography color="white" padding={1}>
-                      {player.number}
-                    </Typography>
-                    <Typography color="white" padding={1}>
-                      {player.firstName}
-                    </Typography>
-                    <Typography color="white" padding={1}>
-                      {player.lastName}
-                    </Typography>
-                    <Typography color="white" padding={1}>
-                      {player.dni}
-                    </Typography>
-                  </Grid>
-                ))}
-              </Grid>
-              <Grid
-                container
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  padding: 10,
-                  paddingTop: 1,
-                  paddingBottom: 8,
-                }}
-              >
-                <Grid container style={{ display: 'flex', flexDirection: 'row', padding: 5, width: 75 }}>
-                  <OutlinedInput label="N°" name="number" placeholder="10" onChange={handleChange} />
-                </Grid>
-                <Grid container style={{ display: 'flex', flexDirection: 'row', padding: 5, width: 140 }}>
-                  <OutlinedInput
-                    label="Nombre"
-                    name="firstName"
-                    placeholder="Nombre"
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid container style={{ display: 'flex', flexDirection: 'row', padding: 5, width: 140 }}>
-                  <OutlinedInput
-                    label="Apellido"
-                    name="lastName"
-                    placeholder="Apellido"
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid container style={{ display: 'flex', flexDirection: 'row', padding: 5, width: 140 }}>
-                  <OutlinedInput label="DNI" name="dni" placeholder="14607531" onChange={handleChange} />
-                </Grid>
-
-                <Grid
-                  container
-                  style={{ display: 'flex', flexDirection: 'row', padding: 5, alignItems: 'center' }}
-                >
-                  <Button
-                    ref={buttonRef}
-                    variant="contained"
-                    className={classes.buttonAdd}
-                    disabled={!fieldsCompleted()}
-                    onClick={handleAddPlayer}
-                  >
-                    Agregar Jugador
-                  </Button>
-                  <Typography variant="body1" color="white" paddingLeft={2}>
-                    {players.length} Jugadores
-                  </Typography>
-                </Grid>
-              </Grid>
+        <DialogContent style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Grid container style={{ flexDirection: 'column', display: 'flex' }}>
+            <Grid
+              container
+              style={{ flexDirection: 'row', display: 'flex', paddingTop: '2%', alignItems: 'center' }}
+            >
+              <Typography variant="body1" className={classes.steps}>
+                Carga el escudo y nombre del equipo.
+              </Typography>
             </Grid>
-          </Scroll>
+            <Grid
+              container
+              style={{
+                flexDirection: 'row',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 18,
+              }}
+            >
+              <img
+                src={!file ? defaultFootball : image}
+                style={{ borderRadius: '100%', width: '60px', height: '60px', marginRight: 10 }}
+                alt="avatar image"
+              />
+              <Button
+                component="label"
+                variant="contained"
+                style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
+              >
+                <AddPhotoAlternateIcon style={{ paddingRight: 6 }} /> Subir escudo
+                <input
+                  accept="image/*"
+                  id="contained-button-file"
+                  hidden
+                  type="file"
+                  onChange={handleFile}
+                />
+              </Button>
+            </Grid>
+            <Grid className={classes.inputContainer}>
+              <OutlinedInput
+                variant="outlined"
+                name="team"
+                label="Nombre del equipo"
+                placeholder="Championship FC"
+              />
+            </Grid>
+          </Grid>
         </DialogContent>
-
         <DialogActions>
           <Button onClick={handleClose} style={{ backgroundColor: '#00BCD4', borderRadius: 4 }}>
             <Typography className={classes.buttonText}>Crear</Typography>

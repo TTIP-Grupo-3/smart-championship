@@ -31,12 +31,14 @@ export const MyEnrollmentsDialog: FC<any> = ({ open, setOpen }) => {
             status={'approved'}
             tournamentRequested="To Start Championship"
             type="Clasificacion"
+            prize={1000}
           />
           <TeamEnrollmentCard
             id={2}
             status={'rejected'}
             tournamentRequested="Other Championship"
             type="Elimination"
+            prize={2000}
           />
         </DialogContent>
         <DialogActions>

@@ -7,9 +7,12 @@ import Checkbox from '@mui/material/Checkbox';
 import { Grid, IconButton, ListItemIcon, Typography } from '@mui/material';
 import { CheckBoxOutlineBlankOutlined } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
+import { DeleteTeamDialog } from '../DeleteTeamDialog';
 
-export default function CheckboxListSecondary() {
-  const [checked, setChecked] = React.useState([1]);
+export default function TeamFormation() {
+  const [checked, setChecked] = useState([1]);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
@@ -30,6 +33,10 @@ export default function CheckboxListSecondary() {
     { name: 'Diego Moronha', number: 1 },
   ];
 
+  const deletePlayers = () => {
+    setOpenDelete(true);
+  };
+
   return (
     <List dense sx={{ width: '94%', bgcolor: 'black', margin: 2, borderRadius: '4px' }}>
       <Grid
@@ -44,7 +51,7 @@ export default function CheckboxListSecondary() {
         }}
       >
         <ListItemIcon>
-          <IconButton>
+          <IconButton onClick={deletePlayers}>
             <DeleteIcon style={{ fill: 'white' }}></DeleteIcon>
           </IconButton>
         </ListItemIcon>
@@ -96,6 +103,8 @@ export default function CheckboxListSecondary() {
           </ListItem>
         );
       })}
+
+      <DeleteTeamDialog open={openDelete} setOpen={setOpenDelete} />
     </List>
   );
 }
