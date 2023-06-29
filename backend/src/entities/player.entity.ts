@@ -1,6 +1,8 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ChampionshipPlayer } from './championshipPlayer.entity';
 import { Team } from './team.entity';
+import { Championship } from './championship.entity';
+import { ChampionshipTeam } from './championshipTeam.entity';
 
 @Entity()
 export class Player {
@@ -16,4 +18,8 @@ export class Player {
   team: Team;
   @OneToMany(() => ChampionshipPlayer, (championshipPlayer) => championshipPlayer.player)
   championshipPlayers: Array<ChampionshipPlayer>;
+
+  createChampionshipPlayer(championship: Championship, team: ChampionshipTeam): ChampionshipPlayer {
+    return ChampionshipPlayer.from(this, championship, team);
+  }
 }

@@ -25,6 +25,10 @@ export class Team {
     return `${this.id}.png`;
   }
 
+  createChampionshipTeam(championship: Championship): ChampionshipTeam {
+    return ChampionshipTeam.from(this, championship);
+  }
+
   checkCanEnroll(championship: Championship) {
     if (!this.canEnroll(championship)) throw new InvalidArgumentException('Need more players');
   }

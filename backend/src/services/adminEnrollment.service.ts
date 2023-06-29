@@ -7,6 +7,8 @@ import { AdminChampionshipService } from './adminChampionship.service';
 import { StorageService } from './storage.service';
 import { EnrollmentService } from './enrollment.service';
 import { PayStatus } from 'src/enums/payStatus.enum';
+import { Championship } from 'src/entities/championship.entity';
+import { TeamService } from './team.service';
 
 @Injectable()
 export class AdminEnrollmentService extends EnrollmentService {
@@ -14,6 +16,7 @@ export class AdminEnrollmentService extends EnrollmentService {
     transactionService: TransactionService,
     championshipService: AdminChampionshipService,
     storageService: StorageService,
+    private readonly teamService: TeamService,
   ) {
     super(transactionService, championshipService, storageService);
   }
@@ -24,9 +27,10 @@ export class AdminEnrollmentService extends EnrollmentService {
   ): Promise<TeamEnrollment> {
     return await this.transactionService.transaction(async (manager) => {
       const championship = await this.getChampionship(acceptEnrollmentDTO, manager);
-      const enrollment = championship.acceptEnrollment(acceptEnrollmentDTO.id);
-      enrollment.championshipEnrollment = championship.enrollment;
-      return await manager.save(enrollment);
+      const enrollment = await this.getFromChampionship(acceptEnrollmentDTO.id, championship, manager);
+      championship.acceptEnrollment(acceptEnrollmentDTO.id);
+      await manager.save(championship);
+      return enrollment;
     }, manager);
   }
 
@@ -45,5 +49,16 @@ export class AdminEnrollmentService extends EnrollmentService {
   protected exists(teamEnrollment?: TeamEnrollment): boolean {
     const adminStatuses = [PayStatus.ToReview, PayStatus.Paid, PayStatus.Rejected];
     return !!teamEnrollment && adminStatuses.includes(teamEnrollment.payStatus);
+  }
+
+  private async getFromChampionship(
+    id: number,
+    championship: Championship,
+    manager: EntityManager,
+  ): Promise<TeamEnrollment> {
+    const enrollment = championship.findEnrollment(id);
+    enrollment.teamLeader.team = await this.teamService.getTeam(enrollment.teamId, manager);
+    enrollment.championshipEnrollment = championship.enrollment;
+    return enrollment;
   }
 }

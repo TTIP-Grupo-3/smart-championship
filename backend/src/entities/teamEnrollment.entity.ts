@@ -3,6 +3,8 @@ import { TeamLeader } from './teamLeader.entity';
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ChampionshipEnrollment } from './championshipEnrollment.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
+import { ChampionshipTeam } from './championshipTeam.entity';
+import { Championship } from './championship.entity';
 
 @Entity()
 export class TeamEnrollment {
@@ -33,10 +35,18 @@ export class TeamEnrollment {
     return this.expired() ? PayStatus.Expired : this.payStatus;
   }
 
+  public get teamId(): number {
+    return this.teamLeader.teamId;
+  }
+
   uploadReceipt(receipt: string) {
     if (!this.toPay()) throw new InvalidArgumentException('Invalid operation. Cannot upload receipt');
     this.receipt = receipt;
     this.payStatus = PayStatus.ToReview;
+  }
+
+  createChampionshipTeam(championship: Championship): ChampionshipTeam {
+    return this.teamLeader.createChampionshipTeam(championship);
   }
 
   static from(enrollment: ChampionshipEnrollment, teamLeader: TeamLeader): TeamEnrollment {
@@ -62,9 +72,12 @@ export class TeamEnrollment {
     return this.payStatus === PayStatus.ToPay && Date.now() - this.createdAt.getTime() >= this.expireTime;
   }
 
-  accept() {
+  accept(championship: Championship): ChampionshipTeam {
     if (!this.reviewable()) throw new InvalidArgumentException();
     this.payStatus = PayStatus.Paid;
+    const championshipTeam = this.createChampionshipTeam(championship);
+    championship.addTeam(championshipTeam);
+    return championshipTeam;
   }
 
   reject() {

@@ -59,10 +59,10 @@ export class ChampionshipEnrollment {
     return enrollment;
   }
 
-  acceptEnrollment(id: number): TeamEnrollment {
+  acceptEnrollment(id: number, championship: Championship): TeamEnrollment {
     if (!this.canAcceptEnrollments()) throw new InvalidArgumentException();
     const enrollment = this.findEnrollment(id);
-    enrollment.accept();
+    enrollment.accept(championship);
     return enrollment;
   }
 
@@ -77,7 +77,7 @@ export class ChampionshipEnrollment {
     if (this.reserved === this.size) throw new InvalidArgumentException('Reserved places');
   }
 
-  private findEnrollment(id: number): TeamEnrollment {
+  findEnrollment(id: number): TeamEnrollment {
     return this.teamEnrollments.find((enrollment) => enrollment.id === id);
   }
 

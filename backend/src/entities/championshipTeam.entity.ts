@@ -29,4 +29,16 @@ export class ChampionshipTeam {
   public get filename(): string {
     return `${this.teamId}.png`;
   }
+
+  static from(team: Team, championship: Championship): ChampionshipTeam {
+    const championshipTeam = new ChampionshipTeam();
+    championshipTeam.name = team.name;
+    championshipTeam.championship = championship;
+    championshipTeam.team = team;
+    championshipTeam.players = team.players.map((player) =>
+      player.createChampionshipPlayer(championship, championshipTeam),
+    );
+    championshipTeam.logo = team.logo;
+    return championshipTeam;
+  }
 }
