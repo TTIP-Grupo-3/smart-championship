@@ -14,6 +14,13 @@ export class PlayerService {
     private readonly teamLeaderService: TeamLeaderService,
   ) {}
 
+  async getPlayers(leaderDTO: IdDTO, manager?: EntityManager): Promise<Array<Player>> {
+    return await this.transactionService.transaction(async (manager) => {
+      const leader = await this.teamLeaderService.getTeamLeader(leaderDTO, manager);
+      return leader.players;
+    }, manager);
+  }
+
   async createPlayer(
     createPlayerDTO: CreatePlayerDTO,
     leaderDTO: IdDTO,

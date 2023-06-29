@@ -21,8 +21,13 @@ export class TeamLeader extends User {
 
   minimumTeamSize: number;
 
+  public get players(): Array<Player> {
+    this.checkTeamCreated();
+    return this.team.players;
+  }
+
   addPlayer(player: Player) {
-    if (!this.team) throw new NotFoundException('Team not found');
+    this.checkTeamCreated();
     this.team.addPlayer(player);
   }
 
@@ -44,7 +49,11 @@ export class TeamLeader extends User {
   }
 
   private checkCanEnroll(championship: Championship) {
-    if (!this.team) throw new InvalidArgumentException('Team is not created');
+    this.checkTeamCreated();
     this.team.checkCanEnroll(championship);
+  }
+
+  private checkTeamCreated() {
+    if (!this.team) throw new NotFoundException('Team is not created');
   }
 }

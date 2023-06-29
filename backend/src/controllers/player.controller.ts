@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Post, Req, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+  UseInterceptors,
+  UsePipes,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiForbiddenResponse,
@@ -31,6 +41,18 @@ export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
   @Roles(Role.TeamLeader)
+  @ApiOperation({ summary: 'Get players' })
+  @ApiResponse({ type: PlayerResponseDTO, isArray: true, status: 200 })
+  @ApiForbiddenResponse({ type: ErrorResponseDTO })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
+  @ApiNotFoundResponse({ type: ErrorResponseDTO })
+  @UseInterceptors(new TransformInterceptor(PlayerResponseDTO))
+  @Get()
+  async getPlayers(@Req() { userDTO }: UserRequestInfo<TeamLeader>): Promise<Array<Player>> {
+    return await this.playerService.getPlayers(userDTO);
+  }
+
+  @Roles(Role.TeamLeader)
   @ApiOperation({ summary: 'Create player' })
   @ApiResponse({ type: PlayerResponseDTO, status: 201 })
   @ApiForbiddenResponse({ type: ErrorResponseDTO })
@@ -38,7 +60,7 @@ export class PlayerController {
   @ApiNotFoundResponse({ type: ErrorResponseDTO })
   @UseInterceptors(new TransformInterceptor(PlayerResponseDTO))
   @Post()
-  async createTeam(
+  async createPlayer(
     @Body() createPlayerDTO: CreatePlayerDTO,
     @Req() { userDTO }: UserRequestInfo<TeamLeader>,
   ): Promise<Player> {
