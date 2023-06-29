@@ -6,6 +6,8 @@ import { Championship } from './championship.entity';
 import { Team } from './team.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { ChampionshipTeam } from './championshipTeam.entity';
+import { Player } from './player.entity';
+import { NotFoundException } from '@nestjs/common';
 
 @ChildEntity()
 export class TeamLeader extends User {
@@ -18,6 +20,11 @@ export class TeamLeader extends User {
   teamId: number;
 
   minimumTeamSize: number;
+
+  addPlayer(player: Player) {
+    if (!this.team) throw new NotFoundException('Team not found');
+    this.team.addPlayer(player);
+  }
 
   setTeam(team: Team) {
     if (!!this.team) throw new InvalidArgumentException('Team already created');
