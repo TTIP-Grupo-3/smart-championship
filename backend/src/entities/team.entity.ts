@@ -21,8 +21,17 @@ export class Team {
 
   logo: string;
 
+  setLeader(leader: TeamLeader) {
+    if (!!this.leader) throw new InvalidArgumentException('Team has leader');
+    this.leader = leader;
+  }
+
   public get filename(): string {
     return `${this.id}.png`;
+  }
+
+  createChampionshipTeam(championship: Championship): ChampionshipTeam {
+    return ChampionshipTeam.from(this, championship);
   }
 
   checkCanEnroll(championship: Championship) {

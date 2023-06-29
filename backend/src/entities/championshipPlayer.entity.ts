@@ -30,4 +30,15 @@ export class ChampionshipPlayer {
   championship: Championship;
   @ManyToOne(() => Player, (player) => player.championshipPlayers, { createForeignKeyConstraints: false })
   player: Player;
+
+  static from(player: Player, championship: Championship, team: ChampionshipTeam): ChampionshipPlayer {
+    const championshipPlayer = new ChampionshipPlayer();
+    championshipPlayer.name = player.name;
+    championshipPlayer.number = player.number;
+    championshipPlayer.dni = player.dni;
+    championshipPlayer.team = team;
+    championshipPlayer.championship = championship;
+    championshipPlayer.player = player;
+    return championshipPlayer;
+  }
 }

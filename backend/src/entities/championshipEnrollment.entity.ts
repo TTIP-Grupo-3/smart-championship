@@ -33,6 +33,14 @@ export class ChampionshipEnrollment {
     return this.teamEnrollments.filter((teamEnrollment) => teamEnrollment.paid());
   }
 
+  public get reserved(): number {
+    return this.reservedTeams.length;
+  }
+
+  public get reservedTeams(): Array<TeamEnrollment> {
+    return this.teamEnrollments.filter((teamEnrollment) => teamEnrollment.reserved());
+  }
+
   enroll(teamLeader: TeamLeader): TeamEnrollment {
     this.checkCanEnroll(teamLeader);
     const enrollment = TeamEnrollment.from(this, teamLeader);
@@ -51,10 +59,10 @@ export class ChampionshipEnrollment {
     return enrollment;
   }
 
-  acceptEnrollment(id: number): TeamEnrollment {
+  acceptEnrollment(id: number, championship: Championship): TeamEnrollment {
     if (!this.canAcceptEnrollments()) throw new InvalidArgumentException();
     const enrollment = this.findEnrollment(id);
-    enrollment.accept();
+    enrollment.accept(championship);
     return enrollment;
   }
 
@@ -65,9 +73,11 @@ export class ChampionshipEnrollment {
 
   private checkCanEnroll(teamLeader: TeamLeader): void {
     if (this.isEnrolled(teamLeader)) throw new InvalidArgumentException('Already enrolled');
+    if (this.enrolled === this.size) throw new InvalidArgumentException('Completed places');
+    if (this.reserved === this.size) throw new InvalidArgumentException('Reserved places');
   }
 
-  private findEnrollment(id: number): TeamEnrollment {
+  findEnrollment(id: number): TeamEnrollment {
     return this.teamEnrollments.find((enrollment) => enrollment.id === id);
   }
 

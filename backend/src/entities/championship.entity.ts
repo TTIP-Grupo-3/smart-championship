@@ -18,7 +18,7 @@ export abstract class Championship {
   id: number;
   @Column()
   name: string;
-  @OneToMany(() => ChampionshipTeam, (team) => team.championship, { eager: true })
+  @OneToMany(() => ChampionshipTeam, (team) => team.championship, { eager: true, cascade: true })
   teams: Array<ChampionshipTeam>;
   @OneToMany(() => ChampionshipPlayer, (player) => player.championship)
   players: Array<ChampionshipPlayer>;
@@ -57,7 +57,7 @@ export abstract class Championship {
   }
 
   public get matchTeams() {
-    return this.matches.flatMap((match) => match.teams);
+    return this.matches.flatMap((match) => match.teams).filter((team) => !!team);
   }
 
   public get status(): ChampionshipStatus {
@@ -68,6 +68,14 @@ export abstract class Championship {
     } else {
       return ChampionshipStatus.TOSTART;
     }
+  }
+
+  findEnrollment(id: number): TeamEnrollment {
+    return this.enrollment.findEnrollment(id);
+  }
+
+  addTeam(championshipTeam: ChampionshipTeam) {
+    this.teams.push(championshipTeam);
   }
 
   isEnrolled(user: User): boolean {
@@ -94,7 +102,7 @@ export abstract class Championship {
 
   acceptEnrollment(id: number): TeamEnrollment {
     if (!this.toStart()) throw new InvalidArgumentException();
-    return this.enrollment.acceptEnrollment(id);
+    return this.enrollment.acceptEnrollment(id, this);
   }
 
   rejectEnrollment(id: number): TeamEnrollment {
