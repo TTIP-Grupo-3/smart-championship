@@ -1,28 +1,31 @@
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, Chip, Grid } from '@mui/material';
 import { FC } from 'react';
 import { blue } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useStyles } from './style';
 
 export type TypesTournament = { [key: string]: string };
 
 export const CardTournamentEnroll: FC<any> = ({ championship }) => {
   const navigate = useNavigate();
+  const { classes } = useStyles();
   const types: TypesTournament = { score: 'clasificacion', elimination: 'eliminacion' };
+
   const handleTournament = () => {
     navigate(`/leader/enrolling/reservation/${championship.id}`);
   };
+
   return (
     <Grid item xs={10}>
-      <Card sx={{ backgroundColor: 'black', display: 'flex' }} elevation={24}>
+      <Card className={classes.card} elevation={24}>
         <CardActionArea onClick={handleTournament}>
           <CardContent>
-            <Grid container flexDirection="row" display="flex" alignItems="center">
+            <Grid container className={classes.container}>
               <Typography variant="h5" component="div" color="white" paddingRight={1}>
                 {championship.name}
               </Typography>

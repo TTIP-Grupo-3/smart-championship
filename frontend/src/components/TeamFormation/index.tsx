@@ -11,8 +11,14 @@ import { FC, useState } from 'react';
 import { DeleteTeamDialog } from '../DeleteTeamDialog';
 import { useStyles } from './style';
 import Scroll from '../Scroll';
+import { Player } from '../../interfaces';
+import { EmptyData } from '../EmptyData';
 
-export const TeamFormation: FC<any> = ({ players }) => {
+interface PlayerProps {
+  players: Player[];
+}
+
+export const TeamFormation: FC<PlayerProps> = ({ players }) => {
   const [checked, setChecked] = useState([1]);
   const [openDelete, setOpenDelete] = useState(false);
   const { classes } = useStyles();
@@ -50,38 +56,44 @@ export const TeamFormation: FC<any> = ({ players }) => {
           </Typography>
         </ListItemText>
       </Grid>
+
       <Scroll style={{ height: '30vh' }}>
-        {players.map((value: any, index: number) => {
-          const labelId = `checkbox-list-secondary-label-${value}`;
-          return (
-            <ListItem key={index} disablePadding>
-              <ListItemIcon>
-                <Checkbox
-                  style={{ paddingLeft: '20px' }}
-                  edge="start"
-                  color="primary"
-                  onChange={handleToggle(index)}
-                  checked={checked.indexOf(index) !== -1}
-                  inputProps={{ 'aria-labelledby': labelId }}
-                  icon={<CheckBoxOutlineBlankOutlined style={{ color: 'white' }} />}
-                />
-              </ListItemIcon>
-              <ListItemButton>
-                <Grid container className={classes.gridTeam}>
-                  <ListItemText style={{ width: '0px' }}>
-                    <Typography color="white">{value.number}</Typography>
-                  </ListItemText>
-                  <ListItemText>
-                    <Typography color="white" textAlign={'left'} paddingLeft={2}>
-                      {value.name}
-                    </Typography>
-                  </ListItemText>
-                </Grid>
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
+        {players.length === 0 ? (
+          <EmptyData emptyText="no hay jugadores" />
+        ) : (
+          players.map((value: any, index: number) => {
+            const labelId = `checkbox-list-secondary-label-${value}`;
+            return (
+              <ListItem key={index} disablePadding>
+                <ListItemIcon>
+                  <Checkbox
+                    style={{ paddingLeft: '20px' }}
+                    edge="start"
+                    color="primary"
+                    onChange={handleToggle(index)}
+                    checked={checked.indexOf(index) !== -1}
+                    inputProps={{ 'aria-labelledby': labelId }}
+                    icon={<CheckBoxOutlineBlankOutlined style={{ color: 'white' }} />}
+                  />
+                </ListItemIcon>
+                <ListItemButton>
+                  <Grid container className={classes.gridTeam}>
+                    <ListItemText style={{ width: '0px' }}>
+                      <Typography color="white">{value.number}</Typography>
+                    </ListItemText>
+                    <ListItemText>
+                      <Typography color="white" textAlign={'left'} paddingLeft={2}>
+                        {value.name}
+                      </Typography>
+                    </ListItemText>
+                  </Grid>
+                </ListItemButton>
+              </ListItem>
+            );
+          })
+        )}
       </Scroll>
+
       <DeleteTeamDialog open={openDelete} setOpen={setOpenDelete} />
     </List>
   );

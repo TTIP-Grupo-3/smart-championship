@@ -80,7 +80,7 @@ export const RegisterLeader = () => {
             />
             <Grid style={{ padding: 12 }} />
             <Typography fontSize={12} color="white" paddingBottom={1}>
-              al menos 8 caracteres con mayuscula, minuscula y al menos 1 caracter especial.
+              al menos 8 caracteres con mayuscula, minuscula y 1 caracter especial.
             </Typography>
             <OutlinedInput
               label="Contraseña"

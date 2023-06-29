@@ -29,6 +29,10 @@ class TeamLeaderService {
     return this.httpClient.get('/team_leader');
   }
 
+  createTeam(dataTeam: FormData): Promise<AxiosResponse<any>> {
+    return this.httpClient.post('/team_leader/team', dataTeam);
+  }
+
   uploadReceipt(championshipId: number, enrollId: number, formdata: FormData): Promise<AxiosResponse<any>> {
     return this.httpClient.put(
       `/team_leader/championship/${championshipId}/enrollment/${enrollId}`,

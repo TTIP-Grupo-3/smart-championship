@@ -8,6 +8,7 @@ const statuses: any = {
   paid: { color: 'green', text: 'Aprobado' },
   to_review: { color: 'lightgreen', text: 'Pendiente' },
   to_pay: { color: '#ED7D31', text: 'No pagado' },
+  expired: { color: '#8d6e63', text: 'Expirado' },
 };
 
 export const TeamEnrollmentCard: FC<any> = ({ id, status, ...props }) => {

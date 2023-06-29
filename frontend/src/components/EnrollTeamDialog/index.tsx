@@ -3,21 +3,23 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { FC, useState } from 'react';
+import { ChangeEventHandler, FC, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { useStyles } from './style';
 import { BootstrapDialogTitle } from '../DialogTitle';
 import { OutlinedInput } from '../OutlinedInput';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import defaultFootball from '../../default_match_icon_local.svg';
+import { API_TEAM_LEADER } from '../../services/TeamLeader';
 
-export const EnrollmentTeamDialog: FC<any> = ({ open, setOpen }) => {
+export const EnrollmentTeamDialog: FC<any> = ({ open, onClose, onSuccess, onError }) => {
   const { classes } = useStyles();
   const [image, setImage] = useState<string>('');
   const [file, setFile] = useState<File>();
+  const [teamName, setTeamName] = useState<string>('');
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleName: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setTeamName(e.target.value);
   };
 
   const handleFile = (e: any) => {
@@ -29,46 +31,35 @@ export const EnrollmentTeamDialog: FC<any> = ({ open, setOpen }) => {
     } catch (e) {}
   };
 
+  const createTeam = () => {
+    const formData = new FormData();
+    formData.append('name', teamName);
+    formData.append('logo', file as Blob);
+    API_TEAM_LEADER.createTeam(formData)
+      .then(() => {
+        onSuccess();
+      })
+      .catch(() => {
+        onError();
+      });
+  };
+
   return (
     <React.Fragment>
-      <Dialog
-        open={open}
-        style={{ borderRadius: 4, width: '100%' }}
-        PaperProps={{ elevation: 24, style: { width: '30vw', height: 'auto' } }}
-      >
-        <BootstrapDialogTitle style={{ color: 'white', paddingLeft: 23 }} onClose={handleClose}>
+      <Dialog open={open} PaperProps={{ elevation: 24, style: { width: '30vw', height: 'auto' } }}>
+        <BootstrapDialogTitle className={classes.titleDialog} onClose={onClose}>
           Crea Tu Equipo
         </BootstrapDialogTitle>
-        <DialogContent style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Grid container style={{ flexDirection: 'column', display: 'flex' }}>
-            <Grid
-              container
-              style={{ flexDirection: 'row', display: 'flex', paddingTop: '2%', alignItems: 'center' }}
-            >
+        <DialogContent className={classes.dialogContent}>
+          <Grid container className={classes.gridContentColumn}>
+            <Grid container className={classes.gridContentRow}>
               <Typography variant="body1" className={classes.steps}>
                 Carga el escudo y nombre del equipo.
               </Typography>
             </Grid>
-            <Grid
-              container
-              style={{
-                flexDirection: 'row',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 18,
-              }}
-            >
-              <img
-                src={!file ? defaultFootball : image}
-                style={{ borderRadius: '100%', width: '60px', height: '60px', marginRight: 10 }}
-                alt="avatar image"
-              />
-              <Button
-                component="label"
-                variant="contained"
-                style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
-              >
+            <Grid container className={classes.gridImage}>
+              <img src={!file ? defaultFootball : image} className={classes.imageTeam} alt="avatar image" />
+              <Button component="label" variant="contained" className={classes.buttonUpload}>
                 <AddPhotoAlternateIcon style={{ paddingRight: 6 }} /> Subir escudo
                 <input
                   accept="image/*"
@@ -85,12 +76,14 @@ export const EnrollmentTeamDialog: FC<any> = ({ open, setOpen }) => {
                 name="team"
                 label="Nombre del equipo"
                 placeholder="Championship FC"
+                value={teamName}
+                onChange={handleName}
               />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} style={{ backgroundColor: '#00BCD4', borderRadius: 4 }}>
+          <Button onClick={createTeam} className={classes.createTeamButton}>
             <Typography className={classes.buttonText}>Crear</Typography>
           </Button>
         </DialogActions>

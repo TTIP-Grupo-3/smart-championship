@@ -9,11 +9,13 @@ import { FC } from 'react';
 import { blue } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { useStyles } from './style';
 
 export type TypesTournament = { [key: string]: string };
 
 export const CardTournament: FC<any> = ({ championship }) => {
   const navigate = useNavigate();
+  const { classes } = useStyles();
   const types: TypesTournament = { score: 'clasificacion', elimination: 'eliminacion' };
   const handleTournament = () => {
     navigate(`/${types[championship.type]}/${championship.id}`);
@@ -21,7 +23,7 @@ export const CardTournament: FC<any> = ({ championship }) => {
 
   return (
     <Grid item>
-      <Card sx={{ maxWidth: 345, backgroundColor: 'black', display: 'flex' }} elevation={24}>
+      <Card className={classes.card} elevation={24}>
         <CardActionArea onClick={handleTournament}>
           <CardMedia component="img" height="140" width="auto" src={image} />
           <CardContent>
