@@ -12,15 +12,15 @@ import { useStyles } from './style';
 
 export const Reviewer = () => {
   const { classes } = useStyles();
-  const [matches, setMatches] = useState([]);
+  const [matches, setMatches] = useState<any>([]);
   const [idMatch, setSelected] = useState(null);
-  const [championships, setChampionships] = useState([]);
+  const [championships, setChampionships] = useState<any>([]);
   const [currentChampionship, setChampionship] = useState<{ id: number; type: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    API.getChampionships().then((r) => {
-      setChampionships(r.data);
+    API.getChampionships().then(({ data }) => {
+      setChampionships(data);
       setIsLoading(false);
     });
   }, []);

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { DashboardClasification } from './pages/DashboardClasification';
 import { Login } from './pages/Login';
-import { Reviewer } from './pages/Inspector';
+import { Reviewer } from './pages/Reviewer';
 import { Tournaments } from './pages/TournamentPage';
 import { DashboardElimination } from './pages/DashboardElimination';
 import { PrivateRoute } from './components/PrivateRoute';
@@ -14,7 +14,6 @@ import { TeamLeader } from './pages/TeamLeader';
 import { TournamentsToStart } from './pages/EnrollTournament';
 import { EnrollReservation } from './pages/EnrollingReservation';
 import { UploadReceipt } from './pages/UploadReceipt';
-import { CheckAccount } from './pages/CheckAccount';
 import { PublicRoute } from './components/PublicRoute';
 
 const App: FC = () => (
@@ -39,8 +38,6 @@ const App: FC = () => (
           </PublicRoute>
         }
       />
-      <Route path="/check" element={<CheckAccount />} />
-
       <Route
         path="/reviewer"
         element={

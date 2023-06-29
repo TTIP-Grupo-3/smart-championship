@@ -1,7 +1,7 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Button, Card, Grid, IconButton, InputAdornment, Typography } from '@mui/material';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
 import { User } from '../../interfaces';
 import { useStyles } from './style';
@@ -78,7 +78,10 @@ export const RegisterLeader = () => {
               onChange={handleChange}
               placeholder="Usuario"
             />
-            <Grid style={{ padding: 15 }} />
+            <Grid style={{ padding: 12 }} />
+            <Typography fontSize={12} color="white" paddingBottom={1}>
+              al menos 8 caracteres con mayuscula, minuscula y al menos 1 caracter especial.
+            </Typography>
             <OutlinedInput
               label="Contraseña"
               variant="outlined"
@@ -105,8 +108,15 @@ export const RegisterLeader = () => {
               placeholder="Contraseña"
               type={showPassword ? 'text' : 'password'}
             />
-
-            <Grid className={classes.gridContainerButton} marginTop={6}>
+            <Grid container flexDirection="row" alignItems="center" justifyContent={'center'}>
+              <Typography fontSize={12} color="white" paddingTop={1} paddingRight={0.5}>
+                si ya tienes cuenta
+              </Typography>
+              <Link to={'/login'} style={{ color: 'aquamarine', fontSize: 12, paddingTop: 5 }}>
+                inicia sesion
+              </Link>
+            </Grid>
+            <Grid className={classes.gridContainerButton} marginTop={3}>
               <Button
                 type="submit"
                 variant="contained"

@@ -3,7 +3,7 @@ import { Button, Grid, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useTimer } from '../../hooks/useTimer';
-import { InspectorMatchProps } from '../../interfaces';
+import { InspectorMatchProps, MatchStatus } from '../../interfaces';
 import { API_MATCH } from '../../services/Match';
 import { MatchService } from '../../services/MatchService';
 import { MatchManager } from '../MatchManager';
@@ -106,10 +106,10 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, 
           <Grid classes={{ root: classes.containerResult }}>
             <MatchScoreResult
               match={match}
-              showTime={match?.status !== 'FINISHED'}
+              showTime={match?.status !== MatchStatus.FINISHED}
               time={`${minutes(time)}:${seconds(time)}`}
               componentStart={
-                match?.status !== 'FINISHED' && (
+                match?.status !== MatchStatus.FINISHED && (
                   <Button
                     className={classes.initOrFinishButton}
                     onClick={!isStarted ? initGame : finishGame}
@@ -122,10 +122,8 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, 
               }
               componentStop={
                 <>
-                  {match?.status === 'FINISHED' && (
-                    <Typography className={classes.typographyStatus}>
-                      {match?.status === 'FINISHED' ? 'Finalizado' : ''}
-                    </Typography>
+                  {match?.status === MatchStatus.FINISHED && (
+                    <Typography className={classes.typographyStatus}>Finalizado</Typography>
                   )}{' '}
                 </>
               }

@@ -1,4 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
+import { LeaderEnrollment, LoggedUser } from '../interfaces';
 import { httpClient } from './httpClient';
 
 class TeamLeaderService {
@@ -8,7 +9,7 @@ class TeamLeaderService {
     this.httpClient = httpClient;
   }
 
-  register(userData: any): Promise<AxiosResponse<any>> {
+  register(userData: any): Promise<AxiosResponse<LoggedUser>> {
     return this.httpClient.post('/team_leader', userData);
   }
 
@@ -22,6 +23,10 @@ class TeamLeaderService {
 
   championshipToEnroll(id: number): Promise<AxiosResponse<any>> {
     return this.httpClient.get(`/team_leader/championship/${id}`);
+  }
+
+  getTeamLeader(): Promise<AxiosResponse<LeaderEnrollment>> {
+    return this.httpClient.get('/team_leader');
   }
 
   uploadReceipt(championshipId: number, enrollId: number, formdata: FormData): Promise<AxiosResponse<any>> {

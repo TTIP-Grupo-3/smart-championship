@@ -8,8 +8,9 @@ import { Typography } from '@mui/material';
 import { TeamEnrollmentCard } from '../TeamEnrollmentCard';
 import { useStyles } from './style';
 import { BootstrapDialogTitle } from '../DialogTitle';
+import { Enrollment } from '../../interfaces';
 
-export const MyEnrollmentsDialog: FC<any> = ({ open, setOpen }) => {
+export const MyEnrollmentsDialog: FC<any> = ({ open, setOpen, enrollments = [] }) => {
   const { classes } = useStyles();
   const handleClose = () => {
     setOpen(false);
@@ -26,20 +27,15 @@ export const MyEnrollmentsDialog: FC<any> = ({ open, setOpen }) => {
           Mis Inscripciones
         </BootstrapDialogTitle>
         <DialogContent style={{ flexDirection: 'column', display: 'flex' }}>
-          <TeamEnrollmentCard
-            id={1}
-            status={'approved'}
-            tournamentRequested="To Start Championship"
-            type="Clasificacion"
-            prize={1000}
-          />
-          <TeamEnrollmentCard
-            id={2}
-            status={'rejected'}
-            tournamentRequested="Other Championship"
-            type="Elimination"
-            prize={2000}
-          />
+          {enrollments.map((enrollment: Enrollment) => (
+            <TeamEnrollmentCard
+              id={1}
+              status={enrollment?.status}
+              tournamentRequested={enrollment?.championship}
+              type="Clasificacion"
+              prize={enrollment?.price}
+            />
+          ))}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} style={{ backgroundColor: '#00BCD4', borderRadius: 4 }}>

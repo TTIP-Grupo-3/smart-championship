@@ -5,12 +5,14 @@ import { EnrollmentDescription } from '../EnrollmentDescription';
 
 const statuses: any = {
   rejected: { color: 'red', text: 'Rechazado' },
-  approved: { color: 'green', text: 'Aprobado' },
-  pending: { color: 'lightgreen', text: 'Pendiente' },
+  paid: { color: 'green', text: 'Aprobado' },
+  to_review: { color: 'lightgreen', text: 'Pendiente' },
+  to_pay: { color: '#ED7D31', text: 'No pagado' },
 };
 
 export const TeamEnrollmentCard: FC<any> = ({ id, status, ...props }) => {
   const { classes } = useStyles();
+  console.log(status);
   return (
     <Grid className={classes.card}>
       <Grid className={classes.startGrid}>

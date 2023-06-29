@@ -14,6 +14,7 @@ import { OutlinedInput } from '../OutlinedInput';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateTime } from '../DateTime';
 import { API_ADMIN } from '../../services/Admin';
+import { containsOnlyNumbers } from '../../utils/utils';
 
 export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onError, id }) => {
   const { classes } = useStyles();
@@ -32,8 +33,11 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
     setDataTournament((prev) => ({ ...prev, [target.name]: target.value }));
   };
 
-  const handleNumberChange = (e: any) =>
-    setDataTournament((prev) => ({ ...prev, [e.target.name]: +e.target.value }));
+  const handleNumberChange = (e: any) => {
+    const { target } = e;
+    (containsOnlyNumbers(target.value) || target.value === '') &&
+      setDataTournament((prev) => ({ ...prev, [target.name]: +target.value }));
+  };
 
   const handleChangeDate = (e: any) => {
     setDataTournament((prev) => ({ ...prev, date: dateToIso(dayjs(e)) }));
@@ -68,7 +72,6 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
       });
     }
   }, []);
-
   return (
     <BootstrapDialog onClose={onClose} open={open} PaperProps={{ elevation: 24 }}>
       <BootstrapDialogTitle onClose={onClose} className={classes.title}>
@@ -94,7 +97,7 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
             required
             variant="outlined"
             className={classes.root}
-            type="number"
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             label="Minutos"
             name="duration"
             value={newTournament.duration}
@@ -117,7 +120,7 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
             name="price"
             value={newTournament.price}
             onChange={handleNumberChange}
-            type="number"
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             placeholder="un monto en pesos"
           />
           <Typography color="white" paddingTop={2}>
@@ -136,7 +139,7 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
               name="size"
               value={newTournament.size}
               onChange={handleNumberChange}
-              type="number"
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
               placeholder="10 Equipos"
             />
           ) : (

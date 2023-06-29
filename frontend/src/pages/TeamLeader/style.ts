@@ -69,6 +69,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: theme.spacing(4),
+    paddingLeft: theme.spacing(2),
   },
   gridRigthContent: {
     display: 'flex',
@@ -102,5 +103,14 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     placeItems: 'center',
+  },
+
+  leaderTeamName: {
+    fontWeight: 600,
+    fontSize: 18,
+    fontFamily: 'sans-serif',
+    paddingLeft: theme.spacing(1),
+    paddingTop: theme.spacing(1.2),
+    color: theme.palette.common.white,
   },
 }));

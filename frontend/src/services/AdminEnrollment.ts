@@ -1,4 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
+import { EnrollmentReceipt } from '../interfaces';
 import { httpClient } from './httpClient';
 
 class AdminEnrollmentService {
@@ -8,19 +9,19 @@ class AdminEnrollmentService {
     this.httpClient = httpClient;
   }
 
-  getAdminEnrollments(championshipId: number): Promise<AxiosResponse<any>> {
+  getAdminEnrollments(championshipId: number): Promise<AxiosResponse<EnrollmentReceipt[]>> {
     return this.httpClient.get(`/admin/championship/${championshipId}/enrollment`);
   }
 
-  getAdminEnrollment(championshipId: number, id: number): Promise<AxiosResponse<any>> {
+  getAdminEnrollment(championshipId: number, id: number): Promise<AxiosResponse<EnrollmentReceipt>> {
     return this.httpClient.get(`/admin/championship/${championshipId}/enrollment/${id}`);
   }
 
-  confirmEnrollment(championshipId: number, id: number): Promise<AxiosResponse<any>> {
+  confirmEnrollment(championshipId: number, id: number): Promise<AxiosResponse<EnrollmentReceipt>> {
     return this.httpClient.patch(`/admin/championship/${championshipId}/enrollment/${id}/accept`);
   }
 
-  rejectEnrollment(championshipId: number, id: number): Promise<AxiosResponse<any>> {
+  rejectEnrollment(championshipId: number, id: number): Promise<AxiosResponse<EnrollmentReceipt>> {
     return this.httpClient.patch(`/admin/championship/${championshipId}/enrollment/${id}/reject`);
   }
 }

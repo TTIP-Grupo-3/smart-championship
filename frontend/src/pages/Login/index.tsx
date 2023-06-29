@@ -75,9 +75,7 @@ export const Login = () => {
               placeholder="Usuario"
             />
             <Grid style={{ padding: 22 }} />
-            <Typography fontSize={12} color="white" paddingBottom={1}>
-              8 caracteres con mayuscula, minuscula y al menos 1 caracter especial
-            </Typography>
+
             <OutlinedInput
               label="Contraseña"
               variant="outlined"
@@ -105,10 +103,10 @@ export const Login = () => {
               type={showPassword ? 'text' : 'password'}
             />
             <Grid container flexDirection="row" alignItems="center" justifyContent={'center'}>
-              <Typography fontSize={12} color="white" paddingTop={1} paddingRight={1}>
+              <Typography fontSize={12} color="white" paddingTop={1} paddingRight={0.5}>
                 Si no posees cuenta
               </Typography>
-              <Link to={'/register'} style={{ color: 'aquamarine' }}>
+              <Link to={'/register'} style={{ color: 'aquamarine', fontSize: 12, paddingTop: 5 }}>
                 registrate
               </Link>
             </Grid>

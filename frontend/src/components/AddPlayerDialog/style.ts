@@ -54,4 +54,22 @@ export const useStyles = makeStyles()((theme: Theme) => ({
       margin: 0,
     },
   },
+  gridDialogContainer: {
+    flexDirection: 'column',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dialogContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  gridContent: {
+    flexDirection: 'row',
+    display: 'flex',
+    paddingTop: '2%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));

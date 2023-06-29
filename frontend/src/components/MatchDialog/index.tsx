@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import { StatusMatch } from '../StatusMatch';
 import Scroll from '../Scroll';
 import { Loader } from '../Loader';
+import { MatchStatus } from '../../interfaces';
 
 const matchService = new MatchService();
 const socket = matchService.create();
@@ -39,8 +40,8 @@ export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData })
 
   const currentTime = () => {
     const startTime = dayjs(match?.start);
-    if (match?.status === 'TOSTART') return 0;
-    if (match?.status === 'FINISHED') {
+    if (match?.status === MatchStatus.TOSTART) return 0;
+    if (match?.status === MatchStatus.FINISHED) {
       return startTime.diff(match.end, 'minute');
     }
     return dayjs(new Date().toISOString()).diff(startTime, 'minute');

@@ -9,14 +9,14 @@ import { useStyles } from './style';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 export const Tournaments = () => {
-  const [championships, setChampionships] = useState([]);
+  const [championships, setChampionships] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { classes } = useStyles();
   const navigate = useNavigate();
 
   useEffect(() => {
-    API.getChampionships().then((r) => {
-      setChampionships(r.data);
+    API.getChampionships().then(({ data }) => {
+      setChampionships(data);
       setIsLoading(false);
     });
   }, []);
@@ -52,7 +52,7 @@ export const Tournaments = () => {
             spacing={2}
             padding={2}
           >
-            {championships.map((championship) => (
+            {championships.map((championship: any) => (
               <CardTournament championship={championship}></CardTournament>
             ))}
           </Grid>

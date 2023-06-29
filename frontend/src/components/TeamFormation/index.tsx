@@ -7,13 +7,15 @@ import Checkbox from '@mui/material/Checkbox';
 import { Grid, IconButton, ListItemIcon, Typography } from '@mui/material';
 import { CheckBoxOutlineBlankOutlined } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { DeleteTeamDialog } from '../DeleteTeamDialog';
+import { useStyles } from './style';
+import Scroll from '../Scroll';
 
-export default function TeamFormation() {
+export const TeamFormation: FC<any> = ({ players }) => {
   const [checked, setChecked] = useState([1]);
   const [openDelete, setOpenDelete] = useState(false);
-
+  const { classes } = useStyles();
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -27,29 +29,13 @@ export default function TeamFormation() {
     setChecked(newChecked);
   };
 
-  const team = [
-    { name: 'Lionel Messi', number: 10 },
-    { name: 'Adrian Cardozo', number: 5 },
-    { name: 'Diego Moronha', number: 1 },
-  ];
-
   const deletePlayers = () => {
     setOpenDelete(true);
   };
 
   return (
-    <List dense sx={{ width: '94%', bgcolor: 'black', margin: 2, borderRadius: '4px' }}>
-      <Grid
-        container
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          width: '100%',
-          padding: 0,
-          margin: 0,
-          alignItems: 'center',
-        }}
-      >
+    <List dense className={classes.list}>
+      <Grid container className={classes.gridContainer}>
         <ListItemIcon>
           <IconButton onClick={deletePlayers}>
             <DeleteIcon style={{ fill: 'white' }}></DeleteIcon>
@@ -64,47 +50,39 @@ export default function TeamFormation() {
           </Typography>
         </ListItemText>
       </Grid>
-
-      {team.map((value, index) => {
-        const labelId = `checkbox-list-secondary-label-${value}`;
-        return (
-          <ListItem key={index} disablePadding>
-            <ListItemIcon>
-              <Checkbox
-                style={{ paddingLeft: '20px' }}
-                edge="start"
-                color="secondary"
-                onChange={handleToggle(index)}
-                checked={checked.indexOf(index) !== -1}
-                inputProps={{ 'aria-labelledby': labelId }}
-                icon={<CheckBoxOutlineBlankOutlined style={{ color: 'white' }} />}
-              />
-            </ListItemIcon>
-            <ListItemButton>
-              <Grid
-                container
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'flex-start',
-                  justifyContent: 'flex-start',
-                }}
-              >
-                <ListItemText style={{ width: '0px' }}>
-                  <Typography color="white">{value.number}</Typography>
-                </ListItemText>
-                <ListItemText>
-                  <Typography color="white" textAlign={'left'} paddingLeft={2}>
-                    {value.name}
-                  </Typography>
-                </ListItemText>
-              </Grid>
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
-
+      <Scroll style={{ height: '30vh' }}>
+        {players.map((value: any, index: number) => {
+          const labelId = `checkbox-list-secondary-label-${value}`;
+          return (
+            <ListItem key={index} disablePadding>
+              <ListItemIcon>
+                <Checkbox
+                  style={{ paddingLeft: '20px' }}
+                  edge="start"
+                  color="primary"
+                  onChange={handleToggle(index)}
+                  checked={checked.indexOf(index) !== -1}
+                  inputProps={{ 'aria-labelledby': labelId }}
+                  icon={<CheckBoxOutlineBlankOutlined style={{ color: 'white' }} />}
+                />
+              </ListItemIcon>
+              <ListItemButton>
+                <Grid container className={classes.gridTeam}>
+                  <ListItemText style={{ width: '0px' }}>
+                    <Typography color="white">{value.number}</Typography>
+                  </ListItemText>
+                  <ListItemText>
+                    <Typography color="white" textAlign={'left'} paddingLeft={2}>
+                      {value.name}
+                    </Typography>
+                  </ListItemText>
+                </Grid>
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </Scroll>
       <DeleteTeamDialog open={openDelete} setOpen={setOpenDelete} />
     </List>
   );
-}
+};

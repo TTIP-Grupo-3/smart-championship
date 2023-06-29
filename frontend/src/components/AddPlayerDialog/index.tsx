@@ -1,17 +1,17 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, Fragment, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { useStyles } from './style';
 import { BootstrapDialogTitle } from '../DialogTitle';
 import { OutlinedInput } from '../OutlinedInput';
+import { containsOnlyNumbers } from '../../utils/utils';
 
 export const AddPlayerDialog: FC<any> = ({ open, setOpen }) => {
   const { classes } = useStyles();
-  const [player, setPlayer] = useState<any>({ firstName: '', lastName: '', dni: '', number: '' });
+  const [player, setPlayer] = useState<any>({ firstName: '', lastName: '', dni: 0, number: 0 });
 
   const handleClose = () => {
     setOpen(false);
@@ -25,8 +25,14 @@ export const AddPlayerDialog: FC<any> = ({ open, setOpen }) => {
     return Object.keys(player).every((key: string) => player[key].trim().length !== 0);
   };
 
+  const handleChangeNumber = (e: any) => {
+    const { target } = e;
+    (containsOnlyNumbers(target.value) || target.value === '') &&
+      setPlayer({ ...player, [e.target.name]: +e.target.value });
+  };
+
   return (
-    <React.Fragment>
+    <Fragment>
       <Dialog
         open={open}
         style={{ borderRadius: 4, width: '100%' }}
@@ -35,47 +41,38 @@ export const AddPlayerDialog: FC<any> = ({ open, setOpen }) => {
         <BootstrapDialogTitle style={{ color: 'white', paddingLeft: 23 }} onClose={handleClose}>
           Agregar Jugador
         </BootstrapDialogTitle>
-        <DialogContent style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Grid
-            container
-            style={{
-              flexDirection: 'column',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Grid
-              container
-              style={{
-                flexDirection: 'row',
-                display: 'flex',
-                paddingTop: '2%',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
+        <DialogContent className={classes.dialogContainer}>
+          <Grid container className={classes.gridDialogContainer}>
+            <Grid className={classes.gridContent} container>
               <Typography variant="body1" className={classes.steps}>
                 Carga la información de tus jugadores.
               </Typography>
             </Grid>
             <Grid container className={classes.gridButton}>
               <OutlinedInput
+                value={player.number}
                 className={classes.input}
                 label="Numero de camiseta"
                 name="number"
-                type="number"
-                placeholder="10"
-                onChange={handleChange}
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 3 }}
+                placeholder={10}
+                onChange={handleChangeNumber}
               />
             </Grid>
             <Grid container className={classes.gridButton}>
-              <OutlinedInput label="Nombre" name="firstName" placeholder="Nombre" onChange={handleChange} />
+              <OutlinedInput
+                value={player.firstName}
+                label="Nombre"
+                name="firstName"
+                placeholder="Nombre"
+                onChange={handleChange}
+              />
             </Grid>
             <Grid container className={classes.gridButton}>
               <OutlinedInput
                 label="Apellido"
                 name="lastName"
+                value={player.lastName}
                 placeholder="Apellido"
                 onChange={handleChange}
               />
@@ -84,10 +81,11 @@ export const AddPlayerDialog: FC<any> = ({ open, setOpen }) => {
               <OutlinedInput
                 className={classes.input}
                 label="DNI"
+                value={player.dni}
                 name="dni"
-                type="number"
-                placeholder="14607531"
-                onChange={handleChange}
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 8 }}
+                placeholder={14607531}
+                onChange={handleChangeNumber}
               />
             </Grid>
           </Grid>
@@ -98,6 +96,6 @@ export const AddPlayerDialog: FC<any> = ({ open, setOpen }) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
+    </Fragment>
   );
 };

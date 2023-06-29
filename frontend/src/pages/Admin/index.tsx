@@ -11,6 +11,7 @@ import { API_ADMIN } from '../../services/Admin';
 import SnackBar from '../../components/Snackbar';
 import { Loader } from '../../components/Loader';
 import { EmptyData } from '../../components/EmptyData';
+import { InitTournamentDialog } from '../../components/InitTournamentDialog';
 
 export const msgTypes: any = {
   success: 'Cambios realizados correctamente',
@@ -27,6 +28,7 @@ export const Admin: FC = () => {
   const [id, setId] = useState<any>();
   const [searched, setSearched] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [openInit, setOpenInit] = useState(false);
 
   const handleOpenEdit = () => setOpenEdit(true);
   const handleOpen = () => setOpen(true);
@@ -61,9 +63,12 @@ export const Admin: FC = () => {
   };
 
   const handleInit = (id: number) => {
-    API_ADMIN.startChampionship(id)
-      .then(() => onSuccess())
-      .catch(() => onError());
+    setId(id);
+    setOpenInit(true);
+  };
+
+  const onCloseInit = () => {
+    API_ADMIN.startChampionship(id).then(onSuccess).catch(onError);
   };
 
   const searchedProjects = (): Array<any> =>
@@ -119,6 +124,12 @@ export const Admin: FC = () => {
         msgSnack={msgTypes[openS.type]}
         type={openS.type}
         handleClose={() => setOpenS((prev: any) => ({ ...prev, open: false }))}
+      />
+      <InitTournamentDialog
+        title="Iniciar Torneo"
+        open={openInit}
+        onClose={() => setOpenInit(false)}
+        initTournament={onCloseInit}
       />
     </Navbar>
   );
