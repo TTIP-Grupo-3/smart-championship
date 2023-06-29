@@ -33,8 +33,15 @@ class TeamLeaderService {
     return this.httpClient.post('/team_leader/team', dataTeam);
   }
 
-  createPlayer(teamId: number, dataPlayer: any): Promise<AxiosResponse<any>> {
-    return this.httpClient.post(`/team_leader/team/${teamId}/player`, dataPlayer);
+  getPlayers(): Promise<AxiosResponse<any>> {
+    return this.httpClient.get(`/team_leader/player`);
+  }
+
+  deletePlayers(ids: number[]): Promise<AxiosResponse<any>> {
+    return this.httpClient.delete(`/team_leader/player`, { ids: ids } as any);
+  }
+  createPlayer(dataPlayer: any): Promise<AxiosResponse<any>> {
+    return this.httpClient.post(`/team_leader/player`, dataPlayer);
   }
 
   uploadReceipt(championshipId: number, enrollId: number, formdata: FormData): Promise<AxiosResponse<any>> {

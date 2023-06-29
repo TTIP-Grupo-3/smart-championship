@@ -10,7 +10,7 @@ import { OutlinedInput } from '../OutlinedInput';
 import { containsOnlyNumbers } from '../../utils/utils';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
 
-export const AddPlayerDialog: FC<any> = ({ open, teamId, onSuccess, onError, onClose }) => {
+export const AddPlayerDialog: FC<any> = ({ open, onSuccess, onError, onClose }) => {
   const { classes } = useStyles();
   const [player, setPlayer] = useState<any>({ firstName: '', lastName: '', dni: 0, number: 0 });
 
@@ -33,7 +33,7 @@ export const AddPlayerDialog: FC<any> = ({ open, teamId, onSuccess, onError, onC
   const createPlayer = () => {
     const { firstName, lastName, ...rest } = player;
     const newPlayer = { name: `${firstName}  ${lastName}`, ...rest };
-    API_TEAM_LEADER.createPlayer(teamId, newPlayer).then(onSuccess).catch(onError);
+    API_TEAM_LEADER.createPlayer(newPlayer).then(onSuccess).catch(onError);
   };
 
   return (

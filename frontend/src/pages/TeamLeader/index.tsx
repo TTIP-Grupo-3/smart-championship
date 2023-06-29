@@ -153,11 +153,7 @@ export const TeamLeader: FC = () => {
           setOpen={setOpenEnrollments}
           enrollments={leaderData?.enrollments}
         />
-        <AddPlayerDialog
-          open={openPlayer}
-          {...{ onClose, onSuccess, onError }}
-          teamId={leaderData?.team?.id}
-        />
+        <AddPlayerDialog open={openPlayer} {...{ onClose, onSuccess, onError }} />
       </Grid>
       <SnackBar
         open={openS.open}
