@@ -46,6 +46,10 @@ export class TeamEnrollment {
     return teamEnrollment;
   }
 
+  reserved(): boolean {
+    return [PayStatus.ToPay, PayStatus.ToReview, PayStatus.Paid].includes(this.status);
+  }
+
   paid(): boolean {
     return this.status === PayStatus.Paid;
   }

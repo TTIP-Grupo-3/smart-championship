@@ -309,13 +309,21 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
       status: { localStatus, visitingStatus, status, date, start, end },
     } = match;
     if (dtoCls?.name === MatchResponseDTO.name) {
-      const local = this.teamStatusResponseDTO(localStatus, request, TeamStatusResponseDTO);
-      const visiting = this.teamStatusResponseDTO(visitingStatus, request, TeamStatusResponseDTO);
+      const local = localStatus.team
+        ? this.teamStatusResponseDTO(localStatus, request, TeamStatusResponseDTO)
+        : null;
+      const visiting = visitingStatus.team
+        ? this.teamStatusResponseDTO(visitingStatus, request, TeamStatusResponseDTO)
+        : null;
       return this.plainToInstance(MatchResponseDTO, { id, date, start, end, status, local, visiting });
     } else if (dtoCls?.name === MatchTeamsResponseDTO.name) {
       const { id: championshipId } = championship;
-      const local = this.teamStatusResponseDTO(localStatus, request, TeamResponseDTO);
-      const visiting = this.teamStatusResponseDTO(visitingStatus, request, TeamResponseDTO);
+      const local = localStatus.team
+        ? this.teamStatusResponseDTO(localStatus, request, TeamResponseDTO)
+        : null;
+      const visiting = visitingStatus.team
+        ? this.teamStatusResponseDTO(visitingStatus, request, TeamResponseDTO)
+        : null;
       return this.plainToInstance(MatchTeamsResponseDTO, {
         id,
         date,
@@ -326,8 +334,8 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
         visiting,
       });
     } else {
-      const local = this.teamStatusResponseDTO(localStatus, request);
-      const visiting = this.teamStatusResponseDTO(visitingStatus, request);
+      const local = localStatus.team ? this.teamStatusResponseDTO(localStatus, request) : null;
+      const visiting = visitingStatus.team ? this.teamStatusResponseDTO(visitingStatus, request) : null;
       return this.plainToInstance(PartialMatchResponseDTO, {
         id,
         date,

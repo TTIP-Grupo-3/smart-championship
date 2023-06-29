@@ -57,7 +57,7 @@ export abstract class Championship {
   }
 
   public get matchTeams() {
-    return this.matches.flatMap((match) => match.teams);
+    return this.matches.flatMap((match) => match.teams).filter((team) => !!team);
   }
 
   public get status(): ChampionshipStatus {
