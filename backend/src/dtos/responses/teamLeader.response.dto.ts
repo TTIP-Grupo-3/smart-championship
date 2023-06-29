@@ -9,6 +9,8 @@ export class TeamLeaderResponseDTO implements TeamLeaderResponse {
   id: number;
   @ApiProperty()
   name: string;
+  @ApiProperty()
+  minimumSize: number;
   @ApiProperty({ type: LeaderTeamResponseDTO, required: false, nullable: true })
   @Type(() => LeaderTeamResponseDTO)
   team?: LeaderTeamResponseDTO;

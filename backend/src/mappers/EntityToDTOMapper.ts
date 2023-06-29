@@ -110,10 +110,11 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     dtoCls?: Class<SmartChampionshipDTO>,
   ): UserResponseDTO | AccessTokenResponseDTO | TeamLeaderResponseDTO {
     if (dtoCls?.name === TeamLeaderResponseDTO.name) {
-      const { id, name, team, enrollments } = teamLeader;
+      const { id, name, team, minimumTeamSize: minimumSize, enrollments } = teamLeader;
       return this.plainToInstance(TeamLeaderResponseDTO, {
         id,
         name,
+        minimumSize,
         team: team ? this.map(team, request, LeaderTeamResponseDTO) : null,
         enrollments: this.map(enrollments, request, TeamLeaderEnrollmentResponseDTO),
       });

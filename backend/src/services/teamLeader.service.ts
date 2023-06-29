@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
 import { IdDTO } from 'src/dtos/id.dto';
 import { NotFoundException } from 'src/exceptions/NotFoundException';
 import { StorageService } from './storage.service';
+import { TeamLeaderChampionshipService } from './teamLeaderChampionship.service';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errors = configService.get('service.errors');
@@ -31,6 +32,7 @@ export class TeamLeaderService {
     private readonly userService: UsersService,
     private readonly authService: AuthService,
     private readonly storageService: StorageService,
+    private readonly championshipService: TeamLeaderChampionshipService,
   ) {}
 
   async createTeamLeader(
@@ -51,9 +53,15 @@ export class TeamLeaderService {
     return await this.transactionService.transaction(async (manager) => {
       const teamLeader = await manager.findOne(TeamLeader, { where: { id }, relations: this.relations });
       if (!teamLeader) throw new NotFoundException();
+      teamLeader.minimumTeamSize = await this.getMinimumSize(manager);
       if (teamLeader.team) teamLeader.team.logo = this.storageService.getImage(teamLeader.team.filename);
       return teamLeader;
     }, manager);
+  }
+
+  private async getMinimumSize(manager: EntityManager): Promise<number> {
+    const championships = await this.championshipService.getChampionships(manager);
+    return Math.min(...championships.map(({ teamSize }) => teamSize));
   }
 
   private async checkExists(username: string, manager: EntityManager): Promise<void> {
