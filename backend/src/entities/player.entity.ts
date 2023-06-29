@@ -3,6 +3,7 @@ import { ChampionshipPlayer } from './championshipPlayer.entity';
 import { Team } from './team.entity';
 import { Championship } from './championship.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
+import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 
 @Entity()
 export class Player {
@@ -18,6 +19,11 @@ export class Player {
   team: Team;
   @OneToMany(() => ChampionshipPlayer, (championshipPlayer) => championshipPlayer.player)
   championshipPlayers: Array<ChampionshipPlayer>;
+
+  setTeam(team: Team) {
+    if (!!this.team) throw new InvalidArgumentException('Player already in team');
+    this.team = team;
+  }
 
   createChampionshipPlayer(championship: Championship, team: ChampionshipTeam): ChampionshipPlayer {
     return ChampionshipPlayer.from(this, championship, team);

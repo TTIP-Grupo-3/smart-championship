@@ -20,7 +20,7 @@ export class TeamService {
 
   async getTeam(id: number, manager?: EntityManager): Promise<Team> {
     return await this.transactionService.transaction(async (manager) => {
-      const team = await manager.findOneBy(Team, { id });
+      const team = await manager.findOne(Team, { where: { id }, relations: { leader: true } });
       if (!team) throw new NotFoundException();
       return team;
     }, manager);

@@ -21,6 +21,20 @@ export class Team {
 
   logo: string;
 
+  isLeader(teamLeader: TeamLeader): boolean {
+    return teamLeader.id === this.leader.id;
+  }
+
+  addPlayer(player: Player) {
+    if (this.existsPlayer(player)) throw new InvalidArgumentException('Player already exists');
+    this.players.push(player);
+    player.setTeam(this);
+  }
+
+  private existsPlayer(player: Player): boolean {
+    return this.players.some(({ number, dni }) => number === player.number || dni === player.dni);
+  }
+
   setLeader(leader: TeamLeader) {
     if (!!this.leader) throw new InvalidArgumentException('Team has leader');
     this.leader = leader;
