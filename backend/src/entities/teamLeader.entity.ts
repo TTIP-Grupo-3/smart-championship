@@ -17,6 +17,12 @@ export class TeamLeader extends User {
   @RelationId('team')
   teamId: number;
 
+  setTeam(team: Team) {
+    if (!!this.team) throw new InvalidArgumentException('Team already created');
+    this.team = team;
+    team.setLeader(this);
+  }
+
   enrollTo(championship: Championship): TeamEnrollment {
     this.checkCanEnroll(championship);
     const enrollment = championship.enroll(this);

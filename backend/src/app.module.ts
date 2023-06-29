@@ -38,6 +38,7 @@ import { TeamLeaderController } from './controllers/teamLeader.controller';
 import { TeamLeaderEnrollmentController } from './controllers/teamLeaderEnrollment.controller';
 import { TeamLeaderEnrollmentService } from './services/teamLeaderEnrollment.service';
 import { TeamService } from './services/team.service';
+import { TeamController } from './controllers/team.controller';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { TeamService } from './services/team.service';
     TeamLeaderChampionshipController,
     TeamLeaderController,
     TeamLeaderEnrollmentController,
+    TeamController,
   ],
   providers: [
     AllChampionshipService,

@@ -10,8 +10,10 @@ export class SetFileInterceptor implements NestInterceptor {
   intercept<R>(context: ExecutionContext, next: CallHandler): Observable<R> {
     const request = context.switchToHttp().getRequest();
     const file: Express.Multer.File = request.file;
-    if (!this.extensionRegex.test(file.mimetype)) throw new BadRequestException([errors.wrongExtension]);
-    request.body[file.fieldname] = file;
+    if (file && !this.extensionRegex.test(file.mimetype)) {
+      throw new BadRequestException([errors.wrongExtension]);
+    }
+    if (file) request.body[file.fieldname] = file;
     return next.handle();
   }
 }
