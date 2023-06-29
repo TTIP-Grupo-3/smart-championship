@@ -17,6 +17,8 @@ export class TeamLeader extends User {
   @RelationId('team')
   teamId: number;
 
+  minimumTeamSize: number;
+
   setTeam(team: Team) {
     if (!!this.team) throw new InvalidArgumentException('Team already created');
     this.team = team;
