@@ -16,7 +16,7 @@ import { Loader } from '../../components/Loader';
 import SnackBar from '../../components/Snackbar';
 import { delay } from '../Admin';
 
-export const msgTypes: any = {
+const msgTypes: any = {
   success: 'Jugador agregado correctamente',
   error: 'Ha ocurrido un error intenta mas tarde',
 };
@@ -30,6 +30,7 @@ export const TeamLeader: FC = () => {
   const [openPlayer, setOpenPlayer] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
+  const [players, setPlayers] = useState<any[]>([]);
 
   const handleEnroll = () => {
     navigate('/leader/enrollment/tournaments');
@@ -52,12 +53,13 @@ export const TeamLeader: FC = () => {
   };
 
   useEffect(() => {
+    loadPlayers();
     loadTeamData();
   }, []);
 
   const onSuccess = async () => {
-    setOpenS({ open: true, type: 'success' });
     onClose();
+    setOpenS({ open: true, type: 'success' });
     await delay(2000);
     setOpenS({ open: false, type: 'success' });
   };
@@ -78,6 +80,17 @@ export const TeamLeader: FC = () => {
       })
       .catch(() => setIsLoading(true));
   };
+
+  const createPlayer = async (player: any) => {
+    API_TEAM_LEADER.createPlayer(player)
+      .then(async () => {
+        await loadPlayers();
+        onSuccess();
+      })
+      .catch(onError);
+  };
+
+  const loadPlayers = () => API_TEAM_LEADER.getPlayers().then(({ data }) => setPlayers(data));
 
   return (
     <Navbar
@@ -142,7 +155,7 @@ export const TeamLeader: FC = () => {
                     </IconButton>
                   </Grid>
 
-                  <TeamFormation players={leaderData?.team.players} />
+                  <TeamFormation players={players} reloadPlayers={loadPlayers} />
                 </Grid>
               </Grid>
             </Grid>
@@ -153,7 +166,7 @@ export const TeamLeader: FC = () => {
           setOpen={setOpenEnrollments}
           enrollments={leaderData?.enrollments}
         />
-        <AddPlayerDialog open={openPlayer} {...{ onClose, onSuccess, onError }} />
+        <AddPlayerDialog open={openPlayer} {...{ onClose, createPlayer }} />
       </Grid>
       <SnackBar
         open={openS.open}

@@ -8,9 +8,8 @@ import { useStyles } from './style';
 import { BootstrapDialogTitle } from '../DialogTitle';
 import { OutlinedInput } from '../OutlinedInput';
 import { containsOnlyNumbers } from '../../utils/utils';
-import { API_TEAM_LEADER } from '../../services/TeamLeader';
 
-export const AddPlayerDialog: FC<any> = ({ open, onSuccess, onError, onClose }) => {
+export const AddPlayerDialog: FC<any> = ({ open, createPlayer, onClose }) => {
   const { classes } = useStyles();
   const [player, setPlayer] = useState<any>({ firstName: '', lastName: '', dni: 0, number: 0 });
 
@@ -30,10 +29,12 @@ export const AddPlayerDialog: FC<any> = ({ open, onSuccess, onError, onClose }) 
       setPlayer({ ...player, [e.target.name]: +e.target.value });
   };
 
-  const createPlayer = () => {
+  const createNewPlayer = async () => {
     const { firstName, lastName, ...rest } = player;
     const newPlayer = { name: `${firstName}  ${lastName}`, ...rest };
-    API_TEAM_LEADER.createPlayer(newPlayer).then(onSuccess).catch(onError);
+    await createPlayer(newPlayer);
+    setPlayer({ firstName: '', lastName: '', dni: 0, number: 0 });
+    onClose();
   };
 
   return (
@@ -98,7 +99,7 @@ export const AddPlayerDialog: FC<any> = ({ open, onSuccess, onError, onClose }) 
         <DialogActions>
           <Button
             className={classes.buttonAdd}
-            onClick={createPlayer}
+            onClick={createNewPlayer}
             disabled={!fieldsTextCompleted() || !dniCompleted()}
           >
             <Typography className={classes.buttonText}>Agregar Jugador</Typography>

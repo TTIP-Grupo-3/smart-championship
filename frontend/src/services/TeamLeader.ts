@@ -38,7 +38,7 @@ class TeamLeaderService {
   }
 
   deletePlayers(ids: number[]): Promise<AxiosResponse<any>> {
-    return this.httpClient.delete(`/team_leader/player`, { ids: ids } as any);
+    return this.httpClient.delete(`/team_leader/player`, { data: { ids: ids } });
   }
   createPlayer(dataPlayer: any): Promise<AxiosResponse<any>> {
     return this.httpClient.post(`/team_leader/player`, dataPlayer);
