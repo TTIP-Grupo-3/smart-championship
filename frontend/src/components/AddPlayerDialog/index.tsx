@@ -8,27 +8,32 @@ import { useStyles } from './style';
 import { BootstrapDialogTitle } from '../DialogTitle';
 import { OutlinedInput } from '../OutlinedInput';
 import { containsOnlyNumbers } from '../../utils/utils';
+import { API_TEAM_LEADER } from '../../services/TeamLeader';
 
-export const AddPlayerDialog: FC<any> = ({ open, setOpen }) => {
+export const AddPlayerDialog: FC<any> = ({ open, teamId, onSuccess, onError, onClose }) => {
   const { classes } = useStyles();
   const [player, setPlayer] = useState<any>({ firstName: '', lastName: '', dni: 0, number: 0 });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPlayer({ ...player, [e.target.name]: e.target.value });
   };
 
-  const fieldsCompleted = () => {
-    return Object.keys(player).every((key: string) => player[key].trim().length !== 0);
+  const fieldsTextCompleted = () => {
+    return ['firstName', 'lastName'].every((key: string) => player[key].trim().length !== 0);
   };
+
+  const dniCompleted = () => player.dni.toString().length > 7;
 
   const handleChangeNumber = (e: any) => {
     const { target } = e;
     (containsOnlyNumbers(target.value) || target.value === '') &&
       setPlayer({ ...player, [e.target.name]: +e.target.value });
+  };
+
+  const createPlayer = () => {
+    const { firstName, lastName, ...rest } = player;
+    const newPlayer = { name: `${firstName}  ${lastName}`, ...rest };
+    API_TEAM_LEADER.createPlayer(teamId, newPlayer).then(onSuccess).catch(onError);
   };
 
   return (
@@ -38,7 +43,7 @@ export const AddPlayerDialog: FC<any> = ({ open, setOpen }) => {
         style={{ borderRadius: 4, width: '100%' }}
         PaperProps={{ elevation: 24, style: { maxWidth: '100%', width: 460, height: 'auto' } }}
       >
-        <BootstrapDialogTitle style={{ color: 'white', paddingLeft: 23 }} onClose={handleClose}>
+        <BootstrapDialogTitle style={{ color: 'white', paddingLeft: 23 }} onClose={onClose}>
           Agregar Jugador
         </BootstrapDialogTitle>
         <DialogContent className={classes.dialogContainer}>
@@ -91,7 +96,11 @@ export const AddPlayerDialog: FC<any> = ({ open, setOpen }) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button className={classes.buttonAdd} onClick={handleClose} disabled={!fieldsCompleted()}>
+          <Button
+            className={classes.buttonAdd}
+            onClick={createPlayer}
+            disabled={!fieldsTextCompleted() || !dniCompleted()}
+          >
             <Typography className={classes.buttonText}>Agregar Jugador</Typography>
           </Button>
         </DialogActions>

@@ -13,6 +13,13 @@ import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { LeaderEnrollment } from '../../interfaces';
 import { EmptyTeam } from '../../components/EmptyTeam';
 import { Loader } from '../../components/Loader';
+import SnackBar from '../../components/Snackbar';
+import { delay } from '../Admin';
+
+export const msgTypes: any = {
+  success: 'Jugador agregado correctamente',
+  error: 'Ha ocurrido un error intenta mas tarde',
+};
 
 export const TeamLeader: FC = () => {
   const { classes } = useStyles();
@@ -22,6 +29,7 @@ export const TeamLeader: FC = () => {
   const [leaderData, setLeaderData] = useState<LeaderEnrollment>();
   const [openPlayer, setOpenPlayer] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
 
   const handleEnroll = () => {
     navigate('/leader/enrollment/tournaments');
@@ -35,20 +43,42 @@ export const TeamLeader: FC = () => {
     setOpenCreator(true);
   };
 
+  const onClose = () => {
+    setOpenPlayer(false);
+  };
+
   const addPlayer = () => {
     setOpenPlayer(true);
   };
 
   useEffect(() => {
+    loadTeamData();
+  }, []);
+
+  const onSuccess = async () => {
+    setOpenS({ open: true, type: 'success' });
+    onClose();
+    await delay(2000);
+    setOpenS({ open: false, type: 'success' });
+  };
+
+  const onError = async () => {
+    setOpenS({ open: true, type: 'error' });
+    onClose();
+    await delay(2000);
+    setOpenS({ open: false, type: 'error' });
+  };
+
+  const loadTeamData = () => {
+    setIsLoading(true);
     API_TEAM_LEADER.getTeamLeader()
       .then(({ data }) => {
         setLeaderData(data);
         setIsLoading(false);
       })
       .catch(() => setIsLoading(true));
-  }, []);
+  };
 
-  console.log(leaderData?.team.players);
   return (
     <Navbar
       button={{
@@ -58,13 +88,18 @@ export const TeamLeader: FC = () => {
       }}
     >
       <Grid className={classes.gridRoot}>
-        <Typography className={classes.title}>Bienvenido {'Username'}</Typography>
+        <Typography className={classes.title}>Bienvenido {leaderData?.name}</Typography>
 
         {!leaderData?.team ? (
           isLoading ? (
             <Loader text="Cargando Equipo" />
           ) : (
-            <EmptyTeam handleCreate={handleCreate} open={openTeamCreator} setOpen={setOpenCreator} />
+            <EmptyTeam
+              handleCreate={handleCreate}
+              open={openTeamCreator}
+              setOpen={setOpenCreator}
+              reload={loadTeamData}
+            />
           )
         ) : (
           <>
@@ -88,7 +123,11 @@ export const TeamLeader: FC = () => {
                     <Button className={classes.buttonEnroll} onClick={handleEnroll}>
                       <Typography className={classes.buttonText}>Inscribirse a torneo</Typography>
                     </Button>
-                    <Button className={classes.buttonEnroll} onClick={handleEnrollments}>
+                    <Button
+                      className={classes.buttonEnroll}
+                      disabled={!leaderData.enrollments.length}
+                      onClick={handleEnrollments}
+                    >
                       <Typography className={classes.buttonText}>Mis inscripciones</Typography>
                     </Button>
                   </Grid>
@@ -114,8 +153,20 @@ export const TeamLeader: FC = () => {
           setOpen={setOpenEnrollments}
           enrollments={leaderData?.enrollments}
         />
-        <AddPlayerDialog open={openPlayer} setOpen={setOpenPlayer} />
+        <AddPlayerDialog
+          open={openPlayer}
+          {...{ onClose, onSuccess, onError }}
+          teamId={leaderData?.team?.id}
+        />
       </Grid>
+      <SnackBar
+        open={openS.open}
+        vertical={'bottom'}
+        horizontal={'center'}
+        msgSnack={msgTypes[openS.type]}
+        type={openS.type}
+        handleClose={() => setOpenS((prev: any) => ({ ...prev, open: false }))}
+      />
     </Navbar>
   );
 };

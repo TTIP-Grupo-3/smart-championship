@@ -1,7 +1,6 @@
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import { Grid, IconButton, ListItemIcon, Typography } from '@mui/material';
@@ -76,9 +75,9 @@ export const TeamFormation: FC<PlayerProps> = ({ players }) => {
                     icon={<CheckBoxOutlineBlankOutlined style={{ color: 'white' }} />}
                   />
                 </ListItemIcon>
-                <ListItemButton>
+                <ListItemText>
                   <Grid container className={classes.gridTeam}>
-                    <ListItemText style={{ width: '0px' }}>
+                    <ListItemText style={{ width: '0px', paddingLeft: 20 }}>
                       <Typography color="white">{value.number}</Typography>
                     </ListItemText>
                     <ListItemText>
@@ -87,7 +86,7 @@ export const TeamFormation: FC<PlayerProps> = ({ players }) => {
                       </Typography>
                     </ListItemText>
                   </Grid>
-                </ListItemButton>
+                </ListItemText>
               </ListItem>
             );
           })
