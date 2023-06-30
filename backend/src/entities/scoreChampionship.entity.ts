@@ -1,7 +1,6 @@
 import { ChildEntity, OneToMany } from 'typeorm';
 import { Championship } from './championship.entity';
 import { ScoreMatch } from './scoreMatch.entity';
-import { plainToInstance } from 'class-transformer';
 import { ScoreStatus } from './scoreStatus.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { ChampionshipType } from 'src/enums/championshipType.enum';
@@ -19,23 +18,12 @@ export class ScoreChampionship extends Championship {
       .sort((status1, status2) => status2.score - status1.score);
   }
 
-  generateMatches() {
+  protected generateMatches() {
     this.teams.forEach((team, index, teams) => this.generateTeamMatches(team, teams.slice(index + 1)));
   }
 
   private generateTeamMatches(local: ChampionshipTeam, teams: Array<ChampionshipTeam>) {
-    this.matches.push(
-      ...teams.map((visiting) =>
-        plainToInstance(ScoreMatch, {
-          status: {
-            date: new Date(),
-            localStatus: { cards: [], goals: [], team: local },
-            visitingStatus: { cards: [], goals: [], team: visiting },
-          },
-          championship: this,
-        }),
-      ),
-    );
+    this.matches.push(...teams.map((visiting) => ScoreMatch.from(local, visiting, this)));
   }
 
   findMatch(id: number) {

@@ -26,8 +26,12 @@ export class TeamStatus {
     return this.cards.filter((card) => card.type === CardType.YELLOW);
   }
 
-  constructor(team: ChampionshipTeam | null) {
-    this.team = team;
+  static from(team: ChampionshipTeam | null): TeamStatus {
+    const status = new TeamStatus();
+    status.team = team;
+    status.goals = [];
+    status.cards = [];
+    return status;
   }
 
   initialized(): boolean {

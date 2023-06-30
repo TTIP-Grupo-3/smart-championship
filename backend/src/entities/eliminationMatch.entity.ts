@@ -5,7 +5,6 @@ import { OneToOne } from 'typeorm';
 import { Match } from './match.entity';
 import { MatchStatus } from './matchStatus.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
-import { TeamStatus } from './teamStatus.entity';
 import { EliminationChampionship } from './eliminationChampionship.entity';
 
 const errors = configService.get('model.errors');
@@ -52,6 +51,23 @@ export class EliminationMatch extends Match {
     }
   }
 
+  static from(
+    local: EliminationMatch | ChampionshipTeam,
+    visiting: EliminationMatch | ChampionshipTeam,
+  ): EliminationMatch {
+    const match = new EliminationMatch();
+    if (local instanceof ChampionshipTeam && visiting instanceof ChampionshipTeam) {
+      match.status = MatchStatus.from(local, visiting);
+      match.submatches = [];
+    } else if (local instanceof EliminationMatch && visiting instanceof EliminationMatch) {
+      match.status = MatchStatus.empty();
+      match.submatches = [local, visiting];
+    } else {
+      throw new InvalidArgumentException(errors.invalidArgument);
+    }
+    return match;
+  }
+
   findMatch(id: number) {
     if (this.id === id) {
       return this;
@@ -60,20 +76,6 @@ export class EliminationMatch extends Match {
     } else {
       return this.local.findMatch(id) ?? this.visiting.findMatch(id);
     }
-  }
-
-  initialize(
-    local: EliminationMatch | ChampionshipTeam,
-    visiting: EliminationMatch | ChampionshipTeam,
-  ): EliminationMatch {
-    if (local instanceof ChampionshipTeam && visiting instanceof ChampionshipTeam) {
-      this.status = new MatchStatus(new TeamStatus(local), new TeamStatus(visiting));
-    } else if (local instanceof EliminationMatch && visiting instanceof EliminationMatch) {
-      this.submatches = [local, visiting];
-    } else {
-      throw new InvalidArgumentException(errors.invalidArgument);
-    }
-    return this;
   }
 
   end() {

@@ -28,26 +28,24 @@ export class EliminationChampionship extends Championship {
     return this.final.findMatch(id);
   }
 
-  generateMatches() {
+  protected generateMatches() {
     if (!this.isGenerable()) throw new InvalidArgumentException(errors.invalidArgument);
     let baseMatches: Array<EliminationMatch> | Array<ChampionshipTeam> = this.unsortedTeams();
     this.levels().forEach(() => {
       const locals = baseMatches.slice(0, length / 2);
       const visitings = baseMatches.slice(length / 2);
-      baseMatches = locals.map((local, index) =>
-        new EliminationMatch().initialize(local, visitings[index]),
-      );
-      if (baseMatches.length === 0) this.final = baseMatches[0];
+      baseMatches = locals.map((local, index) => EliminationMatch.from(local, visitings[index]));
+      if (baseMatches.length === 1) this.final = baseMatches[0];
     });
   }
 
   private isGenerable() {
-    const sqrt = Math.sqrt(this.teams.length);
-    return this.teams.length > 1 && sqrt - Math.floor(sqrt) === 0;
+    const levels = Math.log2(this.teams.length);
+    return this.teams.length > 1 && levels - Math.floor(levels) === 0;
   }
 
   private levels() {
-    return Array(Math.sqrt(this.teams.length) + 1);
+    return Array(Math.log2(this.teams.length));
   }
 
   private unsortedTeams() {
