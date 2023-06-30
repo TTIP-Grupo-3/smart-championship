@@ -3,7 +3,7 @@ import { Button, Grid, Typography, useTheme } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useTimer } from '../../hooks/useTimer';
-import { InspectorMatchProps, MatchStatus } from '../../interfaces';
+import { CardsType, InspectorMatchProps, MatchStatus } from '../../interfaces';
 import { MatchService } from '../../services/MatchService';
 import { MatchManager } from '../MatchManager';
 import { MatchScoreResult } from '../MatchScoreResult';
@@ -50,7 +50,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
     matchService.goalDisallow(socket!, idGoal, idMatch, +championshipId!);
   };
 
-  const scoreCard = (typeCard: 'YELLOW' | 'RED', isLocal: boolean, idPlayer: number) => {
+  const scoreCard = (typeCard: CardsType, isLocal: boolean, idPlayer: number) => {
     matchService.scoreCard(socket!, typeCard, minutes(time), isLocal, idPlayer, idMatch, +championshipId!);
   };
 
@@ -83,7 +83,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
     return type === 'elimination' && match.local.goals.length === match.visiting.goals.length;
   };
 
-  const getCards = (type: 'local' | 'visiting', color: 'RED' | 'YELLOW') => {
+  const getCards = (type: 'local' | 'visiting', color: CardsType) => {
     if (match) {
       return match[type].cards[color.toLowerCase()].map((card: any) => ({
         ...card.player,
@@ -167,18 +167,22 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
           <MatchManager
             buttonLeftLocal={{
               function: scoreCard,
-              args: ['RED', true],
+              args: [CardsType.RED, true],
               items: currentMatch?.local.players,
             }}
             buttonRightProps={{ disabled: match?.local.cards.red.length < 1 }}
             buttonRightPropsVisiting={{ disabled: match?.visiting.cards.red.length < 1 }}
-            buttonRightLocal={{ function: disallowCard, args: [], items: getCards('local', 'RED') }}
+            buttonRightLocal={{ function: disallowCard, args: [], items: getCards('local', CardsType.RED) }}
             buttonLeftVisiting={{
               function: scoreCard,
-              args: ['RED', false],
+              args: [CardsType.RED, false],
               items: currentMatch?.visiting.players,
             }}
-            buttonRightVisiting={{ function: disallowCard, args: [], items: getCards('visiting', 'RED') }}
+            buttonRightVisiting={{
+              function: disallowCard,
+              args: [],
+              items: getCards('visiting', CardsType.RED),
+            }}
             icons={{
               left: <MatchTeamCard color="red" absolute amount={1} width={16} height={20} />,
               right: (
@@ -201,21 +205,25 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
           <MatchManager
             buttonLeftLocal={{
               function: scoreCard,
-              args: ['YELLOW', true],
+              args: [CardsType.YELLOW, true],
               items: currentMatch?.local.players,
             }}
             buttonRightProps={{ disabled: match?.local.cards.yellow.length < 1 }}
             buttonRightPropsVisiting={{ disabled: match?.visiting.cards.yellow.length < 1 }}
-            buttonRightLocal={{ function: disallowCard, args: [], items: getCards('local', 'YELLOW') }}
+            buttonRightLocal={{
+              function: disallowCard,
+              args: [],
+              items: getCards('local', CardsType.YELLOW),
+            }}
             buttonLeftVisiting={{
               function: scoreCard,
-              args: ['YELLOW', false],
+              args: [CardsType.YELLOW, false],
               items: currentMatch?.visiting.players,
             }}
             buttonRightVisiting={{
               function: disallowCard,
               args: [],
-              items: getCards('visiting', 'YELLOW'),
+              items: getCards('visiting', CardsType.YELLOW),
             }}
             icons={{
               left: <MatchTeamCard color="yellow" absolute amount={1} width={16} height={20} />,

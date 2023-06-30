@@ -2,6 +2,15 @@ import { makeStyles } from 'tss-react/mui';
 import { alpha, lighten, Theme } from '@mui/material/styles';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
+  dialog: {
+    borderRadius: 4,
+    width: '100%',
+  },
+  paper: {
+    maxWidth: '100%',
+    width: 460,
+    height: 'auto',
+  },
   buttonText: {
     color: theme.palette.common.white,
     fontSize: 14,

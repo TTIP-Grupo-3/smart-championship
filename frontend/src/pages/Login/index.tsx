@@ -26,7 +26,7 @@ export const Login = () => {
   const [isInvalidUser, setIsInvalidUser] = useState(false);
   const theme = useTheme();
 
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleClickShowPassword = (): void => setShowPassword(!showPassword);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setUser({ ...user, [target.name]: target.value });
@@ -43,11 +43,11 @@ export const Login = () => {
       .catch(() => setIsInvalidUser(true));
   };
 
-  const redirectAccordingToRole = (role: string) => {
+  const redirectAccordingToRole = (role: string): void => {
     navigate(roles[role]);
   };
 
-  const canLogin = () => {
+  const canLogin = (): boolean => {
     return user.username.trim().length !== 0 && user.password.trim().length !== 0;
   };
 

@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import { MessageType } from '../components/Snackbar';
 
 export type ChampionshipTournament = ChampionshipScore | ChampionshipElimination;
 
@@ -92,7 +93,7 @@ export interface Championship {
   teamSize: number;
 }
 
-interface Match {
+export interface Match {
   id: number;
   date: string;
   start: string;
@@ -150,4 +151,68 @@ export interface Player {
   name: string;
   number: number;
   dni: number;
+}
+
+export interface ReviewableMatch {
+  id: number;
+  date: string;
+  start: string;
+  end: string;
+  championshipId: number;
+  local: Team;
+  visiting: Team;
+}
+export interface TeamLeaderTournament {
+  id?: number;
+  name: string;
+  type?: string;
+  date?: string;
+  teamSize: number;
+  start?: string;
+  end?: string;
+  size?: number;
+  enrolled?: number;
+  price?: number;
+  duration: number;
+  status?: string;
+  isEnrolled?: boolean;
+}
+
+export interface EnrollChampionship {
+  id: number;
+  name: string;
+  price: number;
+  status: string;
+  receipt: string;
+}
+
+export interface CreateChampionship {
+  name: string;
+  type: string;
+  date: string;
+  size: number;
+  price: number;
+  duration: number;
+  teamSize: number;
+}
+
+export interface TeamLeaderData extends User {
+  firstName: string;
+  lastName: string;
+}
+//----------------------------
+
+export type PlayerCreate = Omit<Player, 'id'>;
+export interface PlayerData {
+  [key: string]: string | number;
+  firstName: string;
+  lastName: string;
+  dni: number;
+  number: number;
+}
+
+export interface SnackBarState {
+  open: boolean;
+  type: MessageType;
+  message: string;
 }

@@ -7,16 +7,22 @@ import { Navbar } from '../../components/NavBar';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { useStyles } from './style';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { TeamLeaderTournament } from '../../interfaces';
 
 export const EnrollReservation = () => {
   const { classes } = useStyles();
   const { id } = useParams();
-  const [championship, setChampionship] = useState({ name: '', date: '', duration: 0, teamSize: 0 });
+  const [championship, setChampionship] = useState<TeamLeaderTournament>({
+    name: '',
+    date: '',
+    duration: 0,
+    teamSize: 0,
+  });
   const navigate = useNavigate();
   const theme = useTheme();
 
   useEffect(() => {
-    API_TEAM_LEADER.championshipToEnroll(+id!).then((r: any) => setChampionship(r.data));
+    API_TEAM_LEADER.championshipToEnroll(+id!).then(({ data }) => setChampionship(data));
   }, [id]);
 
   const handleReservation = () => {
@@ -27,7 +33,7 @@ export const EnrollReservation = () => {
   return (
     <Navbar
       button={{
-        action: () => navigate('/leader/enrollment/tournaments'),
+        action: (): void => navigate('/leader/enrollment/tournaments'),
         text: 'Volver',
         icon: (
           <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: theme.palette.common.white }} />

@@ -7,9 +7,10 @@ import { Navbar } from '../../components/NavBar';
 import { API } from '../../services/Championship';
 import { useStyles } from './style';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { Championship } from '../../interfaces';
 
 export const Tournaments = () => {
-  const [championships, setChampionships] = useState<any>([]);
+  const [championships, setChampionships] = useState<Championship[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { classes } = useStyles();
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export const Tournaments = () => {
     <Navbar
       footer
       button={{
-        action: () => navigate('/login'),
+        action: (): void => navigate('/login'),
         text: 'Inscribete',
         icon: (
           <PersonAddIcon
@@ -57,7 +58,7 @@ export const Tournaments = () => {
             spacing={2}
             padding={2}
           >
-            {championships.map((championship: any) => (
+            {championships.map((championship) => (
               <CardTournament championship={championship}></CardTournament>
             ))}
           </Grid>

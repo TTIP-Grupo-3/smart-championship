@@ -1,4 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
+import { Match, ReviewableMatch } from '../interfaces';
 import { httpClient } from './httpClient';
 
 class ReviewerService {
@@ -8,11 +9,11 @@ class ReviewerService {
     this.httpClient = httpClient;
   }
 
-  getReviewableMatches(championshipId: number): Promise<AxiosResponse<any>> {
+  getReviewableMatches(championshipId: number): Promise<AxiosResponse<Match[]>> {
     return this.httpClient.get(`/reviewer/championship/${championshipId}/match`);
   }
 
-  getReviewableMatch(championshipId: number, matchId: number): Promise<AxiosResponse<any>> {
+  getReviewableMatch(championshipId: number, matchId: number): Promise<AxiosResponse<ReviewableMatch>> {
     return this.httpClient.get(`reviewer/championship/${championshipId}/match/${matchId}`);
   }
 }

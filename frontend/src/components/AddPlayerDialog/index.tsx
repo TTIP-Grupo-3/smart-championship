@@ -2,35 +2,41 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import { ChangeEvent, FC, Fragment, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, FC, Fragment, useState } from 'react';
 import { Grid, Typography, useTheme } from '@mui/material';
 import { useStyles } from './style';
 import { BootstrapDialogTitle } from '../DialogTitle';
 import { OutlinedInput } from '../OutlinedInput';
 import { containsOnlyNumbers } from '../../utils/utils';
+import { PlayerData } from '../../interfaces';
 
 export const AddPlayerDialog: FC<any> = ({ open, createPlayer, onClose }) => {
   const { classes } = useStyles();
   const theme = useTheme();
-  const [player, setPlayer] = useState<any>({ firstName: '', lastName: '', dni: 0, number: 0 });
+  const [player, setPlayer] = useState<PlayerData>({
+    firstName: '',
+    lastName: '',
+    dni: 0,
+    number: 0,
+  });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setPlayer({ ...player, [e.target.name]: e.target.value });
   };
 
-  const fieldsTextCompleted = () => {
-    return ['firstName', 'lastName'].every((key: string) => player[key].trim().length !== 0);
+  const fieldsTextCompleted = (): boolean => {
+    return ['firstName', 'lastName'].every((key: string) => player[key].toString().trim().length !== 0);
   };
 
-  const dniCompleted = () => player.dni.toString().length > 7;
+  const dniCompleted = (): boolean => player.dni.toString().length > 7;
 
-  const handleChangeNumber = (e: any) => {
+  const handleChangeNumber: ChangeEventHandler<HTMLInputElement> = (e): void => {
     const { target } = e;
     (containsOnlyNumbers(target.value) || target.value === '') &&
       setPlayer({ ...player, [e.target.name]: +e.target.value });
   };
 
-  const createNewPlayer = async () => {
+  const createNewPlayer = async (): Promise<void> => {
     const { firstName, lastName, ...rest } = player;
     const newPlayer = { name: `${firstName}  ${lastName}`, ...rest };
     await createPlayer(newPlayer);
@@ -41,9 +47,9 @@ export const AddPlayerDialog: FC<any> = ({ open, createPlayer, onClose }) => {
   return (
     <Fragment>
       <Dialog
-        open={open}
-        style={{ borderRadius: 4, width: '100%' }}
-        PaperProps={{ elevation: 24, style: { maxWidth: '100%', width: 460, height: 'auto' } }}
+        {...{ open }}
+        className={classes.dialog}
+        PaperProps={{ elevation: 24, className: classes.paper }}
       >
         <BootstrapDialogTitle
           style={{ color: theme.palette.common.white, paddingLeft: 23 }}

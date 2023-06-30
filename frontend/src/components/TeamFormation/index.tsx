@@ -14,7 +14,8 @@ import { Player } from '../../interfaces';
 import { EmptyData } from '../EmptyData';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import SnackBar from '../Snackbar';
-import { delay, msgTypes } from '../../pages/Admin';
+import { msgTypes } from '../../pages/Admin';
+import { delay } from '../../utils/utils';
 
 interface PlayerProps {
   players: Player[];

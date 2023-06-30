@@ -20,8 +20,8 @@ export const DashboardClasification = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    API.getChampionshipId(+id!).then((r) => {
-      setTournament(r.data);
+    API.getChampionshipId(+id!).then(({ data }) => {
+      setTournament(data);
       setIsLoading(false);
     });
   }, []);

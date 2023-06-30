@@ -1,6 +1,6 @@
 import { Button, Grid, Typography } from '@mui/material';
 import { FC, Fragment, useState } from 'react';
-import { delay } from '../../pages/Admin';
+import { delay } from '../../utils/utils';
 import { EnrollmentTeamDialog } from '../EnrollTeamDialog';
 import SnackBar from '../Snackbar';
 import { useStyles } from './style';

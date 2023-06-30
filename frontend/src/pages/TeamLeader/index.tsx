@@ -10,16 +10,11 @@ import AddIcon from '@mui/icons-material/Add';
 import { MyEnrollmentsDialog } from '../../components/MyEnrollmentsDialog';
 import { AddPlayerDialog } from '../../components/AddPlayerDialog';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
-import { LeaderEnrollment } from '../../interfaces';
+import { LeaderEnrollment, Player, PlayerCreate, SnackBarState } from '../../interfaces';
 import { EmptyTeam } from '../../components/EmptyTeam';
 import { Loader } from '../../components/Loader';
 import SnackBar from '../../components/Snackbar';
-import { delay } from '../Admin';
-
-const msgTypes: any = {
-  success: 'Jugador agregado correctamente',
-  error: 'Ha ocurrido un error intenta mas tarde',
-};
+import { delay } from '../../utils/utils';
 
 export const TeamLeader: FC = () => {
   const { classes } = useStyles();
@@ -29,27 +24,27 @@ export const TeamLeader: FC = () => {
   const [leaderData, setLeaderData] = useState<LeaderEnrollment>();
   const [openPlayer, setOpenPlayer] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
-  const [players, setPlayers] = useState<any[]>([]);
+  const [openS, setOpenS] = useState<SnackBarState>({ open: false, type: 'success', message: '' });
+  const [players, setPlayers] = useState<Player[]>([]);
   const theme = useTheme();
 
-  const handleEnroll = () => {
+  const handleEnroll = (): void => {
     navigate('/leader/enrollment/tournaments');
   };
 
-  const handleEnrollments = () => {
+  const handleEnrollments = (): void => {
     setOpenEnrollments(true);
   };
 
-  const handleCreate = () => {
+  const handleCreate = (): void => {
     setOpenCreator(true);
   };
 
-  const onClose = () => {
+  const onClose = (): void => {
     setOpenPlayer(false);
   };
 
-  const addPlayer = () => {
+  const addPlayer = (): void => {
     setOpenPlayer(true);
   };
 
@@ -58,21 +53,21 @@ export const TeamLeader: FC = () => {
     loadTeamData();
   }, []);
 
-  const onSuccess = async () => {
+  const onSuccess = async (): Promise<void> => {
     onClose();
-    setOpenS({ open: true, type: 'success' });
+    setOpenS({ open: true, type: 'success', message: 'Jugador agregado correctamente' });
     await delay(2000);
-    setOpenS({ open: false, type: 'success' });
+    setOpenS({ ...openS, open: false });
   };
 
-  const onError = async () => {
-    setOpenS({ open: true, type: 'error' });
+  const onError = async (): Promise<void> => {
+    setOpenS({ open: true, type: 'error', message: 'Ha ocurrido un error intenta mas tarde' });
     onClose();
     await delay(2000);
-    setOpenS({ open: false, type: 'error' });
+    setOpenS({ ...openS, open: false });
   };
 
-  const loadTeamData = () => {
+  const loadTeamData = (): void => {
     setIsLoading(true);
     API_TEAM_LEADER.getTeamLeader()
       .then(({ data }) => {
@@ -82,7 +77,7 @@ export const TeamLeader: FC = () => {
       .catch(() => setIsLoading(true));
   };
 
-  const createPlayer = async (player: any) => {
+  const createPlayer = async (player: PlayerCreate): Promise<void> => {
     API_TEAM_LEADER.createPlayer(player)
       .then(async () => {
         await loadPlayers();
@@ -177,9 +172,9 @@ export const TeamLeader: FC = () => {
         open={openS.open}
         vertical={'bottom'}
         horizontal={'center'}
-        msgSnack={msgTypes[openS.type]}
+        msgSnack={openS.message}
         type={openS.type}
-        handleClose={() => setOpenS((prev: any) => ({ ...prev, open: false }))}
+        handleClose={() => setOpenS((prev: SnackBarState) => ({ ...prev, open: false }))}
       />
     </Navbar>
   );

@@ -7,17 +7,18 @@ import { Navbar } from '../../components/NavBar';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { useStyles } from './style';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { TeamLeaderTournament } from '../../interfaces';
 
 export const TournamentsToStart = () => {
-  const [championships, setChampionships] = useState([]);
+  const [championships, setChampionships] = useState<TeamLeaderTournament[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { classes } = useStyles();
   const navigate = useNavigate();
   const theme = useTheme();
 
   useEffect(() => {
-    API_TEAM_LEADER.championshipsToEnroll().then((r) => {
-      setChampionships(r.data);
+    API_TEAM_LEADER.championshipsToEnroll().then(({ data }) => {
+      setChampionships(data);
       setIsLoading(false);
     });
   }, []);

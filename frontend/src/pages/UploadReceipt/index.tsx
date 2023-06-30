@@ -3,7 +3,7 @@ import { Button, Grid, Typography, useTheme } from '@mui/material';
 import { Navbar } from '../../components/NavBar';
 import { useStyles } from './style';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import defaultUpload from '../../upload.jpg';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -19,13 +19,13 @@ export const UploadReceipt = () => {
   const theme = useTheme();
   const [openConfirmation, setOpenConfirmation] = useState(false);
 
-  const handleFile = (e: any) => {
-    const files = e.target.files[0];
+  const handleFile: ChangeEventHandler<HTMLInputElement> = (e): void => {
+    const files = e.target.files![0];
     setFile(files);
     setImage(URL.createObjectURL(files));
   };
 
-  const uploadReceipt = () => {
+  const uploadReceipt = (): void => {
     setOpenConfirmation(true);
     const formdata = new FormData();
     formdata.append('receipt', file!);

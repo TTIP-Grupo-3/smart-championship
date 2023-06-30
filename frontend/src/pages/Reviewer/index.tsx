@@ -9,12 +9,13 @@ import { Navbar } from '../../components/NavBar';
 import { API } from '../../services/Championship';
 import { API_REVIEWER } from '../../services/ReviewerService';
 import { useStyles } from './style';
+import { Championship, Match } from '../../interfaces';
 
 export const Reviewer = () => {
   const { classes } = useStyles();
-  const [matches, setMatches] = useState<any>([]);
+  const [matches, setMatches] = useState<Match[]>([]);
   const [idMatch, setSelected] = useState(null);
-  const [championships, setChampionships] = useState<any>([]);
+  const [championships, setChampionships] = useState<Championship[]>([]);
   const [currentChampionship, setChampionship] = useState<{ id: number; type: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,8 +29,8 @@ export const Reviewer = () => {
   useEffect(() => {
     if (currentChampionship) {
       setIsLoading(true);
-      API_REVIEWER.getReviewableMatches(currentChampionship.id).then((r) => {
-        setMatches(r.data);
+      API_REVIEWER.getReviewableMatches(currentChampionship.id).then(({ data }) => {
+        setMatches(data);
         setIsLoading(false);
       });
     }

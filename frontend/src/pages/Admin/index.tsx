@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useEffect, useState } from 'react';
 import { Button, Grid, Typography } from '@mui/material';
@@ -12,21 +13,22 @@ import SnackBar from '../../components/Snackbar';
 import { Loader } from '../../components/Loader';
 import { EmptyData } from '../../components/EmptyData';
 import { InitTournamentDialog } from '../../components/InitTournamentDialog';
+import { delay } from '../../utils/utils';
+import { SnackBarState } from '../../interfaces';
 
 export const msgTypes: any = {
   success: 'Cambios realizados correctamente',
   error: 'Ha ocurrido un error intenta mas tarde',
 };
-export const delay = async (time: number) => new Promise((res) => setTimeout(res, time));
 
 export const Admin: FC = () => {
   const { classes } = useStyles();
   const [tournaments, setTournaments] = useState<any>([]);
   const [open, setOpen] = useState(false);
-  const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
+  const [openS, setOpenS] = useState<SnackBarState>({ open: false, type: 'success', message: '' });
   const [openEdit, setOpenEdit] = useState(false);
-  const [id, setId] = useState<any>();
-  const [searched, setSearched] = useState('');
+  const [id, setId] = useState<number | null>();
+  const [searched, setSearched] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [openInit, setOpenInit] = useState(false);
 
@@ -37,30 +39,30 @@ export const Admin: FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      API_ADMIN.getAdminChampionships().then((r) => {
-        setTournaments(r.data);
+      API_ADMIN.getAdminChampionships().then(({ data }) => {
+        setTournaments(data);
         setIsLoading(false);
       });
     }, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  const onSuccess = async () => {
-    setOpenS({ open: true, type: 'success' });
-    API_ADMIN.getAdminChampionships().then((r) => setTournaments(r.data));
+  const onSuccess = async (): Promise<void> => {
+    setOpenS({ open: true, type: 'success', message: msgTypes.success });
+    API_ADMIN.getAdminChampionships().then(({ data }) => setTournaments(data));
     onClose();
     await delay(2000);
-    setOpenS({ open: false, type: 'success' });
+    setOpenS({ ...openS, open: false });
   };
 
-  const onError = async () => {
-    setOpenS({ open: true, type: 'error' });
+  const onError = async (): Promise<void> => {
+    setOpenS({ open: true, type: 'error', message: msgTypes.error });
     onClose();
     await delay(2000);
-    setOpenS({ open: false, type: 'error' });
+    setOpenS({ ...openS, open: false });
   };
 
-  const handleEdit = (id: number) => {
+  const handleEdit = (id: number): void => {
     handleOpenEdit();
     setId(id);
   };
@@ -71,7 +73,7 @@ export const Admin: FC = () => {
   };
 
   const onCloseInit = () => {
-    API_ADMIN.startChampionship(id).then(onSuccess).catch(onError);
+    API_ADMIN.startChampionship(id!).then(onSuccess).catch(onError);
   };
 
   const searchedProjects = (): Array<any> =>

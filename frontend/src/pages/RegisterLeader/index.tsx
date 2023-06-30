@@ -3,7 +3,7 @@ import { Button, Card, Grid, IconButton, InputAdornment, Typography, useTheme } 
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
-import { User } from '../../interfaces';
+import { TeamLeaderData } from '../../interfaces';
 import { useStyles } from './style';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { OutlinedInput } from '../../components/OutlinedInput';
@@ -12,7 +12,12 @@ import { API_TEAM_LEADER } from '../../services/TeamLeader';
 export const RegisterLeader = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { classes } = useStyles();
-  const [user, setUser] = useState<User>({ firstName: '', lastName: '', username: '', password: '' });
+  const [user, setUser] = useState<TeamLeaderData>({
+    firstName: '',
+    lastName: '',
+    username: '',
+    password: '',
+  });
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -30,7 +35,7 @@ export const RegisterLeader = () => {
     });
   };
 
-  const canRegister = () => {
+  const canRegister = (): boolean => {
     return Object.keys(user).every((key: string) => user[key].trim().length !== 0);
   };
 

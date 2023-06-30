@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import * as React from 'react';
 import { AppBar, Box, Grid, Tab, Tabs } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useStyles } from './style';
@@ -9,8 +8,10 @@ import { Enrollments as CheckedEnrollments } from '../Enrollments';
 import { Enrollments as PendingEnrollments } from '../Enrollments';
 
 import SnackBar from '../Snackbar';
-import { delay, msgTypes } from '../../pages/Admin';
+import { msgTypes } from '../../pages/Admin';
 import { DialogInscription } from '../DialogInscription';
+import { delay } from '../../utils/utils';
+import { SnackBarState } from '../../interfaces';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,7 +50,7 @@ export const AdminEnrollmentTabs = () => {
   const [open, setOpen] = useState(false);
   const [enrollments, setEnrollments] = useState<any[]>([]);
   const [idEnroll, setIdEnroll] = useState<any>();
-  const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
+  const [openS, setOpenS] = useState<SnackBarState>({ open: false, type: 'success', message: '' });
   const { championshipId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -70,18 +71,18 @@ export const AdminEnrollmentTabs = () => {
   };
 
   const onSuccess = async () => {
-    setOpenS({ open: true, type: 'success' });
+    setOpenS({ open: true, type: 'success', message: msgTypes.success });
     API_ADMIN_ENROLLMENT.getAdminEnrollments(+championshipId!).then((r: any) => setEnrollments(r.data));
     onClose();
     await delay(2000);
-    setOpenS({ open: false, type: 'success' });
+    setOpenS({ ...openS, open: false });
   };
 
   const onError = async () => {
-    setOpenS({ open: true, type: 'error' });
+    setOpenS({ open: true, type: 'error', message: msgTypes.error });
     onClose();
     await delay(2000);
-    setOpenS({ open: false, type: 'error' });
+    setOpenS({ ...openS, open: false });
   };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -124,7 +125,7 @@ export const AdminEnrollmentTabs = () => {
         open={openS.open}
         vertical={'bottom'}
         horizontal={'center'}
-        msgSnack={msgTypes[openS.type]}
+        msgSnack={openS.message}
         type={openS.type}
         handleClose={() => setOpenS((prev: any) => ({ ...prev, open: false }))}
       />

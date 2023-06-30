@@ -1,4 +1,5 @@
 import { Socket } from 'socket.io-client';
+import { CardsType } from '../interfaces';
 import { SubscriptionService } from './SubscriptionService';
 
 export class MatchService extends SubscriptionService {
@@ -34,7 +35,7 @@ export class MatchService extends SubscriptionService {
 
   scoreCard = (
     socket: Socket,
-    typeCard: 'YELLOW' | 'RED',
+    typeCard: CardsType,
     time: number,
     isLocal: boolean,
     idPlayer: number,

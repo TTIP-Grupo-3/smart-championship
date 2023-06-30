@@ -16,18 +16,19 @@ import dayjs from 'dayjs';
 import { MatchDialog } from '../MatchDialog';
 import { Loader } from '../Loader';
 import { EmptyData } from '../EmptyData';
+import { Match } from '../../interfaces';
 
 export const TableClashes = () => {
   const { classes } = useStyles();
   const { id } = useParams();
-  const [matches, setMatches] = useState([]);
+  const [matches, setMatches] = useState<Match[]>([]);
   const [matchId, setMatchId] = useState<number>();
-  const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [open, setOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    API_MATCH.getMatches(+id!).then((r) => {
-      setMatches(r.data);
+    API_MATCH.getMatches(+id!).then(({ data }) => {
+      setMatches(data);
       setIsLoading(false);
     });
   }, []);
@@ -55,7 +56,7 @@ export const TableClashes = () => {
           </Table>
 
           <List>
-            {matches.map((match: any) => {
+            {matches.map((match) => {
               return (
                 <ListItemButton className={classes.listItem} onClick={() => handleOpen(match.id)}>
                   <Grid className={classes.gridLogo} sx={{ marginLeft: '8%' }}>
