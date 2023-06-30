@@ -30,6 +30,10 @@ export class TeamStatus {
     this.team = team;
   }
 
+  initialized(): boolean {
+    return !!this.team;
+  }
+
   goal(goal: Goal) {
     this.goals.push(goal);
     goal.setStatus(this);

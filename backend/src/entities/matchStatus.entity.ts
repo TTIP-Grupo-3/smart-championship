@@ -56,6 +56,10 @@ export class MatchStatus {
     this.visitingStatus = visitingStatus;
   }
 
+  reviewable(): boolean {
+    return this.hasDate() && this.localStatus.initialized() && this.visitingStatus.initialized();
+  }
+
   startMatch() {
     if (!!this.start) throw new InvalidArgumentException();
     this.start = new Date();
