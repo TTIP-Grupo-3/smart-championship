@@ -5,7 +5,7 @@ import { Navbar } from '../../components/NavBar';
 import { useNavigate } from 'react-router-dom';
 import { AdminEnrollmentTabs } from '../../components/AdminEnrollmentTabs';
 
-export const AdminInscription: FC = () => {
+export const AdminEnrollment: FC = () => {
   const { classes } = useStyles();
   const navigate = useNavigate();
 

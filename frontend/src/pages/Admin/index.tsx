@@ -36,10 +36,13 @@ export const Admin: FC = () => {
   const onCloseEdit = () => setOpenEdit(false);
 
   useEffect(() => {
-    API_ADMIN.getAdminChampionships().then((r) => {
-      setTournaments(r.data);
-      setIsLoading(false);
-    });
+    const interval = setInterval(() => {
+      API_ADMIN.getAdminChampionships().then((r) => {
+        setTournaments(r.data);
+        setIsLoading(false);
+      });
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const onSuccess = async () => {

@@ -54,10 +54,13 @@ export const AdminEnrollmentTabs = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    API_ADMIN_ENROLLMENT.getAdminEnrollments(+championshipId!).then((r: any) => {
-      setEnrollments(r.data);
-      setIsLoading(false);
-    });
+    const interval = setInterval(() => {
+      API_ADMIN_ENROLLMENT.getAdminEnrollments(+championshipId!).then(({ data }) => {
+        setEnrollments(data);
+        setIsLoading(false);
+      });
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const onClose = () => setOpen(false);

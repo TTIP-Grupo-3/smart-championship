@@ -4,7 +4,6 @@ import { FC, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useTimer } from '../../hooks/useTimer';
 import { InspectorMatchProps, MatchStatus } from '../../interfaces';
-import { API_MATCH } from '../../services/Match';
 import { MatchService } from '../../services/MatchService';
 import { MatchManager } from '../MatchManager';
 import { MatchScoreResult } from '../MatchScoreResult';
@@ -14,10 +13,11 @@ import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import { MatchTeamCard } from '../MatchTeamCard';
 import { EliminationInspectorDialog } from '../EliminationInspectorDialog';
 import { Loader } from '../Loader';
+import { API_REVIEWER } from '../../services/ReviewerService';
 
 const matchService = new MatchService();
 
-export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, championshipId, type }) => {
+export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, championshipId, type }) => {
   const [match, setMatch] = useState<any>();
   const [currentMatch, setCurrentMatch] = useState<any>();
   const { minutes, seconds, start, stop, isStarted, time } = useTimer(0);
@@ -27,7 +27,7 @@ export const InspectorMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    API_MATCH.getMatch(+championshipId!, idMatch).then(({ data }) => setCurrentMatch(data));
+    API_REVIEWER.getReviewableMatch(+championshipId!, idMatch).then(({ data }) => setCurrentMatch(data));
     const socketCreated = matchService.create();
     setSocket(socketCreated);
     socketCreated.on('match', (data: any) => {

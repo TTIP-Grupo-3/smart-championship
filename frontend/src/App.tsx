@@ -8,7 +8,7 @@ import { Tournaments } from './pages/TournamentPage';
 import { DashboardElimination } from './pages/DashboardElimination';
 import { PrivateRoute } from './components/PrivateRoute';
 import { Admin } from './pages/Admin';
-import { AdminInscription } from './pages/AdminInscription';
+import { AdminEnrollment as AdminEnrollment } from './pages/AdminEnrollment';
 import { RegisterLeader } from './pages/RegisterLeader';
 import { TeamLeader } from './pages/TeamLeader';
 import { TournamentsToStart } from './pages/EnrollTournament';
@@ -98,7 +98,7 @@ const App: FC = () => (
         path="/admin/enrollments/:championshipId"
         element={
           <PrivateRoute role="admin" redirectTo="/login">
-            <AdminInscription />
+            <AdminEnrollment />
           </PrivateRoute>
         }
       />

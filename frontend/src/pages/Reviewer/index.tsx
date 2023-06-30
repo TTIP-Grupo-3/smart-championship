@@ -2,12 +2,12 @@
 import { Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ChampionshipSelector } from '../../components/ChampionshipSelector';
-import { InspectorMatch } from '../../components/InspectorMatch';
+import { ReviewerMatch as ReviewerMatch } from '../../components/ReviewerMatch';
 import { Loader } from '../../components/Loader';
 import { MatchSelector } from '../../components/MatchSelector';
 import { Navbar } from '../../components/NavBar';
 import { API } from '../../services/Championship';
-import { API_MATCH } from '../../services/Match';
+import { API_REVIEWER } from '../../services/ReviewerService';
 import { useStyles } from './style';
 
 export const Reviewer = () => {
@@ -28,7 +28,7 @@ export const Reviewer = () => {
   useEffect(() => {
     if (currentChampionship) {
       setIsLoading(true);
-      API_MATCH.getMatches(currentChampionship.id).then((r) => {
+      API_REVIEWER.getReviewableMatches(currentChampionship.id).then((r) => {
         setMatches(r.data);
         setIsLoading(false);
       });
@@ -39,7 +39,7 @@ export const Reviewer = () => {
     <Navbar>
       <Grid container className={classes.container}>
         {idMatch ? (
-          <InspectorMatch
+          <ReviewerMatch
             {...{
               idMatch,
               setSelected,
