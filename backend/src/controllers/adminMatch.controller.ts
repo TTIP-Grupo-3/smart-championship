@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiExtraModels,
@@ -15,6 +15,7 @@ import { AdminMatchResponseDTO } from 'src/dtos/responses/adminMatch.response.dt
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
 import { PartialMatchResponseDTO } from 'src/dtos/responses/partialMatch.response.dto';
 import { PhaseResponseDTO } from 'src/dtos/responses/phase.response.dto';
+import { SetMatchDatesDTO } from 'src/dtos/setMatchDates.dto';
 import { Match } from 'src/entities/match.entity';
 import { Phase } from 'src/entities/phase.entity';
 import { Role } from 'src/enums/role.enum';
@@ -41,5 +42,20 @@ export class AdminMatchController {
   @Get()
   async championshipMatches(@Param() matchesDTO: ChampionshipIdDTO): Promise<Array<Match | Phase>> {
     return await this.adminMatchService.championshipMatches(matchesDTO);
+  }
+
+  @ApiExtraModels(PartialMatchResponseDTO, PhaseResponseDTO)
+  @Roles(Role.Admin)
+  @ApiOperation({ summary: 'Set match dates' })
+  @ApiOkResponse({ schema: { anyOf: refs(PhaseResponseDTO, PartialMatchResponseDTO) }, isArray: true })
+  @ApiNotFoundResponse({ type: ErrorResponseDTO })
+  @ApiParam({ name: 'championshipId', type: 'number' })
+  @UseInterceptors(new TransformInterceptor(AdminMatchResponseDTO))
+  @Put()
+  async setMatchDates(
+    @Body() setMatchDatesDTO: SetMatchDatesDTO,
+    @Param() championshipIdDTO: ChampionshipIdDTO,
+  ): Promise<Array<Match | Phase>> {
+    return await this.adminMatchService.setMatchDates(setMatchDatesDTO, championshipIdDTO);
   }
 }

@@ -53,6 +53,10 @@ export class TeamStatus {
     this.team = team;
   }
 
+  hasTeam(): boolean {
+    return !!this.team;
+  }
+
   private canAddCard(card: Card): boolean {
     return this.cards.every(
       ({ type, player }) =>

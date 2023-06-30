@@ -35,4 +35,8 @@ export class ScoreMatch extends Match {
   finished(): boolean {
     return this.status.status === MatchResponseStatus.FINISHED;
   }
+
+  initialized(): boolean {
+    return super.initialized() && this.status.hasTeams();
+  }
 }

@@ -51,6 +51,10 @@ export class MatchStatus {
     return [this.localStatus.team, this.visitingStatus.team];
   }
 
+  setDate(date?: Date) {
+    this.date = date ?? null;
+  }
+
   static from(local: ChampionshipTeam, visiting: ChampionshipTeam): MatchStatus {
     const status = new MatchStatus();
     status.localStatus = TeamStatus.from(local);
@@ -107,5 +111,9 @@ export class MatchStatus {
 
   hasDate(): boolean {
     return !!this.date;
+  }
+
+  hasTeams(): boolean {
+    return this.localStatus.hasTeam() && this.visitingStatus.hasTeam();
   }
 }

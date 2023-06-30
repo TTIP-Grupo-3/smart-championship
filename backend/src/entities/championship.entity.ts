@@ -5,12 +5,13 @@ import { Match } from './match.entity';
 import { ChampionshipStatus } from 'src/enums/championshipStatus.enum';
 import { ChampionshipType } from 'src/enums/championshipType.enum';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
-import { EditChampionshipInfo } from 'src/utils/types';
+import { EditChampionshipInfo, MatchDate } from 'src/utils/types';
 import { ChampionshipEnrollment } from './championshipEnrollment.entity';
 import { TeamEnrollment } from './teamEnrollment.entity';
 import { TeamLeader } from './teamLeader.entity';
 import { User } from './user.entity';
 import { Phase } from './phase.entity';
+import { NotFoundException } from 'src/exceptions/NotFoundException';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -78,6 +79,11 @@ export abstract class Championship {
     }
   }
 
+  setMatchDates(matchDates: Array<MatchDate>) {
+    if (!this.toStart()) throw new InvalidArgumentException('Championship already started');
+    matchDates.forEach((matchDate) => this.setMatchDate(matchDate));
+  }
+
   findEnrollment(id: number): TeamEnrollment {
     return this.enrollment.findEnrollment(id);
   }
@@ -121,6 +127,12 @@ export abstract class Championship {
   }
 
   protected abstract generateMatches(): void;
+
+  private setMatchDate({ id, date }: MatchDate) {
+    const match = this.findMatch(id);
+    if (!match) throw new NotFoundException('Match not found');
+    match.setDate(date);
+  }
 
   private toStart(): boolean {
     return this.status === ChampionshipStatus.TOSTART;

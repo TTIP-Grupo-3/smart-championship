@@ -12,6 +12,11 @@ export interface EditChampionshipInfo {
   teamSize?: number;
 }
 
+export interface MatchDate {
+  id: number;
+  date?: Date;
+}
+
 export type UserRequestInfo<T extends User = User> = { user?: T; userDTO?: IdDTO; role?: Role };
 export type UserSocket = Socket & UserRequestInfo;
 export type NoPromise = Diff<any, Promise<any>>;
