@@ -4,6 +4,7 @@ import { ScoreMatch } from './scoreMatch.entity';
 import { ScoreStatus } from './scoreStatus.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { ChampionshipType } from 'src/enums/championshipType.enum';
+import { Match } from './match.entity';
 
 @ChildEntity()
 export class ScoreChampionship extends Championship {
@@ -11,6 +12,10 @@ export class ScoreChampionship extends Championship {
   matches: Array<ScoreMatch>;
 
   readonly type: ChampionshipType = ChampionshipType.SCORE;
+
+  protected getAdminMatches(): Array<Match> {
+    return this.matches;
+  }
 
   public get scoreStatuses(): Array<ScoreStatus> {
     return this.teams

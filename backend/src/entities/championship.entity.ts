@@ -10,6 +10,7 @@ import { ChampionshipEnrollment } from './championshipEnrollment.entity';
 import { TeamEnrollment } from './teamEnrollment.entity';
 import { TeamLeader } from './teamLeader.entity';
 import { User } from './user.entity';
+import { Phase } from './phase.entity';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -42,7 +43,14 @@ export abstract class Championship {
 
   abstract matches: Array<Match>;
 
+  public get adminMatches(): Array<Phase | Match> {
+    if (this.enrollment.hasPlaces()) throw new InvalidArgumentException('Cannot get matches');
+    return this.getAdminMatches();
+  }
+
   abstract findMatch(id: number): Match | null;
+
+  protected abstract getAdminMatches(): Array<Phase | Match>;
 
   public get room() {
     return `championship-${this.id}`;
