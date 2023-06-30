@@ -96,9 +96,8 @@ export const TeamFormation: FC<PlayerProps> = ({ players, reloadPlayers }) => {
                 <ListItem key={player.id} disablePadding>
                   <ListItemIcon>
                     <Checkbox
-                      style={{ paddingLeft: '20px' }}
+                      style={{ paddingLeft: '20px', color: '#00BCD4' }}
                       edge="start"
-                      color="primary"
                       onChange={handleToggle(player.id)}
                       checked={checked.includes(player.id)}
                       inputProps={{ 'aria-labelledby': labelId }}

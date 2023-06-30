@@ -5,6 +5,7 @@ import { useStyles } from './style';
 import smartLogoLocal from '../../default_match_icon_local.svg';
 import smartLogoVisiting from '../../default_match_icon_visiting.svg';
 import { StartedMatchLoader } from '../StartedMatchLoader';
+import { MatchStatus } from '../../interfaces';
 
 export const MatchScoreResult: FC<any> = ({
   match,
@@ -26,7 +27,7 @@ export const MatchScoreResult: FC<any> = ({
           paddingTopImg={14}
         />
         <Typography variant="h3" className={classes.resultScore}>
-          {match?.local.goals.length}
+          {match?.local ? match.local.goals.length : 0}
         </Typography>
       </Grid>
       <Grid className={classes.timer}>
@@ -39,7 +40,7 @@ export const MatchScoreResult: FC<any> = ({
             <Typography variant="body1" className={classes.time}>
               {time}'
             </Typography>
-            {match?.status === 'STARTED' && <StartedMatchLoader />}
+            {match?.status === MatchStatus.STARTED && <StartedMatchLoader />}
           </>
         )}
         {componentStop}
@@ -53,7 +54,7 @@ export const MatchScoreResult: FC<any> = ({
           paddingTopImg={14}
         />
         <Typography variant="h3" className={classes.resultScore}>
-          {match?.visiting.goals.length}
+          {match?.visiting ? match.visiting.goals.length : 0}
         </Typography>
       </Grid>
     </Grid>

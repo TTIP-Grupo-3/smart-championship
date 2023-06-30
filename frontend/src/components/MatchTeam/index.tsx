@@ -32,7 +32,7 @@ export const MatchTeam: FC<MatchTeamProps> = ({
         height="45"
         style={{ borderRadius: '50%', paddingTop: paddingTopImg }}
       />
-      <TooltipText text={inDialog ? getInitials(team!.name).toUpperCase() : team?.name} />
+      <TooltipText text={inDialog ? getInitials(team ? team?.name : '').toUpperCase() : team?.name} />
       {showCards && <MatchTeamCards {...team} />}
     </Grid>
   );
