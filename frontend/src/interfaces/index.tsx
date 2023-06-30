@@ -133,6 +133,7 @@ export interface ChampionshipScore {
 export interface LeaderEnrollment {
   id: number;
   name: string;
+  minimumSize: number;
   team: TeamEnrollment;
   enrollments: Enrollment[];
 }

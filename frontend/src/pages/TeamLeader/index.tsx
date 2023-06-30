@@ -133,7 +133,11 @@ export const TeamLeader: FC = () => {
                     <Typography className={classes.leaderTeamName}>{leaderData.team.name}</Typography>
                   </Grid>
                   <Grid container className={classes.gridLeft}>
-                    <Button className={classes.buttonEnroll} onClick={handleEnroll}>
+                    <Button
+                      className={classes.buttonEnroll}
+                      onClick={handleEnroll}
+                      disabled={players.length < leaderData.minimumSize}
+                    >
                       <Typography className={classes.buttonText}>Inscribirse a torneo</Typography>
                     </Button>
                     <Button
@@ -150,7 +154,7 @@ export const TeamLeader: FC = () => {
                 <Grid className={classes.team}>
                   <Grid container className={classes.gridRigthContent}>
                     <Typography className={classes.teamPlayerText}>Jugadores:</Typography>
-                    <IconButton onClick={addPlayer}>
+                    <IconButton onClick={addPlayer} className={classes.addIconButton}>
                       <AddIcon style={{ color: 'white', fontSize: 23 }}></AddIcon>
                     </IconButton>
                   </Grid>

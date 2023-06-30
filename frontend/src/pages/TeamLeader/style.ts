@@ -117,4 +117,11 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     paddingTop: theme.spacing(1.2),
     color: theme.palette.common.white,
   },
+  addIconButton: {
+    backgroundColor: '#00BCD4',
+    marginLeft: theme.spacing(1),
+    '&:hover': {
+      backgroundColor: '#00BCD4',
+    },
+  },
 }));
