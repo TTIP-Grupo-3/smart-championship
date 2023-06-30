@@ -42,4 +42,8 @@ export abstract class Match {
   initialized(): boolean {
     return this.status.hasDate();
   }
+
+  reviewable(): boolean {
+    return this.status.reviewable();
+  }
 }

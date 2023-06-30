@@ -41,6 +41,8 @@ import { TeamService } from './services/team.service';
 import { TeamController } from './controllers/team.controller';
 import { PlayerController } from './controllers/player.controller';
 import { PlayerService } from './services/player.service';
+import { ReviewerMatchService } from './services/reviewerMatch.service';
+import { ReviewerMatchController } from './controllers/reviewerMatch.controller';
 
 @Module({
   imports: [
@@ -62,6 +64,7 @@ import { PlayerService } from './services/player.service';
     TeamLeaderEnrollmentController,
     TeamController,
     PlayerController,
+    ReviewerMatchController,
   ],
   providers: [
     AllChampionshipService,
@@ -87,6 +90,7 @@ import { PlayerService } from './services/player.service';
     TeamLeaderEnrollmentService,
     TeamService,
     PlayerService,
+    ReviewerMatchService,
   ],
 })
 export class AppModule {
