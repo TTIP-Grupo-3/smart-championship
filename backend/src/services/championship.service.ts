@@ -4,6 +4,8 @@ import { configService } from './config.service';
 import { Championship } from 'src/entities/championship.entity';
 import { TransactionService } from './transaction.service';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
+import { EliminationChampionship } from 'src/entities/eliminationChampionship.entity';
+import { EliminationMatch } from 'src/entities/eliminationMatch.entity';
 
 const errors = configService.get('service.errors');
 
@@ -40,5 +42,20 @@ export abstract class ChampionshipService {
     return championships.filter((championship) => this.exists(championship));
   }
 
-  protected abstract setMatches(championship: Championship, manager: EntityManager): Promise<Championship>;
+  protected async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
+    if (championship instanceof EliminationChampionship) {
+      championship.final = await this.findFinal(championship, manager);
+    }
+    return championship;
+  }
+
+  private async findFinal(
+    championship: EliminationChampionship,
+    manager: EntityManager,
+  ): Promise<EliminationMatch> {
+    const relations = ['status'];
+    const finals = await manager.getTreeRepository(EliminationMatch).findTrees({ relations });
+    const final = finals.find(({ championshipId }) => championshipId === championship.id);
+    return final;
+  }
 }

@@ -43,6 +43,8 @@ import { Player } from 'src/entities/player.entity';
 import { LeaderTeamResponseDTO } from 'src/dtos/responses/leaderTeam.response.dto';
 import { Team } from 'src/entities/team.entity';
 import { PhaseManager } from 'src/entities/phaseManager.entity';
+import { Phase } from 'src/entities/phase.entity';
+import { PhaseResponseDTO } from 'src/dtos/responses/phase.response.dto';
 
 const errors = configService.get('service.errors');
 
@@ -78,7 +80,19 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     if (source instanceof User) return this.userDTO(source, request, dtoCls);
     if (source instanceof TeamEnrollment) return this.teamEnrollmentDTO(source, request, dtoCls);
     if (source instanceof PhaseManager) return this.phaseManagerDTO(source, request, dtoCls);
+    if (source instanceof Phase) return this.phaseDTO(source, request, dtoCls);
     throw new UnknownException(errors.unknown);
+  }
+
+  private phaseDTO(
+    source: Phase,
+    request: UserRequestInfo = {},
+    dtoCls: Class<SmartChampionshipDTO>,
+  ): PhaseResponseDTO {
+    const { matches } = source;
+    return this.plainToInstance(PhaseResponseDTO, {
+      matches: this.map(matches, request, PartialMatchResponseDTO),
+    });
   }
 
   private teamEnrollmentDTO(

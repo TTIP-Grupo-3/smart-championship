@@ -25,10 +25,10 @@ const errors = configService.get('service.errors');
 export class ReviewerMatchService extends MatchService {
   constructor(
     transactionService: TransactionService,
-    championshipPlayerService: ChampionshipPlayerService,
     championshipService: AllChampionshipService,
+    protected readonly championshipPlayerService: ChampionshipPlayerService,
   ) {
-    super(transactionService, championshipPlayerService, championshipService);
+    super(transactionService, championshipService);
   }
 
   async start(startDTO: MatchIdDTO, manager?: EntityManager): Promise<Match> {

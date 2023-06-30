@@ -5,11 +5,13 @@ import { Match } from './match.entity';
 import { ChampionshipStatus } from 'src/enums/championshipStatus.enum';
 import { ChampionshipType } from 'src/enums/championshipType.enum';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
-import { EditChampionshipInfo } from 'src/utils/types';
+import { EditChampionshipInfo, MatchDate } from 'src/utils/types';
 import { ChampionshipEnrollment } from './championshipEnrollment.entity';
 import { TeamEnrollment } from './teamEnrollment.entity';
 import { TeamLeader } from './teamLeader.entity';
 import { User } from './user.entity';
+import { Phase } from './phase.entity';
+import { NotFoundException } from 'src/exceptions/NotFoundException';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -42,7 +44,14 @@ export abstract class Championship {
 
   abstract matches: Array<Match>;
 
+  public get adminMatches(): Array<Phase | Match> {
+    if (this.enrollment.hasPlaces()) throw new InvalidArgumentException('Cannot get matches');
+    return this.getAdminMatches();
+  }
+
   abstract findMatch(id: number): Match | null;
+
+  protected abstract getAdminMatches(): Array<Phase | Match>;
 
   public get room() {
     return `championship-${this.id}`;
@@ -68,6 +77,11 @@ export abstract class Championship {
     } else {
       return ChampionshipStatus.TOSTART;
     }
+  }
+
+  setMatchDates(matchDates: Array<MatchDate>) {
+    if (!this.toStart()) throw new InvalidArgumentException('Championship already started');
+    matchDates.forEach((matchDate) => this.setMatchDate(matchDate));
   }
 
   findEnrollment(id: number): TeamEnrollment {
@@ -113,6 +127,12 @@ export abstract class Championship {
   }
 
   protected abstract generateMatches(): void;
+
+  private setMatchDate({ id, date }: MatchDate) {
+    const match = this.findMatch(id);
+    if (!match) throw new NotFoundException('Match not found');
+    match.setDate(date);
+  }
 
   private toStart(): boolean {
     return this.status === ChampionshipStatus.TOSTART;

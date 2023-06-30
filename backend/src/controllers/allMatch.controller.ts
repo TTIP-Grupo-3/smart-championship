@@ -5,13 +5,13 @@ import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
 import { PartialMatchResponseDTO } from 'src/dtos/responses/partialMatch.response.dto';
 import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 import { validationPipe } from 'src/pipes/validation.pipe';
-import { MatchService } from 'src/services/match.service';
+import { AllMatchService } from 'src/services/allMatch.service';
 
 @Controller('championship/:championshipId/match')
 @ApiTags('Matches')
 @UsePipes(validationPipe)
-export class MatchController {
-  constructor(private readonly matchService: MatchService) {}
+export class AllMatchController {
+  constructor(private readonly matchService: AllMatchService) {}
 
   @ApiOperation({ summary: 'Get championship matches' })
   @ApiResponse({ type: PartialMatchResponseDTO, status: 200, isArray: true })

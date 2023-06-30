@@ -6,6 +6,7 @@ import { Championship } from './championship.entity';
 import { EliminationMatch } from './eliminationMatch.entity';
 import { ChampionshipType } from 'src/enums/championshipType.enum';
 import { PhaseManager } from './phaseManager.entity';
+import { Phase } from './phase.entity';
 
 const errors = configService.get('model.errors');
 
@@ -27,6 +28,10 @@ export class EliminationChampionship extends Championship {
 
   findMatch(id: number): EliminationMatch {
     return this.final.findMatch(id);
+  }
+
+  protected getAdminMatches(): Array<Phase> {
+    return this.final.phases;
   }
 
   protected generateMatches() {

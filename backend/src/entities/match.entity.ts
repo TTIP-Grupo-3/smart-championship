@@ -23,6 +23,10 @@ export abstract class Match {
     return this.status.teams;
   }
 
+  setDate(date?: Date) {
+    this.status.setDate(date);
+  }
+
   goal(goal: Goal, local: boolean) {
     this.status.goal(goal, local);
   }
