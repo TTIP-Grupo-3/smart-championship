@@ -28,7 +28,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
   confirmReservation: {
     backgroundColor: '#1990BB',
-    color: 'white',
+    color: theme.palette.common.white,
     margin: '2%',
     width: '30%',
     '&:hover': {

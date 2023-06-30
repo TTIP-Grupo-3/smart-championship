@@ -29,7 +29,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   confirmUpload: {
     margin: '2%',
     backgroundColor: '#1990BB',
-    color: 'white',
+    color: theme.palette.common.white,
     width: '30%',
     '&:hover': {
       backgroundColor: '#1990BB',

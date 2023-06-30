@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, useTheme } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useTimer } from '../../hooks/useTimer';
@@ -24,6 +24,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
   const [socket, setSocket] = useState<Socket>();
   const [open, setOpen] = useState<boolean>(false);
   const { classes } = useStyles();
+  const theme = useTheme();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -144,13 +145,15 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
             buttonRightPropsVisiting={{ disabled: match?.visiting.goals.length < 1 }}
             buttonRightVisiting={{ function: disallowGoal, args: [], items: getGoals('visiting') }}
             icons={{
-              left: <SportsSoccerIcon style={{ position: 'absolute', color: 'white' }} />,
+              left: (
+                <SportsSoccerIcon style={{ position: 'absolute', color: theme.palette.common.white }} />
+              ),
               right: (
                 <Grid display="flex" alignItems="center" justifyContent="center">
                   <SportsSoccerIcon
                     style={{
                       position: 'absolute',
-                      color: 'white',
+                      color: theme.palette.common.white,
                     }}
                   ></SportsSoccerIcon>
                   <CloseIcon style={{ position: 'absolute', color: 'red', fontSize: 40 }}></CloseIcon>
@@ -181,7 +184,9 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
               right: (
                 <Grid display="flex" alignItems="center" justifyContent="center">
                   <MatchTeamCard color="red" absolute amount={1} width={16} height={20} />
-                  <CloseIcon style={{ position: 'absolute', color: 'white', fontSize: 40 }}></CloseIcon>
+                  <CloseIcon
+                    style={{ position: 'absolute', color: theme.palette.common.white, fontSize: 40 }}
+                  ></CloseIcon>
                 </Grid>
               ),
             }}
@@ -224,7 +229,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
           />
           <Button
             onClick={handleBack}
-            style={{ color: 'white', backgroundColor: '#bf360c', marginTop: 30 }}
+            style={{ color: theme.palette.common.white, backgroundColor: '#bf360c', marginTop: 30 }}
           >
             Volver a partidos
           </Button>

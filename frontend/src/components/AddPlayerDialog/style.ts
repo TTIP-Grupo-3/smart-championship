@@ -23,10 +23,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
 
   buttonAdd: {
-    backgroundColor: '#00BCD4',
+    backgroundColor: theme.palette.blue[200],
     borderRadius: 4,
     '&:hover': {
-      backgroundColor: '#00BCD4',
+      backgroundColor: theme.palette.blue[200],
     },
     '&.Mui-disabled': {
       color: lighten(theme.palette.common.white, 0.05),

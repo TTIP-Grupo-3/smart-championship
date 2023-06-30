@@ -69,10 +69,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     display: 'flex',
   },
   createTeamButton: {
-    backgroundColor: '#00BCD4',
+    backgroundColor: theme.palette.blue[200],
     borderRadius: 4,
     '&:hover': {
-      backgroundColor: '#00BCD4',
+      backgroundColor: theme.palette.blue[200],
     },
   },
 }));

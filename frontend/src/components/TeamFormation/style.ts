@@ -22,4 +22,8 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
+  checkbox: {
+    paddingLeft: '20px',
+    color: theme.palette.blue[200],
+  },
 }));

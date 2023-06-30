@@ -50,7 +50,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     color: 'orange',
   },
   colorButton: {
-    color: 'white',
+    color: theme.palette.common.white,
     backgroundColor: 'blue',
   },
 }));

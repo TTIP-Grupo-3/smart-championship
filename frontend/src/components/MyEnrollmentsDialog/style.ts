@@ -8,4 +8,8 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     fontWeight: 600,
     fontFamily: 'sans-serif',
   },
+  buttonClose: {
+    backgroundColor: theme.palette.blue[200],
+    borderRadius: 4,
+  },
 }));

@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { FC } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import { TeamEnrollmentCard } from '../TeamEnrollmentCard';
 import { useStyles } from './style';
 import { BootstrapDialogTitle } from '../DialogTitle';
@@ -12,6 +12,8 @@ import { Enrollment } from '../../interfaces';
 
 export const MyEnrollmentsDialog: FC<any> = ({ open, setOpen, enrollments = [] }) => {
   const { classes } = useStyles();
+  const theme = useTheme();
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -23,7 +25,10 @@ export const MyEnrollmentsDialog: FC<any> = ({ open, setOpen, enrollments = [] }
         style={{ borderRadius: 4, width: '100%' }}
         PaperProps={{ elevation: 24, style: { width: '90vw', height: '72vh' } }}
       >
-        <BootstrapDialogTitle style={{ color: 'white', paddingLeft: 31 }} onClose={handleClose}>
+        <BootstrapDialogTitle
+          style={{ color: theme.palette.common.white, paddingLeft: 31 }}
+          onClose={handleClose}
+        >
           Mis Inscripciones
         </BootstrapDialogTitle>
         <DialogContent style={{ flexDirection: 'column', display: 'flex' }}>
@@ -38,7 +43,7 @@ export const MyEnrollmentsDialog: FC<any> = ({ open, setOpen, enrollments = [] }
           ))}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} style={{ backgroundColor: '#00BCD4', borderRadius: 4 }}>
+          <Button onClick={handleClose}>
             <Typography className={classes.buttonText}>Cerrar</Typography>
           </Button>
         </DialogActions>

@@ -6,9 +6,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import { FC } from 'react';
 import { useStyles } from './style';
+import { useTheme } from '@mui/material';
 
 export const DeleteTeamDialog: FC<any> = ({ open, onClose, onConfirmDelete }) => {
   const { classes } = useStyles();
+  const theme = useTheme();
 
   return (
     <React.Fragment>
@@ -19,10 +21,14 @@ export const DeleteTeamDialog: FC<any> = ({ open, onClose, onConfirmDelete }) =>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={onClose} style={{ color: 'white' }}>
+          <Button variant="outlined" onClick={onClose} style={{ color: theme.palette.common.white }}>
             Cancelar
           </Button>
-          <Button variant="contained" onClick={onConfirmDelete} style={{ color: 'white' }}>
+          <Button
+            variant="contained"
+            onClick={onConfirmDelete}
+            style={{ color: theme.palette.common.white }}
+          >
             Entendido
           </Button>
         </DialogActions>

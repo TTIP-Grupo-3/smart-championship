@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardTournamentEnroll } from '../../components/CardTournamentEnroll';
@@ -13,6 +13,7 @@ export const TournamentsToStart = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { classes } = useStyles();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   useEffect(() => {
     API_TEAM_LEADER.championshipsToEnroll().then((r) => {
@@ -26,7 +27,9 @@ export const TournamentsToStart = () => {
       button={{
         action: () => navigate('/leader'),
         text: 'Volver',
-        icon: <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: 'white' }} />,
+        icon: (
+          <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: theme.palette.common.white }} />
+        ),
       }}
     >
       {isLoading ? (

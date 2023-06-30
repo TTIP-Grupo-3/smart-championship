@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardTournament } from '../../components/CardTournament';
@@ -13,6 +13,7 @@ export const Tournaments = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { classes } = useStyles();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   useEffect(() => {
     API.getChampionships().then(({ data }) => {
@@ -27,7 +28,11 @@ export const Tournaments = () => {
       button={{
         action: () => navigate('/login'),
         text: 'Inscribete',
-        icon: <PersonAddIcon style={{ height: 22, display: 'flex', color: 'white', paddingRight: 4 }} />,
+        icon: (
+          <PersonAddIcon
+            style={{ height: 22, display: 'flex', color: theme.palette.common.white, paddingRight: 4 }}
+          />
+        ),
       }}
     >
       {isLoading ? (

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { AppBar, Button, Grid, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, Grid, Toolbar, Typography, useTheme } from '@mui/material';
 import useStyles from './style';
 import CenteredSpacer from '../CenteredSpacer';
 import smartLogo from '../../default_match_icon_local.svg';
@@ -11,6 +11,7 @@ import { UserLogout } from '../UserLogout';
 export const Navbar: FC<any> = ({ children, button, removebuttonLog, footer = false }) => {
   const { classes } = useStyles();
   const [userData, setUsername] = useState<any>({ username: '', role: '' });
+  const theme = useTheme();
 
   const isLogged = (): boolean => {
     return !!localStorage.getItem('token');
@@ -69,7 +70,7 @@ export const Navbar: FC<any> = ({ children, button, removebuttonLog, footer = fa
           <Grid className={classes.footer}>
             <Typography className={classes.contact}>Contacto</Typography>
             <Grid className={classes.containerEmail}>
-              <MailIcon style={{ color: 'white' }} />
+              <MailIcon style={{ color: theme.palette.common.white }} />
               <Typography className={classes.email}>admin.championship@gmail.com</Typography>
             </Grid>
           </Grid>

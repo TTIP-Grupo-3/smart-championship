@@ -3,7 +3,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
-import { Grid, IconButton, ListItemIcon, Typography } from '@mui/material';
+import { Grid, IconButton, ListItemIcon, Typography, useTheme } from '@mui/material';
 import { CheckBoxOutlineBlankOutlined } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { FC, Fragment, useState } from 'react';
@@ -25,6 +25,7 @@ export const TeamFormation: FC<PlayerProps> = ({ players, reloadPlayers }) => {
   const [checked, setChecked] = useState<number[]>([]);
   const [openDelete, setOpenDelete] = useState(false);
   const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
+  const theme = useTheme();
 
   const { classes } = useStyles();
 
@@ -73,7 +74,9 @@ export const TeamFormation: FC<PlayerProps> = ({ players, reloadPlayers }) => {
         <Grid container className={classes.gridContainer}>
           <ListItemIcon>
             <IconButton onClick={() => setOpenDelete(true)} disabled={!checked.length}>
-              <DeleteIcon style={{ fill: checked.length > 0 ? 'white' : 'grey' }}></DeleteIcon>
+              <DeleteIcon
+                style={{ fill: checked.length > 0 ? theme.palette.common.white : 'grey' }}
+              ></DeleteIcon>
             </IconButton>
           </ListItemIcon>
           <ListItemText style={{ width: '0px', paddingLeft: 20 }}>
@@ -96,12 +99,12 @@ export const TeamFormation: FC<PlayerProps> = ({ players, reloadPlayers }) => {
                 <ListItem key={player.id} disablePadding>
                   <ListItemIcon>
                     <Checkbox
-                      style={{ paddingLeft: '20px', color: '#00BCD4' }}
+                      className={classes.checkbox}
                       edge="start"
                       onChange={handleToggle(player.id)}
                       checked={checked.includes(player.id)}
                       inputProps={{ 'aria-labelledby': labelId }}
-                      icon={<CheckBoxOutlineBlankOutlined style={{ color: 'white' }} />}
+                      icon={<CheckBoxOutlineBlankOutlined style={{ color: theme.palette.common.white }} />}
                     />
                   </ListItemIcon>
                   <ListItemText>

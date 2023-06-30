@@ -7,7 +7,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     paddingBottom: theme.spacing(2),
 
     textAlign: 'center',
-    color: 'white',
+    color: theme.palette.common.white,
     fontSize: 20,
     fontFamily: 'sans-serif',
   },
@@ -22,10 +22,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     transform: 'translate(-50%, -50%)',
   },
   enrollmentButton: {
-    backgroundColor: '#00BCD4',
+    backgroundColor: theme.palette.blue[200],
     margin: 8,
     '&:hover': {
-      backgroundColor: '#00BCD4',
+      backgroundColor: theme.palette.blue[200],
     },
     color: theme.palette.common.white,
   },

@@ -1,4 +1,4 @@
-import { Button, Grid, ListItem, Typography } from '@mui/material';
+import { Button, Grid, ListItem, Typography, useTheme } from '@mui/material';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import { FC } from 'react';
@@ -7,6 +7,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export const MatchSelector: FC<any> = ({ matches, setSelected, back }) => {
   const { classes } = useStyles();
+  const theme = useTheme();
 
   const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
     setSelected(index);
@@ -15,11 +16,8 @@ export const MatchSelector: FC<any> = ({ matches, setSelected, back }) => {
   return (
     <>
       <Grid container flexDirection="row" alignItems="center">
-        <Button
-          style={{ marginTop: '2%', color: 'white', marginRight: '16%', marginLeft: '6%' }}
-          onClick={() => back(null)}
-        >
-          <ArrowBackIcon style={{ color: 'white' }} />
+        <Button className={classes.buttonBack} onClick={() => back(null)}>
+          <ArrowBackIcon style={{ color: theme.palette.common.white }} />
         </Button>
 
         <Typography className={classes.titleText} variant="h5">

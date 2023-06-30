@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { ChangeEvent, FC, Fragment, useState } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, useTheme } from '@mui/material';
 import { useStyles } from './style';
 import { BootstrapDialogTitle } from '../DialogTitle';
 import { OutlinedInput } from '../OutlinedInput';
@@ -11,6 +11,7 @@ import { containsOnlyNumbers } from '../../utils/utils';
 
 export const AddPlayerDialog: FC<any> = ({ open, createPlayer, onClose }) => {
   const { classes } = useStyles();
+  const theme = useTheme();
   const [player, setPlayer] = useState<any>({ firstName: '', lastName: '', dni: 0, number: 0 });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +45,10 @@ export const AddPlayerDialog: FC<any> = ({ open, createPlayer, onClose }) => {
         style={{ borderRadius: 4, width: '100%' }}
         PaperProps={{ elevation: 24, style: { maxWidth: '100%', width: 460, height: 'auto' } }}
       >
-        <BootstrapDialogTitle style={{ color: 'white', paddingLeft: 23 }} onClose={onClose}>
+        <BootstrapDialogTitle
+          style={{ color: theme.palette.common.white, paddingLeft: 23 }}
+          onClose={onClose}
+        >
           Agregar Jugador
         </BootstrapDialogTitle>
         <DialogContent className={classes.dialogContainer}>

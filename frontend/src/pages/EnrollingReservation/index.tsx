@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CardTournamentEnroll } from '../../components/CardTournamentEnroll';
@@ -13,6 +13,7 @@ export const EnrollReservation = () => {
   const { id } = useParams();
   const [championship, setChampionship] = useState({ name: '', date: '', duration: 0, teamSize: 0 });
   const navigate = useNavigate();
+  const theme = useTheme();
 
   useEffect(() => {
     API_TEAM_LEADER.championshipToEnroll(+id!).then((r: any) => setChampionship(r.data));
@@ -28,7 +29,9 @@ export const EnrollReservation = () => {
       button={{
         action: () => navigate('/leader/enrollment/tournaments'),
         text: 'Volver',
-        icon: <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: 'white' }} />,
+        icon: (
+          <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: theme.palette.common.white }} />
+        ),
       }}
     >
       <Grid className={classes.grid}>

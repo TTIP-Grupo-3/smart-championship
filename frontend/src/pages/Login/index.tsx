@@ -1,5 +1,5 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Button, Card, Grid, IconButton, InputAdornment, Typography } from '@mui/material';
+import { Button, Card, Grid, IconButton, InputAdornment, Typography, useTheme } from '@mui/material';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
@@ -24,6 +24,8 @@ export const Login = () => {
   const [user, setUser] = useState<User>({ username: '', password: '' });
   const navigate = useNavigate();
   const [isInvalidUser, setIsInvalidUser] = useState(false);
+  const theme = useTheme();
+
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -93,7 +95,7 @@ export const Login = () => {
                       {showPassword ? (
                         <VisibilityOff style={{ color: 'grey' }} />
                       ) : (
-                        <Visibility style={{ color: 'white' }} />
+                        <Visibility style={{ color: theme.palette.common.white }} />
                       )}
                     </IconButton>
                   </InputAdornment>

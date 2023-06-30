@@ -1,4 +1,4 @@
-import { inputLabelClasses } from '@mui/material';
+import { inputLabelClasses, useTheme } from '@mui/material';
 import { MobileDateTimePicker } from '@mui/x-date-pickers';
 import { FC } from 'react';
 import { useStyles } from './style';
@@ -7,6 +7,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 export const DateTime: FC<any> = (props) => {
   const { classes } = useStyles();
+  const theme = useTheme();
 
   return (
     <MobileDateTimePicker
@@ -18,9 +19,9 @@ export const DateTime: FC<any> = (props) => {
           },
           InputLabelProps: {
             sx: {
-              color: 'white',
+              color: theme.palette.common.white,
               [`&.${inputLabelClasses.shrink}`]: {
-                color: 'white',
+                color: theme.palette.common.white,
               },
             },
           },
@@ -29,8 +30,8 @@ export const DateTime: FC<any> = (props) => {
           className: classes.toolbar,
         },
         tabs: {
-          timeIcon: <AccessTimeIcon style={{ color: 'white' }} />,
-          dateIcon: <CalendarTodayIcon style={{ color: 'white' }} />,
+          timeIcon: <AccessTimeIcon style={{ color: theme.palette.common.white }} />,
+          dateIcon: <CalendarTodayIcon style={{ color: theme.palette.common.white }} />,
         },
         dialog: {
           className: classes.dialogCalendarPaper,

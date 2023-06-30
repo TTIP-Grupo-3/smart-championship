@@ -6,10 +6,12 @@ import DialogContent from '@mui/material/DialogContent';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { DialogTitle, Typography } from '@mui/material';
+import { DialogTitle, Typography, useTheme } from '@mui/material';
 
 export const ConfirmationReceiptDialog: FC<any> = ({ open, setOpen }) => {
   const navigate = useNavigate();
+  const theme = useTheme();
+
   const handleClose = () => {
     setOpen(false);
     navigate('/leader');
@@ -18,7 +20,7 @@ export const ConfirmationReceiptDialog: FC<any> = ({ open, setOpen }) => {
   return (
     <React.Fragment>
       <Dialog open={open} style={{ borderRadius: 4, width: 'auto' }} PaperProps={{ elevation: 24 }}>
-        <DialogTitle style={{ color: 'white' }}>Comprobante de pago</DialogTitle>
+        <DialogTitle style={{ color: theme.palette.common.white }}>Comprobante de pago</DialogTitle>
         <DialogContent style={{ flexDirection: 'row', display: 'flex' }}>
           <CheckCircleIcon style={{ fill: 'lightgreen', display: 'flex', paddingRight: 4 }} />
 

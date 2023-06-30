@@ -10,11 +10,11 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
 
   createTeam: {
-    backgroundColor: '#00BCD4',
+    backgroundColor: theme.palette.blue[200],
     marginRight: '2%',
     color: theme.palette.common.white,
     '&:hover': {
-      backgroundColor: '#00BCD4',
+      backgroundColor: theme.palette.blue[200],
     },
   },
   emptyTeamGrid: {

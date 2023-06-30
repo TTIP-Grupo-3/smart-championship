@@ -1,4 +1,4 @@
-import { Button, Grid, IconButton, Typography } from '@mui/material';
+import { Button, Grid, IconButton, Typography, useTheme } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
@@ -31,6 +31,7 @@ export const TeamLeader: FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
   const [players, setPlayers] = useState<any[]>([]);
+  const theme = useTheme();
 
   const handleEnroll = () => {
     navigate('/leader/enrollment/tournaments');
@@ -155,7 +156,7 @@ export const TeamLeader: FC = () => {
                   <Grid container className={classes.gridRigthContent}>
                     <Typography className={classes.teamPlayerText}>Jugadores:</Typography>
                     <IconButton onClick={addPlayer} className={classes.addIconButton}>
-                      <AddIcon style={{ color: 'white', fontSize: 23 }}></AddIcon>
+                      <AddIcon style={{ color: theme.palette.common.white, fontSize: 23 }}></AddIcon>
                     </IconButton>
                   </Grid>
 

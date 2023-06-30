@@ -46,7 +46,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
   teamStats: {
     borderRadius: '0px',
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.common.white,
     flexGrow: 1,
     textAlign: 'center',
     justifyContent: 'center',

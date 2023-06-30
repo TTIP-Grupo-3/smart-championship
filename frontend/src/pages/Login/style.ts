@@ -40,9 +40,9 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
   buttonLogin: {
     width: '50%',
-    backgroundColor: '#00BCD4',
+    backgroundColor: theme.palette.blue[200],
     '&:hover': {
-      backgroundColor: '#00BCD4',
+      backgroundColor: theme.palette.blue[200],
     },
     '&.Mui-disabled': {
       color: lighten(theme.palette.common.white, 0.05),

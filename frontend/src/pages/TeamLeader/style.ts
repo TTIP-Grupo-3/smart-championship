@@ -29,11 +29,11 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexGrow: 1,
   },
   buttonEnroll: {
-    backgroundColor: '#00BCD4',
+    backgroundColor: theme.palette.blue[200],
     marginRight: '2%',
     color: theme.palette.common.white,
     '&:hover': {
-      backgroundColor: '#00BCD4',
+      backgroundColor: theme.palette.blue[200],
     },
     '&.Mui-disabled': {
       color: lighten(theme.palette.common.white, 0.05),
@@ -90,11 +90,11 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     justifyContent: 'center',
   },
   createTeam: {
-    backgroundColor: '#00BCD4',
+    backgroundColor: theme.palette.blue[200],
     marginRight: '2%',
     color: theme.palette.common.white,
     '&:hover': {
-      backgroundColor: '#00BCD4',
+      backgroundColor: theme.palette.blue[200],
     },
   },
   emptyTeamGrid: {
@@ -118,10 +118,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     color: theme.palette.common.white,
   },
   addIconButton: {
-    backgroundColor: '#00BCD4',
+    backgroundColor: theme.palette.blue[200],
     marginLeft: theme.spacing(1),
     '&:hover': {
-      backgroundColor: '#00BCD4',
+      backgroundColor: theme.palette.blue[200],
     },
   },
 }));

@@ -35,7 +35,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     borderRadius: 6,
   },
   initOrFinishButton: {
-    color: 'white',
+    color: theme.palette.common.white,
     backgroundColor: '#bf360c',
     width: '105px',
   },

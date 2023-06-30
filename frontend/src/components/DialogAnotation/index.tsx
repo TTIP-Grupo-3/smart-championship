@@ -4,7 +4,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import { FC } from 'react';
-import { Typography } from '@mui/material';
+import { Typography, useTheme } from '@mui/material';
 import { useStyles } from './style';
 
 export interface SimpleDialogProps {
@@ -15,6 +15,7 @@ export interface SimpleDialogProps {
 
 export const DialogAnotation: FC<SimpleDialogProps> = ({ onClose, open, items = [] }) => {
   const { classes } = useStyles();
+  const theme = useTheme();
 
   const handleClose = () => {
     onClose();
@@ -26,7 +27,7 @@ export const DialogAnotation: FC<SimpleDialogProps> = ({ onClose, open, items = 
 
   return (
     <Dialog onClose={handleClose} open={open} classes={{ paper: classes.dialogPaper }}>
-      <DialogTitle style={{ color: 'white' }}>Seleccione jugador</DialogTitle>
+      <DialogTitle style={{ color: theme.palette.common.white }}>Seleccione jugador</DialogTitle>
       <List sx={{ pt: 0 }}>
         {items.map((it: any) => (
           <ListItem className={classes.itemList} disableGutters key={it.id}>
