@@ -1,25 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { UseExceptionMapper } from 'src/decorators/UseExceptionMapper';
 import { NotFoundException } from 'src/exceptions/NotFoundException';
-import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMapperExecutor';
 import { EntityManager } from 'typeorm';
 import { configService } from './config.service';
 import { MatchIdDTO } from 'src/dtos/matchId.dto';
 import { TransactionService } from './transaction.service';
-import { ChampionshipPlayerService } from './championshipPlayer.service';
-import { AllChampionshipService } from './allChampionship.service';
 import { Match } from 'src/entities/match.entity';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
+import { ChampionshipService } from './championship.service';
 
 const errors = configService.get('service.errors');
 
-@Injectable()
-@UseExceptionMapper(TypeOrmExceptionMapperExecutor)
-export class MatchService {
+export abstract class MatchService {
   constructor(
     protected readonly transactionService: TransactionService,
-    protected readonly championshipPlayerService: ChampionshipPlayerService,
-    protected readonly championshipService: AllChampionshipService,
+    protected readonly championshipService: ChampionshipService,
   ) {}
 
   async findOne(findOneDTO: MatchIdDTO, manager?: EntityManager): Promise<Match> {

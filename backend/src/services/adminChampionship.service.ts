@@ -61,10 +61,6 @@ export class AdminChampionshipService extends ChampionshipService {
     return !!championship;
   }
 
-  protected async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
-    return championship;
-  }
-
   private newChampionship(
     createChampionshipDTO: {
       name: string;

@@ -9,12 +9,10 @@ import { AllChampionshipService } from './services/allChampionship.service';
 import { DataService } from './services/data.service';
 import { entities } from './utils/entities';
 import { TransactionService } from './services/transaction.service';
-import { MatchService } from './services/match.service';
 import { MatchGateway } from './gateways/match.gateway';
 import { ChampionshipGateway } from './gateways/championship.gateway';
 import { ChampionshipPlayerService } from './services/championshipPlayer.service';
-import { MatchController } from './controllers/match.controller';
-import { UploadFileController } from './controllers/upload-file.controller';
+import { AllMatchController } from './controllers/allMatch.controller';
 import { AuthService } from './services/auth.service';
 import { UsersService } from './services/user.service';
 import { JwtStrategy } from './strategies/jwt.startegy';
@@ -43,6 +41,9 @@ import { PlayerController } from './controllers/player.controller';
 import { PlayerService } from './services/player.service';
 import { ReviewerMatchService } from './services/reviewerMatch.service';
 import { ReviewerMatchController } from './controllers/reviewerMatch.controller';
+import { AdminMatchController } from './controllers/adminMatch.controller';
+import { AdminMatchService } from './services/adminMatch.service';
+import { AllMatchService } from './services/allMatch.service';
 
 @Module({
   imports: [
@@ -54,10 +55,10 @@ import { ReviewerMatchController } from './controllers/reviewerMatch.controller'
   ],
   controllers: [
     AdminChampionshipController,
+    AdminMatchController,
     AllChampionshipController,
-    MatchController,
+    AllMatchController,
     AuthController,
-    UploadFileController,
     AdminEnrollmentController,
     TeamLeaderChampionshipController,
     TeamLeaderController,
@@ -71,7 +72,6 @@ import { ReviewerMatchController } from './controllers/reviewerMatch.controller'
     AdminChampionshipService,
     TeamLeaderChampionshipService,
     TransactionService,
-    MatchService,
     MatchGateway,
     ChampionshipGateway,
     ScoreChampionshipGateway,
@@ -91,6 +91,8 @@ import { ReviewerMatchController } from './controllers/reviewerMatch.controller'
     TeamService,
     PlayerService,
     ReviewerMatchService,
+    AdminMatchService,
+    AllMatchService,
   ],
 })
 export class AppModule {

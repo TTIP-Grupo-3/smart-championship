@@ -8,7 +8,6 @@ import {
 import { Server } from 'socket.io';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
 import { ChampionshipGateway } from './championship.gateway';
-import { MatchService } from 'src/services/match.service';
 import { MatchIdDTO } from 'src/dtos/matchId.dto';
 import { GoalDTO } from 'src/dtos/goal.dto';
 import { CardDTO } from 'src/dtos/card.dto';
@@ -26,6 +25,7 @@ import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { UserSocket } from 'src/utils/types';
 import { ReviewerMatchService } from 'src/services/reviewerMatch.service';
+import { AllMatchService } from 'src/services/allMatch.service';
 
 @WebSocketGateway({ namespace: 'match' })
 @UseFilters(WsExceptionFilter)
@@ -37,7 +37,7 @@ export class MatchGateway {
   constructor(
     private readonly championshipGateway: ChampionshipGateway,
     private readonly scoreChampionshipGateway: ScoreChampionshipGateway,
-    private readonly matchService: MatchService,
+    private readonly matchService: AllMatchService,
     private readonly reviewerMatchService: ReviewerMatchService,
     private readonly mapper: EntityToDTOMapper,
   ) {}
