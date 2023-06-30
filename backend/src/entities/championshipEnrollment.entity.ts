@@ -60,7 +60,7 @@ export class ChampionshipEnrollment {
   }
 
   acceptEnrollment(id: number, championship: Championship): TeamEnrollment {
-    if (!this.canAcceptEnrollments()) throw new InvalidArgumentException();
+    if (!this.hasPlaces()) throw new InvalidArgumentException();
     const enrollment = this.findEnrollment(id);
     enrollment.accept(championship);
     return enrollment;
@@ -68,7 +68,9 @@ export class ChampionshipEnrollment {
 
   isEnrolled(user: User): boolean {
     if (!(user instanceof TeamLeader)) return false;
-    return this.teamEnrollments.some(({ teamLeader }) => teamLeader.id === user.id);
+    return this.teamEnrollments.some(
+      (enrollment) => enrollment.reserved() && enrollment.teamLeader.id === user.id,
+    );
   }
 
   private checkCanEnroll(teamLeader: TeamLeader): void {
@@ -81,7 +83,7 @@ export class ChampionshipEnrollment {
     return this.teamEnrollments.find((enrollment) => enrollment.id === id);
   }
 
-  private canAcceptEnrollments(): boolean {
+  hasPlaces(): boolean {
     return this.enrolled < this.size;
   }
 }

@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common/decorators';
 import { EliminationChampionshipResponseDTO } from 'src/dtos/responses/eliminationChampionship.response.dto';
 import { PartialMatchResponseDTO } from 'src/dtos/responses/partialMatch.response.dto';
-import { PhaseResponseDTO } from 'src/dtos/responses/phase.response.dto';
+import { PhaseManagerResponseDTO } from 'src/dtos/responses/phaseManager.response.dto';
 import { PartialTeamStatusResponseDTO } from 'src/dtos/responses/partialTeamStatus.response.dto';
 import { EliminationChampionship } from 'src/entities/eliminationChampionship.entity';
-import { EliminationMatch } from 'src/entities/eliminationMatch.entity';
 import { TeamStatus } from 'src/entities/teamStatus.entity';
 import { UnknownException } from 'src/exceptions/UnknownException';
 import { configService } from 'src/services/config.service';
@@ -43,6 +42,7 @@ import { TeamLeaderEnrollmentResponseDTO } from 'src/dtos/responses/teamLeaderEn
 import { Player } from 'src/entities/player.entity';
 import { LeaderTeamResponseDTO } from 'src/dtos/responses/leaderTeam.response.dto';
 import { Team } from 'src/entities/team.entity';
+import { PhaseManager } from 'src/entities/phaseManager.entity';
 
 const errors = configService.get('service.errors');
 
@@ -77,6 +77,7 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     if (source instanceof TeamLeader) return this.teamLeaderDTO(source, request, dtoCls);
     if (source instanceof User) return this.userDTO(source, request, dtoCls);
     if (source instanceof TeamEnrollment) return this.teamEnrollmentDTO(source, request, dtoCls);
+    if (source instanceof PhaseManager) return this.phaseManagerDTO(source, request, dtoCls);
     throw new UnknownException(errors.unknown);
   }
 
@@ -291,12 +292,12 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     request: UserRequestInfo = {},
     dtoCls?: Class<SmartChampionshipDTO>,
   ): EliminationChampionshipResponseDTO | PartialChampionshipResponseDTO {
-    const { id, name, type, final } = championship;
+    const { id, name, type } = championship;
     return this.plainToInstance(EliminationChampionshipResponseDTO, {
       id,
       name,
       type,
-      ...this.phaseResponseDTO(final.phases, request),
+      ...this.map(championship.phaseManager, request, PhaseManagerResponseDTO),
     });
   }
 
@@ -375,18 +376,17 @@ export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartCham
     }
   }
 
-  private phaseResponseDTO(
-    phases: Array<Array<EliminationMatch>>,
+  private phaseManagerDTO(
+    phaseManager: PhaseManager,
     request: UserRequestInfo = {},
-  ): PhaseResponseDTO | null {
-    if (phases.length === 0) {
-      return null;
-    } else {
-      return this.plainToInstance(PhaseResponseDTO, {
-        matches: phases[0].map((match) => this.matchResponseDTO(match, request)),
-        next: this.phaseResponseDTO(phases.slice(1), request),
-      });
-    }
+    dtoCls?: Class<SmartChampionshipDTO>,
+  ): PhaseManagerResponseDTO | null {
+    const { phase, next } = phaseManager;
+    const { matches } = phase;
+    return this.plainToInstance(PhaseManagerResponseDTO, {
+      matches: this.map(matches, request, PartialMatchResponseDTO),
+      next: next ? this.phaseManagerDTO(next, request, dtoCls) : null,
+    });
   }
 
   private plainToInstance<T, V>(cls: Class<T>, plain: V): T;

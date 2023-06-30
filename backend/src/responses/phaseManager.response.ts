@@ -1,6 +1,6 @@
 import { PartialMatchResponse } from './partialMatch.response';
 
-export type PhaseResponse = null | {
+export type PhaseManagerResponse = null | {
   matches: Array<PartialMatchResponse>;
-  next: PhaseResponse;
+  next: PhaseManagerResponse;
 };

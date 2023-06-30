@@ -102,13 +102,17 @@ export abstract class Championship {
 
   acceptEnrollment(id: number): TeamEnrollment {
     if (!this.toStart()) throw new InvalidArgumentException();
-    return this.enrollment.acceptEnrollment(id, this);
+    const enrollment = this.enrollment.acceptEnrollment(id, this);
+    if (!this.enrollment.hasPlaces()) this.generateMatches();
+    return enrollment;
   }
 
   rejectEnrollment(id: number): TeamEnrollment {
     if (!this.toStart()) throw new InvalidArgumentException();
     return this.enrollment.rejectEnrollment(id);
   }
+
+  protected abstract generateMatches(): void;
 
   private toStart(): boolean {
     return this.status === ChampionshipStatus.TOSTART;
@@ -119,6 +123,6 @@ export abstract class Championship {
   }
 
   private canStart(): boolean {
-    return this.toStart() && this.size == this.enrollment.enrolled && this.matchesInitialized();
+    return this.toStart() && !this.enrollment.hasPlaces() && this.matchesInitialized();
   }
 }

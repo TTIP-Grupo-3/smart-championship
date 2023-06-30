@@ -1,13 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { PhaseResponse } from 'src/responses/phase.response';
+import { PhaseManagerResponse } from 'src/responses/phaseManager.response';
 import { PartialMatchResponseDTO } from './partialMatch.response.dto';
 
-export class PhaseResponseDTO implements PhaseResponse {
+export class PhaseManagerResponseDTO implements PhaseManagerResponse {
   @ApiProperty({ type: PartialMatchResponseDTO, isArray: true })
   @Type(() => PartialMatchResponseDTO)
   matches: PartialMatchResponseDTO[];
-  @ApiProperty({ type: PhaseResponseDTO, nullable: true })
-  @Type(() => PhaseResponseDTO)
-  next: PhaseResponseDTO | null;
+  @ApiProperty({ type: PhaseManagerResponseDTO, nullable: true })
+  @Type(() => PhaseManagerResponseDTO)
+  next: PhaseManagerResponseDTO | null;
 }

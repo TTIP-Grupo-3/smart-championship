@@ -5,8 +5,8 @@ import { OneToOne } from 'typeorm';
 import { Match } from './match.entity';
 import { MatchStatus } from './matchStatus.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
-import { TeamStatus } from './teamStatus.entity';
 import { EliminationChampionship } from './eliminationChampionship.entity';
+import { Phase } from './phase.entity';
 
 const errors = configService.get('model.errors');
 
@@ -39,17 +39,31 @@ export class EliminationMatch extends Match {
     return this.parent;
   }
 
-  public get phases(): Array<Array<EliminationMatch>> {
+  public get phases(): Array<Phase> {
     if (this.isBaseMatch()) {
-      return [[this]];
+      return [Phase.from(this)];
     } else {
-      const visitingPhases = this.submatches[1].phases;
-      const subphases = this.submatches[0].phases.map((phase, index) => [
-        ...phase,
-        ...visitingPhases[index],
-      ]);
-      return [...subphases, [this]];
+      const visitingPhases = this.visiting.phases;
+      const subphases = this.local.phases.map((phase, index) => Phase.merge(phase, visitingPhases[index]));
+      return [...subphases, Phase.from(this)];
     }
+  }
+
+  static from(
+    local: EliminationMatch | ChampionshipTeam,
+    visiting: EliminationMatch | ChampionshipTeam,
+  ): EliminationMatch {
+    const match = new EliminationMatch();
+    if (local instanceof ChampionshipTeam && visiting instanceof ChampionshipTeam) {
+      match.status = MatchStatus.from(local, visiting);
+      match.submatches = [];
+    } else if (local instanceof EliminationMatch && visiting instanceof EliminationMatch) {
+      match.status = MatchStatus.empty();
+      match.submatches = [local, visiting];
+    } else {
+      throw new InvalidArgumentException(errors.invalidArgument);
+    }
+    return match;
   }
 
   findMatch(id: number) {
@@ -60,20 +74,6 @@ export class EliminationMatch extends Match {
     } else {
       return this.local.findMatch(id) ?? this.visiting.findMatch(id);
     }
-  }
-
-  initialize(
-    local: EliminationMatch | ChampionshipTeam,
-    visiting: EliminationMatch | ChampionshipTeam,
-  ): EliminationMatch {
-    if (local instanceof ChampionshipTeam && visiting instanceof ChampionshipTeam) {
-      this.status = new MatchStatus(new TeamStatus(local), new TeamStatus(visiting));
-    } else if (local instanceof EliminationMatch && visiting instanceof EliminationMatch) {
-      this.submatches = [local, visiting];
-    } else {
-      throw new InvalidArgumentException(errors.invalidArgument);
-    }
-    return this;
   }
 
   end() {
@@ -90,7 +90,7 @@ export class EliminationMatch extends Match {
   }
 
   toArray(): Array<EliminationMatch> {
-    return this.phases.flat();
+    return this.phases.flatMap((phase) => phase.matches);
   }
 
   private isBaseMatch() {
