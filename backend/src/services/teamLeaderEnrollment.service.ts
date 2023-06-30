@@ -35,7 +35,7 @@ export class TeamLeaderEnrollmentService extends EnrollmentService {
     manager?: EntityManager,
   ): Promise<TeamEnrollment> {
     return await this.transactionService.transaction(async (manager) => {
-      const teamLeader = await this.teamLeaderService.getTeamLeader(leaderDTO);
+      const teamLeader = await this.teamLeaderService.getTeamLeader(leaderDTO, manager);
       const championship = await this.championshipService.getChampionship(enrollDTO, manager);
       const teamEnrollment = teamLeader.enrollTo(championship);
       return await manager.save(teamEnrollment);

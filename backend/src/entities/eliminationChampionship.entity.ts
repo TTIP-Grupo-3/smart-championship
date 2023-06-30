@@ -32,8 +32,8 @@ export class EliminationChampionship extends Championship {
     if (!this.isGenerable()) throw new InvalidArgumentException(errors.invalidArgument);
     let baseMatches: Array<EliminationMatch> | Array<ChampionshipTeam> = this.unsortedTeams();
     this.levels().forEach(() => {
-      const locals = baseMatches.slice(0, length / 2);
-      const visitings = baseMatches.slice(length / 2);
+      const locals = baseMatches.slice(0, baseMatches.length / 2);
+      const visitings = baseMatches.slice(baseMatches.length / 2);
       baseMatches = locals.map((local, index) => EliminationMatch.from(local, visitings[index]));
       if (baseMatches.length === 1) this.final = baseMatches[0];
     });
@@ -45,7 +45,7 @@ export class EliminationChampionship extends Championship {
   }
 
   private levels() {
-    return Array(Math.log2(this.teams.length));
+    return Array(Math.log2(this.teams.length)).fill(undefined);
   }
 
   private unsortedTeams() {
