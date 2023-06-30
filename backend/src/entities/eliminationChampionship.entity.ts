@@ -5,6 +5,7 @@ import { ChampionshipTeam } from './championshipTeam.entity';
 import { Championship } from './championship.entity';
 import { EliminationMatch } from './eliminationMatch.entity';
 import { ChampionshipType } from 'src/enums/championshipType.enum';
+import { PhaseManager } from './phaseManager.entity';
 
 const errors = configService.get('model.errors');
 
@@ -20,8 +21,8 @@ export class EliminationChampionship extends Championship {
     return this.final?.toArray() ?? [];
   }
 
-  public get phases(): Array<Array<EliminationMatch>> {
-    return this.final.phases;
+  public get phaseManager(): PhaseManager {
+    return PhaseManager.from(this.final);
   }
 
   findMatch(id: number): EliminationMatch {

@@ -6,6 +6,7 @@ import { Match } from './match.entity';
 import { MatchStatus } from './matchStatus.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { EliminationChampionship } from './eliminationChampionship.entity';
+import { Phase } from './phase.entity';
 
 const errors = configService.get('model.errors');
 
@@ -38,16 +39,13 @@ export class EliminationMatch extends Match {
     return this.parent;
   }
 
-  public get phases(): Array<Array<EliminationMatch>> {
+  public get phases(): Array<Phase> {
     if (this.isBaseMatch()) {
-      return [[this]];
+      return [Phase.from(this)];
     } else {
-      const visitingPhases = this.submatches[1].phases;
-      const subphases = this.submatches[0].phases.map((phase, index) => [
-        ...phase,
-        ...visitingPhases[index],
-      ]);
-      return [...subphases, [this]];
+      const visitingPhases = this.visiting.phases;
+      const subphases = this.local.phases.map((phase, index) => Phase.merge(phase, visitingPhases[index]));
+      return [...subphases, Phase.from(this)];
     }
   }
 
@@ -92,7 +90,7 @@ export class EliminationMatch extends Match {
   }
 
   toArray(): Array<EliminationMatch> {
-    return this.phases.flat();
+    return this.phases.flatMap((phase) => phase.matches);
   }
 
   private isBaseMatch() {
