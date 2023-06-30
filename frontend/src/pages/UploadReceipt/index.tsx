@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, useTheme } from '@mui/material';
 import { Navbar } from '../../components/NavBar';
 import { useStyles } from './style';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -16,6 +16,7 @@ export const UploadReceipt = () => {
   const [image, setImage] = useState<string>('');
   const { id, enrollId } = useParams();
   const navigate = useNavigate();
+  const theme = useTheme();
   const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const handleFile = (e: any) => {
@@ -36,7 +37,9 @@ export const UploadReceipt = () => {
       button={{
         action: () => navigate(`/leader/enrolling/reservation/${id}`),
         text: 'Volver',
-        icon: <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: 'white' }} />,
+        icon: (
+          <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: theme.palette.common.white }} />
+        ),
       }}
     >
       <Grid className={classes.grid}>

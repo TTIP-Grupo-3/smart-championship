@@ -19,7 +19,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     color: theme.palette.common.white,
   },
   rows: {
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
 }));
