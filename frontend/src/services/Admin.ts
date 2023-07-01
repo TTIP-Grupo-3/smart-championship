@@ -17,8 +17,16 @@ class AdminService {
     return this.httpClient.get('/admin/championship');
   }
 
+  getToStartMatches(championshipId: number): Promise<AxiosResponse<any>> {
+    return this.httpClient.get(`/admin/championship/${championshipId}/match`);
+  }
+
   getAdminChampionship(id: number): Promise<AxiosResponse<AdminChampionship>> {
     return this.httpClient.get(`/admin/championship/${id}`);
+  }
+
+  addMatchDates(championshipId: number, matchDates: any[]) {
+    return this.httpClient.put(`/admin/championship/${championshipId}/match`, { matchDates: matchDates });
   }
 
   editChampionship(

@@ -13,7 +13,7 @@ const statuses: any = {
 
 export const TeamEnrollmentCard: FC<any> = ({ id, status, ...props }) => {
   const { classes } = useStyles();
-  console.log(status);
+
   return (
     <Grid className={classes.card}>
       <Grid className={classes.startGrid}>

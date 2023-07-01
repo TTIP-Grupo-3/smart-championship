@@ -15,6 +15,7 @@ import { EmptyData } from '../../components/EmptyData';
 import { InitTournamentDialog } from '../../components/InitTournamentDialog';
 import { delay } from '../../utils/utils';
 import { SnackBarState } from '../../interfaces';
+import dayjs from 'dayjs';
 
 export const msgTypes: any = {
   success: 'Cambios realizados correctamente',
@@ -25,12 +26,14 @@ export const Admin: FC = () => {
   const { classes } = useStyles();
   const [tournaments, setTournaments] = useState<any>([]);
   const [open, setOpen] = useState(false);
-  const [openS, setOpenS] = useState<SnackBarState>({ open: false, type: 'success', message: '' });
+  const [openS, setOpenS] = useState<SnackBarState>({ open: false, type: 'loading', message: '' });
   const [openEdit, setOpenEdit] = useState(false);
   const [id, setId] = useState<number | null>();
   const [searched, setSearched] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [openInit, setOpenInit] = useState(false);
+  const [dates, setDates] = useState<any>([]);
+  const [matches, setMatches] = useState<any>([]);
 
   const handleOpenEdit = () => setOpenEdit(true);
   const handleOpen = () => setOpen(true);
@@ -46,6 +49,10 @@ export const Admin: FC = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    getToStartMatches();
+  }, [id]);
 
   const onSuccess = async (): Promise<void> => {
     setOpenS({ open: true, type: 'success', message: msgTypes.success });
@@ -72,7 +79,7 @@ export const Admin: FC = () => {
     setOpenInit(true);
   };
 
-  const onCloseInit = () => {
+  const initTournament = () => {
     API_ADMIN.startChampionship(id!).then(onSuccess).catch(onError);
   };
 
@@ -80,6 +87,37 @@ export const Admin: FC = () => {
     tournaments.filter(({ name, size }: any) =>
       [name.toLowerCase(), size.toString()].some((attr) => attr.includes(searched.toLowerCase())),
     );
+
+  const initAndSaveDatesTournament = () => {
+    API_ADMIN.addMatchDates(id!, dates).then(() => {
+      initTournament();
+    });
+  };
+
+  const handleChangeDate = (e: any, id: number) => {
+    const matchChange = dates.filter((date: any) => date?.id !== id);
+
+    setDates([...matchChange, { id: id, date: dayjs(e).toISOString() }]);
+  };
+
+  const onCloseDialogInit = () => {
+    setOpenInit(false);
+    setDates([]);
+  };
+  const getToStartMatches = () => {
+    API_ADMIN.getToStartMatches(id!).then(({ data }) => {
+      const matches = data.map((match: any) => (match?.matches ? match.matches : match));
+      setMatches(matches);
+    });
+  };
+  const addDateMatches = () => {
+    API_ADMIN.addMatchDates(id!, dates)
+      .then(() => {
+        onSuccess();
+        getToStartMatches();
+      })
+      .catch(onError);
+  };
 
   return (
     <Navbar>
@@ -133,8 +171,16 @@ export const Admin: FC = () => {
       <InitTournamentDialog
         title="Iniciar Torneo"
         open={openInit}
-        onClose={() => setOpenInit(false)}
-        initTournament={onCloseInit}
+        onClose={onCloseDialogInit}
+        {...{
+          onSuccess,
+          onError,
+          initAndSaveDatesTournament,
+          handleChangeDate,
+          dates,
+          matches,
+          addDateMatches,
+        }}
       />
     </Navbar>
   );

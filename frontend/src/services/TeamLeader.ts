@@ -1,5 +1,14 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { LeaderEnrollment, LoggedUser } from '../interfaces';
+import {
+  LeaderEnrollment,
+  LoggedUser,
+  Player,
+  TeamEnrollment,
+  TeamLeaderTournament,
+  EnrollChampionship,
+  TeamLeaderData,
+  PlayerCreate,
+} from '../interfaces';
 import { httpClient } from './httpClient';
 
 class TeamLeaderService {
@@ -9,19 +18,19 @@ class TeamLeaderService {
     this.httpClient = httpClient;
   }
 
-  register(userData: any): Promise<AxiosResponse<LoggedUser>> {
+  register(userData: TeamLeaderData): Promise<AxiosResponse<LoggedUser>> {
     return this.httpClient.post('/team_leader', userData);
   }
 
-  enrollToChampionship(championshipId: number): Promise<AxiosResponse<any>> {
+  enrollToChampionship(championshipId: number): Promise<AxiosResponse<EnrollChampionship>> {
     return this.httpClient.post(`/team_leader/championship/${championshipId}/enrollment`);
   }
 
-  championshipsToEnroll(): Promise<AxiosResponse<any>> {
+  championshipsToEnroll(): Promise<AxiosResponse<TeamLeaderTournament[]>> {
     return this.httpClient.get('/team_leader/championship');
   }
 
-  championshipToEnroll(id: number): Promise<AxiosResponse<any>> {
+  championshipToEnroll(id: number): Promise<AxiosResponse<TeamLeaderTournament>> {
     return this.httpClient.get(`/team_leader/championship/${id}`);
   }
 
@@ -29,22 +38,26 @@ class TeamLeaderService {
     return this.httpClient.get('/team_leader');
   }
 
-  createTeam(dataTeam: FormData): Promise<AxiosResponse<any>> {
+  createTeam(dataTeam: FormData): Promise<AxiosResponse<TeamEnrollment>> {
     return this.httpClient.post('/team_leader/team', dataTeam);
   }
 
-  getPlayers(): Promise<AxiosResponse<any>> {
+  getPlayers(): Promise<AxiosResponse<Player[]>> {
     return this.httpClient.get(`/team_leader/player`);
   }
 
-  deletePlayers(ids: number[]): Promise<AxiosResponse<any>> {
+  deletePlayers(ids: number[]): Promise<AxiosResponse<Player>> {
     return this.httpClient.delete(`/team_leader/player`, { data: { ids: ids } });
   }
-  createPlayer(dataPlayer: any): Promise<AxiosResponse<any>> {
+  createPlayer(dataPlayer: PlayerCreate): Promise<AxiosResponse<Player>> {
     return this.httpClient.post(`/team_leader/player`, dataPlayer);
   }
 
-  uploadReceipt(championshipId: number, enrollId: number, formdata: FormData): Promise<AxiosResponse<any>> {
+  uploadReceipt(
+    championshipId: number,
+    enrollId: number,
+    formdata: FormData,
+  ): Promise<AxiosResponse<EnrollChampionship>> {
     return this.httpClient.put(
       `/team_leader/championship/${championshipId}/enrollment/${enrollId}`,
       formdata,

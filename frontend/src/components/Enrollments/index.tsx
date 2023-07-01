@@ -8,13 +8,6 @@ import { useStyles } from './style';
 export const Enrollments: FC<any> = ({ enrollments, handleOpen, isLoading }) => {
   const { classes } = useStyles();
 
-  const extra = {
-    username: 'Diego Moronha',
-    created_at: new Date().toISOString(),
-    tournamentRequested: 'Torneo futbol 11',
-    type: 'Clasificacion',
-  };
-
   return (
     <>
       {isLoading ? (
@@ -24,7 +17,7 @@ export const Enrollments: FC<any> = ({ enrollments, handleOpen, isLoading }) => 
       ) : (
         <Scroll className={classes.scroll}>
           {enrollments.map((enrollment: any) => (
-            <AdminEnrollmentCard key={enrollment.id} {...{ ...enrollment, ...extra, handleOpen }} />
+            <AdminEnrollmentCard key={enrollment.id} {...{ ...enrollment, handleOpen }} />
           ))}
         </Scroll>
       )}
