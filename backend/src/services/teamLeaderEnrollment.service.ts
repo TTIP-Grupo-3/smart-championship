@@ -13,6 +13,8 @@ import { StorageService } from './storage.service';
 import { UploadReceiptDTO } from 'src/dtos/uploadReceipt.dto';
 import { IdDTO } from 'src/dtos/id.dto';
 import { TeamLeaderService } from './teamLeader.service';
+import { TeamLeader } from 'src/entities/teamLeader.entity';
+import { NotFoundException } from 'src/exceptions/NotFoundException';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errors = configService.get('service.errors');
@@ -27,6 +29,18 @@ export class TeamLeaderEnrollmentService extends EnrollmentService {
     private readonly teamLeaderService: TeamLeaderService,
   ) {
     super(transactionService, championshipService, storageService);
+  }
+
+  async getLeaderEnrollment(
+    getEnrollmentDTO: EnrollmentIdDTO,
+    user: TeamLeader,
+    manager?: EntityManager,
+  ): Promise<TeamEnrollment> {
+    return await this.transactionService.transaction(async (manager) => {
+      const enrollment = await this.getEnrollment(getEnrollmentDTO, manager);
+      if (enrollment.teamLeader.id !== user.id) throw new NotFoundException();
+      return enrollment;
+    }, manager);
   }
 
   async enroll(
