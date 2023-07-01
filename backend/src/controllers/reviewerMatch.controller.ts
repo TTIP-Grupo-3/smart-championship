@@ -50,7 +50,7 @@ export class ReviewerMatchController {
   @ApiParam({ name: 'id', type: 'number' })
   @UseInterceptors(new TransformInterceptor(MatchTeamsResponseDTO))
   @Get(':id')
-  async match(@Param() matchDTO: MatchIdDTO) {
+  async findOne(@Param() matchDTO: MatchIdDTO) {
     return await this.reviewerMatchService.findOne(matchDTO);
   }
 }
