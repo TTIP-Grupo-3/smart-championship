@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Post,
   Put,
@@ -14,6 +15,7 @@ import {
   ApiBearerAuth,
   ApiConsumes,
   ApiForbiddenResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiResponse,
@@ -43,6 +45,22 @@ import { UserRequestInfo } from 'src/utils/types';
 @UsePipes(validationPipe)
 export class TeamLeaderEnrollmentController {
   constructor(private readonly teamLeaderEnrollmentService: TeamLeaderEnrollmentService) {}
+
+  @Roles(Role.TeamLeader)
+  @ApiOperation({ summary: 'Get enrollment' })
+  @ApiOkResponse({ type: EnrollmentResponseDTO })
+  @ApiParam({ name: 'championshipId', type: 'number' })
+  @ApiParam({ name: 'id', type: 'number' })
+  @ApiForbiddenResponse({ type: ErrorResponseDTO })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
+  @UseInterceptors(new TransformInterceptor(EnrollmentResponseDTO))
+  @Get(':id')
+  async getLeaderEnrollment(
+    @Param() getEnrollmentDTO: EnrollmentIdDTO,
+    @Req() { user }: UserRequestInfo<TeamLeader>,
+  ): Promise<TeamEnrollment> {
+    return await this.teamLeaderEnrollmentService.getLeaderEnrollment(getEnrollmentDTO, user);
+  }
 
   @Roles(Role.TeamLeader)
   @ApiOperation({ summary: 'Enroll to a championship' })
