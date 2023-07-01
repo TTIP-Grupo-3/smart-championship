@@ -33,6 +33,14 @@ export class ChampionshipEnrollment {
     return this.teamEnrollments.filter((teamEnrollment) => teamEnrollment.paid());
   }
 
+  public get allReserved(): boolean {
+    return this.reserved === this.size;
+  }
+
+  public get closed(): boolean {
+    return this.enrolled === this.size;
+  }
+
   public get reserved(): number {
     return this.reservedTeams.length;
   }

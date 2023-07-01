@@ -45,13 +45,21 @@ export abstract class Championship {
   abstract matches: Array<Match>;
 
   public get adminMatches(): Array<Phase | Match> {
-    if (this.enrollment.hasPlaces()) throw new InvalidArgumentException('Cannot get matches');
+    if (this.hasPlaces()) throw new InvalidArgumentException('Cannot get matches');
     return this.getAdminMatches();
   }
 
   abstract findMatch(id: number): Match | null;
 
   protected abstract getAdminMatches(): Array<Phase | Match>;
+
+  public get closed(): boolean {
+    return this.enrollment.closed;
+  }
+
+  public get allReserved(): boolean {
+    return this.enrollment.allReserved;
+  }
 
   public get room() {
     return `championship-${this.id}`;
@@ -77,6 +85,10 @@ export abstract class Championship {
     } else {
       return ChampionshipStatus.TOSTART;
     }
+  }
+
+  hasPlaces(): boolean {
+    return this.enrollment.hasPlaces();
   }
 
   setMatchDates(matchDates: Array<MatchDate>) {
@@ -117,7 +129,7 @@ export abstract class Championship {
   acceptEnrollment(id: number): TeamEnrollment {
     if (!this.toStart()) throw new InvalidArgumentException();
     const enrollment = this.enrollment.acceptEnrollment(id, this);
-    if (!this.enrollment.hasPlaces()) this.generateMatches();
+    if (!this.hasPlaces()) this.generateMatches();
     return enrollment;
   }
 
@@ -143,6 +155,6 @@ export abstract class Championship {
   }
 
   private canStart(): boolean {
-    return this.toStart() && !this.enrollment.hasPlaces() && this.matchesInitialized();
+    return this.toStart() && !this.hasPlaces() && this.matchesInitialized();
   }
 }
