@@ -3,7 +3,7 @@ import { TransactionService } from './transaction.service';
 import { ChampionshipService } from './championship.service';
 import { StorageService } from './storage.service';
 import { EnrollmentIdDTO } from 'src/dtos/enrollmentId.dto';
-import { EntityManager } from 'typeorm';
+import { EntityManager, FindOptionsRelations } from 'typeorm';
 import { TeamEnrollment } from 'src/entities/teamEnrollment.entity';
 import { NotFoundException } from 'src/exceptions/NotFoundException';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
@@ -13,6 +13,9 @@ import { ChampionshipEnrollment } from 'src/entities/championshipEnrollment.enti
 @Injectable()
 export class EnrollmentService {
   protected receiptContainer = 'receipts';
+  private readonly relations: FindOptionsRelations<TeamEnrollment> = {
+    championshipEnrollment: { championship: { enrollment: false }, teamEnrollments: false },
+  };
 
   constructor(
     protected readonly transactionService: TransactionService,
@@ -25,7 +28,7 @@ export class EnrollmentService {
       const { id, championshipId } = getEnrollmentDTO;
       const enrollment = await manager.findOne(TeamEnrollment, {
         where: { id, championshipEnrollment: { championship: { id: championshipId } } },
-        relations: { championshipEnrollment: { teamEnrollments: false } },
+        relations: this.relations,
       });
       if (!this.exists(enrollment)) throw new NotFoundException();
       return this.setReceipt(enrollment);

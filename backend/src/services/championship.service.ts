@@ -33,6 +33,7 @@ export abstract class ChampionshipService {
   private async findChampionship(id: number, manager: EntityManager): Promise<Championship> {
     const championship = await manager.findOneBy(Championship, { id });
     if (!this.exists(championship)) throw new NotFoundException(errors.notFoundChampionship);
+    championship.enrollment.championship = championship;
     return championship;
   }
 
