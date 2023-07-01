@@ -15,6 +15,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { DateTime } from '../DateTime';
 import { API_ADMIN } from '../../services/Admin';
 import { containsOnlyNumbers } from '../../utils/utils';
+import { TypeChampionship } from '../../interfaces';
 
 export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onError, id }) => {
   const { classes } = useStyles();
@@ -64,6 +65,12 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
         onError();
       });
   };
+
+  const disabledCreate =
+    newTournament.name === '' ||
+    newTournament.price === 0 ||
+    newTournament.duration === 0 ||
+    newTournament.size === 0;
 
   useEffect(() => {
     if (id) {
@@ -130,7 +137,7 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
           <Typography gutterBottom color="white" paddingTop={2}>
             Equipos :
           </Typography>
-          {newTournament.type === 'score' ? (
+          {newTournament.type === TypeChampionship.SCORE ? (
             <OutlinedInput
               required
               className={classes.root}
@@ -168,6 +175,7 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
         <Button
           autoFocus
           onClick={id ? editTournament : createTournament}
+          disabled={disabledCreate}
           className={classes.confirmButton}
         >
           Confirmar

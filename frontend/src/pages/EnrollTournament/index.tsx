@@ -17,10 +17,13 @@ export const TournamentsToStart = () => {
   const theme = useTheme();
 
   useEffect(() => {
-    API_TEAM_LEADER.championshipsToEnroll().then(({ data }) => {
-      setChampionships(data);
-      setIsLoading(false);
-    });
+    const interval = setInterval(() => {
+      API_TEAM_LEADER.championshipsToEnroll().then(({ data }) => {
+        setChampionships(data);
+        setIsLoading(false);
+      });
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -44,7 +47,7 @@ export const TournamentsToStart = () => {
             justifyContent="center"
             className={classes.title}
           >
-            <Typography>Selecciona el torneo que deseas inscribirte: </Typography>
+            <Typography className={classes.textEnroll}>Inscripciones</Typography>
           </Grid>
           <Grid
             container

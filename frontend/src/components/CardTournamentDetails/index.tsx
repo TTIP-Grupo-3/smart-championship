@@ -46,8 +46,7 @@ export const CardTournamentDetails: FC<any> = ({ enrollment }) => {
             <Typography
               className={classes.leaderStatusEnroll}
               style={{
-                color: statuses[enrollment?.status]?.color,
-                border: `2px solid ${statuses[enrollment?.status]?.color}`,
+                backgroundColor: statuses[enrollment?.status]?.color,
               }}
             >
               {statuses[enrollment.status]?.text}

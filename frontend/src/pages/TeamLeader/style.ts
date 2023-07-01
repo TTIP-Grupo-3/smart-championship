@@ -124,4 +124,13 @@ export const useStyles = makeStyles()((theme: Theme) => ({
       backgroundColor: theme.palette.blue[200],
     },
   },
+  pendingInfo: {
+    color: lighten(theme.palette.orange[200], 0.2),
+    fontWeight: 600,
+    fontSize: 15,
+    fontFamily: 'sans-serif',
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(2),
+    paddingTop: theme.spacing(4),
+  },
 }));

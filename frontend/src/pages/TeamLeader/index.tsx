@@ -77,6 +77,10 @@ export const TeamLeader: FC = () => {
       .catch(() => setIsLoading(true));
   };
 
+  const countPendingEnrollment = (): number => {
+    return leaderData?.enrollments.filter((enrollment) => enrollment.status === 'to_pay').length || 0;
+  };
+
   const createPlayer = async (player: PlayerCreate): Promise<void> => {
     API_TEAM_LEADER.createPlayer(player)
       .then(async () => {
@@ -144,6 +148,12 @@ export const TeamLeader: FC = () => {
                     >
                       <Typography className={classes.buttonText}>Mis inscripciones</Typography>
                     </Button>
+                    {countPendingEnrollment() > 0 && (
+                      <Typography className={classes.pendingInfo}>
+                        Tienes {countPendingEnrollment()} inscripciones pendientes de pago, ve a "Mis
+                        inscripciones" en la opción "ver detalles" para pagarlas.
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>

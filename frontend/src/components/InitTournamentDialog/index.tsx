@@ -10,6 +10,7 @@ import { BootstrapDialog } from '../StyledDialog';
 import { BootstrapDialogTitle } from '../DialogTitle';
 
 import { MatchToStartCard } from '../MatchToStartCard';
+import { Loader } from '../Loader';
 
 export const InitTournamentDialog: FC<any> = ({
   title,
@@ -35,6 +36,7 @@ export const InitTournamentDialog: FC<any> = ({
           <Typography variant="body2" color="white" textAlign={'center'}>
             Carga las fechas de los equipos
           </Typography>
+          {matches.length === 0 && <Loader text="cargando fechas" />}
           {matches.map((match: any, index: number) => (
             <MatchToStartCard
               key={match.id}

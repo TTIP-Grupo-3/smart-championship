@@ -5,12 +5,18 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   title: {
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(2),
-
     textAlign: 'center',
     color: theme.palette.common.white,
-    fontSize: 20,
-    fontFamily: 'sans-serif',
   },
+
+  textEnroll: {
+    fontSize: 23,
+    fontFamily: 'sans-serif',
+    fontWeight: 700,
+    color: theme.palette.common.white,
+    textAlign: 'center',
+  },
+
   gridLoading: {
     display: 'flex',
     flexDirection: 'column',

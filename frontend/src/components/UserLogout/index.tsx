@@ -23,7 +23,6 @@ export const UserLogout: FC<any> = ({ isLogged, userData, ...restProps }) => {
   const close = (): void => {
     setAnchorEl(null);
   };
-
   const openUserMenu = (event: MouseEvent<HTMLElement>): void => setAnchorEl(event.currentTarget);
 
   const openHome = (event: MouseEvent<HTMLElement>): void => {

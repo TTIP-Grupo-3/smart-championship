@@ -16,7 +16,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     backgroundColor: theme.palette.blue[200],
   },
   leaderStatusEnroll: {
-    color: '#efb810',
+    color: theme.palette.common.white,
     fontSize: 15,
     fontFamily: 'sans-serif',
     fontWeight: 700,

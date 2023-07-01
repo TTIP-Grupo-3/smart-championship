@@ -1,5 +1,5 @@
 import { makeStyles } from 'tss-react/mui';
-import { Theme } from '@mui/material/styles';
+import { lighten, Theme } from '@mui/material/styles';
 import { alpha } from '@mui/system';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
@@ -32,6 +32,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     color: theme.palette.common.white,
     '&:hover': {
       backgroundColor: '#1990BB',
+    },
+    '&.Mui-disabled': {
+      color: lighten(theme.palette.common.white, 0.05),
+      backgroundColor: alpha(theme.palette.common.white, 0.38),
     },
   },
   toolbar: {
