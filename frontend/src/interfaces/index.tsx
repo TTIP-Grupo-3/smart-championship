@@ -63,6 +63,7 @@ export interface ChampionshipCreated {
 }
 export interface Enrollment {
   id: number;
+  type: TypeChampionship;
   championship: string;
   price: number;
   status: string;

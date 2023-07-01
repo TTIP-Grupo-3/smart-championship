@@ -24,6 +24,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
   checkbox: {
     paddingLeft: '20px',
-    color: theme.palette.blue[200],
+    color: `${theme.palette.blue[200]}!important`,
   },
 }));

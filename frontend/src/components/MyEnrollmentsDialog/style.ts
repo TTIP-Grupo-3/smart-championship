@@ -11,5 +11,8 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   buttonClose: {
     backgroundColor: theme.palette.blue[200],
     borderRadius: 4,
+    '.Mui-disabled': {
+      backgroundColor: theme.palette.blue[200],
+    },
   },
 }));

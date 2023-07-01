@@ -26,10 +26,9 @@ export const UploadReceipt = () => {
   };
 
   const uploadReceipt = (): void => {
-    setOpenConfirmation(true);
     const formdata = new FormData();
     formdata.append('receipt', file!);
-    API_TEAM_LEADER.uploadReceipt(+id!, +enrollId!, formdata).then(() => navigate('/leader'));
+    API_TEAM_LEADER.uploadReceipt(+id!, +enrollId!, formdata).then(() => setOpenConfirmation(true));
   };
 
   return (
