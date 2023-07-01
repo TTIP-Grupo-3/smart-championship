@@ -8,7 +8,7 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
-import { ChampionshipResponseDTO } from 'src/dtos/responses/championship.response.dto';
+import { ChampionshipResponseDTOFactory } from 'src/dtos/responses/factories/championship.response.dto.factory';
 import { Championship } from 'src/entities/championship.entity';
 import { WsExceptionFilter } from 'src/filters/ws.exception.filter';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
@@ -31,7 +31,7 @@ export class ChampionshipGateway {
   @SubscribeMessage('subscribe')
   async subscribe(@ConnectedSocket() client: UserSocket, @MessageBody() subscribeDTO: ChampionshipIdDTO) {
     const championship = await this.championshipService.getChampionship(subscribeDTO);
-    client.emit('championship', this.mapper.map(championship, client, ChampionshipResponseDTO));
+    client.emit('championship', this.mapper.map(championship, client, ChampionshipResponseDTOFactory));
     client.join(championship.room);
   }
 
@@ -47,6 +47,6 @@ export class ChampionshipGateway {
   async notifyUpdate(client: UserSocket, championship: Championship) {
     this.server
       .to(championship.room)
-      .emit('championship', this.mapper.map(championship, client, ChampionshipResponseDTO));
+      .emit('championship', this.mapper.map(championship, client, ChampionshipResponseDTOFactory));
   }
 }

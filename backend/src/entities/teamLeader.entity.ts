@@ -7,7 +7,7 @@ import { Team } from './team.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { Player } from './player.entity';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException } from 'src/exceptions/NotFoundException';
 
 @ChildEntity()
 export class TeamLeader extends User {

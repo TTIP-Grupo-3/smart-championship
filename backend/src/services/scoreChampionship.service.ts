@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { EntityManager } from 'typeorm';
 import { ScoreStatus } from 'src/entities/scoreStatus.entity';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
 import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
+import { NotFoundException } from 'src/exceptions/NotFoundException';
 
 @Injectable()
 export class ScoreChampionshipService {

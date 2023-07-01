@@ -11,9 +11,9 @@ import {
 } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
-import { ChampionshipResponseDTO } from 'src/dtos/responses/championship.response.dto';
 import { EliminationChampionshipResponseDTO } from 'src/dtos/responses/eliminationChampionship.response.dto';
 import { ErrorResponseDTO } from 'src/dtos/responses/error.response.dto';
+import { ChampionshipResponseDTOFactory } from 'src/dtos/responses/factories/championship.response.dto.factory';
 import { PartialChampionshipResponseDTO } from 'src/dtos/responses/partialChampionship.response.dto';
 import { ScoreChampionshipResponseDTO } from 'src/dtos/responses/scoreChampionship.response.dto';
 import { Championship } from 'src/entities/championship.entity';
@@ -39,7 +39,7 @@ export class AllChampionshipController {
   })
   @ApiNotFoundResponse({ type: ErrorResponseDTO })
   @ApiParam({ name: 'championshipId', type: 'number' })
-  @UseInterceptors(new TransformInterceptor(ChampionshipResponseDTO))
+  @UseInterceptors(new TransformInterceptor(ChampionshipResponseDTOFactory))
   @Get(':championshipId')
   async getChampionship(
     @Param() getChampionshipDTO: ChampionshipIdDTO,
