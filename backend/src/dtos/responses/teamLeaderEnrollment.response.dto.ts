@@ -7,6 +7,7 @@ import { TeamEnrollment } from 'src/entities/teamEnrollment.entity';
 import { UserRequestInfo } from 'src/utils/types';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
 import { toInstance } from 'src/utils/instances';
+import { ChampionshipResponseDTO } from './championship.response.dto';
 
 export class TeamLeaderEnrollmentResponseDTO
   extends ResponseDTOFactory
@@ -15,7 +16,7 @@ export class TeamLeaderEnrollmentResponseDTO
   @ApiProperty()
   id: number;
   @ApiProperty()
-  championship: string;
+  championship: ChampionshipResponseDTO;
   @ApiProperty()
   price: number;
   @ApiProperty({ enum: PayStatus })
@@ -31,11 +32,9 @@ export class TeamLeaderEnrollmentResponseDTO
     const { id, status, championshipEnrollment } = enrollment;
     const { price } = championshipEnrollment;
     const { championship: championshipEntity } = championshipEnrollment;
-    const { name: championship, type } = championshipEntity;
     return toInstance(TeamLeaderEnrollmentResponseDTO, {
       id,
-      championship,
-      type,
+      championship: mapper.map(championshipEntity, request, ChampionshipResponseDTO),
       price,
       status,
     });
