@@ -1,10 +1,9 @@
-import { ChampionshipType } from 'src/enums/championshipType.enum';
 import { PayStatus } from 'src/enums/payStatus.enum';
+import { ChampionshipResponse } from './championship.response';
 
 export interface TeamLeaderEnrollmentResponse {
   id: number;
-  championship: string;
-  type: ChampionshipType;
+  championship: ChampionshipResponse;
   price: number;
   status: PayStatus;
 }
