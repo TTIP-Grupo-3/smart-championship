@@ -2,7 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import { FC } from 'react';
 import { useStyles } from './style';
 
-export const EnrollmentDescription: FC<any> = ({ tournamentRequested, type, prize }) => {
+export const EnrollmentDescription: FC<any> = ({ tournamentRequested, typeChampionship, price }) => {
   const { classes } = useStyles();
 
   return (
@@ -10,9 +10,9 @@ export const EnrollmentDescription: FC<any> = ({ tournamentRequested, type, priz
       <Typography variant="subtitle1" className={classes.title}>
         {tournamentRequested}
       </Typography>
-      <Typography variant="body2">Tipo: {type}</Typography>
+      <Typography variant="body2">Tipo: {typeChampionship}</Typography>
 
-      <Typography variant="body2">Precio: ${prize}</Typography>
+      <Typography variant="body2">Precio: ${price}</Typography>
     </Grid>
   );
 };

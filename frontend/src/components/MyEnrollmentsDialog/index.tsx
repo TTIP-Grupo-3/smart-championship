@@ -22,8 +22,8 @@ export const MyEnrollmentsDialog: FC<any> = ({ open, setOpen, enrollments = [] }
     <React.Fragment>
       <Dialog
         open={open}
-        style={{ borderRadius: 4, width: '100%' }}
-        PaperProps={{ elevation: 24, style: { width: '90vw', height: '72vh' } }}
+        className={classes.dialog}
+        PaperProps={{ elevation: 24, className: classes.paper }}
       >
         <BootstrapDialogTitle
           style={{ color: theme.palette.common.white, paddingLeft: 31 }}
@@ -34,16 +34,15 @@ export const MyEnrollmentsDialog: FC<any> = ({ open, setOpen, enrollments = [] }
         <DialogContent style={{ flexDirection: 'column', display: 'flex' }}>
           {enrollments.map((enrollment: Enrollment) => (
             <TeamEnrollmentCard
-              id={1}
-              status={enrollment?.status}
-              tournamentRequested={enrollment?.championship}
-              type="Clasificacion"
-              prize={enrollment?.price}
+              key={enrollment.id}
+              tournamentRequested={enrollment?.championship.name}
+              typeChampionship={enrollment?.championship.type === 'score' ? 'Clasificación' : 'Eliminación'}
+              {...enrollment}
             />
           ))}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>
+          <Button onClick={handleClose} className={classes.buttonClose}>
             <Typography className={classes.buttonText}>Cerrar</Typography>
           </Button>
         </DialogActions>

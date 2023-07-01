@@ -91,6 +91,7 @@ export const Admin: FC = () => {
   const initAndSaveDatesTournament = () => {
     API_ADMIN.addMatchDates(id!, dates).then(() => {
       initTournament();
+      setOpenInit(false);
     });
   };
 

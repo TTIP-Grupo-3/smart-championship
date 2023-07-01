@@ -93,8 +93,6 @@ export const AdminEnrollmentTabs = () => {
 
   const reviewedEnrollments = enrollments.filter((e: any) => e.status !== 'to_review');
 
-  console.log(pendingEnrollments);
-
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>

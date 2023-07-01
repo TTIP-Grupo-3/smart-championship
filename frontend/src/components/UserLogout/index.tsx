@@ -59,7 +59,7 @@ export const UserLogout: FC<any> = ({ isLogged, userData, ...restProps }) => {
         anchorReference="anchorPosition"
       >
         {isLogged ? (
-          <>
+          <Grid>
             <Grid container direction="row" alignItems="center" style={{ paddingBottom: 10 }}>
               <Avatar className={classes.avatar} style={{ backgroundColor: avatarColor[userData.role] }}>
                 {getInitials(userData.username).toUpperCase()}
@@ -82,7 +82,7 @@ export const UserLogout: FC<any> = ({ isLogged, userData, ...restProps }) => {
                 Cerrar Sesión
               </Typography>
             </MenuItem>
-          </>
+          </Grid>
         ) : (
           <MenuItem className={classes.menuitem} onClick={logout}>
             <LoginIcon className={classes.icon} />

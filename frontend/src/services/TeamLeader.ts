@@ -53,6 +53,10 @@ class TeamLeaderService {
     return this.httpClient.post(`/team_leader/player`, dataPlayer);
   }
 
+  getEnrollment(championshipId: number, enrollmentId: number): Promise<AxiosResponse<any>> {
+    return this.httpClient.get(`/team_leader/championship/${championshipId}/enrollment/${enrollmentId}`);
+  }
+
   uploadReceipt(
     championshipId: number,
     enrollId: number,

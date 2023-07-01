@@ -25,13 +25,17 @@ export const MatchTeam: FC<MatchTeamProps> = ({
   const { classes } = useStyles();
   return (
     <Grid data-testid="MatchTeam" className={classes.gridIconTeam}>
-      <img
-        src={team?.logo ? `data:image/png;base64,${team.logo}` : logo}
-        data-testid="img-team"
-        width="45"
-        height="45"
-        style={{ borderRadius: '50%', paddingTop: paddingTopImg }}
-      />
+      {team?.logo ? (
+        <img
+          src={`data:image/png;base64,${team.logo}`}
+          data-testid="img-team"
+          width="45"
+          height="45"
+          style={{ borderRadius: '100%', paddingTop: paddingTopImg }}
+        />
+      ) : (
+        <div style={{ backgroundColor: 'grey', borderRadius: '100%', width: 45, height: 45 }}></div>
+      )}
       <TooltipText text={inDialog ? getInitials(team ? team?.name : '').toUpperCase() : team?.name} />
       {showCards && <MatchTeamCards {...team} />}
     </Grid>

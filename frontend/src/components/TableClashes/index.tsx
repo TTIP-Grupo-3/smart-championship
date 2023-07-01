@@ -70,14 +70,14 @@ export const TableClashes = () => {
                       {match.local.name}
                     </Typography>
                   </Grid>
-                  <Typography className={classes.score}> {match.local.goals}</Typography>
+                  <Typography className={classes.score}> {match.local?.goals}</Typography>
                   <Grid className={classes.gridMatch}>
                     <Typography style={{ fontSize: 12 }}>
                       {dayjs(match.date).format('DD/MM/YYYY HH:MM')}
                     </Typography>
                     <Typography className={classes.versus}>VS</Typography>
                   </Grid>
-                  <Typography className={classes.score}> {match.visiting.goals}</Typography>
+                  <Typography className={classes.score}> {match.visiting?.goals}</Typography>
                   <Grid className={classes.gridLogo} sx={{ marginRight: '8%' }}>
                     <img
                       src={

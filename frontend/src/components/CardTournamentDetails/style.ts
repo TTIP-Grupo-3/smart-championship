@@ -1,15 +1,11 @@
-import { Theme } from '@mui/material/styles';
+import { alpha, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
   card: {
     display: 'flex',
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: alpha(theme.palette.common.white, 0.05),
     width: '100%',
-    transition: '0.3s all ease-in-out',
-    '&:hover': {
-      transform: 'scale(1.01)',
-    },
   },
   container: {
     flexDirection: 'row',
@@ -18,5 +14,15 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
   statusEnroll: {
     backgroundColor: theme.palette.blue[200],
+  },
+  leaderStatusEnroll: {
+    color: '#efb810',
+    fontSize: 15,
+    fontFamily: 'sans-serif',
+    fontWeight: 700,
+    padding: 3,
+    marginLeft: 7,
+    width: 'fit-content',
+    borderRadius: 5,
   },
 }));

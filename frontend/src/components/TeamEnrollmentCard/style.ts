@@ -42,4 +42,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     paddingRight: theme.spacing(1),
     borderRadius: 5,
   },
+  buttonDetails: {
+    color: theme.palette.blue[200],
+    fontSize: 14,
+    fontWeight: 700,
+    fontFamily: 'sans-serif',
+  },
 }));

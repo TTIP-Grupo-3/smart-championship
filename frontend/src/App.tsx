@@ -15,6 +15,7 @@ import { TournamentsToStart } from './pages/EnrollTournament';
 import { EnrollReservation } from './pages/EnrollingReservation';
 import { UploadReceipt } from './pages/UploadReceipt';
 import { PublicRoute } from './components/PublicRoute';
+import { EnrollingDetails } from './pages/EnrollingDetails';
 
 const App: FC = () => (
   <BrowserRouter>
@@ -99,6 +100,14 @@ const App: FC = () => (
         element={
           <PrivateRoute role="admin" redirectTo="/login">
             <AdminEnrollment />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/leader/enrollments/:id/enrollment/:enrollmentId/details"
+        element={
+          <PrivateRoute role="team_leader" redirectTo="/login">
+            <EnrollingDetails />
           </PrivateRoute>
         }
       />

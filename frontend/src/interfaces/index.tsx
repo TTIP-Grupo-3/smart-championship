@@ -61,10 +61,11 @@ export interface ChampionshipCreated {
   duration: number;
   teamSize: number;
 }
+
+type ChampionshipEnrollment = Omit<Championship, 'teamSize' | 'date'>;
 export interface Enrollment {
   id: number;
-  type: TypeChampionship;
-  championship: string;
+  championship: ChampionshipEnrollment;
   price: number;
   status: string;
 }
@@ -177,6 +178,8 @@ export interface TeamLeaderTournament {
   duration: number;
   status?: string;
   isEnrolled?: boolean;
+  closed?: boolean;
+  allReserved?: boolean;
 }
 
 export interface EnrollChampionship {

@@ -19,7 +19,7 @@ export const Match: FC<MatchProps> = ({ local, visiting, status }) => {
   return (
     <Grid container data-testid="Match" className={classes.backgroundTeamCard}>
       <MatchTeam logo={smartLogoLocal} team={local} />
-      <ScoreMatch localGoals={local.goals} visitingGoals={visiting.goals} status={status} />
+      <ScoreMatch localGoals={local?.goals} visitingGoals={visiting?.goals} status={status} />
       <MatchTeam logo={smartLogoVisiting} team={visiting} />
     </Grid>
   );

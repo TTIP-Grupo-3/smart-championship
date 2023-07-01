@@ -78,8 +78,8 @@ export const MatchDialog: FC<any> = ({ open, close, matchId, championshipData })
               <MatchScoreResult {...{ match, time }} />
               <MatchUserStats
                 title="Goles"
-                dataLocal={match?.local.goals}
-                dataVisiting={match?.visiting.goals}
+                dataLocal={match?.local?.goals}
+                dataVisiting={match?.visiting?.goals}
               />
 
               <MatchUserStats

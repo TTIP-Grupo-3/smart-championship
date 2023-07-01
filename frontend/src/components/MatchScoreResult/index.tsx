@@ -54,7 +54,7 @@ export const MatchScoreResult: FC<any> = ({
           paddingTopImg={14}
         />
         <Typography variant="h3" className={classes.resultScore}>
-          {match?.visiting ? match.visiting.goals.length : 0}
+          {match?.visiting ? match.visiting?.goals?.length : 0}
         </Typography>
       </Grid>
     </Grid>
