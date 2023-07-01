@@ -120,6 +120,7 @@ export const TeamLeader: FC = () => {
                     <img
                       width={40}
                       height={40}
+                      style={{ borderRadius: '100%' }}
                       src={
                         leaderData.team.logo
                           ? `data:image/png;base64,${leaderData.team.logo}`

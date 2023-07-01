@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Button, Grid, Typography, useTheme } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { Navbar } from '../../components/NavBar';
 import { useStyles } from './style';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { ChangeEventHandler, useState } from 'react';
 import defaultUpload from '../../upload.jpg';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
-import { useNavigate, useParams } from 'react-router-dom';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { useParams } from 'react-router-dom';
 import { ConfirmationReceiptDialog } from '../../components/ConfirmationSendReceiptDialog';
 
 export const UploadReceipt = () => {
@@ -15,8 +14,6 @@ export const UploadReceipt = () => {
   const [file, setFile] = useState<File>();
   const [image, setImage] = useState<string>('');
   const { id, enrollId } = useParams();
-  const navigate = useNavigate();
-  const theme = useTheme();
   const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const handleFile: ChangeEventHandler<HTMLInputElement> = (e): void => {
@@ -32,15 +29,7 @@ export const UploadReceipt = () => {
   };
 
   return (
-    <Navbar
-      button={{
-        action: () => navigate(`/leader/enrolling/reservation/${id}`),
-        text: 'Volver',
-        icon: (
-          <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: theme.palette.common.white }} />
-        ),
-      }}
-    >
+    <Navbar>
       <Grid className={classes.grid}>
         <Typography className={classes.reservationTitle}>Subir comprobante de pago</Typography>
         <Grid container className={classes.gridSuccess}>

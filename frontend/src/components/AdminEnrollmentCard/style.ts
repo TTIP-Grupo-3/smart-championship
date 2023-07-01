@@ -30,6 +30,21 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  endGrid: { display: 'flex', flexGrow: 1, justifyContent: 'flex-end', width: theme.spacing(0) },
+  endGrid: {
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    width: theme.spacing(0),
+  },
   startGrid: { display: 'flex', flexGrow: 1, width: theme.spacing(0) },
+  statusEnroll: {
+    display: 'flex',
+    padding: 4,
+    borderRadius: 4,
+    fontSize: 14,
+    fontWeight: 600,
+    fontFamily: 'sans-serif',
+    color: theme.palette.common.white,
+  },
 }));

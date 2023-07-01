@@ -15,7 +15,7 @@ export interface SimpleDialogProps {
   idEnroll: number;
 }
 
-export const DialogInscription: FC<SimpleDialogProps> = ({
+export const DialogEnrollment: FC<SimpleDialogProps> = ({
   onClose,
   open,
   onSuccess,
@@ -58,20 +58,17 @@ export const DialogInscription: FC<SimpleDialogProps> = ({
         </DialogContent>
       </Scroll>
       <DialogActions>
-        <Button
-          className={classes.buttonConfirm}
-          onClick={confirmEnrollment}
-          disabled={enroll?.status === 'paid' || enroll?.status == 'rejected'}
-        >
-          Confirmar
-        </Button>
-        <Button
-          className={classes.buttonDecline}
-          onClick={rejectEnrollment}
-          disabled={enroll?.status === 'paid' || enroll?.status === 'rejected'}
-        >
-          Rechazar
-        </Button>
+        {!(enroll?.status === 'paid' || enroll?.status == 'rejected') && (
+          <>
+            {' '}
+            <Button className={classes.buttonConfirm} onClick={confirmEnrollment}>
+              Confirmar
+            </Button>
+            <Button className={classes.buttonDecline} onClick={rejectEnrollment}>
+              Rechazar
+            </Button>
+          </>
+        )}
       </DialogActions>
     </Dialog>
   );

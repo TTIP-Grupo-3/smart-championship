@@ -9,7 +9,7 @@ import { Enrollments as PendingEnrollments } from '../Enrollments';
 
 import SnackBar from '../Snackbar';
 import { msgTypes } from '../../pages/Admin';
-import { DialogInscription } from '../DialogInscription';
+import { DialogEnrollment } from '../DialogEnrollment';
 import { delay } from '../../utils/utils';
 import { SnackBarState } from '../../interfaces';
 
@@ -112,10 +112,14 @@ export const AdminEnrollmentTabs = () => {
         <PendingEnrollments {...{ handleOpen, isLoading }} enrollments={pendingEnrollments} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <CheckedEnrollments {...{ handleOpen, isLoading }} enrollments={reviewedEnrollments} />
+        <CheckedEnrollments
+          {...{ handleOpen, isLoading }}
+          enrollments={reviewedEnrollments}
+          checked={true}
+        />
       </TabPanel>
       {open && (
-        <DialogInscription
+        <DialogEnrollment
           open={open}
           {...{ onClose, onError, onSuccess, idEnroll }}
           championshipId={+championshipId!}

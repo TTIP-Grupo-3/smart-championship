@@ -5,7 +5,7 @@ import { Loader } from '../Loader';
 import Scroll from '../Scroll';
 import { useStyles } from './style';
 
-export const Enrollments: FC<any> = ({ enrollments, handleOpen, isLoading }) => {
+export const Enrollments: FC<any> = ({ enrollments, handleOpen, isLoading, checked }) => {
   const { classes } = useStyles();
 
   return (
@@ -17,7 +17,7 @@ export const Enrollments: FC<any> = ({ enrollments, handleOpen, isLoading }) => 
       ) : (
         <Scroll className={classes.scroll}>
           {enrollments.map((enrollment: any) => (
-            <AdminEnrollmentCard key={enrollment.id} {...{ ...enrollment, handleOpen }} />
+            <AdminEnrollmentCard key={enrollment.id} {...{ ...enrollment, handleOpen, checked }} />
           ))}
         </Scroll>
       )}
