@@ -12,13 +12,31 @@ export class TeamLeaderChampionshipResponseDTO
 {
   @ApiProperty()
   isEnrolled: boolean;
+  @ApiProperty()
+  allReserved: boolean;
+  @ApiProperty()
+  closed: boolean;
 
   static from(
     championship: Championship,
     { user }: UserRequestInfo,
     mapper: EntityToDTOMapper,
   ): TeamLeaderChampionshipResponseDTO {
-    const { id, name, type, date, start, end, size, enrollment, duration, teamSize, status } = championship;
+    const {
+      id,
+      name,
+      type,
+      date,
+      start,
+      end,
+      size,
+      enrollment,
+      duration,
+      teamSize,
+      status,
+      allReserved,
+      closed,
+    } = championship;
     const { price, enrolled } = enrollment;
     return toInstance(TeamLeaderChampionshipResponseDTO, {
       id,
@@ -34,6 +52,8 @@ export class TeamLeaderChampionshipResponseDTO
       teamSize,
       status,
       isEnrolled: championship.isEnrolled(user),
+      allReserved,
+      closed,
     });
   }
 }
