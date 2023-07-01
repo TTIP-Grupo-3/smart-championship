@@ -1,9 +1,10 @@
-import { ConsoleLogger, ExecutionContext, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConsoleLogger, ExecutionContext, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { plainToInstance } from 'class-transformer';
 import { IdDTO } from 'src/dtos/id.dto';
+import { UnauthorizedException } from 'src/exceptions/UnauthorizedException';
 import { UsersService } from 'src/services/user.service';
 import { UserPayload } from 'src/utils/types';
 

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { UseExceptionMapper } from 'src/decorators/UseExceptionMapper';
-import { EliminationChampionship } from 'src/entities/eliminationChampionship.entity';
 import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMapperExecutor';
 import { EntityManager } from 'typeorm';
 import { configService } from './config.service';
@@ -9,7 +8,6 @@ import { TransactionService } from './transaction.service';
 import { StorageService } from 'src/services/storage.service';
 import { ChampionshipStatus } from 'src/enums/championshipStatus.enum';
 import { ChampionshipService } from './championship.service';
-import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errors = configService.get('service.errors');
@@ -22,11 +20,7 @@ export class AllChampionshipService extends ChampionshipService {
   }
 
   protected exists(championship?: Championship): boolean {
-    return (
-      ((championship instanceof EliminationChampionship && !!championship.final) ||
-        championship instanceof ScoreChampionship) &&
-      championship.status !== ChampionshipStatus.TOSTART
-    );
+    return !!championship && championship.status !== ChampionshipStatus.TOSTART;
   }
 
   protected async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
