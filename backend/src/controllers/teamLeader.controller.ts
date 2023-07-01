@@ -33,7 +33,7 @@ export class TeamLeaderController {
   @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
   @UseInterceptors(new TransformInterceptor(AccessTokenResponseDTO))
   @Post()
-  async createChampionship(@Body() createTeamLeaderDTO: CreateTeamLeaderDTO): Promise<TeamLeader> {
+  async createTeamLeader(@Body() createTeamLeaderDTO: CreateTeamLeaderDTO): Promise<TeamLeader> {
     return await this.teamLeaderService.createTeamLeader(createTeamLeaderDTO);
   }
 

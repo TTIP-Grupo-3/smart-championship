@@ -62,7 +62,7 @@ export class AdminEnrollmentController {
   @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
   @UseInterceptors(new TransformInterceptor(EnrollmentResponseDTO))
   @Patch(':id/accept')
-  async acceptEnrollments(@Param() acceptEnrollmentDTO: EnrollmentIdDTO): Promise<TeamEnrollment> {
+  async acceptEnrollment(@Param() acceptEnrollmentDTO: EnrollmentIdDTO): Promise<TeamEnrollment> {
     return await this.enrollmentService.acceptEnrollment(acceptEnrollmentDTO);
   }
 
@@ -75,7 +75,7 @@ export class AdminEnrollmentController {
   @ApiUnauthorizedResponse({ type: ErrorResponseDTO })
   @UseInterceptors(new TransformInterceptor(EnrollmentResponseDTO))
   @Patch(':id/reject')
-  async rejectEnrollments(@Param() rejectEnrollmentDTO: EnrollmentIdDTO): Promise<TeamEnrollment> {
+  async rejectEnrollment(@Param() rejectEnrollmentDTO: EnrollmentIdDTO): Promise<TeamEnrollment> {
     return await this.enrollmentService.rejectEnrollment(rejectEnrollmentDTO);
   }
 }
