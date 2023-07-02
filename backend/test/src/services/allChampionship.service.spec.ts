@@ -12,13 +12,13 @@ import {
   notFoundId,
   championship,
   errors,
-} from '../../data/src/services/championship.service.spec.data.json';
+} from '../../data/src/services/allChampionship.service.spec.data.json';
 import { TransactionService } from 'src/services/transaction.service';
 import { DataService } from 'test/utils/data.service';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
 import { StorageService } from 'src/services/storage.service';
 
-describe('ChampionshipService', () => {
+describe('AllChampionshipService', () => {
   let module: TestingModule;
   let service: AllChampionshipService;
   let dataService: DataService;

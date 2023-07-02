@@ -4,9 +4,9 @@ import { AllChampionshipController } from 'src/controllers/allChampionship.contr
 import { AllChampionshipService } from 'src/services/allChampionship.service';
 import { Methods } from 'src/utils/types';
 import { getMethods, mock } from 'test/utils/tests';
-import { args } from '../../data/src/controllers/championship.controller.spec.data.json';
+import { args } from '../../data/src/controllers/allChampionship.controller.spec.data.json';
 
-describe('ChampionshipController', () => {
+describe('AllChampionshipController', () => {
   let module: TestingModule;
   let controller: AllChampionshipController;
   let service: AllChampionshipService;

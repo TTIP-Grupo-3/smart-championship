@@ -1,0 +1,5 @@
+{
+  "args": { "id": 1 },
+  "notFoundId": 0,
+  "player": { "id": 1, "name": "player-1", "dni": 44444444, "number": 1 }
+}
