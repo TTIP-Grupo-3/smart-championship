@@ -10,6 +10,20 @@ export interface EditChampionshipInfo {
   price?: number;
   duration?: number;
   teamSize?: number;
+  payData?: EditPayData;
+}
+
+export interface EditChampionshipEnrollment {
+  size?: number;
+  price?: number;
+  payData?: EditPayData;
+}
+
+export interface EditPayData {
+  name?: string;
+  cuit?: string;
+  cbu?: string;
+  alias?: string;
 }
 
 export interface MatchDate {

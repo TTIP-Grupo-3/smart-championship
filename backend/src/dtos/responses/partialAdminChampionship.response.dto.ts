@@ -6,6 +6,7 @@ import { Championship } from 'src/entities/championship.entity';
 import { UserRequestInfo } from 'src/utils/types';
 import { toInstance } from 'src/utils/instances';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
+import { PayDataResponseDTO } from './payData.response.dto';
 
 export class PartialAdminChampionshipResponseDTO
   extends PartialChampionshipResponseDTO
@@ -29,6 +30,8 @@ export class PartialAdminChampionshipResponseDTO
   teamSize: number;
   @ApiProperty({ enum: ChampionshipStatus })
   status: ChampionshipStatus;
+  @ApiProperty({ type: PayDataResponseDTO })
+  payData: PayDataResponseDTO;
 
   static from(
     championship: Championship,
@@ -36,7 +39,7 @@ export class PartialAdminChampionshipResponseDTO
     mapper: EntityToDTOMapper,
   ): PartialAdminChampionshipResponseDTO {
     const { id, name, type, date, start, end, size, enrollment, duration, teamSize, status } = championship;
-    const { price, enrolled } = enrollment;
+    const { price, enrolled, payData } = enrollment;
     return toInstance(PartialAdminChampionshipResponseDTO, {
       id,
       name,
@@ -50,6 +53,7 @@ export class PartialAdminChampionshipResponseDTO
       duration,
       teamSize,
       status,
+      payData: mapper.map(payData, request, PayDataResponseDTO),
     });
   }
 }

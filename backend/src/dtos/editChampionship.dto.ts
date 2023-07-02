@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsDate, IsInt, IsOptional } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsDate, IsInt, IsOptional, ValidateNested } from 'class-validator';
+import { EditPayDataDTO } from './editPayData.dto';
 
 export class EditChampionshipDTO {
   @ApiProperty()
@@ -26,4 +27,9 @@ export class EditChampionshipDTO {
   @IsInt()
   @IsOptional()
   teamSize: number;
+  @ApiProperty()
+  @ValidateNested()
+  @IsOptional()
+  @Type(() => EditPayDataDTO)
+  payData: EditPayDataDTO;
 }

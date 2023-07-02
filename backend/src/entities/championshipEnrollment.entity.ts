@@ -5,6 +5,7 @@ import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentExceptio
 import { TeamLeader } from './teamLeader.entity';
 import { User } from './user.entity';
 import { PayData } from './payData.entity';
+import { EditChampionshipEnrollment } from 'src/utils/types';
 
 @Entity()
 export class ChampionshipEnrollment {
@@ -59,9 +60,10 @@ export class ChampionshipEnrollment {
     return enrollment;
   }
 
-  edit({ size, price }: { size?: number; price?: number }) {
+  edit({ size, price, payData = {} }: EditChampionshipEnrollment) {
     this.size = size ?? this.size;
     this.price = price ?? this.price;
+    this.payData.edit(payData);
   }
 
   rejectEnrollment(id: number): TeamEnrollment {

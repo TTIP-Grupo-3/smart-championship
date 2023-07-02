@@ -112,11 +112,11 @@ export abstract class Championship {
     return this.enrollment.enroll(teamLeader);
   }
 
-  edit({ name, date, size, price, duration, teamSize }: EditChampionshipInfo) {
+  edit({ name, date, size, price, duration, teamSize, payData }: EditChampionshipInfo) {
     if (this.status !== ChampionshipStatus.TOSTART) throw new InvalidArgumentException();
     this.name = name ?? this.name;
     this.date = date ?? this.date;
-    this.enrollment.edit({ size, price });
+    this.enrollment.edit({ size, price, payData });
     this.duration = duration ?? this.duration;
     this.teamSize = teamSize ?? this.teamSize;
   }

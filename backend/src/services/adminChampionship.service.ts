@@ -65,8 +65,17 @@ export class AdminChampionshipService extends ChampionshipService {
   }
 
   private plainChampionship(createChampionshipDTO: CreateChampionshipDTO): DeepPartial<Championship> {
-    const { name, size, price, duration, teamSize, date } = createChampionshipDTO;
-    const enrollment = { size, price, teamEnrollments: [] };
+    const {
+      name,
+      size,
+      price,
+      duration,
+      teamSize,
+      date,
+      payData: { name: payDataName, cuit, cbu, alias },
+    } = createChampionshipDTO;
+    const payData = { name: payDataName, cuit, cbu, alias };
+    const enrollment = { size, payData, price, teamEnrollments: [] };
     return { name, date, enrollment, duration, teamSize };
   }
 

@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ChampionshipEnrollment } from './championshipEnrollment.entity';
+import { EditPayData } from 'src/utils/types';
 
 @Entity()
 export class PayData {
@@ -19,4 +20,11 @@ export class PayData {
   cbu: string;
   @Column()
   alias: string;
+
+  edit({ name, cuit, cbu, alias }: EditPayData = {}) {
+    this.name = name ?? this.name;
+    this.cuit = cuit ?? this.cuit;
+    this.cbu = cbu ?? this.cbu;
+    this.alias = alias ?? this.alias;
+  }
 }

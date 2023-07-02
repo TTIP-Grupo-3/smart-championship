@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsDate, IsEnum, IsInt, IsNotEmpty } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsDate, IsEnum, IsInt, IsNotEmpty, ValidateNested } from 'class-validator';
 import { ChampionshipType } from 'src/enums/championshipType.enum';
+import { PayDataDTO } from './payData.dto';
 
 export class CreateChampionshipDTO {
   @ApiProperty()
@@ -29,4 +30,8 @@ export class CreateChampionshipDTO {
   @ApiProperty()
   @IsNotEmpty()
   teamSize: number;
+  @ApiProperty({ type: PayDataDTO })
+  @ValidateNested()
+  @Type(() => PayDataDTO)
+  payData: PayDataDTO;
 }
