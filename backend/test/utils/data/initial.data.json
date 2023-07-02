@@ -1,4 +1,5 @@
 {
+  "championshipEnrollments": [{ "id": 1, "size": 8, "price": 50, "championship": { "id": 1 } }],
   "eliminationChampionships": [{ "id": 1, "date": "2017-06-15", "start": "2017-06-15", "size": 0, "price": 0, "duration": 0, "teamSize": 5, "name": "Smart Championship" }],
   "teams": [
     { "id": 1, "name": "Team-1", "championship": { "id": 1 } },
