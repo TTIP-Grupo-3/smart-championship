@@ -8,6 +8,9 @@ import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentExceptio
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { Player } from './player.entity';
 import { NotFoundException } from 'src/exceptions/NotFoundException';
+import { configService } from 'src/services/config.service';
+
+const errors = configService.get('model.errors');
 
 @ChildEntity()
 export class TeamLeader extends User {
@@ -32,7 +35,7 @@ export class TeamLeader extends User {
   }
 
   setTeam(team: Team) {
-    if (!!this.team) throw new InvalidArgumentException('Team already created');
+    if (!!this.team) throw new InvalidArgumentException(errors.teamAlreadyCreated);
     this.team = team;
     team.setLeader(this);
   }
@@ -54,6 +57,6 @@ export class TeamLeader extends User {
   }
 
   private checkTeamCreated() {
-    if (!this.team) throw new NotFoundException('Team is not created');
+    if (!this.team) throw new NotFoundException(errors.teamNotCreated);
   }
 }

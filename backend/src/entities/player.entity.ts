@@ -4,6 +4,9 @@ import { Team } from './team.entity';
 import { Championship } from './championship.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
+import { configService } from 'src/services/config.service';
+
+const errors = configService.get('model.errors');
 
 @Entity()
 export class Player {
@@ -21,7 +24,7 @@ export class Player {
   championshipPlayers: Array<ChampionshipPlayer>;
 
   setTeam(team: Team) {
-    if (!!this.team) throw new InvalidArgumentException('Player already in team');
+    if (!!this.team) throw new InvalidArgumentException(errors.playerAlreadyInTeam);
     this.team = team;
   }
 
