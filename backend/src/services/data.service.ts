@@ -12,6 +12,7 @@ import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMa
 import { DeepPartial } from 'src/utils/types';
 import { DataSource } from 'typeorm';
 import {
+  payDatas,
   users,
   players,
   teams,
@@ -38,6 +39,7 @@ import { Team } from 'src/entities/team.entity';
 import { Player } from 'src/entities/player.entity';
 import { StorageService } from './storage.service';
 import { PayStatus } from 'src/enums/payStatus.enum';
+import { PayData } from 'src/entities/payData.entity';
 
 @Injectable()
 @UseExceptionMapper(TypeOrmExceptionMapperExecutor)
@@ -54,6 +56,7 @@ export class DataService {
         ChampionshipEnrollment,
         championshipEnrollments as Array<DeepPartial<ChampionshipEnrollment>>,
       );
+      await manager.save(PayData, payDatas);
       await manager.save(TeamEnrollment, teamEnrollments as Array<DeepPartial<TeamEnrollment>>);
       await manager.save(Team, teams);
       await manager.save(Player, players);

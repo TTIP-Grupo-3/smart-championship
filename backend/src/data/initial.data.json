@@ -118,21 +118,70 @@
       "enrollments": []
     }
   ],
+  "payDatas": [
+    {
+      "id": 1,
+      "name": "Ricardo Rojas",
+      "cuit": "20226728886",
+      "cbu": "1428760981789493875873",
+      "alias": "ricardo.rojas",
+      "enrollment": { "id": 1 }
+    },
+    {
+      "id": 2,
+      "name": "Jose Ruiz",
+      "cuit": "20325528446",
+      "cbu": "14195743678298405987639",
+      "alias": "jose.ruiz",
+      "enrollment": { "id": 2 }
+    },
+    {
+      "id": 3,
+      "name": "Ignacio Perez",
+      "cuit": "20427729886",
+      "cbu": "1404836720198593748592",
+      "alias": "ignacio.perez",
+      "enrollment": { "id": 3 }
+    }
+  ],
   "championshipEnrollments": [
     { "id": 1, "size": 4, "price": 50, "championship": { "id": 3 } },
     { "id": 2, "size": 3, "price": 50, "championship": { "id": 2 } },
     { "id": 3, "size": 8, "price": 50, "championship": { "id": 1 } }
   ],
   "teamEnrollments": [
-    { "id": 1, "payStatus": "to_review", "createdAt": "2017-06-15", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } },
-    { "id": 13, "payStatus": "to_review", "createdAt": "2017-06-15", "teamLeader": { "id": 4 }, "championshipEnrollment": { "id": 1 } },
-    { "id": 14, "payStatus": "to_review", "createdAt": "2017-06-15", "teamLeader": { "id": 5 }, "championshipEnrollment": { "id": 1 } },
-    { "id": 15, "payStatus": "to_review", "teamLeader": { "id": 6 }, "championshipEnrollment": { "id": 1 } },
-    
+    {
+      "id": 1,
+      "payStatus": "to_review",
+      "createdAt": "2017-06-15",
+      "teamLeader": { "id": 3 },
+      "championshipEnrollment": { "id": 1 }
+    },
+    {
+      "id": 13,
+      "payStatus": "to_review",
+      "createdAt": "2017-06-15",
+      "teamLeader": { "id": 4 },
+      "championshipEnrollment": { "id": 1 }
+    },
+    {
+      "id": 14,
+      "payStatus": "to_review",
+      "createdAt": "2017-06-15",
+      "teamLeader": { "id": 5 },
+      "championshipEnrollment": { "id": 1 }
+    },
+    {
+      "id": 15,
+      "payStatus": "to_review",
+      "teamLeader": { "id": 6 },
+      "championshipEnrollment": { "id": 1 }
+    },
+
     { "id": 2, "payStatus": "paid", "teamLeader": { "id": 11 }, "championshipEnrollment": { "id": 2 } },
     { "id": 3, "payStatus": "paid", "teamLeader": { "id": 12 }, "championshipEnrollment": { "id": 2 } },
     { "id": 4, "payStatus": "paid", "teamLeader": { "id": 13 }, "championshipEnrollment": { "id": 2 } },
-    
+
     { "id": 5, "payStatus": "paid", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 3 } },
     { "id": 6, "payStatus": "paid", "teamLeader": { "id": 4 }, "championshipEnrollment": { "id": 3 } },
     { "id": 7, "payStatus": "paid", "teamLeader": { "id": 5 }, "championshipEnrollment": { "id": 3 } },
@@ -172,7 +221,7 @@
       "duration": 0,
       "teamSize": 11,
       "name": "Picadito Ezpeleta"
-    }    
+    }
   ],
   "teams": [
     { "id": 1, "name": "El Dorado FC", "championship": { "id": 1 }, "leader": { "id": 3 } },

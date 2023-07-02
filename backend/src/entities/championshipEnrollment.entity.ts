@@ -4,6 +4,7 @@ import { TeamEnrollment } from './teamEnrollment.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { TeamLeader } from './teamLeader.entity';
 import { User } from './user.entity';
+import { PayData } from './payData.entity';
 
 @Entity()
 export class ChampionshipEnrollment {
@@ -24,6 +25,8 @@ export class ChampionshipEnrollment {
     cascade: true,
   })
   teamEnrollments: Array<TeamEnrollment>;
+  @OneToOne(() => PayData, (payData) => payData.enrollment, { eager: true, cascade: true })
+  payData: PayData;
 
   public get enrolled(): number {
     return this.enrolledTeams.length;

@@ -19,6 +19,7 @@ import { Team } from 'src/entities/team.entity';
 import { Player } from 'src/entities/player.entity';
 import { Phase } from 'src/entities/phase.entity';
 import { PhaseManager } from 'src/entities/phaseManager.entity';
+import { PayData } from 'src/entities/payData.entity';
 export type SmartChampionshipEntity =
   | Championship
   | Match
@@ -40,7 +41,8 @@ export type SmartChampionshipEntity =
   | Team
   | Player
   | Phase
-  | PhaseManager;
+  | PhaseManager
+  | PayData;
 
 export const entities = [
   Championship,
@@ -61,4 +63,5 @@ export const entities = [
   TeamLeader,
   Team,
   Player,
+  PayData,
 ];

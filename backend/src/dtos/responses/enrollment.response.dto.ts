@@ -8,6 +8,7 @@ import { ResponseDTOFactory } from './factories/response.dto.factory';
 import { EntityToDTOMapper } from 'src/mappers/EntityToDTOMapper';
 import { ChampionshipResponseDTO } from './championship.response.dto';
 import { Type } from 'class-transformer';
+import { PayDataResponseDTO } from './payData.response.dto';
 
 export class EnrollmentResponseDTO extends ResponseDTOFactory implements EnrollmentResponse {
   @ApiProperty()
@@ -23,6 +24,9 @@ export class EnrollmentResponseDTO extends ResponseDTOFactory implements Enrollm
   status: PayStatus;
   @ApiProperty({ required: false, nullable: true })
   receipt?: string;
+  @ApiProperty({ type: PayDataResponseDTO })
+  @Type(() => PayDataResponseDTO)
+  payData: PayDataResponseDTO;
 
   static from(
     enrollment: TeamEnrollment,
@@ -30,7 +34,7 @@ export class EnrollmentResponseDTO extends ResponseDTOFactory implements Enrollm
     mapper: EntityToDTOMapper,
   ): EnrollmentResponseDTO {
     const { id, status, receipt, championshipEnrollment, teamLeader } = enrollment;
-    const { championship, price } = championshipEnrollment;
+    const { championship, payData, price } = championshipEnrollment;
     const { name } = teamLeader;
     return toInstance(EnrollmentResponseDTO, {
       id,
@@ -39,6 +43,7 @@ export class EnrollmentResponseDTO extends ResponseDTOFactory implements Enrollm
       price,
       status,
       receipt,
+      payData: mapper.map(payData, request, PayDataResponseDTO),
     });
   }
 }
