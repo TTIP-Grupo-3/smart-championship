@@ -4,7 +4,6 @@ import { PrimaryGeneratedColumn } from 'typeorm';
 import { Entity } from 'typeorm';
 import { Championship } from './championship.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
-import { EliminationChampionship } from './eliminationChampionship.entity';
 import { Player } from './player.entity';
 
 @Entity()
@@ -22,7 +21,7 @@ export class ChampionshipPlayer {
     orphanedRowAction: 'delete',
   })
   team: ChampionshipTeam;
-  @ManyToOne(() => EliminationChampionship, (championship) => championship.players, {
+  @ManyToOne(() => Championship, (championship) => championship.players, {
     createForeignKeyConstraints: false,
     onDelete: 'CASCADE',
     orphanedRowAction: 'delete',

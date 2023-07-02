@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateChampionshipDTO } from 'src/dtos/createChampionship.dto';
-import { EntityManager } from 'typeorm';
+import { DeepPartial, EntityManager } from 'typeorm';
 import { Championship } from '../entities/championship.entity';
 import { TransactionService } from './transaction.service';
 import { ChampionshipType } from 'src/enums/championshipType.enum';
@@ -12,6 +12,7 @@ import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMa
 import { ChampionshipService } from './championship.service';
 import { EditChampionshipDTO } from 'src/dtos/editChampionship.dto';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
+import { Class } from 'src/utils/types';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errors = configService.get('service.errors');
@@ -28,7 +29,10 @@ export class AdminChampionshipService extends ChampionshipService {
     manager?: EntityManager,
   ): Promise<Championship> {
     return await this.transactionService.transaction(async (manager) => {
-      const championship = this.newChampionship(createChampionshipDTO, manager);
+      const championship = manager.create<Championship>(
+        this.getChampionshipSubclass(createChampionshipDTO.type),
+        this.plainChampionship(createChampionshipDTO),
+      );
       return await manager.save(championship);
     }, manager);
   }
@@ -41,8 +45,7 @@ export class AdminChampionshipService extends ChampionshipService {
     return await this.transactionService.transaction(async (manager) => {
       const championship = await this.getChampionship(championshipIdDTO, manager);
       championship.edit(editChampionshipDTO);
-      const editedChampionship = await this.changeType(championship, editChampionshipDTO, manager);
-      return await manager.save(editedChampionship);
+      return await manager.save(championship);
     }, manager);
   }
 
@@ -61,48 +64,13 @@ export class AdminChampionshipService extends ChampionshipService {
     return !!championship;
   }
 
-  private newChampionship(
-    createChampionshipDTO: {
-      name: string;
-      date: Date;
-      size: number;
-      price: number;
-      duration: number;
-      teamSize: number;
-      type: ChampionshipType;
-    },
-    manager: EntityManager,
-  ): Championship {
-    const { name, date, size, price, duration, teamSize, type } = createChampionshipDTO;
-    const ChampionshipSubclass = this.getChampionshipSubclass(type);
-    return manager.create<Championship>(ChampionshipSubclass, {
-      name,
-      date,
-      enrollment: { size, price, teamEnrollments: [] },
-      duration,
-      teamSize,
-    });
+  private plainChampionship(createChampionshipDTO: CreateChampionshipDTO): DeepPartial<Championship> {
+    const { name, size, price, duration, teamSize, date } = createChampionshipDTO;
+    const enrollment = { size, price, teamEnrollments: [] };
+    return { name, date, enrollment, duration, teamSize };
   }
 
-  private async changeType(
-    championship: Championship,
-    editChampionshipDTO: EditChampionshipDTO,
-    manager: EntityManager,
-  ): Promise<Championship> {
-    const { type } = editChampionshipDTO;
-    if (type) {
-      const ChampionshipSubclass = this.getChampionshipSubclass(type);
-      const { enrollment, ...plainChampionship } = championship;
-      const newChampionship = manager.create<Championship>(ChampionshipSubclass, plainChampionship);
-      await manager.remove(championship);
-      await manager.save(enrollment);
-      newChampionship.enrollment = enrollment;
-      return newChampionship;
-    }
-    return championship;
-  }
-
-  private getChampionshipSubclass(type: ChampionshipType) {
+  private getChampionshipSubclass(type: ChampionshipType): Class<Championship> {
     const championshipSubclasses = {
       [ChampionshipType.ELIMINATION]: EliminationChampionship,
       [ChampionshipType.SCORE]: ScoreChampionship,

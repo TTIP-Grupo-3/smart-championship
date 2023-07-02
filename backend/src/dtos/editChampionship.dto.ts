@@ -1,16 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsDate, IsEnum, IsInt, IsOptional } from 'class-validator';
-import { ChampionshipType } from 'src/enums/championshipType.enum';
+import { IsDate, IsInt, IsOptional } from 'class-validator';
 
 export class EditChampionshipDTO {
   @ApiProperty()
   @IsOptional()
   name: string;
-  @ApiProperty({ enum: ChampionshipType })
-  @IsEnum(ChampionshipType)
-  @IsOptional()
-  type: ChampionshipType;
   @ApiProperty()
   @IsDate()
   @IsOptional()

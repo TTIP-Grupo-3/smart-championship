@@ -155,6 +155,6 @@ export abstract class Championship {
   }
 
   private canStart(): boolean {
-    return this.toStart() && !this.hasPlaces() && this.matchesInitialized();
+    return this.toStart() && !this.hasPlaces() && this.matchesInitialized() && this.teams.length >= 2;
   }
 }

@@ -9,31 +9,22 @@ import { ResponseDTOFactory } from 'src/dtos/responses/factories/response.dto.fa
 
 const errors = configService.get('service.errors');
 
-export type ResponseDTOFactoryClass<
-  T extends SmartChampionshipEntity,
-  R extends SmartChampionshipDTO,
-  F extends ResponseDTOFactory,
-> = {
-  new (...args: any[]): F;
-  from: (entity: T, request: UserRequestInfo, mapper: EntityToDTOMapper) => MaybeArray<R>;
-};
-
 @Injectable()
 export class EntityToDTOMapper extends Mapper<SmartChampionshipEntity, SmartChampionshipDTO> {
-  map<T extends SmartChampionshipEntity, R extends SmartChampionshipDTO, F extends ResponseDTOFactory>(
+  map<T extends SmartChampionshipEntity, R extends SmartChampionshipDTO>(
     source: T,
     request?: UserRequestInfo,
-    dtoCls?: ResponseDTOFactoryClass<T, R, F>,
+    dtoCls?: typeof ResponseDTOFactory,
   ): R;
-  map<T extends SmartChampionshipEntity, R extends SmartChampionshipDTO, F extends ResponseDTOFactory>(
+  map<T extends SmartChampionshipEntity, R extends SmartChampionshipDTO>(
     source: Array<T>,
     request?: UserRequestInfo,
-    dtoCls?: ResponseDTOFactoryClass<T, R, F>,
+    dtoCls?: typeof ResponseDTOFactory,
   ): Array<R>;
   map(
     source: MaybeArray<SmartChampionshipEntity>,
     request: UserRequestInfo = {},
-    dtoCls?: ResponseDTOFactoryClass<SmartChampionshipEntity, SmartChampionshipDTO, ResponseDTOFactory>,
+    dtoCls?: typeof ResponseDTOFactory,
   ): MaybeArray<SmartChampionshipDTO> {
     if (!dtoCls) throw new UnknownException(errors.unknown);
     if (source instanceof Array) return source.map((source) => this.map(source, request, dtoCls));
