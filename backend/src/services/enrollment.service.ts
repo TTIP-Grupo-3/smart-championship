@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { ChampionshipService } from './championship.service';
 import { StorageService } from './storage.service';
@@ -10,8 +9,7 @@ import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
 import { Championship } from 'src/entities/championship.entity';
 import { ChampionshipEnrollment } from 'src/entities/championshipEnrollment.entity';
 
-@Injectable()
-export class EnrollmentService {
+export abstract class EnrollmentService {
   protected receiptContainer = 'receipts';
   private readonly relations: FindOptionsRelations<TeamEnrollment> = {
     championshipEnrollment: { championship: { enrollment: false }, teamEnrollments: false },

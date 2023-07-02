@@ -9,8 +9,11 @@ import { EnrollmentService } from './enrollment.service';
 import { PayStatus } from 'src/enums/payStatus.enum';
 import { Championship } from 'src/entities/championship.entity';
 import { TeamService } from './team.service';
+import { UseExceptionMapper } from 'src/decorators/UseExceptionMapper';
+import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMapperExecutor';
 
 @Injectable()
+@UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class AdminEnrollmentService extends EnrollmentService {
   constructor(
     transactionService: TransactionService,

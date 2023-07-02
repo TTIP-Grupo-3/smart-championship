@@ -31,7 +31,7 @@ export class ScoreChampionship extends Championship {
     this.matches.push(...teams.map((visiting) => ScoreMatch.from(local, visiting, this)));
   }
 
-  findMatch(id: number) {
+  findMatch(id: number): ScoreMatch {
     return this.matches.find((match) => match.id === id) ?? null;
   }
 }

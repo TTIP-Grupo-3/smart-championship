@@ -3,8 +3,11 @@ import { UsersService } from './user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/entities/user.entity';
 import { compareSync as compare } from 'bcrypt';
+import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMapperExecutor';
+import { UseExceptionMapper } from 'src/decorators/UseExceptionMapper';
 
 @Injectable()
+@UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class AuthService {
   constructor(private usersService: UsersService, private jwtService: JwtService) {}
 

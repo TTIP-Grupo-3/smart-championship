@@ -66,6 +66,11 @@ export class EliminationMatch extends Match {
     return match;
   }
 
+  setParents(parent?: EliminationMatch) {
+    this.parent = parent;
+    this.submatches.forEach((submatch: EliminationMatch) => submatch.setParents(this));
+  }
+
   findMatch(id: number) {
     if (this.id === id) {
       return this;
@@ -84,8 +89,8 @@ export class EliminationMatch extends Match {
   }
 
   setTeam(winner: ChampionshipTeam, match: EliminationMatch) {
-    if (this.local.id === match.id) this.status.setLocal(winner);
-    if (this.visiting.id === match.id) this.status.setVisiting(winner);
+    if (this.local.id === match.id) return this.status.setLocal(winner);
+    if (this.visiting.id === match.id) return this.status.setVisiting(winner);
     throw new InvalidArgumentException();
   }
 

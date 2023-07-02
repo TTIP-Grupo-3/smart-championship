@@ -119,12 +119,15 @@
     }
   ],
   "championshipEnrollments": [
-    { "id": 1, "size": 2, "price": 50, "championship": { "id": 3 } },
+    { "id": 1, "size": 4, "price": 50, "championship": { "id": 3 } },
     { "id": 2, "size": 3, "price": 50, "championship": { "id": 2 } },
     { "id": 3, "size": 8, "price": 50, "championship": { "id": 1 } }
   ],
   "teamEnrollments": [
-    { "id": 1, "createdAt": "2017-06-15", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 1, "payStatus": "to_review", "createdAt": "2017-06-15", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 13, "payStatus": "to_review", "createdAt": "2017-06-15", "teamLeader": { "id": 4 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 14, "payStatus": "to_review", "createdAt": "2017-06-15", "teamLeader": { "id": 5 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 15, "payStatus": "to_review", "teamLeader": { "id": 6 }, "championshipEnrollment": { "id": 1 } },
     
     { "id": 2, "payStatus": "paid", "teamLeader": { "id": 11 }, "championshipEnrollment": { "id": 2 } },
     { "id": 3, "payStatus": "paid", "teamLeader": { "id": 12 }, "championshipEnrollment": { "id": 2 } },
@@ -149,6 +152,15 @@
       "duration": 0,
       "teamSize": 5,
       "name": "Relámpago Ducilo"
+    },
+    {
+      "id": 3,
+      "date": "2023-07-08T00:00:00.000Z",
+      "size": 4,
+      "price": 50,
+      "duration": 0,
+      "teamSize": 11,
+      "name": "Torneo bonaerense"
     }
   ],
   "scoreChampionships": [
@@ -160,16 +172,7 @@
       "duration": 0,
       "teamSize": 11,
       "name": "Picadito Ezpeleta"
-    },
-    {
-      "id": 3,
-      "date": "2023-07-08T00:00:00.000Z",
-      "size": 1,
-      "price": 50,
-      "duration": 0,
-      "teamSize": 11,
-      "name": "Torneo bonaerense"
-    }
+    }    
   ],
   "teams": [
     { "id": 1, "name": "El Dorado FC", "championship": { "id": 1 }, "leader": { "id": 3 } },
@@ -1168,8 +1171,8 @@
     { "id": 10, "team": { "id": 4 } },
     { "id": 11, "team": { "id": 6 } },
     { "id": 12, "team": { "id": 7 } },
-    { "id": 13, "team": { "id": 4 } },
-    { "id": 14, "team": { "id": 6 } },
+    { "id": 13, "team": null },
+    { "id": 14, "team": null },
 
     { "id": 15, "team": { "id": 9 } },
     { "id": 16, "team": { "id": 9 } },
@@ -1214,16 +1217,16 @@
     {
       "id": 5,
       "date": "2023-06-27T14:00:00.000Z",
-      "start": "2023-06-27T14:00:00.000Z",
-      "end": "2023-06-27T14:40:00.000Z",
+      "start": null,
+      "end": null,
       "localStatus": { "id": 9 },
       "visitingStatus": { "id": 10 }
     },
     {
       "id": 6,
       "date": "2023-06-29T20:00:00.000Z",
-      "start": "2023-06-29T20:00:00.000Z",
-      "end": "2023-06-29T20:40:00.000Z",
+      "start": null,
+      "end": null,
       "localStatus": { "id": 11 },
       "visitingStatus": { "id": 12 }
     },

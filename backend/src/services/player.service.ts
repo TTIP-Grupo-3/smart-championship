@@ -6,8 +6,11 @@ import { CreatePlayerDTO } from 'src/dtos/createPlayer.dto';
 import { IdDTO } from 'src/dtos/id.dto';
 import { IdsDTO } from 'src/dtos/ids.dto';
 import { TeamLeaderService } from './teamLeader.service';
+import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMapperExecutor';
+import { UseExceptionMapper } from 'src/decorators/UseExceptionMapper';
 
 @Injectable()
+@UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class PlayerService {
   constructor(
     private readonly transactionService: TransactionService,

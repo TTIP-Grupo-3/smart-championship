@@ -35,7 +35,7 @@ export class ReviewerMatchService extends MatchService {
     return await this.transactionService.transaction(async (manager) => {
       const match = await this.findOne(startDTO, manager);
       match.start();
-      return await manager.save(match);
+      return await this.save(match, manager);
     }, manager);
   }
 
@@ -43,7 +43,7 @@ export class ReviewerMatchService extends MatchService {
     return await this.transactionService.transaction(async (manager) => {
       const match = await this.findOne(endDTO, manager);
       match.end();
-      return await manager.save(match);
+      return await this.save(match, manager);
     }, manager);
   }
 
@@ -54,7 +54,7 @@ export class ReviewerMatchService extends MatchService {
       const player = await this.championshipPlayerService.findOne(playerId, manager);
       const goal = manager.create<Goal>(Goal, { minute, player });
       match.goal(goal, local);
-      return await manager.save(match);
+      return await this.save(match, manager);
     }, manager);
   }
 
@@ -65,7 +65,7 @@ export class ReviewerMatchService extends MatchService {
       const player = await this.championshipPlayerService.findOne(playerId, manager);
       const card = manager.create<Card>(Card, { type, minute, player });
       match.card(card, local);
-      return await manager.save(match);
+      return await this.save(match, manager);
     }, manager);
   }
 
@@ -85,6 +85,11 @@ export class ReviewerMatchService extends MatchService {
       if (affected === 0) throw new NotFoundException();
       return await this.findOne(disallowGoalDTO, manager);
     });
+  }
+
+  private async save(match: Match, manager?: EntityManager): Promise<Match> {
+    await manager.save(match.championship);
+    return match;
   }
 
   protected exists(match?: Match): boolean {

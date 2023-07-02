@@ -5,8 +5,11 @@ import { ScoreStatus } from 'src/entities/scoreStatus.entity';
 import { ChampionshipIdDTO } from 'src/dtos/championshipId.dto';
 import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
 import { NotFoundException } from 'src/exceptions/NotFoundException';
+import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMapperExecutor';
+import { UseExceptionMapper } from 'src/decorators/UseExceptionMapper';
 
 @Injectable()
+@UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class ScoreChampionshipService {
   constructor(private readonly transactionService: TransactionService) {}
 

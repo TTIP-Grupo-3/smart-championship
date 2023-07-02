@@ -57,6 +57,7 @@ export abstract class ChampionshipService {
     const relations = ['status'];
     const finals = await manager.getTreeRepository(EliminationMatch).findTrees({ relations });
     const final = finals.find(({ championshipId }) => championshipId === championship.id);
+    if (final) final.setParents();
     return final;
   }
 }

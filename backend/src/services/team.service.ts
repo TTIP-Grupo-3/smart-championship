@@ -7,8 +7,11 @@ import { TeamLeaderService } from './teamLeader.service';
 import { IdDTO } from 'src/dtos/id.dto';
 import { CreateTeamDTO } from 'src/dtos/createTeam.dto';
 import { StorageService } from './storage.service';
+import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMapperExecutor';
+import { UseExceptionMapper } from 'src/decorators/UseExceptionMapper';
 
 @Injectable()
+@UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class TeamService {
   private readonly logosContainer = 'logos';
 
