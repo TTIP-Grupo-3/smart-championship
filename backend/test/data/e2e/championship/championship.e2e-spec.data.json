@@ -50,18 +50,18 @@
         {
           "id": 5,
           "date": "2023-06-27T14:00:00.000Z",
-          "end": "2023-06-27T14:40:00.000Z",
-          "start": "2023-06-27T14:00:00.000Z",
-          "status": "FINISHED",
+          "end": null,
+          "start": null,
+          "status": "TOSTART",
           "local": { "name": "El Dorado FC", "goals": 0, "cards": { "red": 1, "yellow": 0 } },
           "visiting": { "name": "Ashton Birra", "goals": 4, "cards": { "red": 0, "yellow": 0 } }
         },
         {
           "id": 6,
           "date": "2023-06-29T20:00:00.000Z",
-          "end": "2023-06-29T20:40:00.000Z",
-          "start": "2023-06-29T20:00:00.000Z",
-          "status": "FINISHED",
+          "end": null,
+          "start": null,
+          "status": "TOSTART",
           "local": { "name": "Toco y me voy FC", "goals": 3, "cards": { "red": 0, "yellow": 0 } },
           "visiting": { "name": "Manaos FC", "goals": 0, "cards": { "red": 1, "yellow": 0 } }
         }
@@ -74,8 +74,8 @@
             "end": null,
             "start": null,
             "status": "TOSTART",
-            "local": { "name": "Ashton Birra", "goals": 0, "cards": { "red": 0, "yellow": 0 } },
-            "visiting": { "name": "Toco y me voy FC", "goals": 0, "cards": { "red": 0, "yellow": 0 } }
+            "local": null,
+            "visiting": null
           }
         ],
         "next": null
