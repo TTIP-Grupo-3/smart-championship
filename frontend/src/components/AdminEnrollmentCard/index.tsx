@@ -6,7 +6,6 @@ import { statuses } from '../TeamEnrollmentCard';
 
 export const AdminEnrollmentCard: FC<any> = ({ id, createdAt, handleOpen, checked, ...props }) => {
   const { classes } = useStyles();
-  console.log(props);
   return (
     <Grid className={classes.card}>
       <Grid className={classes.startGrid}>

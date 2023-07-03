@@ -49,11 +49,10 @@ export const DashboardElimination: FC = () => {
       setTournament(data);
       setIsLoading(false);
     });
-    championshipService.subscribe(socket, { championshipId: id && +id, championshipType: 'elimination' });
+    championshipService.subscribe(socket, { championshipId: id && +id });
     return () => championshipService.unsubscribe(socket);
   }, []);
 
-  console.log(tournament);
   return (
     <Navbar
       button={{

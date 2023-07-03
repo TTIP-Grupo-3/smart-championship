@@ -31,6 +31,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   buttonEnroll: {
     backgroundColor: theme.palette.blue[200],
     marginRight: '2%',
+    minWidth: 164,
     color: theme.palette.common.white,
     '&:hover': {
       backgroundColor: theme.palette.blue[200],
@@ -132,5 +133,14 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(2),
     paddingTop: theme.spacing(4),
+  },
+  badge: {
+    '& .MuiBadge-badge': {
+      backgroundColor: 'red',
+      color: theme.palette.common.white,
+      fontWeight: 700,
+      fontSize: 15,
+      fontFamily: 'sans-serif',
+    },
   },
 }));
