@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { useStyles } from './style';
 import { CardTournamentDetails } from '../../components/CardTournamentDetails';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export const EnrollingDetails = () => {
   const { classes } = useStyles();
   const { id, enrollmentId } = useParams();
+  const theme = useTheme();
   const [enrollment, setEnrollment] = useState<any>({
     name: '',
     price: 0,
@@ -28,7 +30,15 @@ export const EnrollingDetails = () => {
     navigate(`/leader/enrolling/receipt/${enrollment?.championship.id}/upload/${enrollment.id}`);
   };
   return (
-    <Navbar>
+    <Navbar
+      button={{
+        action: (): void => navigate('/leader/enrollment/tournaments'),
+        text: 'Volver',
+        icon: (
+          <ArrowBackIosIcon style={{ height: 18, display: 'flex', color: theme.palette.common.white }} />
+        ),
+      }}
+    >
       <Grid className={classes.grid}>
         <Typography className={classes.reservationTitle}>Detalles de inscripcion</Typography>
         <Grid container className={classes.gridWrap}>

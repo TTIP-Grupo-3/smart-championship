@@ -1,4 +1,4 @@
-import { Button, Grid, IconButton, Typography, useTheme } from '@mui/material';
+import { Button, Grid, IconButton, Typography, useTheme, Badge } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
@@ -149,19 +149,15 @@ export const TeamLeader: FC = () => {
                     >
                       <Typography className={classes.buttonText}>Inscribirse a torneo</Typography>
                     </Button>
-                    <Button
-                      className={classes.buttonEnroll}
-                      disabled={!leaderData.enrollments.length}
-                      onClick={handleEnrollments}
-                    >
-                      <Typography className={classes.buttonText}>Mis inscripciones</Typography>
-                    </Button>
-                    {countPendingEnrollment() > 0 && (
-                      <Typography className={classes.pendingInfo}>
-                        Tienes {countPendingEnrollment()} inscripciones pendientes de pago, ve a "Mis
-                        inscripciones" en la opción "ver detalles" para pagarlas.
-                      </Typography>
-                    )}
+                    <Badge className={classes.badge} badgeContent={countPendingEnrollment()}>
+                      <Button
+                        className={classes.buttonEnroll}
+                        disabled={!leaderData.enrollments.length}
+                        onClick={handleEnrollments}
+                      >
+                        <Typography className={classes.buttonText}>Mis inscripciones</Typography>
+                      </Button>
+                    </Badge>
                   </Grid>
                 </Grid>
               </Grid>

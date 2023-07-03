@@ -32,13 +32,11 @@ export const UploadReceipt = () => {
 
   useEffect(() => {
     if (id) {
-      API_TEAM_LEADER.championshipToEnroll(+id!).then(({ data }) => {
-        setPayment(data);
+      API_TEAM_LEADER.getEnrollment(+id!, +enrollId!).then(({ data }) => {
+        setPayment(data.payData);
       });
     }
   }, [id]);
-
-  console.log(payment);
 
   return (
     <Navbar>
@@ -77,17 +75,17 @@ export const UploadReceipt = () => {
                 Transfiere el pago a la siguiente cuenta:
               </Typography>
               <Typography color="white" paddingBottom={2}>
-                Propietario : Diego Hernan Moronha
+                Propietario : {payment?.name}
               </Typography>
 
               <Typography color="white" paddingBottom={2}>
-                CBU: 193348275942579482
+                CBU: {payment?.cbu}
               </Typography>
               <Typography color="white" paddingBottom={2}>
-                Alias: data.mp
+                Alias: {payment?.alias}
               </Typography>
               <Typography color="white" paddingBottom={2}>
-                CUIL: 206543900
+                CUIL: {payment?.cuit}
               </Typography>
             </Grid>
           </Grid>
