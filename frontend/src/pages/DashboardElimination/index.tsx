@@ -53,6 +53,7 @@ export const DashboardElimination: FC = () => {
     return () => championshipService.unsubscribe(socket);
   }, []);
 
+  console.log(tournament);
   return (
     <Navbar
       button={{

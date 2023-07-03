@@ -17,7 +17,16 @@ import { API_ADMIN } from '../../services/Admin';
 import { containsOnlyNumbers } from '../../utils/utils';
 import { TypeChampionship } from '../../interfaces';
 
-export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onError, id }) => {
+export const TournamentDialog: FC<any> = ({
+  title,
+  open,
+  onClose,
+  onSuccess,
+  onLoading,
+  onError,
+  id,
+  isEdit,
+}) => {
   const { classes } = useStyles();
   const dateToIso = (date: Dayjs) => date.toISOString();
   const [newTournament, setDataTournament] = useState({
@@ -29,6 +38,8 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
     duration: 0,
     teamSize: 5,
   });
+  const [payment, setPayment] = useState<any>({ username: '', cbu: '', alias: '', cuit: '' });
+
   const handleChange = (event: any) => {
     const { target } = event;
     setDataTournament((prev) => ({ ...prev, [target.name]: target.value }));
@@ -44,8 +55,16 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
     setDataTournament((prev) => ({ ...prev, date: dateToIso(dayjs(e)) }));
   };
 
+  const handleChangePayment = (e: any) => {
+    const { target } = e;
+    setPayment((prev: any) => ({ ...prev, [target.name]: target.value }));
+  };
+
   const createTournament = () => {
-    API_ADMIN.createChampionship(newTournament)
+    const { username, ...otherPayment } = payment;
+    const tournament = { ...newTournament, payData: { name: username, ...otherPayment } };
+    onLoading();
+    API_ADMIN.createChampionship(tournament)
       .then(() => {
         onSuccess();
         onClose();
@@ -56,7 +75,12 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
   };
 
   const editTournament = () => {
-    API_ADMIN.editChampionship(id, newTournament)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { type, ...editedTournament } = newTournament;
+    const { username, ...otherPayment } = payment;
+    const tournament = { ...editedTournament, payData: { name: username, ...otherPayment } };
+    onLoading();
+    API_ADMIN.editChampionship(id, tournament)
       .then(() => {
         onSuccess();
         onClose();
@@ -70,12 +94,19 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
     newTournament.name === '' ||
     newTournament.price === 0 ||
     newTournament.duration === 0 ||
-    newTournament.size === 0;
+    newTournament.size === 0 ||
+    payment.username.trim() === '' ||
+    payment.cbu.trim().length < 22 ||
+    payment.alias.trim().length === 0 ||
+    payment.cuit.trim().length < 11;
 
   useEffect(() => {
     if (id) {
-      API_ADMIN.getAdminChampionship(id).then((r) => {
-        setDataTournament(r.data);
+      API_ADMIN.getAdminChampionship(id).then(({ data }) => {
+        const { payData, ...otherData } = data;
+        const { name, ...otherPayment } = payData;
+        setDataTournament(otherData);
+        setPayment({ username: name, ...otherPayment });
       });
     }
   }, []);
@@ -130,10 +161,15 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             placeholder="un monto en pesos"
           />
-          <Typography color="white" paddingTop={2}>
-            Modalidad de torneo:
-          </Typography>
-          <SelectTournamentType value={newTournament.type} onChange={handleChange} name="type" />
+          {!isEdit && (
+            <>
+              {' '}
+              <Typography color="white" paddingTop={2}>
+                Modalidad de torneo:
+              </Typography>
+              <SelectTournamentType value={newTournament.type} onChange={handleChange} name="type" />
+            </>
+          )}
           <Typography gutterBottom color="white" paddingTop={2}>
             Equipos :
           </Typography>
@@ -168,6 +204,57 @@ export const TournamentDialog: FC<any> = ({ title, open, onClose, onSuccess, onE
             name="teamSize"
             options={[5, 6, 7, 8, 9, 10, 11]}
             defaultValue={5}
+          />
+          <Typography color="white" paddingTop={2}>
+            Metodo de cobro:
+          </Typography>
+          <OutlinedInput
+            required
+            className={classes.root}
+            variant="outlined"
+            label="Nombre y apellido"
+            name="username"
+            value={payment.username}
+            onChange={handleChangePayment}
+            inputProps={{ inputMode: 'text', pattern: '[a-zA-Z ]{2,254}' }}
+            placeholder="Cosme Fulanito"
+          />
+          <OutlinedInput
+            required
+            className={classes.root}
+            variant="outlined"
+            label="CBU"
+            name="cbu"
+            value={payment.cbu}
+            onChange={handleChangePayment}
+            inputProps={{
+              inputMode: 'text',
+              pattern: '[0-9]+',
+              maxLength: 22,
+            }}
+            placeholder="CBU o CVU de tu cuenta"
+          />
+          <OutlinedInput
+            required
+            className={classes.root}
+            variant="outlined"
+            label="Alias"
+            name="alias"
+            value={payment.alias}
+            onChange={handleChangePayment}
+            inputProps={{ inputMode: 'text', pattern: '[a-zA-Z ]{2,254}' }}
+            placeholder="Alias de tu cuenta"
+          />
+          <OutlinedInput
+            required
+            className={classes.root}
+            variant="outlined"
+            label="Cuit"
+            name="cuit"
+            value={payment.cuit}
+            onChange={handleChangePayment}
+            inputProps={{ inputMode: 'text', pattern: '[0-9]*', maxLength: 11 }}
+            placeholder="CUIT o CUIL de tu cuenta"
           />
         </Scroll>
       </DialogContent>

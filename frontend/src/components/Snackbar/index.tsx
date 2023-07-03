@@ -8,7 +8,11 @@ import ErrorIcon from '@mui/icons-material/Error';
 export interface State extends SnackbarOrigin {
   open: boolean;
 }
-
+export enum MessagesType {
+  SUCCESS = 'success',
+  ERROR = 'error',
+  LOADING = 'loading',
+}
 export type MessageType = 'success' | 'error' | 'loading';
 
 type TypeSnackBar = {
@@ -37,11 +41,11 @@ const SnackBar: FC<PropsSnackBar> = (props) => {
   const selectIcon: TypeSnackBar = {
     success: <CheckCircleIcon className={cx(classes.icon, classes.success)} />,
     error: <ErrorIcon className={cx(classes.icon, classes.error)} />,
-    loading: <CircularProgress size={16} className={cx(classes.icon, classes.loading)} />,
+    loading: <CircularProgress size={18} className={cx(classes.icon, classes.loading)} />,
   };
 
   const message = (): ReactElement => {
-    if (type === 'loading') {
+    if (type === MessagesType.LOADING) {
       return (
         <>
           <div className={classes.colorInitial} data-testid="colorInitial">
@@ -70,14 +74,14 @@ const SnackBar: FC<PropsSnackBar> = (props) => {
   return (
     <div data-testid="snackbar">
       <Snackbar
-        resumeHideDuration={1000}
+        autoHideDuration={type === MessagesType.LOADING ? null : 4000}
         ContentProps={{
           'aria-describedby': 'message-id',
           className: classes.content,
         }}
         anchorOrigin={{ vertical, horizontal }}
         open={open}
-        onClose={handleClose}
+        onClose={() => handleClose()}
         message={iconAndMessage}
         key={vertical + horizontal}
         action={actionButton}

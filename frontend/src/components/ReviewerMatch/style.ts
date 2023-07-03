@@ -45,4 +45,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     paddingLeft: '20px',
     paddingRight: '20px',
   },
+  anotation: {
+    fontSize: '20px',
+    color: theme.palette.common.white,
+    fontWeight: 600,
+    fontFamily: 'sans-serif',
+  },
 }));

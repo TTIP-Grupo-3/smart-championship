@@ -27,10 +27,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     paddingTop: theme.spacing(6),
   },
   confirmUpload: {
-    margin: '2%',
+    margin: '1.2%',
     backgroundColor: '#1990BB',
     color: theme.palette.common.white,
-    width: '30%',
+    width: '28%',
     '&:hover': {
       backgroundColor: '#1990BB',
     },
@@ -43,7 +43,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
     paddingTop: theme.spacing(3),
   },
   successReservation: {
@@ -66,5 +65,13 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  gridPayment: {
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: lighten(theme.palette.background.paper, 0.28),
+    borderRadius: 4,
+    minHeight: '287px',
+    minWidth: '320px',
   },
 }));

@@ -27,13 +27,17 @@ export const Reviewer = () => {
   }, []);
 
   useEffect(() => {
+    let interval: NodeJS.Timer;
     if (currentChampionship) {
       setIsLoading(true);
-      API_REVIEWER.getReviewableMatches(currentChampionship.id).then(({ data }) => {
-        setMatches(data);
-        setIsLoading(false);
-      });
+      interval = setInterval(() => {
+        API_REVIEWER.getReviewableMatches(currentChampionship.id).then(({ data }) => {
+          setMatches(data);
+          setIsLoading(false);
+        });
+      }, 5000);
     }
+    return () => clearInterval(interval);
   }, [currentChampionship]);
 
   return (

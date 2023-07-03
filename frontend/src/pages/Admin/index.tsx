@@ -9,17 +9,17 @@ import Scroll from '../../components/Scroll';
 import { SearchInput } from '../../components/SearchInput';
 import { TournamentDialog } from '../../components/TournamentDialog';
 import { API_ADMIN } from '../../services/Admin';
-import SnackBar from '../../components/Snackbar';
+import SnackBar, { MessagesType } from '../../components/Snackbar';
 import { Loader } from '../../components/Loader';
 import { EmptyData } from '../../components/EmptyData';
 import { InitTournamentDialog } from '../../components/InitTournamentDialog';
-import { delay } from '../../utils/utils';
 import { SnackBarState } from '../../interfaces';
 import dayjs from 'dayjs';
 
 export const msgTypes: any = {
   success: 'Cambios realizados correctamente',
   error: 'Ha ocurrido un error intenta mas tarde',
+  loading: 'Procesando solicitud',
 };
 
 export const Admin: FC = () => {
@@ -54,19 +54,19 @@ export const Admin: FC = () => {
     getToStartMatches();
   }, [id]);
 
+  const onLoading = (): void => {
+    setOpenS({ open: true, type: 'loading', message: msgTypes.loading });
+  };
+
   const onSuccess = async (): Promise<void> => {
-    setOpenS({ open: true, type: 'success', message: msgTypes.success });
     API_ADMIN.getAdminChampionships().then(({ data }) => setTournaments(data));
     onClose();
-    await delay(2000);
-    setOpenS({ ...openS, open: false });
+    setOpenS({ open: true, type: MessagesType.SUCCESS, message: msgTypes.success });
   };
 
   const onError = async (): Promise<void> => {
-    setOpenS({ open: true, type: 'error', message: msgTypes.error });
     onClose();
-    await delay(2000);
-    setOpenS({ ...openS, open: false });
+    setOpenS({ open: true, type: MessagesType.ERROR, message: msgTypes.error });
   };
 
   const handleEdit = (id: number): void => {
@@ -152,20 +152,25 @@ export const Admin: FC = () => {
           )}
         </Grid>
       </Grid>
-      <TournamentDialog title="Crear Torneo" onClose={onClose} {...{ open, onSuccess, onError }} />
+      <TournamentDialog
+        title="Crear Torneo"
+        onClose={onClose}
+        {...{ open, onSuccess, onError, onLoading }}
+      />
       {openEdit && (
         <TournamentDialog
           title="Modificar Torneo"
           open={openEdit}
+          isEdit
           onClose={onCloseEdit}
-          {...{ onSuccess, onError, id }}
+          {...{ onSuccess, onLoading, onError, id }}
         />
       )}
       <SnackBar
         open={openS.open}
         vertical={'bottom'}
         horizontal={'center'}
-        msgSnack={msgTypes[openS.type]}
+        msgSnack={openS.message}
         type={openS.type}
         handleClose={() => setOpenS((prev: any) => ({ ...prev, open: false }))}
       />

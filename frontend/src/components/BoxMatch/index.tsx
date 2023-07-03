@@ -39,7 +39,12 @@ export const BoxMatch: FC<BoxMatchProps> = ({ id: matchId, local, visiting, stat
 
   return (
     <Grid container data-testid="BoxTeams" className={classes.gridContainer}>
-      <Grid data-testid="BoxTeams-grid-teams" className={classes.gridTeam} onClick={handleClickOpen}>
+      <Grid
+        data-testid="BoxTeams-grid-teams"
+        className={classes.gridTeam}
+        onClick={local && visiting && handleClickOpen}
+        style={local && visiting ? {} : { transform: 'none', cursor: 'initial' }}
+      >
         <Match local={local} visiting={visiting} status={status} />
       </Grid>
       {open && (

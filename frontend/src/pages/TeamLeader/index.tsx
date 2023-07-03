@@ -13,8 +13,7 @@ import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { LeaderEnrollment, Player, PlayerCreate, SnackBarState } from '../../interfaces';
 import { EmptyTeam } from '../../components/EmptyTeam';
 import { Loader } from '../../components/Loader';
-import SnackBar from '../../components/Snackbar';
-import { delay } from '../../utils/utils';
+import SnackBar, { MessagesType, MessageType } from '../../components/Snackbar';
 
 export const TeamLeader: FC = () => {
   const { classes } = useStyles();
@@ -24,7 +23,7 @@ export const TeamLeader: FC = () => {
   const [leaderData, setLeaderData] = useState<LeaderEnrollment>();
   const [openPlayer, setOpenPlayer] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [openS, setOpenS] = useState<SnackBarState>({ open: false, type: 'success', message: '' });
+  const [openS, setOpenS] = useState<SnackBarState>({ open: false, type: 'loading', message: '' });
   const [players, setPlayers] = useState<Player[]>([]);
   const theme = useTheme();
 
@@ -53,18 +52,8 @@ export const TeamLeader: FC = () => {
     loadTeamData();
   }, []);
 
-  const onSuccess = async (): Promise<void> => {
-    onClose();
-    setOpenS({ open: true, type: 'success', message: 'Jugador agregado correctamente' });
-    await delay(2000);
-    setOpenS({ ...openS, open: false });
-  };
-
-  const onError = async (): Promise<void> => {
-    setOpenS({ open: true, type: 'error', message: 'Ha ocurrido un error intenta mas tarde' });
-    onClose();
-    await delay(2000);
-    setOpenS({ ...openS, open: false });
+  const onSnackbar = async (type: MessageType, message: string): Promise<void> => {
+    setOpenS({ open: true, type: type, message: message });
   };
 
   const loadTeamData = (): void => {
@@ -82,15 +71,34 @@ export const TeamLeader: FC = () => {
   };
 
   const createPlayer = async (player: PlayerCreate): Promise<void> => {
+    onSnackbar(MessagesType.LOADING, 'Agregando jugador al equipo ');
     API_TEAM_LEADER.createPlayer(player)
       .then(async () => {
+        onClose();
         await loadPlayers();
-        onSuccess();
+        onSnackbar(MessagesType.SUCCESS, 'Jugador creado con exito');
       })
-      .catch(onError);
+      .catch(() => {
+        onSnackbar(MessagesType.ERROR, 'Ha ocurrido un error intenta mas tarde');
+        onClose();
+      });
   };
 
   const loadPlayers = () => API_TEAM_LEADER.getPlayers().then(({ data }) => setPlayers(data));
+
+  const createTeam = (teamName: string, file: File) => {
+    const formData = new FormData();
+    formData.append('name', teamName);
+    formData.append('logo', file as Blob);
+    onSnackbar(MessagesType.LOADING, 'Creando equipo espere un momento');
+    API_TEAM_LEADER.createTeam(formData)
+      .then(() => {
+        onSnackbar(MessagesType.SUCCESS, 'Equipo creado con exito');
+      })
+      .catch(() => {
+        onSnackbar(MessagesType.ERROR, 'Ha ocurrido un error intenta mas tarde');
+      });
+  };
 
   return (
     <Navbar
@@ -111,7 +119,7 @@ export const TeamLeader: FC = () => {
               handleCreate={handleCreate}
               open={openTeamCreator}
               setOpen={setOpenCreator}
-              reload={loadTeamData}
+              {...{ createTeam }}
             />
           )
         ) : (

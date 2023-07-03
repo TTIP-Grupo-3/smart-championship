@@ -10,9 +10,8 @@ import { BootstrapDialogTitle } from '../DialogTitle';
 import { OutlinedInput } from '../OutlinedInput';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import defaultFootball from '../../default_match_icon_local.svg';
-import { API_TEAM_LEADER } from '../../services/TeamLeader';
 
-export const EnrollmentTeamDialog: FC<any> = ({ open, onClose, onSuccess, onError }) => {
+export const EnrollmentTeamDialog: FC<any> = ({ open, onClose, createTeam }) => {
   const { classes } = useStyles();
   const [image, setImage] = useState<string>('');
   const [file, setFile] = useState<File>();
@@ -31,17 +30,8 @@ export const EnrollmentTeamDialog: FC<any> = ({ open, onClose, onSuccess, onErro
     } catch (e) {}
   };
 
-  const createTeam = () => {
-    const formData = new FormData();
-    formData.append('name', teamName);
-    formData.append('logo', file as Blob);
-    API_TEAM_LEADER.createTeam(formData)
-      .then(() => {
-        onSuccess();
-      })
-      .catch(() => {
-        onError();
-      });
+  const createTeamUser = () => {
+    createTeam(teamName, file);
   };
 
   return (
@@ -83,7 +73,7 @@ export const EnrollmentTeamDialog: FC<any> = ({ open, onClose, onSuccess, onErro
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={createTeam} className={classes.createTeamButton}>
+          <Button onClick={createTeamUser} className={classes.createTeamButton}>
             <Typography className={classes.buttonText}>Crear</Typography>
           </Button>
         </DialogActions>

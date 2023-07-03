@@ -131,7 +131,9 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
             />
           </Grid>
           <Grid container direction="column" alignItems="center" justifyContent="center">
-            <Typography color="white">Anotar/Desanotar Goles</Typography>
+            <Typography className={classes.anotation} style={{ paddingBottom: 15 }}>
+              Goles
+            </Typography>
           </Grid>
           <MatchManager
             buttonLeftLocal={{ function: scoreGoal, args: [true], items: currentMatch?.local.players }}
@@ -162,7 +164,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
             }}
           />
           <Grid container direction="column" alignItems="center" justifyContent="center" padding={2}>
-            <Typography color="white">Anotar/Desanotar Infracciones</Typography>
+            <Typography className={classes.anotation}>Infracciones</Typography>
           </Grid>
           <MatchManager
             buttonLeftLocal={{

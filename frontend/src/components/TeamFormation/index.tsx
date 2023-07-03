@@ -13,9 +13,8 @@ import Scroll from '../Scroll';
 import { Player } from '../../interfaces';
 import { EmptyData } from '../EmptyData';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
-import SnackBar from '../Snackbar';
+import SnackBar, { MessagesType } from '../Snackbar';
 import { msgTypes } from '../../pages/Admin';
-import { delay } from '../../utils/utils';
 
 interface PlayerProps {
   players: Player[];
@@ -25,7 +24,7 @@ interface PlayerProps {
 export const TeamFormation: FC<PlayerProps> = ({ players, reloadPlayers }) => {
   const [checked, setChecked] = useState<number[]>([]);
   const [openDelete, setOpenDelete] = useState(false);
-  const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
+  const [openS, setOpenS] = useState<any>({ open: false, type: MessagesType.SUCCESS });
   const theme = useTheme();
 
   const { classes } = useStyles();
@@ -56,17 +55,13 @@ export const TeamFormation: FC<PlayerProps> = ({ players, reloadPlayers }) => {
   };
 
   const onSuccess = async () => {
-    setOpenS({ open: true, type: 'success' });
+    setOpenS({ open: true, type: MessagesType.SUCCESS });
     onClose();
-    await delay(2000);
-    setOpenS({ open: false, type: 'success' });
   };
 
   const onError = async () => {
-    setOpenS({ open: true, type: 'error' });
+    setOpenS({ open: true, type: MessagesType.ERROR });
     onClose();
-    await delay(2000);
-    setOpenS({ open: false, type: 'error' });
   };
 
   return (

@@ -1,8 +1,6 @@
 import { Button, Grid, Typography } from '@mui/material';
-import { FC, Fragment, useState } from 'react';
-import { delay } from '../../utils/utils';
+import { FC, Fragment } from 'react';
 import { EnrollmentTeamDialog } from '../EnrollTeamDialog';
-import SnackBar from '../Snackbar';
 import { useStyles } from './style';
 
 export const msgTypes: any = {
@@ -10,24 +8,8 @@ export const msgTypes: any = {
   error: 'Ha ocurrido un error intenta mas tarde',
 };
 
-export const EmptyTeam: FC<any> = ({ handleCreate, open, setOpen, reload }) => {
+export const EmptyTeam: FC<any> = ({ handleCreate, open, setOpen, createTeam }) => {
   const { classes } = useStyles();
-  const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
-
-  const onSuccess = async () => {
-    onClose();
-    reload();
-    setOpenS({ open: true, type: 'success' });
-    await delay(2000);
-    setOpenS({ open: false, type: 'success' });
-  };
-
-  const onError = async () => {
-    onClose();
-    setOpenS({ open: true, type: 'error' });
-    await delay(2000);
-    setOpenS({ open: false, type: 'error' });
-  };
 
   const onClose = () => {
     setOpen(false);
@@ -42,16 +24,8 @@ export const EmptyTeam: FC<any> = ({ handleCreate, open, setOpen, reload }) => {
         <Button className={classes.createTeam} onClick={handleCreate}>
           <Typography className={classes.buttonText}>Crea Tu Primer Equipo</Typography>
         </Button>
-        <EnrollmentTeamDialog {...{ onSuccess, onError, onClose, open }} />
+        <EnrollmentTeamDialog {...{ createTeam, onClose, open }} />
       </Grid>
-      <SnackBar
-        open={openS.open}
-        vertical={'bottom'}
-        horizontal={'center'}
-        msgSnack={msgTypes[openS.type]}
-        type={openS.type}
-        handleClose={() => setOpenS((prev: any) => ({ ...prev, open: false }))}
-      />
     </Fragment>
   );
 };

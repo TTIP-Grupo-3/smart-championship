@@ -7,10 +7,9 @@ import { useParams } from 'react-router-dom';
 import { Enrollments as CheckedEnrollments } from '../Enrollments';
 import { Enrollments as PendingEnrollments } from '../Enrollments';
 
-import SnackBar from '../Snackbar';
+import SnackBar, { MessagesType } from '../Snackbar';
 import { msgTypes } from '../../pages/Admin';
 import { DialogEnrollment } from '../DialogEnrollment';
-import { delay } from '../../utils/utils';
 import { SnackBarState } from '../../interfaces';
 
 interface TabPanelProps {
@@ -50,7 +49,11 @@ export const AdminEnrollmentTabs = () => {
   const [open, setOpen] = useState(false);
   const [enrollments, setEnrollments] = useState<any[]>([]);
   const [idEnroll, setIdEnroll] = useState<any>();
-  const [openS, setOpenS] = useState<SnackBarState>({ open: false, type: 'success', message: '' });
+  const [openS, setOpenS] = useState<SnackBarState>({
+    open: false,
+    type: MessagesType.LOADING,
+    message: '',
+  });
   const { championshipId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -71,17 +74,17 @@ export const AdminEnrollmentTabs = () => {
   };
 
   const onSuccess = async () => {
-    setOpenS({ open: true, type: 'success', message: msgTypes.success });
+    setOpenS({ open: true, type: MessagesType.SUCCESS, message: msgTypes.success });
     API_ADMIN_ENROLLMENT.getAdminEnrollments(+championshipId!).then((r: any) => setEnrollments(r.data));
     onClose();
-    await delay(2000);
+
     setOpenS({ ...openS, open: false });
   };
 
   const onError = async () => {
     setOpenS({ open: true, type: 'error', message: msgTypes.error });
     onClose();
-    await delay(2000);
+
     setOpenS({ ...openS, open: false });
   };
 

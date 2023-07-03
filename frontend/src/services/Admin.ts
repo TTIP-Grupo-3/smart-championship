@@ -1,5 +1,10 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { AdminChampionship, ChampionshipCreated, CreateChampionship } from '../interfaces';
+import {
+  AdminChampionship,
+  ChampionshipCreated,
+  CreateChampionship,
+  EditChampionship,
+} from '../interfaces';
 import { httpClient } from './httpClient';
 
 class AdminService {
@@ -31,7 +36,7 @@ class AdminService {
 
   editChampionship(
     id: number,
-    championshipData: CreateChampionship,
+    championshipData: EditChampionship,
   ): Promise<AxiosResponse<AdminChampionship>> {
     return this.httpClient.patch(`/admin/championship/${id}`, championshipData);
   }

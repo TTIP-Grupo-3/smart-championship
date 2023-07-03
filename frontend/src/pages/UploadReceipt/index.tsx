@@ -3,11 +3,12 @@ import { Button, Grid, Typography } from '@mui/material';
 import { Navbar } from '../../components/NavBar';
 import { useStyles } from './style';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import defaultUpload from '../../upload.jpg';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { useParams } from 'react-router-dom';
 import { ConfirmationReceiptDialog } from '../../components/ConfirmationSendReceiptDialog';
+import Scroll from '../../components/Scroll';
 
 export const UploadReceipt = () => {
   const { classes } = useStyles();
@@ -15,6 +16,7 @@ export const UploadReceipt = () => {
   const [image, setImage] = useState<string>('');
   const { id, enrollId } = useParams();
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [payment, setPayment] = useState<any>();
 
   const handleFile: ChangeEventHandler<HTMLInputElement> = (e): void => {
     const files = e.target.files![0];
@@ -28,6 +30,16 @@ export const UploadReceipt = () => {
     API_TEAM_LEADER.uploadReceipt(+id!, +enrollId!, formdata).then(() => setOpenConfirmation(true));
   };
 
+  useEffect(() => {
+    if (id) {
+      API_TEAM_LEADER.championshipToEnroll(+id!).then(({ data }) => {
+        setPayment(data);
+      });
+    }
+  }, [id]);
+
+  console.log(payment);
+
   return (
     <Navbar>
       <Grid className={classes.grid}>
@@ -39,21 +51,53 @@ export const UploadReceipt = () => {
             perderas tu reservacion.
           </Typography>
         </Grid>
-        <Grid container className={classes.buttonReservationGrid}>
-          <img
-            id="img"
-            width={'280px'}
-            height={'280px'}
-            style={{ borderRadius: 4 }}
-            src={!file ? defaultUpload : image}
-            alt="image uploaded"
-          />
-          <Grid container className={classes.buttons}>
-            <Button variant="contained" component="label" className={classes.confirmUpload}>
-              Subir
+        <Grid container className={classes.buttonReservationGrid} spacing={4}>
+          <Grid item style={{ flexDirection: 'column', display: 'flex' }}>
+            <Scroll style={{ height: 240, width: 320 }}>
+              <img
+                id="img"
+                height={!file ? '100%' : 'auto'}
+                style={{ borderRadius: 4, paddingBottom: 10 }}
+                src={!file ? defaultUpload : image}
+                alt="image uploaded"
+              />
+            </Scroll>
+            <Button
+              variant="contained"
+              component="label"
+              style={{ backgroundColor: '#1990BB', width: 320 }}
+            >
+              Subir comprobante
               <input type="file" hidden onChange={handleFile} accept="image/*" />
             </Button>
-            <Button className={classes.confirmUpload} disabled={!file} onClick={uploadReceipt}>
+          </Grid>
+          <Grid item>
+            <Grid container className={classes.gridPayment} padding={2}>
+              <Typography color="white" paddingBottom={2} fontWeight={600}>
+                Transfiere el pago a la siguiente cuenta:
+              </Typography>
+              <Typography color="white" paddingBottom={2}>
+                Propietario : Diego Hernan Moronha
+              </Typography>
+
+              <Typography color="white" paddingBottom={2}>
+                CBU: 193348275942579482
+              </Typography>
+              <Typography color="white" paddingBottom={2}>
+                Alias: data.mp
+              </Typography>
+              <Typography color="white" paddingBottom={2}>
+                CUIL: 206543900
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container className={classes.buttons}>
+            <Button
+              className={classes.confirmUpload}
+              style={{ marginLeft: '2%' }}
+              disabled={!file}
+              onClick={uploadReceipt}
+            >
               Enviar Comprobante
             </Button>
           </Grid>

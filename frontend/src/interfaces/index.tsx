@@ -50,6 +50,7 @@ export interface AdminChampionship {
   price: number;
   duration: number;
   status: MatchStatus;
+  payData: PaymentMethod;
 }
 
 export interface ChampionshipCreated {
@@ -177,6 +178,7 @@ export interface TeamLeaderTournament {
   price?: number;
   duration: number;
   status?: string;
+  payData?: PaymentMethod;
   isEnrolled?: boolean;
   closed?: boolean;
   allReserved?: boolean;
@@ -198,6 +200,24 @@ export interface CreateChampionship {
   price: number;
   duration: number;
   teamSize: number;
+  payData: PaymentMethod;
+}
+
+export interface EditChampionship {
+  name: string;
+  date: string;
+  size: number;
+  price: number;
+  duration: number;
+  teamSize: number;
+  payData: PaymentMethod;
+}
+
+export interface PaymentMethod {
+  name: string;
+  cuit: string;
+  cbu: string;
+  alias: string;
 }
 
 export interface TeamLeaderData extends User {

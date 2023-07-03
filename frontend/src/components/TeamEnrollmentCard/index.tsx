@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export const statuses: any = {
   rejected: { color: 'red', text: 'Rechazado' },
   paid: { color: 'green', text: 'Aprobado' },
-  to_review: { color: 'lightgreen', text: 'En Revision' },
+  to_review: { color: '#00ac00', text: 'En Revision' },
   to_pay: { color: '#ED7D31', text: 'No pagado' },
   expired: { color: '#8d6e63', text: 'Expirado' },
 };
