@@ -51,7 +51,7 @@ export const Admin: FC = () => {
   }, []);
 
   useEffect(() => {
-    getToStartMatches();
+    if (id) getToStartMatches();
   }, [id]);
 
   const onLoading = (): void => {

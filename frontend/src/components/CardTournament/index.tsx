@@ -10,19 +10,23 @@ import { blue } from '@mui/material/colors';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useStyles } from './style';
+import { Championship } from '../../interfaces';
 
 export type TypesTournament = { [key: string]: string };
 
-export const CardTournament: FC<any> = ({ championship }) => {
+interface CardTournamentProps {
+  championship: Championship;
+}
+
+export const CardTournament: FC<CardTournamentProps> = ({ championship, ...props }) => {
   const navigate = useNavigate();
   const { classes } = useStyles();
   const types: TypesTournament = { score: 'clasificacion', elimination: 'eliminacion' };
   const handleTournament = () => {
     navigate(`/${types[championship.type]}/${championship.id}`);
   };
-
   return (
-    <Grid item>
+    <Grid item {...props}>
       <Card className={classes.card} elevation={24}>
         <CardActionArea onClick={handleTournament}>
           <CardMedia component="img" height="140" width="auto" src={image} />

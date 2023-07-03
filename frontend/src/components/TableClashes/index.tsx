@@ -56,9 +56,13 @@ export const TableClashes = () => {
           </Table>
 
           <List>
-            {matches.map((match) => {
+            {matches.map((match, index: number) => {
               return (
-                <ListItemButton className={classes.listItem} onClick={() => handleOpen(match.id)}>
+                <ListItemButton
+                  key={index}
+                  className={classes.listItem}
+                  onClick={() => handleOpen(match.id)}
+                >
                   <Grid className={classes.gridLogo} sx={{ marginLeft: '8%' }}>
                     <img
                       src={

@@ -1,9 +1,11 @@
-import { Button, Grid, ListItem, Typography, useTheme } from '@mui/material';
+import { Grid, ListItem, Typography, useTheme } from '@mui/material';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import { FC } from 'react';
 import { useStyles } from './style';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import IconButton from '@mui/material/IconButton/IconButton';
+import CenteredSpacer from '../CenteredSpacer';
 
 export const MatchSelector: FC<any> = ({ matches, setSelected, back }) => {
   const { classes } = useStyles();
@@ -16,13 +18,15 @@ export const MatchSelector: FC<any> = ({ matches, setSelected, back }) => {
   return (
     <>
       <Grid container flexDirection="row" alignItems="center">
-        <Button className={classes.buttonBack} onClick={() => back(null)}>
-          <ArrowBackIcon style={{ color: theme.palette.common.white }} />
-        </Button>
+        <CenteredSpacer>
+          <IconButton className={classes.buttonBack} onClick={() => back(null)}>
+            <ArrowBackIcon style={{ color: theme.palette.common.white }} />
+          </IconButton>
 
-        <Typography className={classes.titleText} variant="h5">
-          Selecciona un partido para administrar:
-        </Typography>
+          <Typography className={classes.titleText} variant="h5">
+            Selecciona un partido para administrar:
+          </Typography>
+        </CenteredSpacer>
       </Grid>
       <List className={classes.list}>
         {matches.map((match: any) => (

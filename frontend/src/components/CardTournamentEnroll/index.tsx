@@ -11,7 +11,7 @@ import { useStyles } from './style';
 
 export type TypesTournament = { [key: string]: string };
 
-export const CardTournamentEnroll: FC<any> = ({ championship }) => {
+export const CardTournamentEnroll: FC<any> = ({ championship, ...props }) => {
   const navigate = useNavigate();
   const { classes } = useStyles();
   const theme = useTheme();
@@ -37,7 +37,7 @@ export const CardTournamentEnroll: FC<any> = ({ championship }) => {
   const isNotAvailable = championship.closed || championship.allReserved || championship.isEnrolled;
 
   return (
-    <Grid item xs={10}>
+    <Grid item xs={10} {...props}>
       <Card
         className={classes.card}
         style={

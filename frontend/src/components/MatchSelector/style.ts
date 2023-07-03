@@ -32,7 +32,6 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   buttonBack: {
     marginTop: '2%',
     color: theme.palette.common.white,
-    marginRight: '16%',
     marginLeft: '6%',
   },
 }));

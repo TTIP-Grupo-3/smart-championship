@@ -58,8 +58,8 @@ export const Tournaments = () => {
             spacing={2}
             padding={2}
           >
-            {championships.map((championship) => (
-              <CardTournament championship={championship}></CardTournament>
+            {championships.map((championship, index: number) => (
+              <CardTournament key={index} championship={championship}></CardTournament>
             ))}
           </Grid>
         </>

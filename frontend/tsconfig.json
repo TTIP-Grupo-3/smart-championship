@@ -24,6 +24,7 @@
   "include": [
     "src",
     "cypress/**/*.ts",
-    "cypress.config.ts"
+    "cypress.config.ts",
+    "webpack.config.ts"
   ]
 }

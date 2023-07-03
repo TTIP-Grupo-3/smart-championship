@@ -50,7 +50,7 @@ export const TableClasification = () => {
             </TableHead>
             <TableBody>
               {teams.map((team: any) => (
-                <TableRow hover role="checkbox" tabIndex={-1}>
+                <TableRow hover key={team?.id} role="checkbox" tabIndex={-1}>
                   <TableCell key={team?.id} className={classes.rows}>
                     {team?.name}
                   </TableCell>
