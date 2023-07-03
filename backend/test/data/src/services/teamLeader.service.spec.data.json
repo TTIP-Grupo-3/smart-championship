@@ -1,0 +1,10 @@
+{
+  "args": {
+    "getTeamLeaderDTO": { "id": 3 },
+    "createTeamLeaderDTO": { "firstName": "leader", "lastName": "leader", "username": "leaderusername", "password": "leader" }
+  },
+  "notFoundId": 0,
+  "existsUsername": "leader",
+  "teamLeader": { "id": 3, "firstName": "Adrián", "lastName": "Cardozo", "username": "leader", "roles": ["team_leader"] },
+  "createdTeamLeader": { "firstName": "leader", "lastName": "leader", "username": "leaderusername", "roles": ["team_leader"] }
+}
