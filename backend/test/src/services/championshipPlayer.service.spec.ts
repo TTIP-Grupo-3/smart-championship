@@ -9,7 +9,7 @@ import { TransactionService } from 'src/services/transaction.service';
 import { entities } from 'src/utils/entities';
 import { DataService } from 'test/utils/data.service';
 import { testSqlClient } from 'test/utils/testSqlClient';
-import { player, args, notFoundId } from 'test/data/src/services/championshipPlayer.spec.data.service.json';
+import { player, args, notFoundId } from 'test/data/src/services/championshipPlayer.service.spec.data.json';
 
 describe('ChampionshipPlayerService', () => {
   let module: TestingModule;

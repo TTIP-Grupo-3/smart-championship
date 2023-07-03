@@ -4,6 +4,9 @@ import { TeamLeader } from './teamLeader.entity';
 import { Player } from './player.entity';
 import { Championship } from './championship.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
+import { configService } from 'src/services/config.service';
+
+const errors = configService.get('model.errors');
 
 @Entity()
 export class Team {
@@ -26,7 +29,7 @@ export class Team {
   }
 
   addPlayer(player: Player) {
-    if (this.existsPlayer(player)) throw new InvalidArgumentException('Player already exists');
+    if (this.existsPlayer(player)) throw new InvalidArgumentException(errors.playerAlreadyExists);
     this.players.push(player);
     player.setTeam(this);
   }
@@ -36,7 +39,7 @@ export class Team {
   }
 
   setLeader(leader: TeamLeader) {
-    if (!!this.leader) throw new InvalidArgumentException('Team has leader');
+    if (!!this.leader) throw new InvalidArgumentException(errors.teamHasLeader);
     this.leader = leader;
   }
 
@@ -49,7 +52,7 @@ export class Team {
   }
 
   checkCanEnroll(championship: Championship) {
-    if (!this.canEnroll(championship)) throw new InvalidArgumentException('Need more players');
+    if (!this.canEnroll(championship)) throw new InvalidArgumentException(errors.needMorePlayers);
   }
 
   private canEnroll(championship: Championship): boolean {

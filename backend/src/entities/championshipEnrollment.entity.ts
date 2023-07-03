@@ -6,6 +6,9 @@ import { TeamLeader } from './teamLeader.entity';
 import { User } from './user.entity';
 import { PayData } from './payData.entity';
 import { EditChampionshipEnrollment } from 'src/utils/types';
+import { configService } from 'src/services/config.service';
+
+const errors = configService.get('model.errors');
 
 @Entity()
 export class ChampionshipEnrollment {
@@ -87,9 +90,9 @@ export class ChampionshipEnrollment {
   }
 
   private checkCanEnroll(teamLeader: TeamLeader): void {
-    if (this.isEnrolled(teamLeader)) throw new InvalidArgumentException('Already enrolled');
-    if (this.enrolled === this.size) throw new InvalidArgumentException('Completed places');
-    if (this.reserved === this.size) throw new InvalidArgumentException('Reserved places');
+    if (this.isEnrolled(teamLeader)) throw new InvalidArgumentException(errors.alreadyEnrolled);
+    if (this.enrolled === this.size) throw new InvalidArgumentException(errors.completedPlaces);
+    if (this.reserved === this.size) throw new InvalidArgumentException(errors.reservedPlaces);
   }
 
   findEnrollment(id: number): TeamEnrollment {

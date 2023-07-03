@@ -21,4 +21,11 @@ export class TeamLeaderChampionshipService extends ChampionshipService {
   protected async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
     return championship;
   }
+
+  async minimumSize(manager?: EntityManager): Promise<number> {
+    return await this.transactionService.transaction(async (manager) => {
+      const championships = await manager.find(Championship, { where: {}, loadEagerRelations: false });
+      return Math.min(...championships.map(({ teamSize }) => teamSize));
+    }, manager);
+  }
 }

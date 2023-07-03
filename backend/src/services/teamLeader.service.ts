@@ -52,16 +52,11 @@ export class TeamLeaderService {
   async getTeamLeader({ id }: IdDTO, manager?: EntityManager): Promise<TeamLeader> {
     return await this.transactionService.transaction(async (manager) => {
       const teamLeader = await manager.findOne(TeamLeader, { where: { id }, relations: this.relations });
-      if (!teamLeader) throw new NotFoundException();
-      teamLeader.minimumTeamSize = await this.getMinimumSize(manager);
+      if (!teamLeader) throw new NotFoundException(errors.notFound);
+      teamLeader.minimumTeamSize = await this.championshipService.minimumSize(manager);
       if (teamLeader.team) teamLeader.team.logo = this.storageService.getImage(teamLeader.team.filename);
       return teamLeader;
     }, manager);
-  }
-
-  private async getMinimumSize(manager: EntityManager): Promise<number> {
-    const championships = await this.championshipService.getChampionships(manager);
-    return Math.min(...championships.map(({ teamSize }) => teamSize));
   }
 
   private async checkExists(username: string, manager: EntityManager): Promise<void> {

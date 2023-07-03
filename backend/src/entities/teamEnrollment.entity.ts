@@ -5,6 +5,9 @@ import { ChampionshipEnrollment } from './championshipEnrollment.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { Championship } from './championship.entity';
+import { configService } from 'src/services/config.service';
+
+const errors = configService.get('model.errors');
 
 @Entity()
 export class TeamEnrollment {
@@ -40,7 +43,7 @@ export class TeamEnrollment {
   }
 
   uploadReceipt(receipt: string) {
-    if (!this.toPay()) throw new InvalidArgumentException('Invalid operation. Cannot upload receipt');
+    if (!this.toPay()) throw new InvalidArgumentException(errors.cannotUploadReceipt);
     this.receipt = receipt;
     this.payStatus = PayStatus.ToReview;
   }

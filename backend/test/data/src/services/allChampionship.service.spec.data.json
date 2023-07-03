@@ -5,7 +5,7 @@
   "notFoundId": 0,
   "championship": {
     "id": 1,
-    "name": "Smart Championship",
+    "name": "championship-1",
     "teams": [
       {
         "id": 1,

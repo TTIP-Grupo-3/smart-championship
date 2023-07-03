@@ -12,6 +12,9 @@ import { TeamLeader } from './teamLeader.entity';
 import { User } from './user.entity';
 import { Phase } from './phase.entity';
 import { NotFoundException } from 'src/exceptions/NotFoundException';
+import { configService } from 'src/services/config.service';
+
+const errors = configService.get('model.errors');
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -45,7 +48,7 @@ export abstract class Championship {
   abstract matches: Array<Match>;
 
   public get adminMatches(): Array<Phase | Match> {
-    if (this.hasPlaces()) throw new InvalidArgumentException('Cannot get matches');
+    if (this.hasPlaces()) throw new InvalidArgumentException(errors.cannotGetMatches);
     return this.getAdminMatches();
   }
 
@@ -92,7 +95,7 @@ export abstract class Championship {
   }
 
   setMatchDates(matchDates: Array<MatchDate>) {
-    if (!this.toStart()) throw new InvalidArgumentException('Championship already started');
+    if (!this.toStart()) throw new InvalidArgumentException(errors.championshipAlreadyStarted);
     matchDates.forEach((matchDate) => this.setMatchDate(matchDate));
   }
 
@@ -142,7 +145,7 @@ export abstract class Championship {
 
   private setMatchDate({ id, date }: MatchDate) {
     const match = this.findMatch(id);
-    if (!match) throw new NotFoundException('Match not found');
+    if (!match) throw new NotFoundException(errors.matchNotFound);
     match.setDate(date);
   }
 
