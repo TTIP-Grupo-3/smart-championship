@@ -1,0 +1,10 @@
+{
+  "args": {
+    "username": "admin",
+    "password": "admin"
+  },
+  "notFoundUsername": "",
+  "incorrectPassword": "",
+  "user": { "id": 2, "firstName": "Mr.", "lastName": "Admin", "username": "admin", "roles": ["admin"] },
+  "access_token": "access_token"
+}
