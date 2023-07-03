@@ -218,7 +218,7 @@
       "price": 50,
       "duration": 0,
       "teamSize": 11,
-      "name": "Torneo bonaerense"
+      "name": "championship-3"
     }
   ],
   "scoreChampionships": [
@@ -229,7 +229,7 @@
       "size": 0,
       "duration": 0,
       "teamSize": 11,
-      "name": "Picadito Ezpeleta"
+      "name": "championship-2"
     }
   ],
   "teams": [
