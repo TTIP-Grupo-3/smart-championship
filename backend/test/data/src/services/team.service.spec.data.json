@@ -1,0 +1,11 @@
+{
+  "args": {
+    "id": 1,
+    "plainCreateTeamDTO": { "name": "team" },
+    "leaderDTO": { "id": 14 }
+  },
+  "existsId": 3,
+  "notFoundId": 0,
+  "team": { "id": 1, "name": "Team-1", "leader": { "id": 3, "firstName": "Adrián", "lastName": "Cardozo" } },
+  "createdTeam": { "name": "team", "leader": { "id": 14, "firstName": "Jose", "lastName": "Messi" } }
+}

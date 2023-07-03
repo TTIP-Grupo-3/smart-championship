@@ -37,6 +37,7 @@ export class TeamService {
       team.logo = logo;
       leader.setTeam(team);
       await manager.save(team);
+      leader.teamId = team.id;
       if (logo) await this.storageService.upload(team.filename, logo, this.logosContainer);
       return team;
     }, manager);
