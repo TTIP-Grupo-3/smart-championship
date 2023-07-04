@@ -1,0 +1,7 @@
+{
+  "args": {
+    "username": "admin"
+  },
+  "usernameNotFound": "",
+  "user": { "id": 2, "firstName": "Mr.", "lastName": "Admin", "username": "admin", "roles": ["admin"] }
+}

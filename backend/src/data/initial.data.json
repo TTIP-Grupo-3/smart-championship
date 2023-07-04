@@ -1388,14 +1388,7 @@
     { "id": 9, "minute": 9, "player": { "id": 67 }, "status": { "id": 7 } },
     { "id": 10, "minute": 10, "player": { "id": 67 }, "status": { "id": 7 } },
     { "id": 11, "minute": 11, "player": { "id": 67 }, "status": { "id": 7 } },
-    { "id": 12, "minute": 12, "player": { "id": 34 }, "status": { "id": 10 } },
-    { "id": 13, "minute": 13, "player": { "id": 34 }, "status": { "id": 10 } },
-    { "id": 14, "minute": 14, "player": { "id": 34 }, "status": { "id": 10 } },
-    { "id": 15, "minute": 15, "player": { "id": 34 }, "status": { "id": 10 } },
-    { "id": 16, "minute": 16, "player": { "id": 56 }, "status": { "id": 11 } },
-    { "id": 17, "minute": 17, "player": { "id": 56 }, "status": { "id": 11 } },
-    { "id": 18, "minute": 18, "player": { "id": 56 }, "status": { "id": 11 } },
-
+    
     { "id": 20, "minute": 20, "player": { "id": 93 }, "status": { "id": 15 } },
     { "id": 21, "minute": 21, "player": { "id": 113 }, "status": { "id": 19 } }
   ],
@@ -1406,8 +1399,6 @@
     { "id": 10, "type": "YELLOW", "minute": 10, "player": { "id": 34 }, "status": { "id": 4 } },
     { "id": 12, "type": "RED", "minute": 12, "player": { "id": 56 }, "status": { "id": 6 } },
     { "id": 13, "type": "RED", "minute": 13, "player": { "id": 78 }, "status": { "id": 8 } },
-    { "id": 14, "type": "RED", "minute": 14, "player": { "id": 1 }, "status": { "id": 9 } },
-    { "id": 16, "type": "RED", "minute": 16, "player": { "id": 67 }, "status": { "id": 12 } },
 
     { "id": 17, "type": "RED", "minute": 21, "player": { "id": 93 }, "status": { "id": 15 } },
     { "id": 18, "type": "YELLOW", "minute": 1, "player": { "id": 113 }, "status": { "id": 19 } }
