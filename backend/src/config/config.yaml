@@ -4,6 +4,7 @@ service:
     unknown: "Unknown error"
     invalidArgument: "Invalid argument"
     alreadyExists: "Already exists"
+    notFound: "Not found"
 
 model:
   errors:

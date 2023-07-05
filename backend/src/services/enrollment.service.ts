@@ -28,7 +28,7 @@ export abstract class EnrollmentService {
         where: { id, championshipEnrollment: { championship: { id: championshipId } } },
         relations: this.relations,
       });
-      if (!this.exists(enrollment)) throw new NotFoundException();
+      this.checkFound(enrollment);
       return this.setReceipt(enrollment);
     }, manager);
   }
@@ -43,8 +43,16 @@ export abstract class EnrollmentService {
       teamEnrollments.forEach(
         (enrollment) => (enrollment.championshipEnrollment = championship.enrollment),
       );
-      return teamEnrollments.filter((enrollment) => this.exists(enrollment));
+      return teamEnrollments.filter((enrollment) => this.found(enrollment));
     }, manager);
+  }
+
+  protected checkFound(enrollment?: TeamEnrollment) {
+    if (!this.found(enrollment)) throw new NotFoundException();
+  }
+
+  private found(enrollment?: TeamEnrollment): boolean {
+    return !!enrollment && this.exists(enrollment);
   }
 
   protected async getChampionship(
@@ -69,7 +77,7 @@ export abstract class EnrollmentService {
     return this.storageService.getImage(enrollment.filename, this.receiptContainer);
   }
 
-  protected exists(teamEnrollment?: TeamEnrollment): boolean {
-    return !!teamEnrollment;
+  protected exists(teamEnrollment: TeamEnrollment): boolean {
+    return true;
   }
 }

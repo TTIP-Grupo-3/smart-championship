@@ -94,7 +94,8 @@ export class TeamLeaderEnrollmentController {
   async uploadReceipt(
     @Param() enrollmentIdDTO: EnrollmentIdDTO,
     @Body() uploadReceiptDTO: UploadReceiptDTO,
+    @Req() { user }: UserRequestInfo<TeamLeader>,
   ): Promise<TeamEnrollment> {
-    return await this.teamLeaderEnrollmentService.uploadReceipt(enrollmentIdDTO, uploadReceiptDTO);
+    return await this.teamLeaderEnrollmentService.uploadReceipt(enrollmentIdDTO, uploadReceiptDTO, user);
   }
 }

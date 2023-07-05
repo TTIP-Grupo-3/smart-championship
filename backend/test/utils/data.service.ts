@@ -27,6 +27,7 @@ import {
   championshipEnrollments,
   teamEnrollments,
   teamLeaders,
+  receipt,
 } from 'test/utils/data/initial.data.json';
 import { User } from 'src/entities/user.entity';
 import { ScoreChampionship } from 'src/entities/scoreChampionship.entity';
@@ -37,11 +38,13 @@ import { ChampionshipEnrollment } from 'src/entities/championshipEnrollment.enti
 import { Team } from 'src/entities/team.entity';
 import { Player } from 'src/entities/player.entity';
 import { PayData } from 'src/entities/payData.entity';
+import { PayStatus } from 'src/enums/payStatus.enum';
+import { StorageService } from 'src/services/storage.service';
 
 @Injectable()
 @UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class DataService {
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(private readonly dataSource: DataSource, private readonly storageService: StorageService) {}
 
   async initialize() {
     await this.dataSource.transaction(async (manager) => {
@@ -65,6 +68,7 @@ export class DataService {
       await manager.save(ScoreMatch, scoreMatches);
       await manager.save(Goal, goals);
       await manager.save(Card, cards as Array<DeepPartial<Card>>);
+      await this.createReceipts();
     });
   }
 
@@ -74,5 +78,20 @@ export class DataService {
 
   private championshipTeams() {
     return teams.map((team) => ({ ...team, team: { id: team.id } }));
+  }
+
+  private async createReceipts() {
+    await this.dataSource.transaction(async (manager) => {
+      const receiptStatuses = [PayStatus.ToReview, PayStatus.Paid, PayStatus.Rejected];
+      const ids = (teamEnrollments as Array<DeepPartial<TeamEnrollment>>)
+        .filter(({ payStatus }) => receiptStatuses.includes(payStatus))
+        .map(({ id }) => ({ id }));
+      const enrollments = ids.length === 0 ? [] : await manager.findBy(TeamEnrollment, ids);
+      await Promise.all(
+        enrollments.map(
+          async (enrollment) => await this.storageService.upload(enrollment.filename, receipt, 'receipts'),
+        ),
+      );
+    });
   }
 }

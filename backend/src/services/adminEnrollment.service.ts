@@ -43,15 +43,16 @@ export class AdminEnrollmentService extends EnrollmentService {
   ): Promise<TeamEnrollment> {
     return await this.transactionService.transaction(async (manager) => {
       const championship = await this.getChampionship(rejectEnrollmentDTO, manager);
-      const enrollment = championship.rejectEnrollment(rejectEnrollmentDTO.id);
-      enrollment.championshipEnrollment = championship.enrollment;
-      return await manager.save(enrollment);
+      const enrollment = await this.getFromChampionship(rejectEnrollmentDTO.id, championship, manager);
+      championship.rejectEnrollment(rejectEnrollmentDTO.id);
+      await manager.save(championship);
+      return enrollment;
     }, manager);
   }
 
-  protected exists(teamEnrollment?: TeamEnrollment): boolean {
+  protected exists(teamEnrollment: TeamEnrollment): boolean {
     const adminStatuses = [PayStatus.ToReview, PayStatus.Paid, PayStatus.Rejected];
-    return !!teamEnrollment && adminStatuses.includes(teamEnrollment.payStatus);
+    return adminStatuses.includes(teamEnrollment.payStatus);
   }
 
   private async getFromChampionship(
@@ -60,6 +61,7 @@ export class AdminEnrollmentService extends EnrollmentService {
     manager: EntityManager,
   ): Promise<TeamEnrollment> {
     const enrollment = championship.findEnrollment(id);
+    this.checkFound(enrollment);
     enrollment.teamLeader.team = await this.teamService.getTeam(enrollment.teamId, manager);
     enrollment.championshipEnrollment = championship.enrollment;
     return enrollment;
