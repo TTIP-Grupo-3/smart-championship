@@ -1,5 +1,5 @@
 import { Championship } from 'src/entities/championship.entity';
-import { EntityManager, IsNull } from 'typeorm';
+import { EntityManager, FindOptionsRelations, IsNull } from 'typeorm';
 import { ChampionshipService } from './championship.service';
 import { ChampionshipStatus } from 'src/enums/championshipStatus.enum';
 import { UseExceptionMapper } from 'src/decorators/UseExceptionMapper';
@@ -10,6 +10,10 @@ import { TransactionService } from './transaction.service';
 @Injectable()
 @UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class TeamLeaderChampionshipService extends ChampionshipService {
+  protected relations: FindOptionsRelations<Championship> = {
+    enrollment: { teamEnrollments: { teamLeader: true } },
+  };
+
   constructor(transactionService: TransactionService) {
     super(transactionService);
   }

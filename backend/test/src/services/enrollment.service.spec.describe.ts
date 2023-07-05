@@ -19,14 +19,14 @@ export function enrollmentServiceDescribe(
     return array.sort((a, b) => a.id - b.id);
   }
 
-  beforeEach(() => {
-    module = getModule();
-    configService = module.get<ConfigService>(ConfigService);
-    service = module.get<EnrollmentService>(ServiceClass);
-    errors = configService.get('service.errors');
-  });
-
   describe('EnrollmentService', () => {
+    beforeEach(() => {
+      module = getModule();
+      configService = module.get<ConfigService>(ConfigService);
+      service = module.get<EnrollmentService>(ServiceClass);
+      errors = configService.get('service.errors');
+    });
+
     describe('GetEnrollment', () => {
       it('should return team enrollment', async () => {
         const result = await service.getEnrollment(args.getEnrollmentDTO);
