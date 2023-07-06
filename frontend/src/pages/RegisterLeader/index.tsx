@@ -8,6 +8,12 @@ import { useStyles } from './style';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { OutlinedInput } from '../../components/OutlinedInput';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
+import { useSnackbar } from '../../hooks/useSnackbar';
+
+const validationMessages: { [key: string]: string } = {
+  ['password is not strong enough']: 'La contraseña no es lo suficientemente segura',
+  ['Already exists']: 'El nombre de usuario ya está en uso',
+};
 
 export const RegisterLeader = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,6 +26,7 @@ export const RegisterLeader = () => {
   });
   const navigate = useNavigate();
   const theme = useTheme();
+  const { Snack, onError } = useSnackbar();
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -29,10 +36,18 @@ export const RegisterLeader = () => {
 
   const handleRegister: FormEventHandler<HTMLFormElement> = (e: any) => {
     e.preventDefault();
-    API_TEAM_LEADER.register(user).then(({ data }) => {
-      localStorage.setItem('token', data.access_token);
-      navigate('/leader');
-    });
+    API_TEAM_LEADER.register(user)
+      .then(({ data }) => {
+        localStorage.setItem('token', data.access_token);
+        navigate('/leader');
+      })
+      .catch((err) => {
+        if (err.response.data.message instanceof Array) {
+          onError(validationMessages[err.response.data.message[0]]);
+        } else {
+          onError(validationMessages[err.response.data.message]);
+        }
+      });
   };
 
   const canRegister = (): boolean => {
@@ -140,6 +155,7 @@ export const RegisterLeader = () => {
           </form>
         </Card>
       </Grid>
+      <Snack />
     </Navbar>
   );
 };

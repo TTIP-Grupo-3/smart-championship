@@ -13,7 +13,7 @@ export type TypesTournament = { [key: string]: string };
 
 export const CardTournamentDetails: FC<any> = ({ enrollment }) => {
   const { classes } = useStyles();
-  const types: TypesTournament = { score: 'clasificacion', elimination: 'eliminacion' };
+  const types: TypesTournament = { score: 'clasificación', elimination: 'eliminación' };
 
   return (
     <Grid item xs={10}>

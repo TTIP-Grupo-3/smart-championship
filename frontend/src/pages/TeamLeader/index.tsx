@@ -24,7 +24,7 @@ export const TeamLeader: FC = () => {
   const [openPlayer, setOpenPlayer] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [players, setPlayers] = useState<Player[]>([]);
-  const { Snack, onSuccess, promise } = useSnackbar();
+  const { Snack, onSuccess, onError, promise } = useSnackbar();
   const theme = useTheme();
 
   const handleEnroll = (): void => {
@@ -74,7 +74,13 @@ export const TeamLeader: FC = () => {
         await loadPlayers();
         onSuccess('Jugador agregado con exito');
       },
-      error: 'Ha ocurrido un error intenta mas tarde',
+      error: (err: any) => {
+        if (err.response.data.message === 'Player already exists') {
+          onError('El jugador ya existe o tiene el mismo numero de camiseta');
+        } else {
+          onError('Ha ocurrido un error intenta mas tarde');
+        }
+      },
     });
   };
 

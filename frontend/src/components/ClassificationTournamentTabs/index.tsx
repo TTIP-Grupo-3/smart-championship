@@ -54,7 +54,7 @@ export const ClasificationTournamentTabs = () => {
             className={classes.tabs}
             classes={{ indicator: classes.indicator }}
           >
-            <Tab classes={{ root: classes.tab }} label="Clasificacion" {...a11yProps(0)} />
+            <Tab classes={{ root: classes.tab }} label="Clasificación" {...a11yProps(0)} />
             <Tab classes={{ root: classes.tab }} label="Enfrentamientos" {...a11yProps(1)} />
           </Tabs>
         </Grid>

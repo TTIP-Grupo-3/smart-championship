@@ -35,7 +35,7 @@ export const useSnackbar = (vertical?: any, horizontal?: any) => {
         callifFunctionOrMessage(success, onSuccess, result, success);
       })
       .catch((err) => {
-        callifFunctionOrMessage(err, onError, error, error);
+        callifFunctionOrMessage(error, onError, err, error);
       });
   };
 

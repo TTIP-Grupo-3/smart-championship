@@ -40,6 +40,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
       championshipId: +championshipId!,
       championshipType: type,
     });
+
     return () => matchService.unsubscribe(socketCreated);
   }, []);
   const scoreGoal = (isLocal: boolean, idPlayer: number) => {
@@ -98,6 +99,13 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
     setSelected(null);
   };
 
+  const teamWithoutPlayerCard = (type: 'local' | 'visiting', color: CardsType) => {
+    return currentMatch?.[type].players.filter(
+      (player: any) =>
+        !match[type].cards['red'].some((card: any) => card.player.id === player.id) &&
+        !match[type].cards[color.toLowerCase()].some((card: any) => card.player.id === player.id),
+    );
+  };
   return (
     <>
       {isLoading ? (
@@ -170,7 +178,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
             buttonLeftLocal={{
               function: scoreCard,
               args: [CardsType.RED, true],
-              items: currentMatch?.local.players,
+              items: teamWithoutPlayerCard('local', CardsType.RED),
             }}
             buttonRightProps={{ disabled: match?.local.cards.red.length < 1 }}
             buttonRightPropsVisiting={{ disabled: match?.visiting.cards.red.length < 1 }}
@@ -178,7 +186,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
             buttonLeftVisiting={{
               function: scoreCard,
               args: [CardsType.RED, false],
-              items: currentMatch?.visiting.players,
+              items: teamWithoutPlayerCard('visiting', CardsType.RED),
             }}
             buttonRightVisiting={{
               function: disallowCard,
@@ -208,7 +216,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
             buttonLeftLocal={{
               function: scoreCard,
               args: [CardsType.YELLOW, true],
-              items: currentMatch?.local.players,
+              items: teamWithoutPlayerCard('local', CardsType.YELLOW),
             }}
             buttonRightProps={{ disabled: match?.local.cards.yellow.length < 1 }}
             buttonRightPropsVisiting={{ disabled: match?.visiting.cards.yellow.length < 1 }}
@@ -220,7 +228,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
             buttonLeftVisiting={{
               function: scoreCard,
               args: [CardsType.YELLOW, false],
-              items: currentMatch?.visiting.players,
+              items: teamWithoutPlayerCard('visiting', CardsType.YELLOW),
             }}
             buttonRightVisiting={{
               function: disallowCard,
