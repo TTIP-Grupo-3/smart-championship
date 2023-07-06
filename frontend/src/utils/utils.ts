@@ -9,3 +9,8 @@ export const isStatusMatch = (status: string, statusCompare: string) => {
   return status === statusCompare;
 };
 export const delay = async (time: number) => new Promise((res) => setTimeout(res, time));
+
+export const onlyText = (text: string) => {
+  const regex = /^[a-zA-Z\s]*$/;
+  return regex.test(text);
+};

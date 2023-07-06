@@ -14,7 +14,7 @@ module.exports = {
       algorithm: 'brotliCompress',
       test: /\.(tsx|css|html|svg)$/,
       compressionOptions: {
-        level: 11,
+        level: 6,
       },
       threshold: 10240,
       minRatio: 0.8,

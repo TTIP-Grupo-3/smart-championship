@@ -8,6 +8,7 @@ import { API } from '../../services/Championship';
 import { useStyles } from './style';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Championship } from '../../interfaces';
+import { EmptyData } from '../../components/EmptyData';
 
 export const Tournaments = () => {
   const [championships, setChampionships] = useState<Championship[]>([]);
@@ -40,28 +41,28 @@ export const Tournaments = () => {
         <Loader text="Cargando Torneos" />
       ) : (
         <>
-          <Grid
-            container
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-            className={classes.grid}
-          >
+          <Grid container className={classes.grid}>
             <Typography className={classes.titleTournament}>Torneos en curso </Typography>
           </Grid>
-          <Grid
-            container
-            style={{ flexGrow: 1, display: 'flex' }}
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="center"
-            spacing={2}
-            padding={2}
-          >
-            {championships.map((championship, index: number) => (
-              <CardTournament key={index} championship={championship}></CardTournament>
-            ))}
-          </Grid>
+          {championships.length === 0 ? (
+            <EmptyData emptyText={'Vaya no hay torneos aqui'} />
+          ) : (
+            <>
+              <Grid
+                container
+                style={{ flexGrow: 1, display: 'flex' }}
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+                spacing={2}
+                padding={2}
+              >
+                {championships.map((championship, index: number) => (
+                  <CardTournament key={index} championship={championship}></CardTournament>
+                ))}
+              </Grid>
+            </>
+          )}
         </>
       )}
     </Navbar>

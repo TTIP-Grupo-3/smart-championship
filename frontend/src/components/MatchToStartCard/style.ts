@@ -7,9 +7,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: theme.spacing(2),
   },
   gridContainer: {
-    margin: theme.spacing(2),
+    marginTop: theme.spacing(2),
     backgroundColor: lighten(theme.palette.background.paper, 0.05),
     borderRadius: 4,
     boxShadow: theme.shadows[4],

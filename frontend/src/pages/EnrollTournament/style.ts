@@ -2,11 +2,14 @@ import { Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
+  gridTitle: {
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.common.white,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   textEnroll: {

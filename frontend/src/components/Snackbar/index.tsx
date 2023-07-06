@@ -41,16 +41,14 @@ const SnackBar: FC<PropsSnackBar> = (props) => {
   const selectIcon: TypeSnackBar = {
     success: <CheckCircleIcon className={cx(classes.icon, classes.success)} />,
     error: <ErrorIcon className={cx(classes.icon, classes.error)} />,
-    loading: <CircularProgress size={18} className={cx(classes.icon, classes.loading)} />,
+    loading: <CircularProgress size={21} className={cx(classes.icon, classes.loading)} />,
   };
 
   const message = (): ReactElement => {
     if (type === MessagesType.LOADING) {
       return (
         <>
-          <div className={classes.colorInitial} data-testid="colorInitial">
-            {msgLoading}
-          </div>
+          <div className={classes.colorInitial}>{msgLoading}</div>
           <div className={classes.withColor}> {msgSnack}</div>
         </>
       );
@@ -59,7 +57,7 @@ const SnackBar: FC<PropsSnackBar> = (props) => {
   };
 
   const actionButton = action && (
-    <Button className={classes.colorButton} onClick={() => {}} data-testid="buttonAction">
+    <Button className={classes.colorButton} onClick={() => {}}>
       {action.msgButton}
     </Button>
   );

@@ -35,8 +35,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     letterSpacing: '0.25px',
   },
   icon: {
-    fontSize: '20px',
-    viewBox: '0 0 25 25 !important',
+    fontWeight: 700,
   },
   success: {
     color: '#197B00',
@@ -47,7 +46,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     color: '#B00020',
   },
   loading: {
-    color: 'orange',
+    color: theme.palette.blue[200],
   },
   colorButton: {
     color: theme.palette.common.white,

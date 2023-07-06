@@ -6,11 +6,8 @@ import { API_ADMIN_ENROLLMENT } from '../../services/AdminEnrollment';
 import { useParams } from 'react-router-dom';
 import { Enrollments as CheckedEnrollments } from '../Enrollments';
 import { Enrollments as PendingEnrollments } from '../Enrollments';
-
-import SnackBar, { MessagesType } from '../Snackbar';
-import { msgTypes } from '../../pages/Admin';
 import { DialogEnrollment } from '../DialogEnrollment';
-import { SnackBarState } from '../../interfaces';
+import { useSnackbar } from '../../hooks/useSnackbar';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,11 +46,7 @@ export const AdminEnrollmentTabs = () => {
   const [open, setOpen] = useState(false);
   const [enrollments, setEnrollments] = useState<any[]>([]);
   const [idEnroll, setIdEnroll] = useState<any>();
-  const [openS, setOpenS] = useState<SnackBarState>({
-    open: false,
-    type: MessagesType.LOADING,
-    message: '',
-  });
+  const { Snack, onSuccess, onError } = useSnackbar();
   const { championshipId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -73,19 +66,8 @@ export const AdminEnrollmentTabs = () => {
     setOpen(true);
   };
 
-  const onSuccess = async () => {
-    setOpenS({ open: true, type: MessagesType.SUCCESS, message: msgTypes.success });
+  const reload = async () => {
     API_ADMIN_ENROLLMENT.getAdminEnrollments(+championshipId!).then((r: any) => setEnrollments(r.data));
-    onClose();
-
-    setOpenS({ ...openS, open: false });
-  };
-
-  const onError = async () => {
-    setOpenS({ open: true, type: 'error', message: msgTypes.error });
-    onClose();
-
-    setOpenS({ ...openS, open: false });
   };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -124,18 +106,11 @@ export const AdminEnrollmentTabs = () => {
       {open && (
         <DialogEnrollment
           open={open}
-          {...{ onClose, onError, onSuccess, idEnroll }}
+          {...{ onClose, onError, onSuccess, idEnroll, reload }}
           championshipId={+championshipId!}
         />
       )}
-      <SnackBar
-        open={openS.open}
-        vertical={'bottom'}
-        horizontal={'center'}
-        msgSnack={openS.message}
-        type={openS.type}
-        handleClose={() => setOpenS((prev: any) => ({ ...prev, open: false }))}
-      />
+      <Snack />
     </div>
   );
 };

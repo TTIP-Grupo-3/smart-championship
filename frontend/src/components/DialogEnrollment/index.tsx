@@ -9,8 +9,9 @@ import { API_ADMIN_ENROLLMENT } from '../../services/AdminEnrollment';
 export interface SimpleDialogProps {
   open: boolean;
   onClose: () => void;
-  onSuccess: () => void;
-  onError: () => void;
+  onSuccess: (message: string) => void;
+  onError: (message: string) => void;
+  reload: () => void;
   championshipId: number;
   idEnroll: number;
 }
@@ -22,6 +23,7 @@ export const DialogEnrollment: FC<SimpleDialogProps> = ({
   onError,
   championshipId,
   idEnroll,
+  reload,
 }) => {
   const { classes } = useStyles();
   const [enroll, setEnroll] = useState<any>();
@@ -30,11 +32,21 @@ export const DialogEnrollment: FC<SimpleDialogProps> = ({
   };
 
   const confirmEnrollment = () => {
-    API_ADMIN_ENROLLMENT.confirmEnrollment(championshipId, idEnroll).then(onSuccess).catch(onError);
+    API_ADMIN_ENROLLMENT.confirmEnrollment(championshipId, idEnroll)
+      .then(() => {
+        onClose();
+        reload();
+        onSuccess('Inscripcion aceptada');
+      })
+      .catch(() => {
+        onError('Ha ocurrido un error ');
+      });
   };
 
   const rejectEnrollment = () => {
-    API_ADMIN_ENROLLMENT.rejectEnrollment(championshipId, idEnroll).then(onSuccess).catch(onError);
+    API_ADMIN_ENROLLMENT.rejectEnrollment(championshipId, idEnroll)
+      .then(() => onSuccess('Operacion realizada con exito'))
+      .catch(() => onError('Ha ocurrido un error'));
   };
 
   useEffect(() => {

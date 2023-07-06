@@ -34,7 +34,7 @@ export const InitTournamentDialog: FC<any> = ({
       <DialogContent dividers>
         <Scroll className={classes.scroll}>
           <Typography variant="body2" color="white" textAlign={'center'}>
-            Carga las fechas de los equipos
+            Carga las fechas de los partidos
           </Typography>
           {matches.length === 0 && <Loader text="cargando fechas" />}
           {matches.map((match: any, index: number) => (
@@ -53,7 +53,7 @@ export const InitTournamentDialog: FC<any> = ({
           Guardar
         </Button>
         <Button autoFocus onClick={initAndSaveDatesTournament} className={classes.confirmButton}>
-          Guardar e iniciar
+          Publicar
         </Button>
       </DialogActions>
     </BootstrapDialog>

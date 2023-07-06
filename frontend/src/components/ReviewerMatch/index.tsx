@@ -164,7 +164,7 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
             }}
           />
           <Grid container direction="column" alignItems="center" justifyContent="center" padding={2}>
-            <Typography className={classes.anotation}>Infracciones</Typography>
+            <Typography className={classes.anotation}>Tarjetas</Typography>
           </Grid>
           <MatchManager
             buttonLeftLocal={{

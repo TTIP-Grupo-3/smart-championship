@@ -36,9 +36,7 @@ export const MatchTeam: FC<MatchTeamProps> = ({
       ) : (
         <div style={{ backgroundColor: 'grey', borderRadius: '100%', width: 45, height: 45 }}></div>
       )}
-      <TooltipText
-        text={inDialog ? getInitials(team ? team?.name : '').toUpperCase() : team?.name ?? '-'}
-      />
+      <TooltipText text={inDialog ? getInitials(team ? team?.name : '').toUpperCase() : team?.name ?? ''} />
       {showCards && <MatchTeamCards {...team} />}
     </Grid>
   );

@@ -5,6 +5,9 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   grid: {
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(2),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   titleTournament: {
     fontWeight: 600,

@@ -62,6 +62,7 @@ export const RegisterLeader = () => {
           <form onSubmit={handleRegister}>
             <OutlinedInput
               variant="outlined"
+              required
               label="Nombre"
               name="firstName"
               onChange={handleChange}
@@ -72,6 +73,7 @@ export const RegisterLeader = () => {
             <OutlinedInput
               variant="outlined"
               label="Apellido"
+              required
               name="lastName"
               onChange={handleChange}
               placeholder="Apellido"
@@ -81,6 +83,7 @@ export const RegisterLeader = () => {
             <OutlinedInput
               variant="outlined"
               label="Usuario"
+              required
               name="username"
               onChange={handleChange}
               placeholder="Usuario"
@@ -91,6 +94,7 @@ export const RegisterLeader = () => {
             </Typography>
             <OutlinedInput
               label="Contraseña"
+              required
               variant="outlined"
               name="password"
               onChange={handleChange}

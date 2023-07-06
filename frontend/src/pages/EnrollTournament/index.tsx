@@ -8,6 +8,7 @@ import { API_TEAM_LEADER } from '../../services/TeamLeader';
 import { useStyles } from './style';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { TeamLeaderTournament } from '../../interfaces';
+import { EmptyData } from '../../components/EmptyData';
 
 export const TournamentsToStart = () => {
   const [championships, setChampionships] = useState<TeamLeaderTournament[]>([]);
@@ -40,28 +41,26 @@ export const TournamentsToStart = () => {
         <Loader text="Cargando Torneos" />
       ) : (
         <>
-          <Grid
-            container
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-            className={classes.title}
-          >
+          <Grid container className={classes.gridTitle}>
             <Typography className={classes.textEnroll}>Inscripciones</Typography>
           </Grid>
-          <Grid
-            container
-            style={{ flexGrow: 1, display: 'flex' }}
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="center"
-            spacing={2}
-            padding={2}
-          >
-            {championships.map((championship, index: number) => (
-              <CardTournamentEnroll key={index} championship={championship}></CardTournamentEnroll>
-            ))}
-          </Grid>
+          {championships.length === 0 ? (
+            <EmptyData emptyText="Lo siento, no tenemos inscripciones para ofrecerte" />
+          ) : (
+            <Grid
+              container
+              style={{ flexGrow: 1, display: 'flex' }}
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+              spacing={2}
+              padding={2}
+            >
+              {championships.map((championship, index: number) => (
+                <CardTournamentEnroll key={index} championship={championship}></CardTournamentEnroll>
+              ))}
+            </Grid>
+          )}
         </>
       )}
     </Navbar>

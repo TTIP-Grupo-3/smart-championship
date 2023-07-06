@@ -14,18 +14,19 @@ import { OutlinedInput } from '../OutlinedInput';
 import dayjs, { Dayjs } from 'dayjs';
 import { DateTime } from '../DateTime';
 import { API_ADMIN } from '../../services/Admin';
-import { containsOnlyNumbers } from '../../utils/utils';
+import { containsOnlyNumbers, onlyText } from '../../utils/utils';
 import { TypeChampionship } from '../../interfaces';
+import { Loader } from '../Loader';
 
 export const TournamentDialog: FC<any> = ({
   title,
   open,
   onClose,
-  onSuccess,
-  onLoading,
-  onError,
+  promise,
   id,
+  onSuccess,
   isEdit,
+  reloadChampionships,
 }) => {
   const { classes } = useStyles();
   const dateToIso = (date: Dayjs) => date.toISOString();
@@ -39,6 +40,7 @@ export const TournamentDialog: FC<any> = ({
     teamSize: 5,
   });
   const [payment, setPayment] = useState<any>({ username: '', cbu: '', alias: '', cuit: '' });
+  const [loading, setIsLoading] = useState(false);
 
   const handleChange = (event: any) => {
     const { target } = event;
@@ -57,21 +59,31 @@ export const TournamentDialog: FC<any> = ({
 
   const handleChangePayment = (e: any) => {
     const { target } = e;
-    setPayment((prev: any) => ({ ...prev, [target.name]: target.value }));
+    if (target.name === 'cuit' || target.name === 'cbu') {
+      containsOnlyNumbers(target.value) &&
+        setPayment((prev: any) => ({ ...prev, [target.name]: target.value }));
+    } else {
+      setPayment((prev: any) => ({ ...prev, [target.name]: target.value }));
+    }
+  };
+
+  const handleChangeUsername = (e: any) => {
+    const { target } = e;
+    onlyText(target.value) && setPayment((prev: any) => ({ ...prev, username: target.value }));
   };
 
   const createTournament = () => {
     const { username, ...otherPayment } = payment;
     const tournament = { ...newTournament, payData: { name: username, ...otherPayment } };
-    onLoading();
-    API_ADMIN.createChampionship(tournament)
-      .then(() => {
-        onSuccess();
+    promise(API_ADMIN.createChampionship(tournament), {
+      loading: 'Creando torneo...',
+      success: () => {
         onClose();
-      })
-      .catch(() => {
-        onError();
-      });
+        onSuccess('Torneo creado con éxito!');
+        reloadChampionships();
+      },
+      error: 'Error al crear el torneo',
+    });
   };
 
   const editTournament = () => {
@@ -79,15 +91,16 @@ export const TournamentDialog: FC<any> = ({
     const { type, ...editedTournament } = newTournament;
     const { username, ...otherPayment } = payment;
     const tournament = { ...editedTournament, payData: { name: username, ...otherPayment } };
-    onLoading();
-    API_ADMIN.editChampionship(id, tournament)
-      .then(() => {
-        onSuccess();
+
+    promise(API_ADMIN.editChampionship(id, tournament), {
+      loading: 'Actualizando cambios',
+      success: () => {
         onClose();
-      })
-      .catch(() => {
-        onError();
-      });
+        onSuccess('Torneo actualizado con éxito!');
+        reloadChampionships();
+      },
+      error: 'Error al actualizar el torneo',
+    });
   };
 
   const disabledCreate =
@@ -101,12 +114,14 @@ export const TournamentDialog: FC<any> = ({
     payment.cuit.trim().length < 11;
 
   useEffect(() => {
-    if (id) {
+    if (id && isEdit) {
+      setIsLoading(true);
       API_ADMIN.getAdminChampionship(id).then(({ data }) => {
         const { payData, ...otherData } = data;
         const { name, ...otherPayment } = payData;
         setDataTournament(otherData);
         setPayment({ username: name, ...otherPayment });
+        setIsLoading(false);
       });
     }
   }, []);
@@ -119,150 +134,155 @@ export const TournamentDialog: FC<any> = ({
       </BootstrapDialogTitle>
       <DialogContent dividers>
         <Scroll className={classes.scroll}>
-          <OutlinedInput
-            required
-            variant="outlined"
-            label="Nombre del torneo"
-            name="name"
-            value={newTournament.name}
-            onChange={handleChange}
-            placeholder="Torneo Smart Championship"
-          />
-          <Typography color="white" paddingTop={2} paddingBottom={2}>
-            Duracion por partido :
-          </Typography>
-          <OutlinedInput
-            required
-            variant="outlined"
-            className={classes.root}
-            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-            label="Minutos"
-            name="duration"
-            value={newTournament.duration}
-            onChange={handleNumberChange}
-            placeholder={50}
-          />
-
-          <Typography color="white" paddingTop={2} paddingBottom={2}>
-            Fecha de Inicio:
-          </Typography>
-          <DateTime value={dayjs(newTournament.date)} onChange={handleChangeDate} />
-          <Typography color="white" paddingTop={2} paddingBottom={2}>
-            Precio de inscripción:
-          </Typography>
-          <OutlinedInput
-            required
-            className={classes.root}
-            variant="outlined"
-            label="Monto"
-            name="price"
-            value={newTournament.price}
-            onChange={handleNumberChange}
-            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-            placeholder="un monto en pesos"
-          />
-          {!isEdit && (
+          {loading ? (
+            <Loader text="Cargando informacion del torneo" />
+          ) : (
             <>
-              {' '}
-              <Typography color="white" paddingTop={2}>
-                Modalidad de torneo:
+              <OutlinedInput
+                required
+                variant="outlined"
+                label="Nombre del torneo"
+                name="name"
+                value={newTournament.name}
+                onChange={handleChange}
+                placeholder="Torneo Smart Championship"
+              />
+              <Typography color="white" paddingTop={2} paddingBottom={2}>
+                Duracion por partido :
               </Typography>
-              <SelectTournamentType value={newTournament.type} onChange={handleChange} name="type" />
+              <OutlinedInput
+                required
+                variant="outlined"
+                className={classes.root}
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                label="Minutos"
+                name="duration"
+                value={newTournament.duration}
+                onChange={handleNumberChange}
+                placeholder={'50'}
+              />
+              <Typography color="white" paddingTop={2} paddingBottom={2}>
+                Fecha de Inicio:
+              </Typography>
+              <DateTime value={dayjs(newTournament.date)} onChange={handleChangeDate} />
+              <Typography color="white" paddingTop={2} paddingBottom={2}>
+                Precio de inscripción:
+              </Typography>
+              <OutlinedInput
+                required
+                className={classes.root}
+                variant="outlined"
+                label="Monto"
+                name="price"
+                value={newTournament.price}
+                onChange={handleNumberChange}
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                placeholder="un monto en pesos"
+              />
+              {!isEdit && (
+                <>
+                  {' '}
+                  <Typography color="white" paddingTop={2}>
+                    Modalidad de torneo:
+                  </Typography>
+                  <SelectTournamentType value={newTournament.type} onChange={handleChange} name="type" />
+                </>
+              )}
+              <Typography gutterBottom color="white" paddingTop={2}>
+                Equipos :
+              </Typography>
+              {newTournament.type === TypeChampionship.SCORE ? (
+                <OutlinedInput
+                  required
+                  className={classes.root}
+                  variant="outlined"
+                  label="Cantidad"
+                  name="size"
+                  value={newTournament.size}
+                  onChange={handleNumberChange}
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                  placeholder="10 Equipos"
+                />
+              ) : (
+                <SelectorNumber
+                  value={newTournament.size}
+                  onChange={handleChange}
+                  name="size"
+                  isTeamSelector
+                  options={[2, 4, 8, 16, 32]}
+                  defaultValue={16}
+                />
+              )}
+              <Typography color="white" variant="body2" paddingTop={2}>
+                Cantidad de jugadores
+              </Typography>
+              <SelectorNumber
+                value={newTournament.teamSize}
+                onChange={handleChange}
+                name="teamSize"
+                options={[5, 6, 7, 8, 9, 10, 11]}
+                defaultValue={5}
+              />
+              <Typography color="white" paddingTop={2}>
+                Metodo de cobro:
+              </Typography>
+              <OutlinedInput
+                required
+                className={classes.root}
+                variant="outlined"
+                label="Nombre y apellido"
+                name="username"
+                value={payment.username}
+                onChange={handleChangeUsername}
+                inputProps={{ inputMode: 'text', pattern: '[a-zA-Z ]{2,254}' }}
+                placeholder="Cosme Fulanito"
+              />
+              <OutlinedInput
+                required
+                className={classes.root}
+                variant="outlined"
+                label="CBU"
+                name="cbu"
+                value={payment.cbu}
+                onChange={handleChangePayment}
+                inputProps={{
+                  inputMode: 'text',
+                  pattern: '[0-9]+',
+                  maxLength: 22,
+                }}
+                placeholder="CBU o CVU de tu cuenta"
+              />
+              <OutlinedInput
+                required
+                className={classes.root}
+                variant="outlined"
+                label="Alias"
+                name="alias"
+                value={payment.alias}
+                onChange={handleChangePayment}
+                inputProps={{ inputMode: 'text', pattern: '[a-zA-Z ]{2,254}' }}
+                placeholder="Alias de tu cuenta"
+              />
+              <OutlinedInput
+                required
+                className={classes.root}
+                variant="outlined"
+                label="Cuit"
+                name="cuit"
+                value={payment.cuit}
+                onChange={handleChangePayment}
+                inputProps={{ inputMode: 'text', pattern: '[0-9]*', maxLength: 11 }}
+                placeholder="CUIT o CUIL de tu cuenta"
+              />{' '}
             </>
           )}
-          <Typography gutterBottom color="white" paddingTop={2}>
-            Equipos :
-          </Typography>
-          {newTournament.type === TypeChampionship.SCORE ? (
-            <OutlinedInput
-              required
-              className={classes.root}
-              variant="outlined"
-              label="Cantidad"
-              name="size"
-              value={newTournament.size}
-              onChange={handleNumberChange}
-              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-              placeholder="10 Equipos"
-            />
-          ) : (
-            <SelectorNumber
-              value={newTournament.size}
-              onChange={handleChange}
-              name="size"
-              isTeamSelector
-              options={[2, 4, 8, 16, 32]}
-              defaultValue={16}
-            />
-          )}
-          <Typography color="white" variant="body2" paddingTop={2}>
-            Cantidad de jugadores
-          </Typography>
-          <SelectorNumber
-            value={newTournament.teamSize}
-            onChange={handleChange}
-            name="teamSize"
-            options={[5, 6, 7, 8, 9, 10, 11]}
-            defaultValue={5}
-          />
-          <Typography color="white" paddingTop={2}>
-            Metodo de cobro:
-          </Typography>
-          <OutlinedInput
-            required
-            className={classes.root}
-            variant="outlined"
-            label="Nombre y apellido"
-            name="username"
-            value={payment.username}
-            onChange={handleChangePayment}
-            inputProps={{ inputMode: 'text', pattern: '[a-zA-Z ]{2,254}' }}
-            placeholder="Cosme Fulanito"
-          />
-          <OutlinedInput
-            required
-            className={classes.root}
-            variant="outlined"
-            label="CBU"
-            name="cbu"
-            value={payment.cbu}
-            onChange={handleChangePayment}
-            inputProps={{
-              inputMode: 'text',
-              pattern: '[0-9]+',
-              maxLength: 22,
-            }}
-            placeholder="CBU o CVU de tu cuenta"
-          />
-          <OutlinedInput
-            required
-            className={classes.root}
-            variant="outlined"
-            label="Alias"
-            name="alias"
-            value={payment.alias}
-            onChange={handleChangePayment}
-            inputProps={{ inputMode: 'text', pattern: '[a-zA-Z ]{2,254}' }}
-            placeholder="Alias de tu cuenta"
-          />
-          <OutlinedInput
-            required
-            className={classes.root}
-            variant="outlined"
-            label="Cuit"
-            name="cuit"
-            value={payment.cuit}
-            onChange={handleChangePayment}
-            inputProps={{ inputMode: 'text', pattern: '[0-9]*', maxLength: 11 }}
-            placeholder="CUIT o CUIL de tu cuenta"
-          />
         </Scroll>
       </DialogContent>
       <DialogActions>
         <Button
           autoFocus
           onClick={id ? editTournament : createTournament}
-          disabled={disabledCreate}
+          disabled={disabledCreate || loading}
           className={classes.confirmButton}
         >
           Confirmar

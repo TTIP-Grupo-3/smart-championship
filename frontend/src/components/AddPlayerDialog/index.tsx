@@ -64,21 +64,12 @@ export const AddPlayerDialog: FC<any> = ({ open, createPlayer, onClose }) => {
                 Carga la información de tus jugadores.
               </Typography>
             </Grid>
-            <Grid container className={classes.gridButton}>
-              <OutlinedInput
-                value={player.number}
-                className={classes.input}
-                label="Numero de camiseta"
-                name="number"
-                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 3 }}
-                placeholder={10}
-                onChange={handleChangeNumber}
-              />
-            </Grid>
+
             <Grid container className={classes.gridButton}>
               <OutlinedInput
                 value={player.firstName}
                 label="Nombre"
+                required
                 name="firstName"
                 placeholder="Nombre"
                 onChange={handleChange}
@@ -87,6 +78,7 @@ export const AddPlayerDialog: FC<any> = ({ open, createPlayer, onClose }) => {
             <Grid container className={classes.gridButton}>
               <OutlinedInput
                 label="Apellido"
+                required
                 name="lastName"
                 value={player.lastName}
                 placeholder="Apellido"
@@ -97,10 +89,23 @@ export const AddPlayerDialog: FC<any> = ({ open, createPlayer, onClose }) => {
               <OutlinedInput
                 className={classes.input}
                 label="DNI"
+                required
                 value={player.dni}
                 name="dni"
                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 8 }}
-                placeholder={14607531}
+                placeholder={'14607531'}
+                onChange={handleChangeNumber}
+              />
+            </Grid>
+            <Grid container className={classes.gridButton}>
+              <OutlinedInput
+                value={player.number}
+                required
+                className={classes.input}
+                label="Numero de camiseta"
+                name="number"
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', maxLength: 3 }}
+                placeholder={'10'}
                 onChange={handleChangeNumber}
               />
             </Grid>

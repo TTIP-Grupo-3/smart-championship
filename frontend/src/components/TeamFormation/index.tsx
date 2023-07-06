@@ -13,8 +13,7 @@ import Scroll from '../Scroll';
 import { Player } from '../../interfaces';
 import { EmptyData } from '../EmptyData';
 import { API_TEAM_LEADER } from '../../services/TeamLeader';
-import SnackBar, { MessagesType } from '../Snackbar';
-import { msgTypes } from '../../pages/Admin';
+import { useSnackbar } from '../../hooks/useSnackbar';
 
 interface PlayerProps {
   players: Player[];
@@ -24,7 +23,7 @@ interface PlayerProps {
 export const TeamFormation: FC<PlayerProps> = ({ players, reloadPlayers }) => {
   const [checked, setChecked] = useState<number[]>([]);
   const [openDelete, setOpenDelete] = useState(false);
-  const [openS, setOpenS] = useState<any>({ open: false, type: MessagesType.SUCCESS });
+  const { Snack, onSuccess, promise } = useSnackbar();
   const theme = useTheme();
 
   const { classes } = useStyles();
@@ -41,27 +40,20 @@ export const TeamFormation: FC<PlayerProps> = ({ players, reloadPlayers }) => {
   };
 
   const deletePlayers = () => {
-    API_TEAM_LEADER.deletePlayers(checked)
-      .then(async () => {
+    promise(API_TEAM_LEADER.deletePlayers(checked), {
+      loading: 'Procesando solicitud',
+      success: async () => {
         setChecked([]);
+        onClose();
         await reloadPlayers();
-        onSuccess();
-      })
-      .catch(onError);
+        onSuccess('Operacion completada con exito');
+      },
+      error: 'Error al procesar la solicitud',
+    });
   };
 
   const onClose = () => {
     setOpenDelete(false);
-  };
-
-  const onSuccess = async () => {
-    setOpenS({ open: true, type: MessagesType.SUCCESS });
-    onClose();
-  };
-
-  const onError = async () => {
-    setOpenS({ open: true, type: MessagesType.ERROR });
-    onClose();
   };
 
   return (
@@ -123,14 +115,8 @@ export const TeamFormation: FC<PlayerProps> = ({ players, reloadPlayers }) => {
 
         <DeleteTeamDialog open={openDelete} onClose={onClose} onConfirmDelete={deletePlayers} />
       </List>
-      <SnackBar
-        open={openS.open}
-        vertical={'bottom'}
-        horizontal={'center'}
-        msgSnack={msgTypes[openS.type]}
-        type={openS.type}
-        handleClose={() => setOpenS((prev: any) => ({ ...prev, open: false }))}
-      />
+
+      <Snack />
     </Fragment>
   );
 };
