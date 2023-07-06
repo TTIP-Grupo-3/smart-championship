@@ -54,5 +54,8 @@ describe('UsersService', () => {
     });
   });
 
-  afterEach(async () => await module.close());
+  afterEach(async () => {
+    await dataService.deleteAll();
+    await module.close();
+  });
 });

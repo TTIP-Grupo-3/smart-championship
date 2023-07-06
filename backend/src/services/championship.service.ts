@@ -35,14 +35,24 @@ export abstract class ChampionshipService {
     }, manager);
   }
 
+  private found(championship?: Championship): boolean {
+    return !!championship && this.exists(championship);
+  }
+
+  private checkFound(championship?: Championship) {
+    if (!this.found(championship)) throw new NotFoundException(errors.notFoundChampionship);
+  }
+
   private async findChampionship(id: number, manager: EntityManager): Promise<Championship> {
     const championship = await manager.findOneBy(Championship, { id });
-    if (!this.exists(championship)) throw new NotFoundException(errors.notFoundChampionship);
+    this.checkFound(championship);
     championship.enrollment.championship = championship;
     return championship;
   }
 
-  protected abstract exists(championship?: Championship): boolean;
+  protected exists(championship: Championship): boolean {
+    return true;
+  }
 
   private filterChampionships(championships: Array<Championship>): Array<Championship> {
     return championships.filter((championship) => this.exists(championship));

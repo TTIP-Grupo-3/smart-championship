@@ -37,5 +37,8 @@ describe('AllChampionshipService', () => {
 
   championshipServiceDescribe(() => module, AllChampionshipService, data);
 
-  afterEach(async () => await module.close());
+  afterEach(async () => {
+    await dataService.deleteAll();
+    await module.close();
+  });
 });

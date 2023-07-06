@@ -15,13 +15,13 @@ export class StorageService {
   }
 
   async upload(filename: string, fileString: string, container: string): Promise<void> {
-    if (await this.exists(filename, container)) await this.delete(filename, container);
+    await this.delete(filename, container);
     if (!(await this.exists('', container))) await this.createContainer(container);
     fs.writeFileSync(this.filePath(filename, container), fileString, { encoding: 'base64' });
   }
 
-  async delete(filename: string, receiptContainer: string): Promise<void> {
-    fs.unlinkSync(this.filePath(filename, receiptContainer));
+  async delete(filename: string, container: string): Promise<void> {
+    if (await this.exists(filename, container)) fs.unlinkSync(this.filePath(filename, container));
   }
 
   private async createContainer(container: string) {

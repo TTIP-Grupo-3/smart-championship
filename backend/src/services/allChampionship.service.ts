@@ -19,8 +19,8 @@ export class AllChampionshipService extends ChampionshipService {
     super(transactionService);
   }
 
-  protected exists(championship?: Championship): boolean {
-    return !!championship && championship.status !== ChampionshipStatus.TOSTART;
+  protected exists(championship: Championship): boolean {
+    return championship.status !== ChampionshipStatus.TOSTART;
   }
 
   protected async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
