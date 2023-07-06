@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateChampionshipDTO } from 'src/dtos/createChampionship.dto';
-import { DeepPartial, EntityManager } from 'typeorm';
+import { DeepPartial, EntityManager, FindOptionsRelations } from 'typeorm';
 import { Championship } from '../entities/championship.entity';
 import { TransactionService } from './transaction.service';
 import { ChampionshipType } from 'src/enums/championshipType.enum';
@@ -20,6 +20,10 @@ const errors = configService.get('service.errors');
 @Injectable()
 @UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class AdminChampionshipService extends ChampionshipService {
+  protected relations: FindOptionsRelations<Championship> = {
+    enrollment: { teamEnrollments: { teamLeader: true }, payData: true },
+  };
+
   constructor(transactionService: TransactionService) {
     super(transactionService);
   }

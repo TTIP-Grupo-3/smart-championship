@@ -59,10 +59,11 @@ export class TeamLeaderEnrollmentService extends EnrollmentService {
   async uploadReceipt(
     enrollmentIdDTO: EnrollmentIdDTO,
     { receiptString }: UploadReceiptDTO,
+    leader: TeamLeader,
     manager?: EntityManager,
   ): Promise<TeamEnrollment> {
     return await this.transactionService.transaction(async (manager) => {
-      const enrollment = await this.getEnrollment(enrollmentIdDTO, manager);
+      const enrollment = await this.getLeaderEnrollment(enrollmentIdDTO, leader, manager);
       enrollment.uploadReceipt(receiptString);
       await manager.save(enrollment);
       await this.storageService.upload(enrollment.filename, receiptString, this.receiptContainer);

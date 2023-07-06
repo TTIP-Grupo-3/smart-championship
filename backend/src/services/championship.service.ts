@@ -1,5 +1,5 @@
 import { NotFoundException } from 'src/exceptions/NotFoundException';
-import { EntityManager } from 'typeorm';
+import { EntityManager, FindOptionsRelations } from 'typeorm';
 import { configService } from './config.service';
 import { Championship } from 'src/entities/championship.entity';
 import { TransactionService } from './transaction.service';
@@ -10,6 +10,8 @@ import { EliminationMatch } from 'src/entities/eliminationMatch.entity';
 const errors = configService.get('service.errors');
 
 export abstract class ChampionshipService {
+  protected relations: FindOptionsRelations<Championship> = {};
+
   constructor(protected readonly transactionService: TransactionService) {}
 
   async getChampionship(
@@ -25,7 +27,10 @@ export abstract class ChampionshipService {
 
   async getChampionships(manager?: EntityManager): Promise<Array<Championship>> {
     return await this.transactionService.transaction(async (manager) => {
-      const championships = await manager.findBy(Championship, {});
+      const championships = await manager.find(Championship, {
+        relations: this.relations,
+        loadEagerRelations: false,
+      });
       return this.filterChampionships(championships);
     }, manager);
   }

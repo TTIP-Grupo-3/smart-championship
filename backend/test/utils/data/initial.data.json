@@ -186,6 +186,12 @@
       "teamLeader": { "id": 6 },
       "championshipEnrollment": { "id": 1 }
     },
+    {
+      "id": 16,
+      "payStatus": "to_pay",
+      "teamLeader": { "id": 7 },
+      "championshipEnrollment": { "id": 1 }
+    },
 
     { "id": 2, "payStatus": "paid", "teamLeader": { "id": 11 }, "championshipEnrollment": { "id": 2 } },
     { "id": 3, "payStatus": "paid", "teamLeader": { "id": 12 }, "championshipEnrollment": { "id": 2 } },
