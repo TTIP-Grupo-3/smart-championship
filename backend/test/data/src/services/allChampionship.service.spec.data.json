@@ -7,6 +7,8 @@
   "championship": {
     "id": 1,
     "name": "championship-1",
+    "date": "2023-06-23T00:00:00.000Z",
+    "start": "2023-06-23T00:00:00.000Z",
     "teams": [
       {
         "id": 1,

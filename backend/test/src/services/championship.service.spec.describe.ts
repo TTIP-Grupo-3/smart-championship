@@ -13,10 +13,11 @@ export function championshipServiceDescribe(
   let module: TestingModule;
   let service: ChampionshipService;
   let configService: ConfigService;
-  const championships = setDates(existentChampionships);
+  const championships = setDates(...existentChampionships);
+  const plainChampionship = setDates(championship)[0];
   let errors;
 
-  function setDates(championships) {
+  function setDates(...championships) {
     return championships.map(({ start, date, ...existentChampionship }) => ({
       ...existentChampionship,
       start: start ? new Date(start) : null,
@@ -39,7 +40,7 @@ export function championshipServiceDescribe(
     describe('GetChampionship', () => {
       it('should return championship', async () => {
         const result = await service.getChampionship(args.getChampionshipDTO);
-        expect(result).toMatchObject(championship);
+        expect(result).toMatchObject(plainChampionship);
       });
 
       it('should fail if championship not exists', async () => {

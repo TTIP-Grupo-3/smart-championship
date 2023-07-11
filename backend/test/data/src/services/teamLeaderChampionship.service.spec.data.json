@@ -8,7 +8,13 @@
   "championship": {
     "id": 3,
     "name": "championship-3",
-    "teams": []
+    "date": "2023-07-08T00:00:00.000Z",
+    "start": null,
+    "duration": 0,
+    "teamSize": 11,
+    "enrollment": { "id": 1, "size": 4, "price": 50 },
+    "teams": [],
+    "matches": []
   },
   "existentChampionships": [
     {
