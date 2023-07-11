@@ -72,6 +72,12 @@ export class DataService {
     });
   }
 
+  async deleteAll() {
+    await this.dataSource.transaction(async (manager) => {
+      await this.deleteReceipts();
+    });
+  }
+
   private championshipPlayers() {
     return players.map((player) => ({ ...player, player: { id: player.id } }));
   }
@@ -90,6 +96,17 @@ export class DataService {
       await Promise.all(
         enrollments.map(
           async (enrollment) => await this.storageService.upload(enrollment.filename, receipt, 'receipts'),
+        ),
+      );
+    });
+  }
+
+  private async deleteReceipts() {
+    await this.dataSource.transaction(async (manager) => {
+      const enrollments = await manager.find(TeamEnrollment, {});
+      await Promise.all(
+        enrollments.map(
+          async (enrollment) => await this.storageService.delete(enrollment.filename, 'receipts'),
         ),
       );
     });

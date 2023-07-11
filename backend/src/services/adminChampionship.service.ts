@@ -64,10 +64,6 @@ export class AdminChampionshipService extends ChampionshipService {
     }, manager);
   }
 
-  protected exists(championship?: Championship): boolean {
-    return !!championship;
-  }
-
   private plainChampionship(createChampionshipDTO: CreateChampionshipDTO): DeepPartial<Championship> {
     const {
       name,
