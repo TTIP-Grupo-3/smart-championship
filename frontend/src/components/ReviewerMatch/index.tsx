@@ -3,7 +3,7 @@ import { Button, Grid, Typography, useTheme } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { useTimer } from '../../hooks/useTimer';
-import { CardsType, InspectorMatchProps, MatchStatus } from '../../interfaces';
+import { CardsType, InspectorMatchProps, MatchStatus, Player } from '../../interfaces';
 import { MatchService } from '../../services/MatchService';
 import { MatchManager } from '../MatchManager';
 import { MatchScoreResult } from '../MatchScoreResult';
@@ -101,10 +101,15 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
 
   const teamWithoutPlayerCard = (type: 'local' | 'visiting', color: CardsType) => {
     return currentMatch?.[type].players.filter(
-      (player: any) =>
-        !match[type].cards['red'].some((card: any) => card.player.id === player.id) &&
-        !match[type].cards[color.toLowerCase()].some((card: any) => card.player.id === player.id),
+      (player: any) => !someCard(type, color, player) && !someCard(type, CardsType.RED, player),
     );
+  };
+  const teamWithioutRedCard = (type: 'local' | 'visiting') => {
+    return currentMatch?.[type].players.filter((player: any) => !someCard(type, CardsType.RED, player));
+  };
+
+  const someCard = (type: 'local' | 'visiting', color: CardsType, player: Player) => {
+    return match[type].cards[color.toLowerCase()].some((card: any) => card.player.id === player.id);
   };
   return (
     <>
@@ -144,12 +149,12 @@ export const ReviewerMatch: FC<InspectorMatchProps> = ({ idMatch, setSelected, c
             </Typography>
           </Grid>
           <MatchManager
-            buttonLeftLocal={{ function: scoreGoal, args: [true], items: currentMatch?.local.players }}
+            buttonLeftLocal={{ function: scoreGoal, args: [true], items: teamWithioutRedCard('local') }}
             buttonRightLocal={{ function: disallowGoal, args: [], items: getGoals('local') }}
             buttonLeftVisiting={{
               function: scoreGoal,
               args: [false],
-              items: currentMatch?.visiting.players,
+              items: teamWithioutRedCard('visiting'),
             }}
             buttonRightProps={{ disabled: match?.local.goals.length < 1 }}
             buttonRightPropsVisiting={{ disabled: match?.visiting.goals.length < 1 }}
