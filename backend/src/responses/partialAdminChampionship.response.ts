@@ -1,5 +1,6 @@
 import { ChampionshipStatus } from 'src/enums/championshipStatus.enum';
 import { PartialChampionshipResponse } from './partialChampionship.response';
+import { PayDataResponse } from './payData.response';
 
 export interface PartialAdminChampionshipResponse extends PartialChampionshipResponse {
   date: string;
@@ -11,4 +12,5 @@ export interface PartialAdminChampionshipResponse extends PartialChampionshipRes
   duration: number;
   teamSize: number;
   status: ChampionshipStatus;
+  payData: PayDataResponse;
 }

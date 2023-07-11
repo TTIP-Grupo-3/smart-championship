@@ -2,8 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { EntityManager } from 'typeorm';
 import { User } from 'src/entities/user.entity';
+import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMapperExecutor';
+import { UseExceptionMapper } from 'src/decorators/UseExceptionMapper';
 
 @Injectable()
+@UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class UsersService {
   constructor(private readonly transactionService: TransactionService) {}
 

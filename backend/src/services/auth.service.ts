@@ -3,8 +3,11 @@ import { UsersService } from './user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/entities/user.entity';
 import { compareSync as compare } from 'bcrypt';
+import { TypeOrmExceptionMapperExecutor } from 'src/executors/TypeOrmExceptionMapperExecutor';
+import { UseExceptionMapper } from 'src/decorators/UseExceptionMapper';
 
 @Injectable()
+@UseExceptionMapper(TypeOrmExceptionMapperExecutor)
 export class AuthService {
   constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
@@ -17,7 +20,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User): Promise<User> {
+  async login<T extends User>(user: T): Promise<T> {
     const { id, username } = user;
     user.access_token = this.jwtService.sign({ username, sub: id });
     return user;

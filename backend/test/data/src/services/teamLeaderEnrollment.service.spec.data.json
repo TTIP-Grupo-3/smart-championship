@@ -1,0 +1,25 @@
+{
+  "args": {
+    "getEnrollmentDTO": { "championshipId": 1, "id": 5 },
+    "getEnrollmentsDTO": { "championshipId": 3 },
+    "enrollDTO": { "championshipId": 3 },
+    "leaderDTO": { "id": 8 },
+    "toPayEnrollmentDTO": { "championshipId": 3, "id": 16 },
+    "uploadReceiptDTO": { "receipt": { "buffer": "receiptString" } }
+  },
+  "notFoundId": 0,
+  "otherUserEnrollmentId": 4,
+  "enrollment": { "id": 5, "payStatus": "paid", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 3 } },
+  "createdEnrollment": { "payStatus": "to_pay", "teamLeader": { "id": 8 }, "championshipEnrollment": { "id": 1 } },
+  "uploadedReceiptEnrollment": { "payStatus": "to_review", "teamLeader": { "id": 7 }, "championshipEnrollment": { "id": 1 }, "receipt": "cmVjZWlwdFN0cmluZw==" },
+  "existentEnrollments": [
+    { "id": 1, "payStatus": "to_review", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 14, "payStatus": "to_review", "teamLeader": { "id": 5 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 15, "payStatus": "to_review", "teamLeader": { "id": 6 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 16, "payStatus": "to_pay", "teamLeader": { "id": 7 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 13, "payStatus": "to_review", "teamLeader": { "id": 4 }, "championshipEnrollment": { "id": 1 } }
+  ],
+  "plainTeamLeader": { "id": 3, "firstName": "Adrián", "lastName": "Cardozo", "username": "leader", "roles": ["team_leader"] },
+  "plainEnrolledLeader": { "id": 8, "firstName": "Lautaro", "lastName": "Lopez", "username": "leader6", "roles": ["team_leader"] },
+  "plainReceiptLeader": { "id": 7, "firstName": "Martin", "lastName": "Diaz", "username": "leader5", "roles": ["team_leader"] }
+}

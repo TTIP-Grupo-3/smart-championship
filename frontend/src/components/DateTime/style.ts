@@ -19,27 +19,27 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     },
   },
   timeIcon: {
-    color: 'white',
+    color: theme.palette.common.white,
   },
   dialogCalendarPaper: {
     height: '80vw',
     '& .MuiPickersCalendarHeader-label': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiYearCalendar-root': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiPickersDay-root': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiDayCalendar-weekDayLabel': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiSvgIcon-root': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiClockNumber-root': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiDialog-container': {
       height: '105vh',

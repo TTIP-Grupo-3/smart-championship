@@ -1,5 +1,5 @@
 import { makeStyles } from 'tss-react/mui';
-import { Theme } from '@mui/material/styles';
+import { lighten, Theme } from '@mui/material/styles';
 import { alpha } from '@mui/system';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
@@ -33,6 +33,10 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     '&:hover': {
       backgroundColor: '#1990BB',
     },
+    '&.Mui-disabled': {
+      color: lighten(theme.palette.common.white, 0.05),
+      backgroundColor: alpha(theme.palette.common.white, 0.38),
+    },
   },
   toolbar: {
     '& .MuiTypography-root': {
@@ -43,27 +47,27 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     },
   },
   timeIcon: {
-    color: 'white',
+    color: theme.palette.common.white,
   },
   dialogCalendarPaper: {
     height: '80vw',
     '& .MuiPickersCalendarHeader-label': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiYearCalendar-root': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiPickersDay-root': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiDayCalendar-weekDayLabel': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiSvgIcon-root': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiClockNumber-root': {
-      color: 'white',
+      color: theme.palette.common.white,
     },
     '& .MuiDialog-container': {
       height: '105vh',

@@ -1,4 +1,5 @@
 import { Socket } from 'socket.io';
+import { IdDTO } from 'src/dtos/id.dto';
 import { User } from 'src/entities/user.entity';
 import { Role } from 'src/enums/role.enum';
 
@@ -9,9 +10,28 @@ export interface EditChampionshipInfo {
   price?: number;
   duration?: number;
   teamSize?: number;
+  payData?: EditPayData;
 }
 
-export type UserRequestInfo = { user?: User; role?: Role };
+export interface EditChampionshipEnrollment {
+  size?: number;
+  price?: number;
+  payData?: EditPayData;
+}
+
+export interface EditPayData {
+  name?: string;
+  cuit?: string;
+  cbu?: string;
+  alias?: string;
+}
+
+export interface MatchDate {
+  id: number;
+  date?: Date;
+}
+
+export type UserRequestInfo<T extends User = User> = { user?: T; userDTO?: IdDTO; role?: Role };
 export type UserSocket = Socket & UserRequestInfo;
 export type NoPromise = Diff<any, Promise<any>>;
 export type MaybeArray<T> = T | Array<T>;

@@ -1,3 +1,6 @@
 import { ChampionshipResponse } from './championship.response';
 
-export type PartialChampionshipResponse = ChampionshipResponse;
+export interface PartialChampionshipResponse extends ChampionshipResponse {
+  date: string;
+  teamSize: number;
+}

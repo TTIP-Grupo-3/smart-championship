@@ -2,7 +2,7 @@ import { alpha, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const useStyles = makeStyles()((theme: Theme) => ({
-  grid: { maxWidth: '100px' },
+  grid: { maxWidth: '100px', height: 24 },
   typography: {
     textOverflow: 'ellipsis',
     overflow: 'hidden',

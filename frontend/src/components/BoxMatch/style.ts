@@ -20,5 +20,11 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     justifyContent: 'center',
     minWidth: '239px',
     cursor: 'pointer',
+    width: '100%',
+    zIndex: 5,
+    transition: '0.3s all ease-in-out',
+    '&:hover': {
+      transform: 'scale(1.03)',
+    },
   },
 }));

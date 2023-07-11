@@ -10,16 +10,16 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     maxHeight: 380,
   },
   table: {
-    backgroundColor: 'white',
-    color: 'black',
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.common.white,
   },
   columnHead: {
-    backgroundColor: '#bf360c',
+    backgroundColor: theme.palette.orange[300],
     minWidth: '30%',
-    color: 'white',
+    color: theme.palette.common.white,
   },
   rows: {
-    backgroundColor: 'black',
-    color: 'white',
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
   },
 }));

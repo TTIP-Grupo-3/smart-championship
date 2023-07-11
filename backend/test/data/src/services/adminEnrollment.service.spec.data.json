@@ -1,0 +1,19 @@
+{
+  "args": {
+    "getEnrollmentDTO": { "championshipId": 1, "id": 5 },
+    "getEnrollmentsDTO": { "championshipId": 3 },
+    "acceptEnrollmentDTO": { "championshipId": 3, "id": 1 },
+    "rejectEnrollmentDTO": { "championshipId": 3, "id": 1 }
+  },
+  "notFoundId": 0,
+  "notAdminId": 16,
+  "enrollment": { "id": 5, "payStatus": "paid", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 3 } },
+  "existentEnrollments": [
+    { "id": 13, "payStatus": "to_review", "teamLeader": { "id": 4 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 14, "payStatus": "to_review", "teamLeader": { "id": 5 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 15, "payStatus": "to_review", "teamLeader": { "id": 6 }, "championshipEnrollment": { "id": 1 } },
+    { "id": 1, "payStatus": "to_review", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } }
+  ],
+  "acceptedEnrollment": { "id": 1, "payStatus": "paid", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } },
+  "rejectedEnrollment": { "id": 1, "payStatus": "rejected", "teamLeader": { "id": 3 }, "championshipEnrollment": { "id": 1 } }
+}

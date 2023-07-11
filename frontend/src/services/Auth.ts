@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { User } from '../interfaces';
+import { LoggedUser, ProfileUser, User } from '../interfaces';
 import { httpClient } from './httpClient';
 
 class AuthService {
@@ -9,11 +9,11 @@ class AuthService {
     this.httpClient = httpClient;
   }
 
-  login(user: User): Promise<AxiosResponse<any>> {
+  login(user: User): Promise<AxiosResponse<LoggedUser>> {
     return this.httpClient.post('/auth/login', user);
   }
 
-  profile(): Promise<AxiosResponse<any>> {
+  profile(): Promise<AxiosResponse<ProfileUser>> {
     return this.httpClient.get('/auth/profile');
   }
 }

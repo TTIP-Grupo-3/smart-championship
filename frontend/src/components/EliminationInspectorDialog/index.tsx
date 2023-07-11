@@ -5,8 +5,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import { FC } from 'react';
+import { useTheme } from '@mui/material';
 
 export const EliminationInspectorDialog: FC<any> = ({ open, setOpen }) => {
+  const theme = useTheme();
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -15,7 +18,7 @@ export const EliminationInspectorDialog: FC<any> = ({ open, setOpen }) => {
     <React.Fragment>
       <Dialog maxWidth="xs" open={open} style={{ borderRadius: 4 }} PaperProps={{ elevation: 24 }}>
         <DialogContent>
-          <DialogContentText style={{ color: 'white' }}>
+          <DialogContentText style={{ color: theme.palette.common.white }}>
             En torneos de eliminación no puede existir empate
           </DialogContentText>
         </DialogContent>

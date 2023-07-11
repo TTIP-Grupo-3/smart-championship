@@ -9,12 +9,10 @@ import { AllChampionshipService } from './services/allChampionship.service';
 import { DataService } from './services/data.service';
 import { entities } from './utils/entities';
 import { TransactionService } from './services/transaction.service';
-import { MatchService } from './services/match.service';
 import { MatchGateway } from './gateways/match.gateway';
 import { ChampionshipGateway } from './gateways/championship.gateway';
 import { ChampionshipPlayerService } from './services/championshipPlayer.service';
-import { MatchController } from './controllers/match.controller';
-import { UploadFileController } from './controllers/upload-file.controller';
+import { AllMatchController } from './controllers/allMatch.controller';
 import { AuthService } from './services/auth.service';
 import { UsersService } from './services/user.service';
 import { JwtStrategy } from './strategies/jwt.startegy';
@@ -29,8 +27,23 @@ import { ScoreChampionshipService } from './services/scoreChampionship.service';
 import { JwtAuthGuard } from './guards/jwtAuth.guard';
 import { AdminChampionshipService } from './services/adminChampionship.service';
 import { AdminChampionshipController } from './controllers/adminChampionship.controller';
-import { EnrollmentController } from './controllers/enrollment.controller';
-import { EnrollmentService } from './services/enrollment.service';
+import { AdminEnrollmentController } from './controllers/adminEnrollment.controller';
+import { AdminEnrollmentService } from './services/adminEnrollment.service';
+import { TeamLeaderChampionshipController } from './controllers/teamLeaderChampionship.controller';
+import { TeamLeaderChampionshipService } from './services/teamLeaderChampionship.service';
+import { TeamLeaderService } from './services/teamLeader.service';
+import { TeamLeaderController } from './controllers/teamLeader.controller';
+import { TeamLeaderEnrollmentController } from './controllers/teamLeaderEnrollment.controller';
+import { TeamLeaderEnrollmentService } from './services/teamLeaderEnrollment.service';
+import { TeamService } from './services/team.service';
+import { TeamController } from './controllers/team.controller';
+import { PlayerController } from './controllers/player.controller';
+import { PlayerService } from './services/player.service';
+import { ReviewerMatchService } from './services/reviewerMatch.service';
+import { ReviewerMatchController } from './controllers/reviewerMatch.controller';
+import { AdminMatchController } from './controllers/adminMatch.controller';
+import { AdminMatchService } from './services/adminMatch.service';
+import { AllMatchService } from './services/allMatch.service';
 
 @Module({
   imports: [
@@ -42,17 +55,23 @@ import { EnrollmentService } from './services/enrollment.service';
   ],
   controllers: [
     AdminChampionshipController,
+    AdminMatchController,
     AllChampionshipController,
-    MatchController,
+    AllMatchController,
     AuthController,
-    UploadFileController,
-    EnrollmentController,
+    AdminEnrollmentController,
+    TeamLeaderChampionshipController,
+    TeamLeaderController,
+    TeamLeaderEnrollmentController,
+    TeamController,
+    PlayerController,
+    ReviewerMatchController,
   ],
   providers: [
     AllChampionshipService,
     AdminChampionshipService,
+    TeamLeaderChampionshipService,
     TransactionService,
-    MatchService,
     MatchGateway,
     ChampionshipGateway,
     ScoreChampionshipGateway,
@@ -66,7 +85,14 @@ import { EnrollmentService } from './services/enrollment.service';
     LocalStrategy,
     StorageService,
     JwtAuthGuard,
-    EnrollmentService,
+    AdminEnrollmentService,
+    TeamLeaderService,
+    TeamLeaderEnrollmentService,
+    TeamService,
+    PlayerService,
+    ReviewerMatchService,
+    AdminMatchService,
+    AllMatchService,
   ],
 })
 export class AppModule {

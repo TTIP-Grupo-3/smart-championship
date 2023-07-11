@@ -1,4 +1,5 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
+import { Championship, ChampionshipTournament } from '../interfaces';
 import { httpClient } from './httpClient';
 
 class ChampionshipService {
@@ -8,11 +9,11 @@ class ChampionshipService {
     this.httpClient = httpClient;
   }
 
-  getChampionships(): Promise<AxiosResponse<any>> {
+  getChampionships(): Promise<AxiosResponse<Championship[]>> {
     return this.httpClient.get('/championship');
   }
 
-  getChampionshipId(id: number) {
+  getChampionshipId(id: number): Promise<AxiosResponse<ChampionshipTournament>> {
     return this.httpClient.get(`/championship/${id}`);
   }
 }

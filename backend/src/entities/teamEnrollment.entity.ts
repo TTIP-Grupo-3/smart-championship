@@ -1,15 +1,22 @@
 import { PayStatus } from 'src/enums/payStatus.enum';
 import { TeamLeader } from './teamLeader.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { ChampionshipEnrollment } from './championshipEnrollment.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
+import { ChampionshipTeam } from './championshipTeam.entity';
+import { Championship } from './championship.entity';
+import { configService } from 'src/services/config.service';
+
+const errors = configService.get('model.errors');
 
 @Entity()
 export class TeamEnrollment {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
-  payStatus: PayStatus;
+  @Column({ generated: 'uuid' })
+  receiptId: string;
+  @Column({ default: PayStatus.ToPay })
+  payStatus: PayStatus = PayStatus.ToPay;
   @ManyToOne(() => TeamLeader, (leader) => leader.enrollments, { eager: true })
   teamLeader: TeamLeader;
   @ManyToOne(() => ChampionshipEnrollment, (enrollment) => enrollment.teamEnrollments, {
@@ -17,15 +24,63 @@ export class TeamEnrollment {
     orphanedRowAction: 'delete',
   })
   championshipEnrollment: ChampionshipEnrollment;
+  @CreateDateColumn({ type: 'datetime' })
+  createdAt: Date;
+
+  expireTime: number = 60 * 60 * 1000;
   receipt: string | null = null;
 
-  paid(): boolean {
-    return this.payStatus === PayStatus.Paid;
+  public get filename(): string {
+    return `${this.receiptId}-${this.id}.png`;
   }
 
-  accept() {
+  public get status(): PayStatus {
+    return this.expired() ? PayStatus.Expired : this.payStatus;
+  }
+
+  public get teamId(): number {
+    return this.teamLeader.teamId;
+  }
+
+  uploadReceipt(receipt: string) {
+    if (!this.toPay()) throw new InvalidArgumentException(errors.cannotUploadReceipt);
+    this.receipt = receipt;
+    this.payStatus = PayStatus.ToReview;
+  }
+
+  createChampionshipTeam(championship: Championship): ChampionshipTeam {
+    return this.teamLeader.createChampionshipTeam(championship);
+  }
+
+  static from(enrollment: ChampionshipEnrollment, teamLeader: TeamLeader): TeamEnrollment {
+    const teamEnrollment = new TeamEnrollment();
+    teamEnrollment.championshipEnrollment = enrollment;
+    teamEnrollment.teamLeader = teamLeader;
+    return teamEnrollment;
+  }
+
+  reserved(): boolean {
+    return [PayStatus.ToPay, PayStatus.ToReview, PayStatus.Paid].includes(this.status);
+  }
+
+  paid(): boolean {
+    return this.status === PayStatus.Paid;
+  }
+
+  toPay(): boolean {
+    return this.status === PayStatus.ToPay;
+  }
+
+  expired(): boolean {
+    return this.payStatus === PayStatus.ToPay && Date.now() - this.createdAt.getTime() >= this.expireTime;
+  }
+
+  accept(championship: Championship): ChampionshipTeam {
     if (!this.reviewable()) throw new InvalidArgumentException();
     this.payStatus = PayStatus.Paid;
+    const championshipTeam = this.createChampionshipTeam(championship);
+    championship.addTeam(championshipTeam);
+    return championshipTeam;
   }
 
   reject() {
@@ -34,6 +89,6 @@ export class TeamEnrollment {
   }
 
   private reviewable(): boolean {
-    return !!this.receipt && this.payStatus === PayStatus.ToReview;
+    return !!this.receipt && this.status === PayStatus.ToReview;
   }
 }

@@ -5,18 +5,19 @@ import { StatusMatch } from '../StatusMatch';
 import { useStyles } from './style';
 
 interface ScoreMatchProps {
-  localGoals: number;
-  visitingGoals: number;
+  localGoals?: number;
+  visitingGoals?: number;
   status: string;
 }
 
 export const ScoreMatch: FC<ScoreMatchProps> = ({ localGoals, visitingGoals, status }) => {
   const { classes } = useStyles();
 
+  const showGoals = visitingGoals !== undefined && localGoals !== undefined;
   return (
     <Grid data-testid="ScoreMatch" className={classes.resultGrid}>
       <Typography data-testid="ScoreMatch-score-result" className={classes.result} noWrap>
-        {localGoals} - {visitingGoals}
+        {showGoals ? `${localGoals} - ${visitingGoals}` : `-`}
       </Typography>
       {status === 'STARTED' ? (
         <StartedMatchLoader />

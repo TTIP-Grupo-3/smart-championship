@@ -29,4 +29,9 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  buttonBack: {
+    marginTop: '2%',
+    color: theme.palette.common.white,
+    marginLeft: '6%',
+  },
 }));

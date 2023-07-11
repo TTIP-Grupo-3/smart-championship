@@ -1,4 +1,10 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
+import {
+  AdminChampionship,
+  ChampionshipCreated,
+  CreateChampionship,
+  EditChampionship,
+} from '../interfaces';
 import { httpClient } from './httpClient';
 
 class AdminService {
@@ -8,23 +14,34 @@ class AdminService {
     this.httpClient = httpClient;
   }
 
-  createChampionship(championshipData: any): Promise<AxiosResponse<any>> {
+  createChampionship(championshipData: CreateChampionship): Promise<AxiosResponse<ChampionshipCreated>> {
     return this.httpClient.post('/admin/championship', championshipData);
   }
 
-  getAdminChampionships(): Promise<AxiosResponse<any>> {
+  getAdminChampionships(): Promise<AxiosResponse<AdminChampionship[]>> {
     return this.httpClient.get('/admin/championship');
   }
 
-  getAdminChampionship(id: number): Promise<AxiosResponse<any>> {
+  getToStartMatches(championshipId: number): Promise<AxiosResponse<any>> {
+    return this.httpClient.get(`/admin/championship/${championshipId}/match`);
+  }
+
+  getAdminChampionship(id: number): Promise<AxiosResponse<AdminChampionship>> {
     return this.httpClient.get(`/admin/championship/${id}`);
   }
 
-  editChampionship(id: number, championshipData: any): Promise<AxiosResponse<any>> {
+  addMatchDates(championshipId: number, matchDates: any[]) {
+    return this.httpClient.put(`/admin/championship/${championshipId}/match`, { matchDates: matchDates });
+  }
+
+  editChampionship(
+    id: number,
+    championshipData: EditChampionship,
+  ): Promise<AxiosResponse<AdminChampionship>> {
     return this.httpClient.patch(`/admin/championship/${id}`, championshipData);
   }
 
-  startChampionship(id: number): Promise<AxiosResponse<any>> {
+  startChampionship(id: number): Promise<AxiosResponse<AdminChampionship>> {
     return this.httpClient.patch(`/admin/championship/${id}/start`);
   }
 }

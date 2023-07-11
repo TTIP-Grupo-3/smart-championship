@@ -1,0 +1,22 @@
+{
+  "args": {
+    "getTeamStatusesDTO": {
+      "championshipId": 2
+    }
+  },
+  "notFoundId": 0,
+  "statuses": [
+    {
+      "team": { "id": 9, "name": "Team-9", "teamId": 9 },
+      "championship": { "id": 2, "name": "championship-2" }
+    },
+    {
+      "team": { "id": 11, "name": "Team-11", "teamId": 11 },
+      "championship": { "id": 2, "name": "championship-2" }
+    },
+    {
+      "team": { "id": 10, "name": "Team-10", "teamId": 10 },
+      "championship": { "id": 2, "name": "championship-2" }
+    }
+  ]
+}

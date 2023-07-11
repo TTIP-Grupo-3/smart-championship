@@ -37,5 +37,5 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
   endGrid: { display: 'flex', flexGrow: 1, justifyContent: 'flex-end', width: theme.spacing(0) },
   startGrid: { display: 'flex', flexGrow: 1, width: theme.spacing(0) },
-  delete: { color: 'white' },
+  delete: { color: theme.palette.common.white },
 }));

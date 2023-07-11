@@ -1,12 +1,12 @@
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
 import { configService } from 'src/services/config.service';
-import { ChildEntity, Tree, TreeChildren, TreeParent } from 'typeorm';
+import { ChildEntity, RelationId, Tree, TreeChildren, TreeParent } from 'typeorm';
 import { OneToOne } from 'typeorm';
 import { Match } from './match.entity';
 import { MatchStatus } from './matchStatus.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
-import { TeamStatus } from './teamStatus.entity';
 import { EliminationChampionship } from './eliminationChampionship.entity';
+import { Phase } from './phase.entity';
 
 const errors = configService.get('model.errors');
 
@@ -18,6 +18,8 @@ export class EliminationMatch extends Match {
     orphanedRowAction: 'delete',
   })
   championshipFinal: EliminationChampionship;
+  @RelationId('championshipFinal')
+  championshipId: number;
   @TreeParent()
   parent: EliminationMatch | null;
   @TreeChildren({ cascade: true })
@@ -37,17 +39,36 @@ export class EliminationMatch extends Match {
     return this.parent;
   }
 
-  public get phases(): Array<Array<EliminationMatch>> {
+  public get phases(): Array<Phase> {
     if (this.isBaseMatch()) {
-      return [[this]];
+      return [Phase.from(this)];
     } else {
-      const visitingPhases = this.submatches[1].phases;
-      const subphases = this.submatches[0].phases.map((phase, index) => [
-        ...phase,
-        ...visitingPhases[index],
-      ]);
-      return [...subphases, [this]];
+      const visitingPhases = this.visiting.phases;
+      const subphases = this.local.phases.map((phase, index) => Phase.merge(phase, visitingPhases[index]));
+      return [...subphases, Phase.from(this)];
     }
+  }
+
+  static from(
+    local: EliminationMatch | ChampionshipTeam,
+    visiting: EliminationMatch | ChampionshipTeam,
+  ): EliminationMatch {
+    const match = new EliminationMatch();
+    if (local instanceof ChampionshipTeam && visiting instanceof ChampionshipTeam) {
+      match.status = MatchStatus.from(local, visiting);
+      match.submatches = [];
+    } else if (local instanceof EliminationMatch && visiting instanceof EliminationMatch) {
+      match.status = MatchStatus.empty();
+      match.submatches = [local, visiting];
+    } else {
+      throw new InvalidArgumentException(errors.invalidArgument);
+    }
+    return match;
+  }
+
+  setParents(parent?: EliminationMatch) {
+    this.parent = parent;
+    this.submatches.forEach((submatch: EliminationMatch) => submatch.setParents(this));
   }
 
   findMatch(id: number) {
@@ -60,20 +81,6 @@ export class EliminationMatch extends Match {
     }
   }
 
-  initialize(
-    local: EliminationMatch | ChampionshipTeam,
-    visiting: EliminationMatch | ChampionshipTeam,
-  ): EliminationMatch {
-    if (local instanceof ChampionshipTeam && visiting instanceof ChampionshipTeam) {
-      this.status = new MatchStatus(new TeamStatus(local), new TeamStatus(visiting));
-    } else if (local instanceof EliminationMatch && visiting instanceof EliminationMatch) {
-      this.submatches = [local, visiting];
-    } else {
-      throw new InvalidArgumentException(errors.invalidArgument);
-    }
-    return this;
-  }
-
   end() {
     if (!this.status.partialWinner) throw new InvalidArgumentException();
     const winner = super.end();
@@ -82,13 +89,13 @@ export class EliminationMatch extends Match {
   }
 
   setTeam(winner: ChampionshipTeam, match: EliminationMatch) {
-    if (this.local.id === match.id) this.status.setLocal(winner);
-    if (this.visiting.id === match.id) this.status.setVisiting(winner);
+    if (this.local.id === match.id) return this.status.setLocal(winner);
+    if (this.visiting.id === match.id) return this.status.setVisiting(winner);
     throw new InvalidArgumentException();
   }
 
   toArray(): Array<EliminationMatch> {
-    return this.phases.flat();
+    return this.phases.flatMap((phase) => phase.matches);
   }
 
   private isBaseMatch() {

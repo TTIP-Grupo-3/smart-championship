@@ -3,11 +3,28 @@ service:
     notFoundChampionship: "Championship not found"
     unknown: "Unknown error"
     invalidArgument: "Invalid argument"
+    alreadyExists: "Already exists"
+    notFound: "Not found"
 
 model:
   errors:
     invalidArgument: "Invalid argument"
-    
+    teamNotCreated: "Team is not created"
+    teamAlreadyCreated: "Team already created"
+    playerAlreadyExists: "Player already exists"
+    cannotGetMatches: "Cannot get matches"
+    matchNotFound: "Match not found"
+    championshipAlreadyStarted: "Championship already started"
+    alreadyEnrolled: "Already enrolled"
+    completedPlaces: "Completed places"
+    reservedPlaces: "Reserved places"
+    playerAlreadyInTeam: "Player already in team"
+    teamHasLeader: "Team has leader"
+    needMorePlayers: "Need more players"
+    cannotUploadReceipt: "Invalid operation. Cannot upload receipt"
+    cantReceiveCard: "This player can't receive card"
+
 controller:
   errors:
     badRequest: "Bad request"
+    wrongExtension: "Wrong extension type"

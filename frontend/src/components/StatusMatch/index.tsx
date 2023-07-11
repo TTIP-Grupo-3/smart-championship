@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material';
 import { FC } from 'react';
+import { MatchStatus } from '../../interfaces';
 import { useStyles } from './style';
 
 export const StatusMatch: FC<any> = ({ status, className, ...typographyProps }) => {
@@ -8,10 +9,14 @@ export const StatusMatch: FC<any> = ({ status, className, ...typographyProps }) 
     <Typography
       variant="body1"
       className={cx(classes.statusMatch, className)}
-      style={{ backgroundColor: status === 'FINISHED' ? 'red' : 'green' }}
+      style={{ backgroundColor: status === MatchStatus.FINISHED ? 'red' : 'green' }}
       {...typographyProps}
     >
-      {status === 'FINISHED' ? 'Finalizado' : status === 'TOSTART' ? 'A jugar' : 'En juego'}
+      {status === MatchStatus.FINISHED
+        ? 'Finalizado'
+        : status === MatchStatus.TOSTART
+        ? 'A jugar'
+        : 'En juego'}
     </Typography>
   );
 };

@@ -1,7 +1,10 @@
-import { ConsoleLogger, ExecutionContext, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConsoleLogger, ExecutionContext, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
+import { plainToInstance } from 'class-transformer';
+import { IdDTO } from 'src/dtos/id.dto';
+import { UnauthorizedException } from 'src/exceptions/UnauthorizedException';
 import { UsersService } from 'src/services/user.service';
 import { UserPayload } from 'src/utils/types';
 
@@ -17,7 +20,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   async canActivate(context: ExecutionContext) {
     if (context.getType() === 'ws') return await this.wsCanActivate(context);
-    return await (super.canActivate(context) as Promise<boolean>);
+    const result = await (super.canActivate(context) as Promise<boolean>);
+    const request = context.switchToHttp().getRequest();
+    if (result) request.userDTO = plainToInstance(IdDTO, { id: request.user.id });
+    return result;
   }
 
   private async wsCanActivate(context: any): Promise<boolean> {
@@ -42,6 +48,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const user = await this.userService.findOne(username);
     if (!user) throw new UnauthorizedException();
     context.args[0].user = user;
+    context.args[0].userDTO = plainToInstance(IdDTO, { id: user.id });
     return user;
   }
 }

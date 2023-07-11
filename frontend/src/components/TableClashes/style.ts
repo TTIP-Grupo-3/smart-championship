@@ -11,7 +11,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
   },
   table: {
     backgroundColor: theme.palette.common.white,
-    color: 'black',
+    color: theme.palette.common.white,
   },
   columnHead: {
     backgroundColor: '#bf360c',

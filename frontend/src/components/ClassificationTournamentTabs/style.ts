@@ -15,7 +15,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     display: 'flex',
   },
   indicator: {
-    backgroundColor: '#ED7D31',
+    backgroundColor: theme.palette.orange[200],
   },
 
   tab: {
@@ -24,7 +24,7 @@ export const useStyles = makeStyles()((theme: Theme) => ({
     width: 'auto',
     color: theme.palette.common.white,
     '&.Mui-selected': {
-      color: '#ED7D31',
+      color: theme.palette.orange[200],
     },
   },
 }));

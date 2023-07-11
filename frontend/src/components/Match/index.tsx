@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, lighten, useTheme } from '@mui/material';
 import { FC } from 'react';
 import { TeamStatus } from '../BoxMatch';
 import { useStyles } from './style';
@@ -16,10 +16,17 @@ interface MatchProps {
 
 export const Match: FC<MatchProps> = ({ local, visiting, status }) => {
   const { classes } = useStyles();
+  const theme = useTheme();
+
   return (
-    <Grid container data-testid="Match" className={classes.backgroundTeamCard}>
+    <Grid
+      container
+      data-testid="Match"
+      className={classes.backgroundTeamCard}
+      style={!(local && visiting) ? { backgroundColor: lighten(theme.palette.background.paper, 0.3) } : {}}
+    >
       <MatchTeam logo={smartLogoLocal} team={local} />
-      <ScoreMatch localGoals={local.goals} visitingGoals={visiting.goals} status={status} />
+      <ScoreMatch localGoals={local?.goals} visitingGoals={visiting?.goals} status={status} />
       <MatchTeam logo={smartLogoVisiting} team={visiting} />
     </Grid>
   );

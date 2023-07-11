@@ -13,7 +13,7 @@ import { ChampionshipTeam } from './championshipTeam.entity';
 export class MatchStatus {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
+  @Column({ nullable: true })
   date: Date;
   @Column({ nullable: true })
   start: Date;
@@ -51,9 +51,23 @@ export class MatchStatus {
     return [this.localStatus.team, this.visitingStatus.team];
   }
 
-  constructor(localStatus: TeamStatus, visitingStatus: TeamStatus) {
-    this.localStatus = localStatus;
-    this.visitingStatus = visitingStatus;
+  setDate(date?: Date) {
+    this.date = date ?? null;
+  }
+
+  static from(local: ChampionshipTeam, visiting: ChampionshipTeam): MatchStatus {
+    const status = new MatchStatus();
+    status.localStatus = TeamStatus.from(local);
+    status.visitingStatus = TeamStatus.from(visiting);
+    return status;
+  }
+
+  static empty(): MatchStatus {
+    return MatchStatus.from(null, null);
+  }
+
+  reviewable(): boolean {
+    return this.hasDate() && this.localStatus.initialized() && this.visitingStatus.initialized();
   }
 
   startMatch() {
@@ -97,5 +111,9 @@ export class MatchStatus {
 
   hasDate(): boolean {
     return !!this.date;
+  }
+
+  hasTeams(): boolean {
+    return this.localStatus.hasTeam() && this.visitingStatus.hasTeam();
   }
 }

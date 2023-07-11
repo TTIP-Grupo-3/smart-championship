@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, useEffect, useState } from 'react';
 import { Button, Grid, Typography } from '@mui/material';
@@ -8,22 +9,24 @@ import Scroll from '../../components/Scroll';
 import { SearchInput } from '../../components/SearchInput';
 import { TournamentDialog } from '../../components/TournamentDialog';
 import { API_ADMIN } from '../../services/Admin';
-import SnackBar from '../../components/Snackbar';
-
-export const msgTypes: any = {
-  success: 'Cambios realizados correctamente',
-  error: 'Ha ocurrido un error intenta mas tarde',
-};
-export const delay = async (time: number) => new Promise((res) => setTimeout(res, time));
+import { Loader } from '../../components/Loader';
+import { EmptyData } from '../../components/EmptyData';
+import { InitTournamentDialog } from '../../components/InitTournamentDialog';
+import dayjs from 'dayjs';
+import { useSnackbar } from '../../hooks/useSnackbar';
 
 export const Admin: FC = () => {
   const { classes } = useStyles();
   const [tournaments, setTournaments] = useState<any>([]);
   const [open, setOpen] = useState(false);
-  const [openS, setOpenS] = useState<any>({ open: false, type: 'success' });
   const [openEdit, setOpenEdit] = useState(false);
-  const [id, setId] = useState<any>();
-  const [searched, setSearched] = useState('');
+  const [id, setId] = useState<number | null>();
+  const [searched, setSearched] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [openInit, setOpenInit] = useState(false);
+  const [dates, setDates] = useState<any>([]);
+  const [matches, setMatches] = useState<any>([]);
+  const { Snack, onSuccess, promise } = useSnackbar();
 
   const handleOpenEdit = () => setOpenEdit(true);
   const handleOpen = () => setOpen(true);
@@ -31,39 +34,80 @@ export const Admin: FC = () => {
   const onCloseEdit = () => setOpenEdit(false);
 
   useEffect(() => {
-    API_ADMIN.getAdminChampionships().then((r) => setTournaments(r.data));
+    const interval = setInterval(() => {
+      API_ADMIN.getAdminChampionships().then(({ data }) => {
+        setTournaments(data);
+        setIsLoading(false);
+      });
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
-  const onSuccess = async () => {
-    setOpenS({ open: true, type: 'success' });
-    API_ADMIN.getAdminChampionships().then((r) => setTournaments(r.data));
+  useEffect(() => {
+    if (id) getToStartMatches();
+  }, [id]);
+
+  const reloadChampionships = () => {
+    API_ADMIN.getAdminChampionships().then(({ data }) => setTournaments(data));
     onClose();
-    await delay(1000);
-    setOpenS({ open: false, type: 'success' });
   };
 
-  const onError = async () => {
-    setOpenS({ open: true, type: 'error' });
-    onClose();
-    await delay(1000);
-    setOpenS({ open: false, type: 'error' });
-  };
-
-  const handleEdit = (id: number) => {
+  const handleEdit = (id: number): void => {
     handleOpenEdit();
     setId(id);
   };
 
   const handleInit = (id: number) => {
-    API_ADMIN.startChampionship(id)
-      .then(() => onSuccess())
-      .catch(() => onError());
+    setId(id);
+    setOpenInit(true);
+  };
+
+  const initTournament = () => {
+    promise(API_ADMIN.startChampionship(id!), {
+      loading: 'Publicando torneo',
+      success: 'Torneo Publicado',
+      error: 'Ha ocurrido un error intenta nuevamente',
+    });
   };
 
   const searchedProjects = (): Array<any> =>
     tournaments.filter(({ name, size }: any) =>
       [name.toLowerCase(), size.toString()].some((attr) => attr.includes(searched.toLowerCase())),
     );
+
+  const initAndSaveDatesTournament = () => {
+    API_ADMIN.addMatchDates(id!, dates).then(() => {
+      initTournament();
+      setOpenInit(false);
+    });
+  };
+
+  const handleChangeDate = (e: any, id: number) => {
+    const matchChange = dates.filter((date: any) => date?.id !== id);
+
+    setDates([...matchChange, { id: id, date: dayjs(e).toISOString() }]);
+  };
+
+  const onCloseDialogInit = () => {
+    setOpenInit(false);
+    setDates([]);
+  };
+  const getToStartMatches = () => {
+    API_ADMIN.getToStartMatches(id!).then(({ data }) => {
+      const matches = data.map((match: any) => (match?.matches ? match.matches : match));
+      setMatches(matches);
+    });
+  };
+  const addDateMatches = () => {
+    promise(API_ADMIN.addMatchDates(id!, dates), {
+      loading: 'Cargando fechas de partidos',
+      success: () => {
+        getToStartMatches();
+        onSuccess('Fechas de partidos cargadas correctamente');
+      },
+      error: 'Ha ocurrido un error intenta nuevamente',
+    });
+  };
 
   return (
     <Navbar>
@@ -84,30 +128,46 @@ export const Admin: FC = () => {
           </Grid>
         </Grid>
         <Grid className={classes.card}>
-          <Scroll className={classes.scroll}>
-            {searchedProjects().map((tournament: any) => (
-              <AdminTournamentCard key={tournament.id} {...tournament} {...{ handleEdit, handleInit }} />
-            ))}
-          </Scroll>
+          {isLoading ? (
+            <Loader text="Cargando Torneos" style={{ color: '#1990BB' }} />
+          ) : !searchedProjects().length ? (
+            <EmptyData emptyText="Ups, No hay torneos por aqui" />
+          ) : (
+            <Scroll className={classes.scroll}>
+              {searchedProjects().map((tournament: any) => (
+                <AdminTournamentCard key={tournament.id} {...tournament} {...{ handleEdit, handleInit }} />
+              ))}
+            </Scroll>
+          )}
         </Grid>
       </Grid>
-      <TournamentDialog title="Crear Torneo" onClose={onClose} {...{ open, onSuccess, onError }} />
+      <TournamentDialog
+        title="Crear Torneo"
+        onClose={onClose}
+        {...{ open, promise, reloadChampionships, onSuccess }}
+      />
       {openEdit && (
         <TournamentDialog
           title="Modificar Torneo"
           open={openEdit}
+          isEdit
           onClose={onCloseEdit}
-          {...{ onSuccess, onError, id }}
+          {...{ promise, id, reloadChampionships, onSuccess }}
         />
       )}
-      <SnackBar
-        open={openS.open}
-        vertical={'bottom'}
-        horizontal={'center'}
-        msgSnack={msgTypes[openS.type]}
-        type={openS.type}
-        handleClose={() => setOpenS((prev: any) => ({ ...prev, open: false }))}
+      <InitTournamentDialog
+        title="Iniciar Torneo"
+        open={openInit}
+        onClose={onCloseDialogInit}
+        {...{
+          initAndSaveDatesTournament,
+          handleChangeDate,
+          dates,
+          matches,
+          addDateMatches,
+        }}
       />
+      <Snack />
     </Navbar>
   );
 };

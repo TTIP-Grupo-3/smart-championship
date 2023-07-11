@@ -10,47 +10,10 @@ import { useStyles } from './style';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ChampionshipScoreService } from '../../services/ChampionshipScore';
+import { Loader } from '../Loader';
+import { EmptyData } from '../EmptyData';
 
-interface Column {
-  id: 'name' | 'population' | 'size' | 'density' | 'density2';
-  label: string;
-  minWidth?: any;
-  align?: 'right';
-  format?: (value: number) => string;
-}
-
-const columns: readonly Column[] = [
-  { id: 'name', label: 'Equipo', minWidth: '40%' },
-  {
-    id: 'population',
-    label: 'PP',
-    minWidth: '30%',
-    align: 'right',
-    format: (value: number) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'size',
-    label: 'PG',
-    minWidth: '30%',
-    align: 'right',
-    format: (value: number) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'density',
-    label: 'PE',
-    minWidth: '30%',
-    align: 'right',
-    format: (value: number) => value.toFixed(2),
-  },
-
-  {
-    id: 'density2',
-    label: 'PJ',
-    minWidth: '30%',
-    align: 'right',
-    format: (value: number) => value.toFixed(2),
-  },
-];
+const columns = ['Equipo', 'PP', 'PG', 'PE', 'PJ'];
 
 export const TableClasification = () => {
   const { classes } = useStyles();
@@ -58,48 +21,49 @@ export const TableClasification = () => {
   const socket = service.create();
   const { id } = useParams();
   const [teams, setTeams] = useState<any>([]);
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    socket.on('teams', (data) => setTeams(data));
+    socket.on('teams', (data) => {
+      setTeams(data);
+      setIsLoading(false);
+    });
     service.teams(socket, +id!);
   }, []);
 
   return (
     <Paper className={classes.paper}>
-      <TableContainer className={classes.tableContainer}>
-        <Table stickyHeader className={classes.table}>
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell className={classes.columnHead} key={column.id} align={column.align}>
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {teams.map((team: any) => (
-              <TableRow hover role="checkbox" tabIndex={-1}>
-                <TableCell key={team?.id} align="left" className={classes.rows}>
-                  {team?.name}
-                </TableCell>
-                <TableCell align="right" className={classes.rows}>
-                  {team?.lost}
-                </TableCell>
-                <TableCell align="right" className={classes.rows}>
-                  {team?.won}
-                </TableCell>
-                <TableCell align="right" className={classes.rows}>
-                  {team?.tied}
-                </TableCell>
-                <TableCell align="right" className={classes.rows}>
-                  {team?.score}
-                </TableCell>
+      {isLoading ? (
+        <Loader text="Cargando Equipos" style={{ color: 'orange' }} />
+      ) : !teams.length ? (
+        <EmptyData emptyText="Contenido no disponible" />
+      ) : (
+        <TableContainer className={classes.tableContainer}>
+          <Table stickyHeader className={classes.table}>
+            <TableHead>
+              <TableRow>
+                {columns.map((column, index) => (
+                  <TableCell className={classes.columnHead} key={index}>
+                    {column}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {teams.map((team: any) => (
+                <TableRow hover key={team?.id} role="checkbox" tabIndex={-1}>
+                  <TableCell key={team?.id} className={classes.rows}>
+                    {team?.name}
+                  </TableCell>
+                  <TableCell className={classes.rows}>{team?.lost}</TableCell>
+                  <TableCell className={classes.rows}>{team?.won}</TableCell>
+                  <TableCell className={classes.rows}>{team?.tied}</TableCell>
+                  <TableCell className={classes.rows}>{team?.score}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Paper>
   );
 };

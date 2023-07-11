@@ -6,6 +6,9 @@ import { Card, CardType } from './card.entity';
 import { Goal } from './goal.entity';
 import { ChampionshipTeam } from './championshipTeam.entity';
 import { InvalidArgumentException } from 'src/exceptions/InvalidArgumentException';
+import { configService } from 'src/services/config.service';
+
+const errors = configService.get('model.errors');
 
 @Entity()
 export class TeamStatus {
@@ -26,8 +29,16 @@ export class TeamStatus {
     return this.cards.filter((card) => card.type === CardType.YELLOW);
   }
 
-  constructor(team: ChampionshipTeam | null) {
-    this.team = team;
+  static from(team: ChampionshipTeam | null): TeamStatus {
+    const status = new TeamStatus();
+    status.team = team;
+    status.goals = [];
+    status.cards = [];
+    return status;
+  }
+
+  initialized(): boolean {
+    return !!this.team;
   }
 
   goal(goal: Goal) {
@@ -36,13 +47,17 @@ export class TeamStatus {
   }
 
   card(card: Card) {
-    if (!this.canAddCard(card)) throw new InvalidArgumentException("This player can't receive card");
+    if (!this.canAddCard(card)) throw new InvalidArgumentException(errors.cantReceiveCard);
     this.cards.push(card);
     card.setStatus(this);
   }
 
   setTeam(team: ChampionshipTeam) {
     this.team = team;
+  }
+
+  hasTeam(): boolean {
+    return !!this.team;
   }
 
   private canAddCard(card: Card): boolean {

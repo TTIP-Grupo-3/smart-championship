@@ -1,7 +1,7 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Button, Card, Grid, IconButton, InputAdornment, Typography } from '@mui/material';
+import { Button, Card, Grid, IconButton, InputAdornment, Typography, useTheme } from '@mui/material';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Navbar } from '../../components/NavBar';
 import { ErrorLogin } from '../../components/ErrorLogin';
 import { User } from '../../interfaces';
@@ -12,7 +12,11 @@ import { OutlinedInput } from '../../components/OutlinedInput';
 
 type RoleType = { [key: string]: string };
 
-export const roles: RoleType = { admin: '/admin/tournaments', reviewer: '/inspector' };
+export const roles: RoleType = {
+  admin: '/admin/tournaments',
+  reviewer: '/reviewer',
+  team_leader: '/leader',
+};
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,7 +24,9 @@ export const Login = () => {
   const [user, setUser] = useState<User>({ username: '', password: '' });
   const navigate = useNavigate();
   const [isInvalidUser, setIsInvalidUser] = useState(false);
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const theme = useTheme();
+
+  const handleClickShowPassword = (): void => setShowPassword(!showPassword);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     setUser({ ...user, [target.name]: target.value });
@@ -37,11 +43,11 @@ export const Login = () => {
       .catch(() => setIsInvalidUser(true));
   };
 
-  const redirectAccordingToRole = (role: string) => {
+  const redirectAccordingToRole = (role: string): void => {
     navigate(roles[role]);
   };
 
-  const canLogin = () => {
+  const canLogin = (): boolean => {
     return user.username.trim().length !== 0 && user.password.trim().length !== 0;
   };
 
@@ -70,7 +76,8 @@ export const Login = () => {
               onChange={handleChange}
               placeholder="Usuario"
             />
-            <Grid style={{ padding: 30 }} />
+            <Grid style={{ padding: 22 }} />
+
             <OutlinedInput
               label="Contraseña"
               variant="outlined"
@@ -88,7 +95,7 @@ export const Login = () => {
                       {showPassword ? (
                         <VisibilityOff style={{ color: 'grey' }} />
                       ) : (
-                        <Visibility style={{ color: 'white' }} />
+                        <Visibility style={{ color: theme.palette.common.white }} />
                       )}
                     </IconButton>
                   </InputAdornment>
@@ -97,6 +104,14 @@ export const Login = () => {
               placeholder="Contraseña"
               type={showPassword ? 'text' : 'password'}
             />
+            <Grid container flexDirection="row" alignItems="center" justifyContent={'center'}>
+              <Typography fontSize={12} color="white" paddingTop={1} paddingRight={0.5}>
+                Si no posees cuenta
+              </Typography>
+              <Link to={'/register'} style={{ color: 'aquamarine', fontSize: 12, paddingTop: 5 }}>
+                registrate
+              </Link>
+            </Grid>
             <ErrorLogin open={isInvalidUser} />
             <Grid className={classes.gridContainerButton} marginTop={isInvalidUser ? 2 : 6}>
               <Button

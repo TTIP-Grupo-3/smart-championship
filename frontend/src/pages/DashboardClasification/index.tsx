@@ -17,10 +17,12 @@ export const DashboardClasification = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [tournament, setTournament] = useState<ClasificationTournament>({ name: '' });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    API.getChampionshipId(+id!).then((r) => {
-      setTournament(r.data);
+    API.getChampionshipId(+id!).then(({ data }) => {
+      setTournament(data);
+      setIsLoading(false);
     });
   }, []);
 
@@ -32,7 +34,9 @@ export const DashboardClasification = () => {
         icon: <EmojiEventsIcon style={{ height: 22, display: 'flex', color: 'yellow' }} />,
       }}
     >
-      <Typography className={classes.tournamentTitle}>{tournament.name}</Typography>
+      <Typography className={classes.tournamentTitle}>
+        {isLoading ? 'Cargando...' : tournament.name}
+      </Typography>
       <Grid className={classes.gridContainer}>
         <ClasificationTournamentTabs />
       </Grid>
