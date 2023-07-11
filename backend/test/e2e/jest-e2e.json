@@ -1,5 +1,5 @@
 {
-  "setupFilesAfterEnv": ["<rootDir>/test/setup/mockSqlClient.ts"],
+  "setupFilesAfterEnv": ["<rootDir>/test/setup/mockSqlClient.ts", "<rootDir>/test/setup/mockJwtSecret.ts"],
   "moduleNameMapper": {
     "^src/(.*)$": "<rootDir>/src/$1",
     "^test/(.*)$": "<rootDir>/test/$1"
