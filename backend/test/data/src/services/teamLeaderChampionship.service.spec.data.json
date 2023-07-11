@@ -1,0 +1,23 @@
+{
+  "args": {
+    "getChampionshipDTO": { "championshipId": 3 }
+  },
+  "minimumTeamSize": 11,
+  "notFoundId": 0,
+  "startedChampionshipId": 1,
+  "championship": {
+    "id": 3,
+    "name": "championship-3",
+    "teams": []
+  },
+  "existentChampionships": [
+    {
+      "id": 3,
+      "date": "2023-07-08T00:00:00.000Z",
+      "start": null,
+      "duration": 0,
+      "teamSize": 11,
+      "name": "championship-3"
+    }
+  ]
+}

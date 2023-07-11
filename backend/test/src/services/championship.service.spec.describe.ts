@@ -19,8 +19,8 @@ export function championshipServiceDescribe(
   function setDates(championships) {
     return championships.map(({ start, date, ...existentChampionship }) => ({
       ...existentChampionship,
-      start: new Date(start),
-      date: new Date(date),
+      start: start ? new Date(start) : null,
+      date: date ? new Date(date) : null,
     }));
   }
 

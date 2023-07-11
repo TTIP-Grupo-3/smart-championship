@@ -3,6 +3,7 @@
     "getChampionshipDTO": { "championshipId": 1 }
   },
   "notFoundId": 0,
+  "toStartChampionshipId": 3,
   "championship": {
     "id": 1,
     "name": "championship-1",

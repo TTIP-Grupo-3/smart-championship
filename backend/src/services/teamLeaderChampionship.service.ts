@@ -18,14 +18,6 @@ export class TeamLeaderChampionshipService extends ChampionshipService {
     super(transactionService);
   }
 
-  protected exists(championship?: Championship): boolean {
-    return championship.status === ChampionshipStatus.TOSTART;
-  }
-
-  protected async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
-    return championship;
-  }
-
   async minimumSize(manager?: EntityManager): Promise<number> {
     return await this.transactionService.transaction(async (manager) => {
       const championships = await manager.find(Championship, {
@@ -34,5 +26,13 @@ export class TeamLeaderChampionshipService extends ChampionshipService {
       });
       return Math.min(...championships.map(({ teamSize }) => teamSize));
     }, manager);
+  }
+
+  protected exists(championship?: Championship): boolean {
+    return championship.status === ChampionshipStatus.TOSTART;
+  }
+
+  protected async setMatches(championship: Championship, manager: EntityManager): Promise<Championship> {
+    return championship;
   }
 }
