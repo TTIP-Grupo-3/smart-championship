@@ -4,6 +4,14 @@ import { NotFoundException } from 'src/exceptions/NotFoundException';
 import { ChampionshipService } from 'src/services/championship.service';
 import { Class } from 'src/utils/types';
 
+export function setDates(...championships) {
+  return championships.map(({ start, date, ...existentChampionship }) => ({
+    ...existentChampionship,
+    start: start ? new Date(start) : null,
+    date: date ? new Date(date) : null,
+  }));
+}
+
 export function championshipServiceDescribe(
   getModule: () => TestingModule,
   ServiceClass: Class<ChampionshipService>,
@@ -16,14 +24,6 @@ export function championshipServiceDescribe(
   const championships = setDates(...existentChampionships);
   const plainChampionship = setDates(championship)[0];
   let errors;
-
-  function setDates(...championships) {
-    return championships.map(({ start, date, ...existentChampionship }) => ({
-      ...existentChampionship,
-      start: start ? new Date(start) : null,
-      date: date ? new Date(date) : null,
-    }));
-  }
 
   function sort<T extends { id: number }>(array: Array<T>): Array<T> {
     return array.sort((a, b) => a.id - b.id);
