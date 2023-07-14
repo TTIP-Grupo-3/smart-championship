@@ -49,4 +49,9 @@ export const useStyles = makeStyles()((theme: Theme) => ({
       backgroundColor: alpha(theme.palette.common.white, 0.38),
     },
   },
+  card: {
+    backgroundColor: '#001E3C',
+    padding: 48,
+    borderRadius: 6,
+  },
 }));

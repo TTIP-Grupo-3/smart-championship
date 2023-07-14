@@ -7,7 +7,7 @@ import { Grid, Typography, useTheme } from '@mui/material';
 import { useStyles } from './style';
 import { BootstrapDialogTitle } from '../DialogTitle';
 import { OutlinedInput } from '../OutlinedInput';
-import { containsOnlyNumbers } from '../../utils/utils';
+import { containsOnlyNumbers, onlyText } from '../../utils/utils';
 import { PlayerData } from '../../interfaces';
 
 export const AddPlayerDialog: FC<any> = ({ open, createPlayer, onClose }) => {
@@ -21,7 +21,9 @@ export const AddPlayerDialog: FC<any> = ({ open, createPlayer, onClose }) => {
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setPlayer({ ...player, [e.target.name]: e.target.value });
+    if (onlyText(e.target.value)) {
+      setPlayer({ ...player, [e.target.name]: e.target.value });
+    }
   };
 
   const fieldsTextCompleted = (): boolean => {

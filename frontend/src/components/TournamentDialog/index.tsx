@@ -107,7 +107,7 @@ export const TournamentDialog: FC<any> = ({
     newTournament.name === '' ||
     newTournament.price === 0 ||
     newTournament.duration === 0 ||
-    newTournament.size === 0 ||
+    newTournament.size < 2 ||
     payment.username.trim() === '' ||
     payment.cbu.trim().length < 22 ||
     payment.alias.trim().length === 0 ||

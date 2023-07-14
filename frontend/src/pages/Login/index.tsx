@@ -29,7 +29,7 @@ export const Login = () => {
   const handleClickShowPassword = (): void => setShowPassword(!showPassword);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
-    setUser({ ...user, [target.name]: target.value });
+    setUser({ ...user, [target.name]: target.value.trim() });
   };
 
   const handleLogin: FormEventHandler<HTMLFormElement> = (e: any) => {
@@ -62,7 +62,7 @@ export const Login = () => {
     >
       {' '}
       <Grid className={classes.root} container>
-        <Card style={{ backgroundColor: '#001E3C', padding: 48, borderRadius: 6 }} elevation={24}>
+        <Card className={classes.card} elevation={24}>
           <Typography color="white" variant="h5">
             SMART.CHAMPIONSHIP
           </Typography>
